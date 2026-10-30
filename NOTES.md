@@ -15,6 +15,13 @@ Cập nhật lần cuối: 30/10/2026
 - [ ] Tin nhắn tự động hàng loạt: chọn kênh, làm bộ mẫu tin, tool gửi từ file danh sách.
 - [ ] Dựng video thật (cần ảnh/render/video gốc, công cụ AI hoặc CapCut).
 
+## Tư liệu hình/video trong Drive (đã liệt kê, em chưa xem được nội dung)
+- Flycam (thư mục `1_FOLJkPOh657pT8_L71i456LzCfVv8on`): `1.mp4` (27MB), `2.mp4` (49MB), `3.mp4` (39MB); thư mục `Final` có `Tổng 1 + 2.mov` (70MB) và `Video 1.mp4` (30MB).
+- TVC: `TVC Bcons Central Park.mp4` (570MB) trong 12. TVC/VIDEO > 1. TVC.
+- Mẫu căn hộ A: `Hộp đơn A1.jpg`, `Hộp đơn A2.jpg` (~10MB mỗi ảnh). Thư mục mẫu C và D chưa liệt kê.
+- 4. PHỐI CẢNH (ẢNH NÉN, ẢNH GỐC) và 9. NHÀ MẪU > Nhà mẫu căn A1: em liệt kê thấy trống hoặc chưa có quyền xem file bên trong; cần kiểm tra quyền chia sẻ.
+- Em không xem/nghe được video qua connector Drive; cần anh mô tả nội dung từng clip hoặc đưa khung hình/ảnh chụp.
+
 ## Câu hỏi còn mở (cần anh trả lời)
 1. **Quy định nội dung quảng cáo** của công ty: điều không được nói, cách xưng hô, cụm từ bắt buộc, disclaimer pháp lý.
 2. **Kênh nhắn hàng loạt**: Zalo OA/ZNS, SMS brandname hay email? Ngân sách?
