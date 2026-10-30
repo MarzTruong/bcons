@@ -22,6 +22,9 @@ Cập nhật lần cuối: 30/10/2026
 - 4. PHỐI CẢNH (ẢNH NÉN, ẢNH GỐC) và 9. NHÀ MẪU > Nhà mẫu căn A1: em liệt kê thấy trống hoặc chưa có quyền xem file bên trong; cần kiểm tra quyền chia sẻ.
 - Em không xem video trực tiếp qua connector Drive. Video anh upload vào phiên thì em trích khung hình để xem được: đã xem 4 clip flycam (1, 5, 10, 9), mô tả trong `docs/video/flycam.md`.
 
+- Phối cảnh 3D, render nhà mẫu và ảnh nhà mẫu thật đã có trên Drive (ẢNH GỐC có file `202605_BPTH_ST38/ST39...jpg` 40–50MB; nhà mẫu A1: PHONGKHACH01/02, PNMT01/03, PHONGNGU2-03; nội thất C1). Connector Drive không cho em xem nội dung ảnh, cần anh đính kèm trực tiếp vào phiên.
+- Clip flycam 1 đã vẽ ranh giới (file video nằm trong phiên, không đưa lên git).
+
 ## Câu hỏi còn mở (cần anh trả lời)
 1. **Quy định nội dung quảng cáo** của công ty: điều không được nói, cách xưng hô, cụm từ bắt buộc, disclaimer pháp lý.
 2. **Kênh nhắn hàng loạt**: Zalo OA/ZNS, SMS brandname hay email? Ngân sách?
