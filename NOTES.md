@@ -20,7 +20,7 @@ Cập nhật lần cuối: 30/10/2026
 - TVC: `TVC Bcons Central Park.mp4` (570MB) trong 12. TVC/VIDEO > 1. TVC.
 - Mẫu căn hộ A: `Hộp đơn A1.jpg`, `Hộp đơn A2.jpg` (~10MB mỗi ảnh). Thư mục mẫu C và D chưa liệt kê.
 - 4. PHỐI CẢNH (ẢNH NÉN, ẢNH GỐC) và 9. NHÀ MẪU > Nhà mẫu căn A1: em liệt kê thấy trống hoặc chưa có quyền xem file bên trong; cần kiểm tra quyền chia sẻ.
-- Em không xem/nghe được video qua connector Drive; cần anh mô tả nội dung từng clip hoặc đưa khung hình/ảnh chụp.
+- Em không xem video trực tiếp qua connector Drive. Video anh upload vào phiên thì em trích khung hình để xem được: đã xem 4 clip flycam (1, 5, 10, 9), mô tả trong `docs/video/flycam.md`.
 
 ## Câu hỏi còn mở (cần anh trả lời)
 1. **Quy định nội dung quảng cáo** của công ty: điều không được nói, cách xưng hô, cụm từ bắt buộc, disclaimer pháp lý.
