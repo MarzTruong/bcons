@@ -38,11 +38,23 @@ Hướng view: Bắc (sân bay Biên Hòa, công viên Dương Tử Giang), Nam 
 - Không bán cho người nước ngoài.
 
 ## Phương thức thanh toán
-Giá bán ban hành theo PTTT 02. PTTT 01 được chiết khấu 8,5% trên tổng giá trị căn hộ (chưa gồm VAT và phí bảo trì).
+Giá bán ban hành theo PTTT 02. Chiết khấu của các PTTT khác tính trên tổng giá trị căn hộ (chưa gồm VAT và phí bảo trì), theo giá của PTTT 02.
+Chung cho mọi PTTT: khách cá nhân; ký HĐMB trực tiếp CĐT hoặc khách thứ cấp có văn bản xác nhận chuyển nhượng; CĐT không hỗ trợ phí tất toán trước hạn; áp dụng đến khi có thông báo mới. Phí bảo trì 2% đóng cùng đợt bàn giao.
 
-- **PTTT 01** (thanh toán giãn, 20% khi ký HĐMB): 5% ký thỏa thuận; 15% ký HĐMB (lũy tiến 20%); sau đó 5% (2 tháng), 5% (4), 5% (6), 10% (8), 5% (10), 5% (12), 5% (14), 10% (18 tháng); 25% khi thông báo bàn giao (dự kiến Q2/2029, kèm phí bảo trì 2%); 5% khi nhận sổ hồng.
-- **PTTT 02** (20% khi ký HĐMB, vay ngân hàng): ngân hàng giải ngân 50%; hỗ trợ lãi suất, ân hạn nợ gốc không quá 24 tháng. Chi tiết xem BPTH - PTTT 02.pdf (chưa đọc).
-- **PTTT 03** (10% khi ký HĐMB): 5% ký thỏa thuận; 5% ký HĐMB; 50% ngân hàng giải ngân (7 ngày sau ký HĐMB); 5% (2 tháng); 5% (4 tháng); 25% khi bàn giao; 5% khi nhận sổ hồng. Chủ đầu tư cam kết lãi suất không vượt 6,9%/năm, tối đa 48 tháng nhưng không quá 24 tháng kể từ thông báo bàn giao; phần chênh lệch CĐT trả. Chỉ áp dụng khách cá nhân, gói lãi suất cố định tối đa 30 tháng tại MB; CĐT không hỗ trợ phí tất toán trước hạn.
+| PTTT | Khi ký HĐMB | Vay ngân hàng (MB) | Lãi suất | Chiết khấu |
+|---|---|---|---|---|
+| 01 (thanh toán giãn) | 20% | Không | Không áp dụng | 8,5% |
+| 02 | 20% | 50% giải ngân sau 15 ngày | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng | Giá niêm yết |
+| 03 | 10% | 50% giải ngân sau 7 ngày | Trần 6,9%/năm, tối đa 48 tháng, không quá 24 tháng từ thông báo bàn giao; CĐT trả phần chênh | Theo thông báo (chưa ghi rõ) |
+| 04 | 10% | 10% + 20% + 20% (3 đợt) | Trần 6,9%/năm như PTTT 03 | 2,45% |
+| 05 | 10% | 10% + 20% + 20% (3 đợt) | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng (không nêu trần 6,9%) | 2,45% |
+
+Chi tiết các đợt:
+- **PTTT 01**: 5% ký thỏa thuận; 15% ký HĐMB; 5% (2 tháng), 5% (4), 5% (6), 10% (8), 5% (10), 5% (12), 5% (14), 10% (18 tháng); 25% khi bàn giao (dự kiến Q2/2029); 5% khi nhận sổ hồng.
+- **PTTT 02** (số 06/TB-BPTH, 04/09/2026): 5% thỏa thuận; 15% HĐMB; 50% vay ngân hàng sau 15 ngày; 25% bàn giao; 5% sổ hồng.
+- **PTTT 03** (số 07/TB-BPTH): 5% thỏa thuận; 5% HĐMB; 50% vay sau 7 ngày; 5% (2 tháng); 5% (4 tháng); 25% bàn giao; 5% sổ hồng. Gói lãi suất cố định tối đa 30 tháng tại MB.
+- **PTTT 04** (số 09/TB-ĐTTH, 26/10/2026) và **PTTT 05** (số 10/TB-ĐTTH, 26/10/2026), cùng cấu trúc 9 đợt: 5% thỏa thuận; 5% HĐMB; 10% vay (7 ngày sau HĐMB); 5% (5 tháng sau HĐMB); 20% vay (7 ngày sau đợt 4); 5% (10 tháng); 20% vay (7 ngày sau đợt 6); 25% bàn giao; 5% sổ hồng. PTTT 04 dùng gói lãi cố định tối đa 30 tháng tại MB; PTTT 05 dùng gói cố định tối đa 24 tháng. PTTT 05 chỉ nêu hỗ trợ lãi và ân hạn gốc, không có cam kết trần 6,9%.
+- Khách cam kết thanh toán đủ 95% giá trị căn hộ, 100% VAT và 100% phí bảo trì khi có thông báo bàn giao.
 
 ## Chi phí sau bàn giao
 - Phí bảo trì: 2% giá trị hợp đồng (chưa VAT).
@@ -66,5 +78,5 @@ Giá bán ban hành theo PTTT 02. PTTT 01 được chiết khấu 8,5% trên t�
 
 ## Còn thiếu (cần anh cung cấp)
 - Bảng giá từng căn / từng tháp.
-- PTTT 02 chi tiết và chính sách chiết khấu hiện hành.
+- Xác nhận PTTT 01 và 03 bản mới nhất (em đã đọc bản trước, anh gửi lại cùng bộ 5 file nhưng em chưa đối chiếu từng chữ).
 - Quy định nội dung quảng cáo (những điều không được nói, ví dụ cam kết lợi nhuận).
