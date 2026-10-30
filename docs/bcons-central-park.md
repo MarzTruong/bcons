@@ -76,7 +76,19 @@ Chi tiết các đợt:
 - Khách phải đăng ký thông tin trước khi tham quan; nhân viên quét mã vạch trước khi vào; check-in/out đúng giờ; tư vấn bằng bút chiếu.
 - Trong bán kính 300m không đặt standee, phát tờ rơi, chèo kéo khách.
 
+## Bảng giá (từ Master File ver2, giá CĐT cập nhật 17/10/2026)
+Dữ liệu từng căn nằm ở `data/bang-gia.csv` (không đưa lên git, xem `.gitignore`). Tình trạng tính đến lúc nhận file; đã cọc = đã bán.
+- 996 căn trong bảng: 638 còn bán, 236 CĐT lock chưa mở bán, 122 đã cọc. Còn bán theo block: A 347, B 150, E 141.
+- Giá PTTT 02/03 chưa VAT, theo loại căn còn bán:
+  - Studio (37,6–40,5 m2): 2,06–2,64 tỷ
+  - 1PN+1WC (42,95 m2): 2,32–2,80 tỷ
+  - 2PN+1WC (50,5–53,4 m2): 3,10–3,55 tỷ
+  - 2PN+2WC (53,5–73,2 m2): 3,14–4,93 tỷ
+  - 3PN+2WC (87,1–88,5 m2): 5,27–6,09 tỷ
+- Đơn giá tim tường khoảng 54–70 triệu/m2 (chưa VAT).
+- PTTT 01 = giá PTTT 02/03 đã trừ 8,5%; PTTT 04/05 = giá PTTT 02 trừ 2,45%.
+- 200 căn còn bán thuộc "rổ giá tốt".
+
 ## Còn thiếu (cần anh cung cấp)
-- Bảng giá từng căn / từng tháp.
-- Xác nhận PTTT 01 và 03 bản mới nhất (em đã đọc bản trước, anh gửi lại cùng bộ 5 file nhưng em chưa đối chiếu từng chữ).
 - Quy định nội dung quảng cáo (những điều không được nói, ví dụ cam kết lợi nhuận).
+- Xác nhận PTTT 01 và 03 bản mới nhất.
