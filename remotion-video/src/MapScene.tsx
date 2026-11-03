@@ -10,13 +10,14 @@ import {
   useVideoConfig,
 } from "remotion";
 import * as turf from "@turf/turf";
-import * as maplibregl from "maplibre-gl";
-import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
+import mapboxgl from "mapbox-gl";
+import type { GeoJSONSource, Map as MlMap } from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import { C, fontFamily } from "./theme";
 
 /**
- * Cảnh bản đồ vệ tinh (MapLibre GL JS + ảnh Esri World Imagery, không cần API key).
+ * Cảnh bản đồ vệ tinh (Mapbox GL JS, style satellite-v9).
+ * Cần biến môi trường REMOTION_MAPBOX_TOKEN (đặt trong remotion-video/.env).
  * Toạ độ là [kinh độ, vĩ độ], ƯỚC LƯỢNG — cần đối chiếu trước khi đăng.
  */
 type LngLat = [number, number];
@@ -85,22 +86,6 @@ const dashArray = (step: number): number[] => {
   if (t <= gap) return [0, t, dash, gap - t];
   const u = t - gap;
   return [u, gap, dash - u, 0];
-};
-
-const SATELLITE_STYLE: maplibregl.StyleSpecification = {
-  version: 8,
-  sources: {
-    satellite: {
-      type: "raster",
-      tiles: [
-        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-      ],
-      tileSize: 256,
-      maxzoom: 18,
-      attribution: "Esri, Maxar, Earthstar Geographics",
-    },
-  },
-  layers: [{ id: "satellite", type: "raster", source: "satellite" }],
 };
 
 type Projected = Record<string, { x: number; y: number; visible: boolean }>;
@@ -225,27 +210,24 @@ export const SatelliteMap: React.FC = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    maplibregl.setWorkerUrl(
-      URL.createObjectURL(
-        new Blob(
-          [
-            `import "https://unpkg.com/maplibre-gl@${maplibregl.getVersion()}/dist/maplibre-gl-worker.mjs";`,
-          ],
-          { type: "text/javascript" },
-        ),
-      ),
-    );
+    const token = process.env.REMOTION_MAPBOX_TOKEN;
+    if (!token) {
+      throw new Error(
+        "Thiếu REMOTION_MAPBOX_TOKEN. Thêm vào remotion-video/.env: REMOTION_MAPBOX_TOKEN=pk....",
+      );
+    }
 
     const c0 = cameraAt(0);
-    const m = new maplibregl.Map({
+    const m = new mapboxgl.Map({
+      accessToken: token,
       container: containerRef.current,
-      style: SATELLITE_STYLE,
+      style: "mapbox://styles/mapbox/satellite-v9",
       ...c0,
       maxPitch: 70,
       interactive: false,
       attributionControl: false,
       fadeDuration: 0,
-      canvasContextAttributes: { preserveDrawingBuffer: true },
+      preserveDrawingBuffer: true,
     });
 
     m.on("load", () => {
@@ -352,7 +334,7 @@ export const SatelliteMap: React.FC = () => {
           fontFamily,
         }}
       >
-        Ảnh: Esri, Maxar, Earthstar Geographics · MapLibre
+        © Mapbox © Maxar © OpenStreetMap
       </div>
     </AbsoluteFill>
   );
