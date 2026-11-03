@@ -21,9 +21,9 @@ import { C, fontFamily } from "./theme";
  */
 type LngLat = [number, number];
 
-export const BCONS: LngLat = [106.856, 10.947];
-export const LONG_THANH_AIRPORT: LngLat = [107.014, 10.789];
-export const PHUOC_AN_PORT: LngLat = [106.94, 10.66];
+export const BCONS: LngLat = [106.84408654581377, 10.959874417285395];
+export const LONG_THANH_AIRPORT: LngLat = [107.04195752766535, 10.773541785186673];
+export const PHUOC_AN_PORT: LngLat = [106.9942243322939, 10.616353354639697];
 const DONG_NAI_OVERVIEW: LngLat = [106.93, 10.84];
 
 /** Tuyến mô phỏng cao tốc Bến Lức - Long Thành (không phải toạ độ tim đường thật). */
@@ -32,7 +32,8 @@ const HIGHWAY_WAYPOINTS: LngLat[] = [
   [106.59, 10.615],
   [106.7, 10.64],
   [106.79, 10.69],
-  [106.9, 10.735],
+  [106.91, 10.715],
+  [106.98, 10.745],
   LONG_THANH_AIRPORT,
 ];
 const highway = turf.bezierSpline(turf.lineString(HIGHWAY_WAYPOINTS), {
@@ -54,8 +55,8 @@ const ease = Easing.inOut(Easing.cubic);
 /** Các mốc camera (frame tương đối trong cảnh). Mỗi đoạn dùng easing riêng. */
 const CAM = {
   f: [0, 50, 125, 165, 250, 275, 325, 348],
-  lng: [DONG_NAI_OVERVIEW[0], 106.92, BCONS[0], BCONS[0] + 0.002, 107.0, 107.0, 106.965, 106.96],
-  lat: [DONG_NAI_OVERVIEW[1], 10.88, BCONS[1] - 0.004, BCONS[1] - 0.005, 10.79, 10.789, 10.69, 10.68],
+  lng: [DONG_NAI_OVERVIEW[0], 106.92, BCONS[0], BCONS[0] + 0.002, 107.03, 107.03, 107.0, 106.995],
+  lat: [DONG_NAI_OVERVIEW[1], 10.88, BCONS[1] - 0.004, BCONS[1] - 0.005, 10.775, 10.774, 10.64, 10.625],
   zoom: [9.1, 9.5, 14.4, 14.7, 12.4, 12.8, 12.3, 12.6],
   pitch: [0, 15, 62, 64, 58, 60, 58, 60],
   bearing: [0, -10, -28, -40, 25, 40, 8, 0],
