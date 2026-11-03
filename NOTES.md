@@ -1,14 +1,20 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 30/10/2026
+Cập nhật lần cuối: 03/11/2026
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
 - [x] Tổng hợp dữ liệu dự án vào `docs/bcons-central-park.md` (dự án, 5 PTTT, lịch mở bán, chi phí, tóm tắt bảng giá).
 - [x] Tách bảng giá 996 căn từ Master File ra `data/bang-gia.csv` (cục bộ, không lên git).
 - [x] Tạo `CLAUDE.md` và `NOTES.md`.
+- [x] Video Remotion dọc 1080x1920 30fps trong `remotion-video/` (4 cảnh: Đồng Nai, hạ tầng, KTM tự do Long Thành, Bcons Central Park). Đã render `out/bcons-central-park.mp4` (20 giây, không tiếng) và `out/bcons-central-park-elevenlabs.mp4` (khoảng 44 giây, có giọng đọc + phụ đề từng từ). File mp4 không lên git.
+- [x] Giọng đọc ElevenLabs (`eleven_v4`, voice `9CCqsrTCLkHgQlKSMchK`): script `scripts/generate-voice.mjs`, lời đọc/phụ đề tách riêng trong `scripts/scenes.mjs`, âm thanh trong `public/audio/`, timestamp trong `src/audio-timestamps.json`. Key trong `remotion-video/.env` (gitignored).
+- [x] Thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`) có `video/`, `data/` và file hướng dẫn cài máy thứ hai.
+- [x] Thêm lệnh "Off" vào `CLAUDE.md`.
 
 ## Đang làm
+- [ ] Giọng cảnh 2 bị lệch giọng (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
+- [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
 - [ ] Kịch bản video đợt 2 (giới thiệu ngày 29/11/2026) trong `docs/video/dot-2.md`. Bản nháp, chờ anh duyệt.
 
 ## Chưa làm
@@ -44,4 +50,8 @@ Cập nhật lần cuối: 30/10/2026
 - Code, docs, kịch bản, mp3: GitHub (nhánh `claude/trusting-feynman-1b00ns`).
 - Dữ liệu nội bộ (`data/`, xlsx) và video render (`.mp4`): thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`), kèm file `HUONG-DAN-CAI-MAY-THU-HAI.md`.
 - API key ElevenLabs: chỉ trong `remotion-video/.env` trên từng máy, không đưa lên git/Drive.
-- Chưa làm: tải `.mp4` và `data/` lên thư mục Drive (anh kéo thả hoặc dùng Drive for desktop).
+- Chưa làm: tải `.mp4` và `data/` lên thư mục Drive (anh kéo thả hoặc dùng Drive for desktop). Thư mục `data/` không có trên máy dùng phiên này.
+- Video Remotion: số liệu (2,4 tỷ USD FDI, 8.200 ha, 16 tỷ USD, 150.000, 50.000, cao tốc khai thác 01/10/2026) lấy từ yêu cầu của anh, chưa đối chiếu tài liệu chủ đầu tư. Duyệt trước khi đăng.
+- Bản đồ cảnh 2 là sơ đồ minh họa, vị trí ước lượng.
+- Key ElevenLabs hiện không có quyền `Models`; đã bật `Models` Access nên liệt kê model được. Model trong tài khoản hỗ trợ tiếng Việt: `eleven_v4`, `eleven_v4_turbo`, `eleven_v3`, `eleven_turbo_v2_5`, `eleven_flash_v2_5`.
+- Nhận lệnh "Off" để tự cập nhật notes, commit, push (xem `CLAUDE.md`).

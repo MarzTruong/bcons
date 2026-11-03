@@ -28,3 +28,10 @@
 - Làm việc trên nhánh `claude/trusting-feynman-1b00ns`. Không tạo PR nếu người dùng chưa yêu cầu.
 - Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
 - Ngày hiện tại và lịch mở bán xem `docs/bcons-central-park.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
+
+## Lệnh "Off" (kết thúc phiên làm việc)
+Khi người dùng gõ đúng "Off" (không phân biệt hoa thường), làm tự động theo thứ tự, không hỏi lại:
+1. Cập nhật `NOTES.md`: ghi ngày ở dòng "Cập nhật lần cuối"; chuyển việc đã xong sang "Đã làm", việc dở sang "Đang làm", việc mới phát sinh sang "Chưa làm"; thêm câu hỏi còn mở và ghi chú kỹ thuật mới. Chỉ ghi điều có thật trong phiên, không bịa.
+2. Kiểm tra `git status`: không được stage `.env`, `data/`, `*.xlsx`, `*.mp4`, `node_modules`, hay bất kỳ API key/dữ liệu khách/hoa hồng. Nếu thấy, dừng lại và báo.
+3. Commit (message tiếng Anh ngắn, kèm dòng Co-Authored-By) rồi `git push` lên nhánh hiện tại. Không tạo PR.
+4. Báo lại bằng 2-3 dòng: commit nào, đã push chưa, việc dở còn lại. Nếu push lỗi thì nói rõ, không báo là đã xong.
