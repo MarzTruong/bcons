@@ -12,6 +12,7 @@ import { Audio } from "@remotion/media";
 import { staticFile } from "remotion";
 import { C, fontFamily } from "./theme";
 import { Captions } from "./Captions";
+import { SatelliteMap } from "./MapScene";
 import { LEAD, SCENE_DATA, SCENE_STARTS, cueFrame } from "./timing";
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -158,79 +159,13 @@ const Scene1: React.FC = () => {
 };
 
 /* ---------------- Cảnh 2 ---------------- */
-type Pt = { x: number; y: number };
-const BIEN_HOA: Pt = { x: 640, y: 560 };
-const LONG_THANH: Pt = { x: 860, y: 1000 };
-const PHUOC_AN: Pt = { x: 470, y: 1230 };
-const BEN_LUC: Pt = { x: 90, y: 1400 };
-
-const Node: React.FC<{
-  p: Pt;
-  label: string;
-  color: string;
-  delay: number;
-  big?: boolean;
-  labelDx?: number;
-  labelDy?: number;
-  anchor?: "start" | "end" | "middle";
-}> = ({
-  p,
-  label,
-  color,
-  delay,
-  big,
-  labelDx = 0,
-  labelDy = -60,
-  anchor = "middle",
-}) => {
-  const frame = useCurrentFrame();
-  const s = useSpring(delay, 10);
-  const pulse = (frame % 45) / 45;
-  const r = big ? 30 : 22;
-  return (
-    <g opacity={s}>
-      <circle
-        cx={p.x}
-        cy={p.y}
-        r={r + pulse * 40}
-        fill="none"
-        stroke={color}
-        strokeWidth={3}
-        opacity={1 - pulse}
-      />
-      <circle cx={p.x} cy={p.y} r={r * s} fill={color} />
-      <text
-        x={p.x + labelDx}
-        y={p.y + labelDy}
-        fill={C.white}
-        fontSize={big ? 56 : 48}
-        fontWeight={700}
-        textAnchor={anchor}
-        fontFamily={fontFamily}
-      >
-        {label}
-      </text>
-    </g>
-  );
-};
-
 const Scene2: React.FC = () => {
-  const frame = useCurrentFrame();
   const title = useSpring(0);
-  const cueHwy = cueFrame(1, "cao");
   const cueDate = cueFrame(1, "ngày");
-  const cueTri = cueFrame(1, "kết");
-  const hwy = interpolate(frame, [cueHwy, cueHwy + 100], [0, 1], {
-    ...clamp,
-    easing: Easing.inOut(Easing.cubic),
-  });
-  const tri = interpolate(frame, [cueTri, cueTri + 60], [0, 1], clamp);
   const label = useSpring(cueDate - 10, 12);
-  const nodeDelay = (d: number) => cueHwy + d;
-  const hwyPath = `M ${BEN_LUC.x} ${BEN_LUC.y} C 300 1380, 380 1250, ${PHUOC_AN.x} ${PHUOC_AN.y} S 760 1120, ${LONG_THANH.x} ${LONG_THANH.y}`;
-  const triPath = `M ${BIEN_HOA.x} ${BIEN_HOA.y} L ${LONG_THANH.x} ${LONG_THANH.y} L ${PHUOC_AN.x} ${PHUOC_AN.y} Z`;
   return (
     <AbsoluteFill>
+      <SatelliteMap />
       <div
         style={{
           position: "absolute",
@@ -248,62 +183,15 @@ const Scene2: React.FC = () => {
           Tam giác kết nối Đồng Nai
         </div>
       </div>
-      <svg width={1080} height={1920} style={{ position: "absolute" }}>
-        <defs>
-          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="10" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-        <g transform="translate(100,-33) scale(0.81)">
-        <path
-          d={triPath}
-          pathLength={1}
-          fill={`${C.gold}0f`}
-          stroke={C.gold}
-          strokeWidth={4}
-          strokeDasharray="0.02 0.012"
-          opacity={tri}
-        />
-        <path
-          d={hwyPath}
-          fill="none"
-          stroke={C.teal}
-          strokeWidth={22}
-          opacity={0.15}
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1 - hwy}
-        />
-        <path
-          d={hwyPath}
-          fill="none"
-          stroke={C.teal}
-          strokeWidth={9}
-          strokeLinecap="round"
-          filter="url(#glow)"
-          pathLength={1}
-          strokeDasharray={1}
-          strokeDashoffset={1 - hwy}
-        />
-          <Node p={BEN_LUC} label="Bến Lức" color={C.white} delay={nodeDelay(5)} labelDy={-45} anchor="start" />
-          <Node p={PHUOC_AN} label="Cảng Phước An" color={C.gold} delay={nodeDelay(50)} labelDy={85} />
-          <Node p={LONG_THANH} label="Sân bay QT Long Thành" color={C.gold} delay={nodeDelay(80)} labelDx={-20} labelDy={-55} anchor="end" />
-          <Node p={BIEN_HOA} label="BCONS CENTRAL PARK" color={C.red} delay={nodeDelay(110)} big labelDy={-65} />
-        </g>
-      </svg>
       <div
         style={{
           position: "absolute",
           left: 70,
           right: 70,
-          top: 1150,
+          top: 1330,
           padding: "30px 40px",
           borderRadius: 28,
-          background: C.bg2,
+          background: "rgba(20,20,20,0.88)",
           border: `3px solid ${C.teal}`,
           opacity: label,
           transform: `translateY(${(1 - label) * 50}px)`,
@@ -323,11 +211,11 @@ const Scene2: React.FC = () => {
           width: "100%",
           textAlign: "center",
           fontSize: 28,
-          color: "#ffffff80",
+          color: "#ffffffb0",
           opacity: label,
         }}
       >
-        Sơ đồ minh họa, không đúng tỷ lệ
+        Vị trí và tuyến đường mô phỏng, không đúng tỷ lệ
       </div>
     </AbsoluteFill>
   );
