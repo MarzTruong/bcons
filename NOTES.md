@@ -39,3 +39,9 @@ Cập nhật lần cuối: 30/10/2026
 - Giá PTTT 04/05 trong Master File là tự tính (giá PTTT 02 × 0,9755), chủ đầu tư chưa ra bảng giá riêng.
 - Ngày bàn giao trong file là giả định 30/06/2029 (chủ đầu tư chỉ ghi "dự kiến Quý II/2029").
 - Số liệu tình trạng căn là ảnh chụp tại thời điểm nhận file (ngày 30/10/2026); cần cập nhật trước khi quảng cáo.
+
+## Đồng bộ nhiều thiết bị
+- Code, docs, kịch bản, mp3: GitHub (nhánh `claude/trusting-feynman-1b00ns`).
+- Dữ liệu nội bộ (`data/`, xlsx) và video render (`.mp4`): thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`), kèm file `HUONG-DAN-CAI-MAY-THU-HAI.md`.
+- API key ElevenLabs: chỉ trong `remotion-video/.env` trên từng máy, không đưa lên git/Drive.
+- Chưa làm: tải `.mp4` và `data/` lên thư mục Drive (anh kéo thả hoặc dùng Drive for desktop).
