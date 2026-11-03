@@ -217,6 +217,9 @@ export const SatelliteMap: React.FC = () => {
       );
     }
 
+    // Trình duyệt headless xin tile dồn dập dễ bị Mapbox trả 429: hạ số request song song.
+    mapboxgl.config.MAX_PARALLEL_IMAGE_REQUESTS = 3;
+
     const c0 = cameraAt(0);
     const m = new mapboxgl.Map({
       accessToken: token,
@@ -228,6 +231,10 @@ export const SatelliteMap: React.FC = () => {
       attributionControl: false,
       fadeDuration: 0,
       preserveDrawingBuffer: true,
+    });
+
+    m.on("error", (e) => {
+      console.warn("Mapbox error:", e.error?.message ?? e);
     });
 
     m.on("load", () => {
