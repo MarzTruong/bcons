@@ -1,2 +1,7 @@
 data/
 *.xlsx
+remotion-video/node_modules/
+remotion-video/out/
+*.mp4
+.env
+remotion-video/audio-test/

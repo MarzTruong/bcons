@@ -1,0 +1,785 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 8.751020408163265,
+      "speech": "Sau khi trở thành thành phố trực thuộc Trung ương, Đồng Nai ghi nhận sức hút đầu tư mạnh mẽ với gần hai phẩy bốn tỷ đô la Mỹ vốn F D I trong chín tháng đầu năm.",
+      "words": [
+        {
+          "text": "Sau",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "khi",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "trở",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "thành",
+          "start": 0.6,
+          "end": 0.72
+        },
+        {
+          "text": "thành",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "phố",
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "text": "trực",
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "text": "thuộc",
+          "start": 1.48,
+          "end": 1.6
+        },
+        {
+          "text": "Trung",
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "text": "ương,",
+          "start": 1.92,
+          "end": 2.4
+        },
+        {
+          "text": "Đồng",
+          "start": 2.44,
+          "end": 2.56
+        },
+        {
+          "text": "Nai",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "ghi",
+          "start": 2.88,
+          "end": 2.96
+        },
+        {
+          "text": "nhận",
+          "start": 3,
+          "end": 3.2
+        },
+        {
+          "text": "sức",
+          "start": 3.24,
+          "end": 3.36
+        },
+        {
+          "text": "hút",
+          "start": 3.4,
+          "end": 3.52
+        },
+        {
+          "text": "đầu",
+          "start": 3.6,
+          "end": 3.68
+        },
+        {
+          "text": "tư",
+          "start": 3.76,
+          "end": 3.92
+        },
+        {
+          "text": "mạnh",
+          "start": 4,
+          "end": 4.16
+        },
+        {
+          "text": "mẽ",
+          "start": 4.24,
+          "end": 4.48
+        },
+        {
+          "text": "với",
+          "start": 4.64,
+          "end": 4.72
+        },
+        {
+          "text": "gần",
+          "start": 4.8,
+          "end": 4.96
+        },
+        {
+          "text": "2,4",
+          "start": 5.12,
+          "end": 5.68
+        },
+        {
+          "text": "tỷ",
+          "start": 5.76,
+          "end": 5.92
+        },
+        {
+          "text": "đô",
+          "start": 5.96,
+          "end": 6.04
+        },
+        {
+          "text": "la",
+          "start": 6.08,
+          "end": 6.16
+        },
+        {
+          "text": "Mỹ",
+          "start": 6.24,
+          "end": 6.48
+        },
+        {
+          "text": "vốn",
+          "start": 6.56,
+          "end": 6.72
+        },
+        {
+          "text": "FDI",
+          "start": 6.88,
+          "end": 7.44
+        },
+        {
+          "text": "trong",
+          "start": 7.52,
+          "end": 7.76
+        },
+        {
+          "text": "9",
+          "start": 7.84,
+          "end": 7.92
+        },
+        {
+          "text": "tháng",
+          "start": 8,
+          "end": 8.16
+        },
+        {
+          "text": "đầu",
+          "start": 8.24,
+          "end": 8.32
+        },
+        {
+          "text": "năm.",
+          "start": 8.4,
+          "end": 8.8
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "durationSec": 10.37061224489796,
+      "speech": "Mạng lưới giao thông liên vùng được mở rộng khi cao tốc Bến Lức Long Thành chính thức khai thác toàn tuyến từ ngày mùng một tháng mười năm hai nghìn không trăm hai mươi sáu, kết nối sân bay Long Thành và cảng Phước An.",
+      "words": [
+        {
+          "text": "Mạng",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "lưới",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "giao",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "thông",
+          "start": 0.6,
+          "end": 0.72
+        },
+        {
+          "text": "liên",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "vùng",
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "text": "được",
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "text": "mở",
+          "start": 1.48,
+          "end": 1.6
+        },
+        {
+          "text": "rộng",
+          "start": 1.68,
+          "end": 1.92
+        },
+        {
+          "text": "khi",
+          "start": 2,
+          "end": 2.16
+        },
+        {
+          "text": "cao",
+          "start": 2.24,
+          "end": 2.32
+        },
+        {
+          "text": "tốc",
+          "start": 2.36,
+          "end": 2.56
+        },
+        {
+          "text": "Bến",
+          "start": 2.6,
+          "end": 2.72
+        },
+        {
+          "text": "Lức",
+          "start": 2.8,
+          "end": 2.96
+        },
+        {
+          "text": "-",
+          "start": 3.04,
+          "end": 3.04
+        },
+        {
+          "text": "Long",
+          "start": 3.04,
+          "end": 3.12
+        },
+        {
+          "text": "Thành",
+          "start": 3.2,
+          "end": 3.44
+        },
+        {
+          "text": "chính",
+          "start": 3.52,
+          "end": 3.68
+        },
+        {
+          "text": "thức",
+          "start": 3.76,
+          "end": 3.92
+        },
+        {
+          "text": "khai",
+          "start": 3.96,
+          "end": 4.08
+        },
+        {
+          "text": "thác",
+          "start": 4.16,
+          "end": 4.32
+        },
+        {
+          "text": "toàn",
+          "start": 4.4,
+          "end": 4.64
+        },
+        {
+          "text": "tuyến",
+          "start": 4.72,
+          "end": 4.96
+        },
+        {
+          "text": "từ",
+          "start": 5.12,
+          "end": 5.2
+        },
+        {
+          "text": "ngày",
+          "start": 5.24,
+          "end": 5.36
+        },
+        {
+          "text": "1",
+          "start": 5.4,
+          "end": 5.68
+        },
+        {
+          "text": "tháng",
+          "start": 5.76,
+          "end": 5.92
+        },
+        {
+          "text": "10",
+          "start": 6,
+          "end": 6.2
+        },
+        {
+          "text": "năm",
+          "start": 6.32,
+          "end": 6.4
+        },
+        {
+          "text": "2026,",
+          "start": 6.48,
+          "end": 7.84
+        },
+        {
+          "text": "kết",
+          "start": 8,
+          "end": 8.16
+        },
+        {
+          "text": "nối",
+          "start": 8.2,
+          "end": 8.32
+        },
+        {
+          "text": "sân",
+          "start": 8.4,
+          "end": 8.48
+        },
+        {
+          "text": "bay",
+          "start": 8.56,
+          "end": 8.64
+        },
+        {
+          "text": "Long",
+          "start": 8.72,
+          "end": 8.8
+        },
+        {
+          "text": "Thành",
+          "start": 8.88,
+          "end": 9.2
+        },
+        {
+          "text": "và",
+          "start": 9.28,
+          "end": 9.36
+        },
+        {
+          "text": "cảng",
+          "start": 9.44,
+          "end": 9.6
+        },
+        {
+          "text": "Phước",
+          "start": 9.68,
+          "end": 9.84
+        },
+        {
+          "text": "An.",
+          "start": 9.92,
+          "end": 10.4
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "durationSec": 11.755102040816327,
+      "speech": "Khu thương mại tự do Long Thành quy mô hơn tám nghìn hai trăm héc ta với tổng vốn mười sáu tỷ đô la Mỹ, dự kiến thu hút một trăm năm mươi nghìn lao động chất lượng cao và đào tạo năm mươi nghìn kỹ sư, chuyên gia công nghệ.",
+      "words": [
+        {
+          "text": "Khu",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "thương",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "mại",
+          "start": 0.4,
+          "end": 0.48
+        },
+        {
+          "text": "tự",
+          "start": 0.56,
+          "end": 0.68
+        },
+        {
+          "text": "do",
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "text": "Long",
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "text": "Thành",
+          "start": 1.2,
+          "end": 1.44
+        },
+        {
+          "text": "quy",
+          "start": 1.6,
+          "end": 1.72
+        },
+        {
+          "text": "mô",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "hơn",
+          "start": 2,
+          "end": 2.16
+        },
+        {
+          "text": "8.200",
+          "start": 2.32,
+          "end": 3.2
+        },
+        {
+          "text": "ha",
+          "start": 3.24,
+          "end": 3.6
+        },
+        {
+          "text": "với",
+          "start": 3.84,
+          "end": 3.92
+        },
+        {
+          "text": "tổng",
+          "start": 4,
+          "end": 4.16
+        },
+        {
+          "text": "vốn",
+          "start": 4.24,
+          "end": 4.4
+        },
+        {
+          "text": "16",
+          "start": 4.48,
+          "end": 4.987
+        },
+        {
+          "text": "tỷ",
+          "start": 5.04,
+          "end": 5.2
+        },
+        {
+          "text": "đô",
+          "start": 5.28,
+          "end": 5.333
+        },
+        {
+          "text": "la",
+          "start": 5.36,
+          "end": 5.44
+        },
+        {
+          "text": "Mỹ,",
+          "start": 5.52,
+          "end": 5.92
+        },
+        {
+          "text": "dự",
+          "start": 5.96,
+          "end": 6.08
+        },
+        {
+          "text": "kiến",
+          "start": 6.16,
+          "end": 6.32
+        },
+        {
+          "text": "thu",
+          "start": 6.4,
+          "end": 6.48
+        },
+        {
+          "text": "hút",
+          "start": 6.56,
+          "end": 6.72
+        },
+        {
+          "text": "150.000",
+          "start": 6.8,
+          "end": 7.68
+        },
+        {
+          "text": "lao",
+          "start": 7.76,
+          "end": 7.84
+        },
+        {
+          "text": "động",
+          "start": 7.92,
+          "end": 8.08
+        },
+        {
+          "text": "chất",
+          "start": 8.16,
+          "end": 8.32
+        },
+        {
+          "text": "lượng",
+          "start": 8.36,
+          "end": 8.48
+        },
+        {
+          "text": "cao",
+          "start": 8.56,
+          "end": 8.8
+        },
+        {
+          "text": "và",
+          "start": 8.96,
+          "end": 9.04
+        },
+        {
+          "text": "đào",
+          "start": 9.08,
+          "end": 9.2
+        },
+        {
+          "text": "tạo",
+          "start": 9.28,
+          "end": 9.44
+        },
+        {
+          "text": "50.000",
+          "start": 9.6,
+          "end": 10.08
+        },
+        {
+          "text": "kỹ",
+          "start": 10.16,
+          "end": 10.32
+        },
+        {
+          "text": "sư,",
+          "start": 10.4,
+          "end": 10.72
+        },
+        {
+          "text": "chuyên",
+          "start": 10.76,
+          "end": 10.88
+        },
+        {
+          "text": "gia",
+          "start": 10.96,
+          "end": 11.04
+        },
+        {
+          "text": "công",
+          "start": 11.12,
+          "end": 11.2
+        },
+        {
+          "text": "nghệ.",
+          "start": 11.28,
+          "end": 11.76
+        }
+      ]
+    },
+    {
+      "id": "scene4",
+      "durationSec": 8.82938775510204,
+      "speech": "Việc triển khai đồng bộ các hạng mục theo quy hoạch tại Bee Cons Central Park sẽ góp phần đáp ứng nhu cầu an cư và đón đầu làn sóng đô thị hóa tại Đồng Nai.",
+      "words": [
+        {
+          "text": "Việc",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "triển",
+          "start": 0.24,
+          "end": 0.4
+        },
+        {
+          "text": "khai",
+          "start": 0.44,
+          "end": 0.64
+        },
+        {
+          "text": "đồng",
+          "start": 0.68,
+          "end": 0.88
+        },
+        {
+          "text": "bộ",
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "text": "các",
+          "start": 1.2,
+          "end": 1.28
+        },
+        {
+          "text": "hạng",
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "text": "mục",
+          "start": 1.56,
+          "end": 1.76
+        },
+        {
+          "text": "theo",
+          "start": 1.84,
+          "end": 1.96
+        },
+        {
+          "text": "quy",
+          "start": 2,
+          "end": 2.16
+        },
+        {
+          "text": "hoạch",
+          "start": 2.2,
+          "end": 2.4
+        },
+        {
+          "text": "tại",
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "text": "Bcons",
+          "start": 2.72,
+          "end": 3.28
+        },
+        {
+          "text": "Central",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "Park",
+          "start": 3.68,
+          "end": 4
+        },
+        {
+          "text": "sẽ",
+          "start": 4.16,
+          "end": 4.24
+        },
+        {
+          "text": "góp",
+          "start": 4.32,
+          "end": 4.44
+        },
+        {
+          "text": "phần",
+          "start": 4.48,
+          "end": 4.72
+        },
+        {
+          "text": "đáp",
+          "start": 4.76,
+          "end": 4.88
+        },
+        {
+          "text": "ứng",
+          "start": 4.96,
+          "end": 5.04
+        },
+        {
+          "text": "nhu",
+          "start": 5.12,
+          "end": 5.24
+        },
+        {
+          "text": "cầu",
+          "start": 5.28,
+          "end": 5.44
+        },
+        {
+          "text": "an",
+          "start": 5.6,
+          "end": 5.68
+        },
+        {
+          "text": "cư",
+          "start": 5.84,
+          "end": 6
+        },
+        {
+          "text": "và",
+          "start": 6.24,
+          "end": 6.32
+        },
+        {
+          "text": "đón",
+          "start": 6.48,
+          "end": 6.64
+        },
+        {
+          "text": "đầu",
+          "start": 6.72,
+          "end": 6.88
+        },
+        {
+          "text": "làn",
+          "start": 6.92,
+          "end": 7.04
+        },
+        {
+          "text": "sóng",
+          "start": 7.12,
+          "end": 7.28
+        },
+        {
+          "text": "đô",
+          "start": 7.36,
+          "end": 7.48
+        },
+        {
+          "text": "thị",
+          "start": 7.52,
+          "end": 7.68
+        },
+        {
+          "text": "hóa",
+          "start": 7.72,
+          "end": 7.92
+        },
+        {
+          "text": "tại",
+          "start": 8,
+          "end": 8.12
+        },
+        {
+          "text": "Đồng",
+          "start": 8.16,
+          "end": 8.32
+        },
+        {
+          "text": "Nai.",
+          "start": 8.36,
+          "end": 8.88
+        }
+      ]
+    }
+  ]
+}
