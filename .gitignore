@@ -1,2 +1,6 @@
 data/
 *.xlsx
+
+# Video footage va ket qua dung (khong commit)
+footage/
+edit/
