@@ -188,7 +188,7 @@ const Scene2: React.FC = () => {
           position: "absolute",
           left: 70,
           right: 70,
-          top: 1330,
+          top: 1210,
           padding: "30px 40px",
           borderRadius: 28,
           background: "rgba(20,20,20,0.88)",
