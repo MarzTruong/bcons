@@ -1,23 +1,36 @@
 <!doctype html><html lang="vi"><head><meta charset="utf-8">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{width:1640px;height:624px;background:#0f2a43;font-family:'Be Vietnam Pro',Inter,'DejaVu Sans',sans-serif;color:#fff;position:relative;overflow:hidden}
-.grid{position:absolute;inset:0;background:
- repeating-linear-gradient(90deg,rgba(156,203,232,.07) 0 1px,transparent 1px 82px),
- repeating-linear-gradient(0deg,rgba(156,203,232,.07) 0 1px,transparent 1px 78px)}
-.tower{position:absolute;bottom:0;background:linear-gradient(#1b4a6e,#133a58);border-top:3px solid #3f8fc0}
-.in{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:1060px;text-align:center}
-.k{font-size:26px;letter-spacing:6px;text-transform:uppercase;color:#9ccbe8}
-h1{font-size:76px;line-height:1.12;font-weight:800;margin-top:16px}
-.s{font-size:26px;color:#cfe3f1;margin-top:22px}
-.c{display:inline-block;margin-top:30px;padding:14px 34px;border-radius:999px;background:#e7f3fb;color:#0f2a43;font-size:28px;font-weight:700}
+body{width:1640px;height:624px;overflow:hidden;position:relative;color:#fff;font-family:'Be Vietnam Pro',Inter,'DejaVu Sans',sans-serif;
+ background:
+  radial-gradient(900px 340px at 50% 100%,rgba(242,182,109,.55),rgba(242,182,109,0) 70%),
+  linear-gradient(180deg,#081a2e 0%,#0c3049 55%,#16546a 100%)}
+svg{position:absolute;inset:0}
+.t{position:absolute;left:0;right:0;top:56px;text-align:center}
+.e{font-size:23px;letter-spacing:7px;text-transform:uppercase;color:#f2c58f;font-weight:600}
+h1{font-size:78px;line-height:1.1;font-weight:700;margin-top:18px;letter-spacing:-.5px}
+h1 span{display:block;font-weight:500;color:#cfe6f2;font-size:58px;margin-top:6px}
 </style></head><body>
-<div class="grid"></div>
-<div class="tower" style="left:40px;width:170px;height:300px"></div><div class="tower" style="left:225px;width:130px;height:210px"></div>
-<div class="tower" style="right:40px;width:170px;height:330px"></div><div class="tower" style="right:225px;width:130px;height:240px"></div>
-<div class="in">
- <div class="k">236 Phan Trung · Tam Hiệp · Biên Hòa</div>
- <h1>Căn hộ Phan Trung<br>Bcons Central Park</h1>
- <div class="s">Bảng giá · 5 phương thức thanh toán · Tính tài chính theo vốn của bạn</div>
- <div class="c">Nhắn tin để nhận bảng so sánh 5 PTTT</div>
-</div></body></html>
+<svg id="s" width="1640" height="624" viewBox="0 0 1640 624"></svg>
+<div class="t"><div class="e">236 Phan Trung · Tam Hiệp · Biên Hòa</div>
+<h1>Căn hộ Phan Trung<span>Bcons Central Park</span></h1></div>
+<script>
+const NS='http://www.w3.org/2000/svg', s=document.getElementById('s');
+let seed=7; const rnd=()=> (seed=(seed*16807)%2147483647)/2147483647;
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||s).appendChild(e);return e}
+const defs=el('defs',{});
+const g=el('linearGradient',{id:'tw',x1:0,y1:0,x2:0,y2:1},defs);
+el('stop',{offset:'0','stop-color':'#12374f'},g);el('stop',{offset:'1','stop-color':'#071522'},g);
+const W=150,GAP=36,H=[196,248,292,232,186], x0=(1640-(5*W+4*GAP))/2, base=584;
+H.forEach((h,i)=>{
+  const x=x0+i*(W+GAP), y=base-h;
+  el('rect',{x,y,width:W,height:h,fill:'url(#tw)'});
+  el('rect',{x,y,width:W,height:3,fill:'#2f7899'});
+  for(let r=0;r<Math.floor((h-24)/26);r++)for(let c=0;c<7;c++){
+    const lit=rnd()<.34;
+    el('rect',{x:x+12+c*19.5,y:y+16+r*26,width:9,height:14,rx:1.5,fill:lit?'#f6c98b':'#1a4560','fill-opacity':lit?(.55+rnd()*.4):.9});
+  }
+});
+el('rect',{x:0,y:base,width:1640,height:40,fill:'#05111c'});
+el('rect',{x:0,y:base,width:1640,height:2,fill:'#2f7899','fill-opacity':.6});
+</script></body></html>
