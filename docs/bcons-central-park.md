@@ -53,7 +53,7 @@ Chi tiết các đợt:
 - **PTTT 01**: 5% ký thỏa thuận; 15% ký HĐMB; 5% (2 tháng), 5% (4), 5% (6), 10% (8), 5% (10), 5% (12), 5% (14), 10% (18 tháng); 25% khi bàn giao (dự kiến Q2/2029); 5% khi nhận sổ hồng.
 - **PTTT 02** (số 06/TB-BPTH, 04/09/2026): 5% thỏa thuận; 15% HĐMB; 50% vay ngân hàng sau 15 ngày; 25% bàn giao; 5% sổ hồng.
 - **PTTT 03** (số 07/TB-BPTH): 5% thỏa thuận; 5% HĐMB; 50% vay sau 7 ngày; 5% (2 tháng); 5% (4 tháng); 25% bàn giao; 5% sổ hồng. Gói lãi suất cố định tối đa 30 tháng tại MB.
-- **PTTT 04** (số 09/TB-ĐTTH, 26/10/2026) và **PTTT 05** (số 10/TB-ĐTTH, 26/10/2026), cùng cấu trúc 9 đợt: 5% thỏa thuận; 5% HĐMB; 10% vay (7 ngày sau HĐMB); 5% (5 tháng sau HĐMB); 20% vay (7 ngày sau đợt 4); 5% (10 tháng); 20% vay (7 ngày sau đợt 6); 25% bàn giao; 5% sổ hồng. PTTT 04 dùng gói lãi cố định tối đa 30 tháng tại MB; PTTT 05 dùng gói cố định tối đa 24 tháng. PTTT 05 chỉ nêu hỗ trợ lãi và ân hạn gốc, không có cam kết trần 6,9%.
+- **PTTT 04** (số 09/TB-ĐTTH, 26/10/2026) và **PTTT 05** (số 10/TB-ĐTTH, 26/10/2026), cùng cấu trúc 9 đợt: 5% thỏa thuận; 5% HĐMB; 10% vay (7 ngày sau HĐMB); 5% (5 tháng sau HĐMB); 20% vay (7 ngày sau đợt 4); 5% (10 tháng); 20% vay (7 ngày sau đợt 6); 25% bàn giao; 5% sổ hồng. PTTT 04 dùng gói lãi cố định tối đa 30 tháng tại MB; PTTT 05 dùng gói cố định tối đa 24 tháng. PTTT 05 chỉ nêu hỗ trợ lãi và ân hạn gốc, không có cam kết trần 6,9% (giống PTTT 02, anh xác nhận 04/11/2026).
 - Khách cam kết thanh toán đủ 95% giá trị căn hộ, 100% VAT và 100% phí bảo trì khi có thông báo bàn giao.
 
 ## Chi phí sau bàn giao
@@ -91,4 +91,4 @@ Dữ liệu từng căn nằm ở `data/bang-gia.csv` (không đưa lên git, xe
 
 ## Còn thiếu (cần anh cung cấp)
 - Quy định nội dung quảng cáo (những điều không được nói, ví dụ cam kết lợi nhuận).
-- Xác nhận PTTT 01 và 03 bản mới nhất.
+- Xác nhận PTTT 01 bản mới nhất. (PTTT 03: anh xác nhận 04/11/2026 là bản mới nhất, chưa có cập nhật.)

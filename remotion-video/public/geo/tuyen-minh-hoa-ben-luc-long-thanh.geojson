@@ -1,0 +1,21 @@
+{
+  "type": "Feature",
+  "properties": {
+    "kind": "illustrative",
+    "name": "Tuyến minh họa Bến Lức - Long Thành (đường thẳng nối hai điểm, không phải hình tuyến thật)",
+    "sourceId": "geo-minh-hoa"
+  },
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        106.4715,
+        10.652265
+      ],
+      [
+        107.04195752766535,
+        10.773541785186673
+      ]
+    ]
+  }
+}

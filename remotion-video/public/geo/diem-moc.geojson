@@ -1,0 +1,69 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "ben-luc",
+        "name": "Bến Lức",
+        "sourceId": "geo-ben-luc",
+        "fetchedAt": "2026-11-04"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.4715,
+          10.652265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "phuoc-an",
+        "name": "Cảng Phước An",
+        "sourceId": "geo-phuoc-an",
+        "fetchedAt": "2026-11-04"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.9942243322939,
+          10.616353354639697
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "long-thanh",
+        "name": "Sân bay QT Long Thành",
+        "sourceId": "geo-long-thanh",
+        "fetchedAt": "2026-11-04"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.04195752766535,
+          10.773541785186673
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "central-park",
+        "name": "Bcons Central Park",
+        "sourceId": "geo-central-park",
+        "fetchedAt": "2026-11-04"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.84408654581377,
+          10.959874417285395
+        ]
+      }
+    }
+  ]
+}

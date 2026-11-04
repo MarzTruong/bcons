@@ -11,12 +11,16 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 | # | Giai đoạn | Làm gì | Đầu ra | Cổng duyệt |
 |---|-----------|--------|--------|-----------|
 | 1 | Nghiên cứu (1 lần/tuần) | Chạy Bản 1 (Master Prompt) trên Claude/Gemini có web search. Chỉ lấy nguồn chính thống. | Bảng số liệu có ngày + link | Anh chọn góc |
-| 2 | Kịch bản | Claude viết kịch bản 45–60 giây vào `docs/video/<tên>.md`, **kèm bảng nguồn từng con số** và danh sách kiểm tra mục 3 | File kịch bản | **Anh duyệt chữ + số liệu** |
-| 3 | Lời bình | Sửa `scripts/scenes.mjs` (cú pháp `hiển-thị{đọc}`) | scenes.mjs | Anh đồng ý tốn credit |
-| 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs` (ElevenLabs, tốn credit) | mp3 + timestamp | Anh nghe thử |
-| 5 | Render | `npm run lint` rồi `npm run render:drive` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** |
+| 2 | Kịch bản + spec | Claude viết kịch bản 45–60 giây vào `docs/video/<tên>.md`, **kèm bảng nguồn từng con số** và danh sách kiểm tra mục 3, cùng `remotion-video/specs/<tên>.json` (`status: draft`) | Kịch bản + spec | **Anh duyệt chữ + số liệu** (rồi spec mới được đổi sang `approved`) |
+| 3 | Lời bình | Lời bình nằm trong `markup` của spec (cú pháp `hiển-thị{đọc}`), đã duyệt ở bước 2 | spec `approved` | Anh đồng ý tốn credit |
+| 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs <tên>` (ElevenLabs, tốn credit; từ chối nếu spec chưa `approved`) | mp3 + timestamp | Anh nghe thử |
+| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** |
 
-Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark`, giọng ElevenLabs, phụ đề từng từ.
+Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
+
+**Lệnh tắt:** `/bcons-video [chủ đề]` (`.claude/commands/bcons-video.md`) chạy cả quy trình trên, dừng chờ anh ở 4 cổng: (1) chọn góc sau khi kiểm số liệu, (2) duyệt chữ + số liệu, (3) đồng ý tốn credit, (4) duyệt video trước khi đăng.
+**Bước 1 với Gemini:** dùng `docs/prompt-gemini-nghien-cuu.md` trên Gemini Deep Research rồi đưa kết quả cho Claude kiểm lại từng link.
+**Mẫu cảnh:** `stat-hero`, `route-map`, `data-cards`, `compare-bars`, `geo-map` (bản đồ Mapbox thật; dữ liệu địa lý trong `remotion-video/public/geo/`, nguồn ở `docs/video/geo-nguon.md`; lớp chưa có dữ liệu chính thức phải là "minh họa"), `project-close` (schema `remotion-video/src/spec.ts`). Mỗi số trong spec có `sourceId` trỏ tới bảng nguồn; `npm run lint` kiểm tra.
 
 ## 3. Danh sách kiểm tra nội dung (bắt buộc trước bước 2 → anh duyệt)
 - [ ] Mỗi số liệu có nguồn + ngày; số dự án khớp `docs/bcons-central-park.md` (5 tháp, 22 tầng, 2.820 căn ở + 113 căn thương mại, 60 tiện ích).

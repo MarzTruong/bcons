@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 04/11/2026
+Cập nhật lần cuối: 04/11/2026 (phiên Off cuối ngày)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -8,10 +8,19 @@ Cập nhật lần cuối: 04/11/2026
 - [x] Tách bảng giá 996 căn từ Master File ra `data/bang-gia.csv` (cục bộ, không lên git).
 - [x] Tạo `CLAUDE.md` và `NOTES.md`.
 - [x] Video Remotion dọc 1080x1920 30fps trong `remotion-video/` (4 cảnh: Đồng Nai, hạ tầng, KTM tự do Long Thành, Bcons Central Park). Đã render `out/bcons-central-park.mp4` (20 giây, không tiếng) và `out/bcons-central-park-elevenlabs.mp4` (khoảng 44 giây, có giọng đọc + phụ đề từng từ). File mp4 không lên git.
-- [x] Giọng đọc ElevenLabs (`eleven_v4`, voice `9CCqsrTCLkHgQlKSMchK`): script `scripts/generate-voice.mjs`, lời đọc/phụ đề tách riêng trong `scripts/scenes.mjs`, âm thanh trong `public/audio/`, timestamp trong `src/audio-timestamps.json`. Key trong `remotion-video/.env` (gitignored).
+- [x] Giọng đọc ElevenLabs (`eleven_v4`, voice `9CCqsrTCLkHgQlKSMchK`): script `scripts/generate-voice.mjs <tên>`, lời đọc/phụ đề nằm trong `markup` của spec `specs/<tên>.json`, âm thanh trong `public/audio/<tên>/`, timestamp trong `specs/<tên>.timestamps.json`. Key trong `remotion-video/.env` (gitignored).
 - [x] Thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`) có `video/`, `data/` và file hướng dẫn cài máy thứ hai.
 - [x] Thêm lệnh "Off" vào `CLAUDE.md`.
-- [x] Quy trình render mới: `npm run render:drive` (trong `remotion-video/`) render xong tự chép mp4 sang Drive for desktop, đã chạy thử thành công (12,5 MB, `bcons-central-park-elevenlabs.mp4`). Script `scripts/render-drive.mjs`.
+- [x] Quy trình render mới: `npm run render:drive -- <tên>` (trong `remotion-video/`) render xong tự chép mp4 sang Drive for desktop, đã chạy thử thành công (12,5 MB, `bcons-central-park-elevenlabs.mp4`). Script `scripts/render-drive.mjs`.
+
+- [x] 04/11/2026: refactor video thành spec + mẫu cảnh có schema (`remotion-video/src/spec.ts`, `src/templates/`), thêm mẫu `compare-bars`, cổng chặn nguồn/`approved` (`scripts/spec-tools.mjs`, `npm test`, `npm run lint`), lệnh `/bcons-video` (`.claude/commands/bcons-video.md`), prompt Gemini (`docs/prompt-gemini-nghien-cuu.md`). Video đầu tiên là spec `dong-nai-ha-tang` (render khung hình giống hệt bản cũ). Thiết kế: `docs/superpowers/specs/2026-11-04-bcons-video-pipeline-design.md`, kế hoạch: `docs/superpowers/plans/2026-11-04-bcons-video-pipeline.md`.
+- [x] Bỏ edge-tts (anh quyết định).
+- [x] 04/11/2026: mẫu cảnh bản đồ `geo-map` dùng Mapbox GL (token `MAPBOX_TOKEN_KEY` trong `remotion-video/.env`, kiểm bằng `npm run check:mapbox`). Spec `dong-nai-ha-tang-map` (cảnh 2 là bản đồ, lời bình/giọng y hệt bản cũ, dùng lại mp3). Tọa độ Bcons Central Park, sân bay Long Thành, Cảng Phước An do anh cung cấp; Bến Lức lấy từ Mapbox Geocoding (gần đúng). Dữ liệu: `docs/video/geo-nguon.md`, `remotion-video/public/geo/`, tạo bằng `scripts/build-geo.mjs`. Link nguồn Facebook của video cũ đã ghi vào `docs/video/dong-nai-ha-tang.md`.
+
+- [x] 04/11/2026: video `lai-suat-vay-mua-nha-2026` (góc lãi suất, spec `approved`) đã tạo giọng và render xong. Anh chỉnh: tên riêng tiếng Anh đọc đúng tiếng Anh, `BIDV{bee eye dee vee}`. Em chưa nghe lại cách đọc BIDV sau khi sửa.
+- [x] 04/11/2026: video `ha-tang-bien-hoa-2026` (kịch bản từ skill real-estate-content-creator, `docs/content/2026-11-04-ha-tang-bien-hoa-da-chay-vs-tren-giay.md`, spec `approved`): cảnh 1 bản đồ Mapbox, cảnh 2-3 thẻ số liệu, cảnh 4 thông tin dự án. Đã tạo giọng (anh nghe được), đã render `out/ha-tang-bien-hoa-2026.mp4` (19 MB, khoảng 55 giây) và chép lên Drive `video/`. Chờ anh xem và duyệt trước khi đăng; em chưa xem trọn video.
+- [x] 04/11/2026: hệ phong cách và chuyển động cho spec: `style` (classic, sang, navy, xanh) trong `src/theme.ts`, `motion` (classic, truot, nay, mo) trong `src/motion.ts`, khai báo trong spec (hạ tầng Biên Hòa dùng `xanh` + `mo`). Test hồi quy: băm khung hình `dong-nai-ha-tang` vẫn giống hệt; 48 test qua.
+- [x] 04/11/2026: kiểm tra báo cáo Gemini, sửa các khẳng định bị thổi phồng (13-15% là lãi suất thực sau ưu đãi, không nêu diện tích FTZ vì 8.100/8.200 ha mâu thuẫn, Biên Hòa - Vũng Tàu giai đoạn 1 chỉ "dự kiến", bỏ Vành đai 3 Tây Ninh 95%). PTTT 03 xác nhận bản mới nhất; PTTT 05 giống PTTT 02 (CĐT hỗ trợ ân hạn lãi gốc, không nêu thời hạn).
 
 ## Đang làm
 - [ ] Giọng cảnh 2 bị lệch giọng (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
@@ -23,6 +32,14 @@ Cập nhật lần cuối: 04/11/2026
 - [ ] Anh duyệt `docs/quy-trinh-video.md`. Hai file prompt cũ vẫn untracked (có chứa SĐT cá nhân), chưa commit.
 
 ## Chưa làm
+- [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `Gemini Deep Research/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.
+- [ ] Xác nhận cao tốc Biên Hòa - Vũng Tàu giai đoạn 1 đã thông xe 18/05/2026 chưa; khoảng cách từ 236 Phan Trung tới các tuyến chưa đo; Dat Xanh/PropertyGuru chỉ dựa một bài VnExpress.
+- [ ] Việc nhỏ hoãn lại: tên file xuất của render-drive chưa kiểm tra (shell:true), CompareBars lỗi NaN khi mọi giá trị bằng 0, key React có thể trùng, chưa có watermark DRAFT, chưa có kiểm tra số điện thoại bằng regex, `.env` nạp trước cổng trong render-drive. `package.json` engines `^20.19` nhưng cần Node >= 22.18 (type stripping khi test).
+- [ ] Hình tuyến cao tốc Bến Lức - Long Thành thật và ranh giới Biên Hòa / khu thương mại tự do Long Thành: máy chủ OpenStreetMap không trả dữ liệu ngày 04/11, Mapbox Directions không đi qua cao tốc này. Hiện bản đồ dùng tuyến thẳng và tam giác **minh họa**. Cần dữ liệu chính thức (GeoJSON) hoặc thử lại OSM sau.
+- [ ] Anh xem video `dong-nai-ha-tang-map` (spec đang `draft`) rồi duyệt; render đủ và đổi `status` sang `approved` sau khi duyệt.
+- [ ] Bổ sung link/ngày nguồn gốc cho 5 số trong `docs/video/dong-nai-ha-tang.md` (video cũ làm trước khi có bảng nguồn; hiện ghi "chưa có link").
+- [ ] Chạy thử `/bcons-video` trọn vòng với chủ đề thật (chưa chạy; chưa tạo giọng cho spec mới).
+- [ ] `specs/mau-lai-suat.json` là spec thử bằng số mẫu (draft), chỉ để xem bố cục `compare-bars`, không đăng.
 - [ ] Tin nhắn tự động hàng loạt: chọn kênh, làm bộ mẫu tin, tool gửi từ file danh sách.
 - [ ] Dựng video thật (cần ảnh/render/video gốc, công cụ AI hoặc CapCut).
 
@@ -41,7 +58,7 @@ Cập nhật lần cuối: 04/11/2026
 2. **Kênh nhắn hàng loạt**: Zalo OA/ZNS, SMS brandname hay email? Ngân sách?
 3. **Danh sách khách** sẽ nhắn: nhóm nào, ai đã đồng ý nhận tin? (Sheet KhachHang có khoảng 300 dòng, đa số "không quan tâm" hoặc đã có sale khác chăm.)
 4. **PTTT 03**: thông báo không ghi rõ mức chiết khấu. Cần xác nhận.
-5. **PTTT 01 và 03**: em đọc bản trên Drive, chưa đối chiếu với bản anh gửi lại từng chữ.
+5. **PTTT 01**: em đọc bản trên Drive, chưa đối chiếu với bản anh gửi lại từng chữ. (PTTT 03: anh xác nhận 04/11/2026 là bản mới nhất.)
 6. Đợt 2 mở những căn nào (236 căn đang CĐT lock có phải là căn mở ở đợt 2 không)? Ảnh hưởng đến việc nhắn "còn bao nhiêu căn".
 7. Phối cảnh, ảnh nhà mẫu và TVC (`TVC Bcons Central Park.mp4`, 570MB) có được dùng để cắt video ngắn không?
 
@@ -58,7 +75,7 @@ Cập nhật lần cuối: 04/11/2026
 - Máy laptop này có Google Drive for desktop ở ổ `G:` (`G:\My Drive\Bcons - Dong bo thiet bi\`). Máy khác cần cài Drive for desktop; nếu Drive ở đường dẫn khác, đặt `DRIVE_VIDEO_DIR` trong `remotion-video/.env`.
 - Thư mục Drive `video/` đã có `bcons-central-park-map.mp4` và `bcons-tuan-final.mp4` do anh tự thêm (không phải do em render, em không đụng tới).
 - Còn chưa rõ: `data/bang-gia.csv` đã có trong thư mục Drive `data/` chưa, và thư mục `data/` cục bộ không có trên máy dùng phiên này.
-- Quy trình render hằng ngày: `cd remotion-video && npm run render:drive` (thêm tên file nếu muốn lưu tên khác). Lệnh này ghi đè file cùng tên trong Drive.
+- Quy trình render hằng ngày: `cd remotion-video && npm run render:drive -- <tên-video>` (thêm tên file mp4 làm tham số thứ hai nếu muốn lưu tên khác). Lệnh này ghi đè file cùng tên trong Drive.
 - Video Remotion: số liệu (2,4 tỷ USD FDI, 8.200 ha, 16 tỷ USD, 150.000, 50.000, cao tốc khai thác 01/10/2026) lấy từ yêu cầu của anh, chưa đối chiếu tài liệu chủ đầu tư. Duyệt trước khi đăng.
 - Bản đồ cảnh 2 là sơ đồ minh họa, vị trí ước lượng.
 - Key ElevenLabs hiện không có quyền `Models`; đã bật `Models` Access nên liệt kê model được. Model trong tài khoản hỗ trợ tiếng Việt: `eleven_v4`, `eleven_v4_turbo`, `eleven_v3`, `eleven_turbo_v2_5`, `eleven_flash_v2_5`.

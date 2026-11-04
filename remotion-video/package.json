@@ -13,9 +13,12 @@
     "@remotion/google-fonts": "^4.0.540",
     "@remotion/media": "^4.0.540",
     "@remotion/media-parser": "^4.0.540",
+    "@turf/turf": "^7.4.0",
+    "mapbox-gl": "^3.34.2",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "remotion": "4.0.540"
+    "remotion": "4.0.540",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.540",
@@ -26,11 +29,16 @@
     "typescript": "5.9.3"
   },
   "scripts": {
-    "dev": "remotion studio",
+    "dev": "node scripts/with-env.mjs remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc",
-    "render:drive": "node scripts/render-drive.mjs"
+    "lint": "eslint src && tsc && node scripts/check-spec.mjs --all",
+    "render:drive": "node scripts/render-drive.mjs",
+    "voice": "node --env-file=.env scripts/generate-voice.mjs",
+    "test": "node --test \"tests/*.test.mjs\"",
+    "check:spec": "node scripts/check-spec.mjs",
+    "check:mapbox": "node scripts/check-mapbox.mjs",
+    "still": "node scripts/with-env.mjs remotion still"
   },
   "allowScripts": {
     "esbuild": false

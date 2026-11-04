@@ -1,10 +1,15 @@
 // Tạo giọng đọc ElevenLabs (with-timestamps) + đo thời lượng thật.
-// Chạy: node --env-file=.env scripts/generate-voice.mjs [--model=<id>]
+// Chạy: node --env-file=.env scripts/generate-voice.mjs <tên-video> [--model=<id>]
+// Chỉ chạy khi specs/<tên-video>.json có status "approved" và mọi sourceId có trong bảng nguồn.
 import fs from "node:fs";
 import path from "node:path";
 import { parseMedia } from "@remotion/media-parser";
 import { nodeReader } from "@remotion/media-parser/node";
-import { SCENES, parseMarkup } from "./scenes.mjs";
+import { parseMarkup, prepareRun } from "./spec-tools.mjs";
+
+const name = process.argv.slice(2).find((a) => !a.startsWith("--"));
+// Cổng chặn chạy TRƯỚC khi đọc API key hoặc gọi mạng.
+const { spec, timestampsPath } = prepareRun(name);
 
 const KEY = process.env.ELEVENLABS_API_KEY;
 if (!KEY) throw new Error("Thiếu ELEVENLABS_API_KEY trong .env");
@@ -21,7 +26,7 @@ const MODEL_CHAIN = ["eleven_v4", "eleven_v3", "eleven_turbo_v2_5", "eleven_mult
 const SUPPORTS_LANGUAGE_CODE = (m) => m !== "eleven_multilingual_v2";
 
 const forced = process.argv.find((a) => a.startsWith("--model="))?.split("=")[1];
-const audioDir = path.resolve("public/audio");
+const audioDir = path.resolve("public/audio", spec.name);
 fs.mkdirSync(audioDir, { recursive: true });
 
 const SEED = 20260;
@@ -64,7 +69,7 @@ async function ttsWithFallback(model, text) {
   }
 }
 
-const parsed = SCENES.map((s) => {
+const parsed = spec.scenes.map((s) => {
   const tokens = parseMarkup(s.markup);
   const speech = tokens.filter((t) => t.say).map((t) => t.say).join(" ");
   return { ...s, tokens, speech };
@@ -133,7 +138,7 @@ for (const [i, scene] of parsed.entries()) {
 }
 
 fs.writeFileSync(
-  path.resolve("src/audio-timestamps.json"),
+  timestampsPath,
   JSON.stringify({ model, voiceId: VOICE_ID, voiceSettings: usedSettings, scenes: results }, null, 2),
 );
-console.log("Đã ghi src/audio-timestamps.json");
+console.log(`Đã ghi ${timestampsPath}`);

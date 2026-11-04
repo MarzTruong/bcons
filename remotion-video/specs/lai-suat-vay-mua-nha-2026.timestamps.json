@@ -1,0 +1,830 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 9.404081632653062,
+      "speech": "Lãi suất vay mua nhà năm nay đang ở mức nào? Theo khảo sát quý hai tại mười ngân hàng, lãi suất ưu đãi phổ biến từ tám phẩy năm đến mười một phần trăm một năm.",
+      "words": [
+        {
+          "text": "Lãi",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "suất",
+          "start": 0.24,
+          "end": 0.36
+        },
+        {
+          "text": "vay",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "mua",
+          "start": 0.6,
+          "end": 0.72
+        },
+        {
+          "text": "nhà",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "năm",
+          "start": 1.04,
+          "end": 1.12
+        },
+        {
+          "text": "nay",
+          "start": 1.28,
+          "end": 1.52
+        },
+        {
+          "text": "đang",
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "text": "ở",
+          "start": 1.88,
+          "end": 1.92
+        },
+        {
+          "text": "mức",
+          "start": 1.96,
+          "end": 2.08
+        },
+        {
+          "text": "nào?",
+          "start": 2.16,
+          "end": 2.4
+        },
+        {
+          "text": "Theo",
+          "start": 2.8,
+          "end": 2.92
+        },
+        {
+          "text": "khảo",
+          "start": 2.96,
+          "end": 3.12
+        },
+        {
+          "text": "sát",
+          "start": 3.2,
+          "end": 3.36
+        },
+        {
+          "text": "quý",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "2",
+          "start": 3.68,
+          "end": 3.92
+        },
+        {
+          "text": "tại",
+          "start": 4,
+          "end": 4.16
+        },
+        {
+          "text": "mười",
+          "start": 4.32,
+          "end": 4.44
+        },
+        {
+          "text": "ngân",
+          "start": 4.48,
+          "end": 4.64
+        },
+        {
+          "text": "hàng,",
+          "start": 4.72,
+          "end": 5.28
+        },
+        {
+          "text": "lãi",
+          "start": 5.32,
+          "end": 5.44
+        },
+        {
+          "text": "suất",
+          "start": 5.48,
+          "end": 5.6
+        },
+        {
+          "text": "ưu",
+          "start": 5.68,
+          "end": 5.76
+        },
+        {
+          "text": "đãi",
+          "start": 5.84,
+          "end": 5.92
+        },
+        {
+          "text": "phổ",
+          "start": 6,
+          "end": 6.16
+        },
+        {
+          "text": "biến",
+          "start": 6.24,
+          "end": 6.48
+        },
+        {
+          "text": "từ",
+          "start": 6.56,
+          "end": 6.72
+        },
+        {
+          "text": "8,5",
+          "start": 6.88,
+          "end": 7.44
+        },
+        {
+          "text": "đến",
+          "start": 7.68,
+          "end": 8
+        },
+        {
+          "text": "11",
+          "start": 8.04,
+          "end": 8.4
+        },
+        {
+          "text": "phần",
+          "start": 8.48,
+          "end": 8.56
+        },
+        {
+          "text": "trăm",
+          "start": 8.64,
+          "end": 8.76
+        },
+        {
+          "text": "một",
+          "start": 8.8,
+          "end": 8.96
+        },
+        {
+          "text": "năm.",
+          "start": 9.04,
+          "end": 9.44
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "durationSec": 11.755102040816327,
+      "speech": "Nhóm bốn ngân hàng lớn, gói cố định mười hai tháng: Agribank tám phẩy hai phần trăm, Vietcombank chín phẩy tám , VietinBank mười phẩy năm và bee eye dee vee mười phẩy tám phần trăm một năm.",
+      "words": [
+        {
+          "text": "Nhóm",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "bốn",
+          "start": 0.32,
+          "end": 0.44
+        },
+        {
+          "text": "ngân",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "hàng",
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "text": "lớn,",
+          "start": 0.96,
+          "end": 1.44
+        },
+        {
+          "text": "gói",
+          "start": 1.48,
+          "end": 1.68
+        },
+        {
+          "text": "cố",
+          "start": 1.76,
+          "end": 1.84
+        },
+        {
+          "text": "định",
+          "start": 1.88,
+          "end": 2.08
+        },
+        {
+          "text": "mười",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "hai",
+          "start": 2.4,
+          "end": 2.48
+        },
+        {
+          "text": "tháng:",
+          "start": 2.56,
+          "end": 3.2
+        },
+        {
+          "text": "Agribank",
+          "start": 3.28,
+          "end": 3.84
+        },
+        {
+          "text": "8,2",
+          "start": 4,
+          "end": 4.48
+        },
+        {
+          "text": "phần",
+          "start": 4.56,
+          "end": 4.68
+        },
+        {
+          "text": "trăm,",
+          "start": 4.72,
+          "end": 5.28
+        },
+        {
+          "text": "Vietcombank",
+          "start": 5.4,
+          "end": 5.92
+        },
+        {
+          "text": "9,8",
+          "start": 6.08,
+          "end": 6.72
+        },
+        {
+          "text": ",",
+          "start": 6.72,
+          "end": 7.12
+        },
+        {
+          "text": "VietinBank",
+          "start": 7.24,
+          "end": 7.76
+        },
+        {
+          "text": "10,5",
+          "start": 7.92,
+          "end": 8.6
+        },
+        {
+          "text": "và",
+          "start": 8.8,
+          "end": 8.96
+        },
+        {
+          "text": "BIDV",
+          "start": 9.12,
+          "end": 9.92
+        },
+        {
+          "text": "10,8",
+          "start": 10,
+          "end": 10.64
+        },
+        {
+          "text": "phần",
+          "start": 10.72,
+          "end": 10.84
+        },
+        {
+          "text": "trăm",
+          "start": 10.88,
+          "end": 11.04
+        },
+        {
+          "text": "một",
+          "start": 11.12,
+          "end": 11.2
+        },
+        {
+          "text": "năm.",
+          "start": 11.28,
+          "end": 11.76
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "durationSec": 18.390204081632653,
+      "speech": "Nhưng hết thời gian ưu đãi, lãi suất người vay thực trả phổ biến từ mười ba đến mười lăm phần trăm một năm. Theo Đất Xanh Services, tỷ lệ hấp thụ nguồn cung mới giảm từ bốn mươi lăm đến năm mươi xuống còn hai mươi đến ba mươi phần trăm. Còn theo PropertyGuru hơn tám mươi phần trăm người mua chỉ vay khi lãi suất dưới chín phần trăm.",
+      "words": [
+        {
+          "text": "Nhưng",
+          "start": 0,
+          "end": 0.32
+        },
+        {
+          "text": "hết",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "thời",
+          "start": 0.72,
+          "end": 0.8
+        },
+        {
+          "text": "gian",
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "text": "ưu",
+          "start": 1.08,
+          "end": 1.12
+        },
+        {
+          "text": "đãi,",
+          "start": 1.2,
+          "end": 1.68
+        },
+        {
+          "text": "lãi",
+          "start": 1.72,
+          "end": 1.84
+        },
+        {
+          "text": "suất",
+          "start": 1.92,
+          "end": 2.08
+        },
+        {
+          "text": "người",
+          "start": 2.12,
+          "end": 2.24
+        },
+        {
+          "text": "vay",
+          "start": 2.32,
+          "end": 2.48
+        },
+        {
+          "text": "thực",
+          "start": 2.56,
+          "end": 2.72
+        },
+        {
+          "text": "trả",
+          "start": 2.8,
+          "end": 3.04
+        },
+        {
+          "text": "phổ",
+          "start": 3.12,
+          "end": 3.28
+        },
+        {
+          "text": "biến",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "từ",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "13",
+          "start": 3.84,
+          "end": 4.24
+        },
+        {
+          "text": "đến",
+          "start": 4.4,
+          "end": 4.64
+        },
+        {
+          "text": "15",
+          "start": 4.68,
+          "end": 4.96
+        },
+        {
+          "text": "phần",
+          "start": 5.04,
+          "end": 5.2
+        },
+        {
+          "text": "trăm",
+          "start": 5.24,
+          "end": 5.36
+        },
+        {
+          "text": "một",
+          "start": 5.44,
+          "end": 5.52
+        },
+        {
+          "text": "năm.",
+          "start": 5.6,
+          "end": 6.08
+        },
+        {
+          "text": "Theo",
+          "start": 6.12,
+          "end": 6.24
+        },
+        {
+          "text": "Dat",
+          "start": 6.28,
+          "end": 6.4
+        },
+        {
+          "text": "Xanh",
+          "start": 6.48,
+          "end": 6.64
+        },
+        {
+          "text": "Services,",
+          "start": 6.72,
+          "end": 7.44
+        },
+        {
+          "text": "tỷ",
+          "start": 7.48,
+          "end": 7.56
+        },
+        {
+          "text": "lệ",
+          "start": 7.6,
+          "end": 7.68
+        },
+        {
+          "text": "hấp",
+          "start": 7.76,
+          "end": 7.92
+        },
+        {
+          "text": "thụ",
+          "start": 7.96,
+          "end": 8.08
+        },
+        {
+          "text": "nguồn",
+          "start": 8.16,
+          "end": 8.32
+        },
+        {
+          "text": "cung",
+          "start": 8.4,
+          "end": 8.56
+        },
+        {
+          "text": "mới",
+          "start": 8.6,
+          "end": 8.88
+        },
+        {
+          "text": "giảm",
+          "start": 8.96,
+          "end": 9.2
+        },
+        {
+          "text": "từ",
+          "start": 9.28,
+          "end": 9.36
+        },
+        {
+          "text": "45",
+          "start": 9.52,
+          "end": 9.92
+        },
+        {
+          "text": "đến",
+          "start": 10.08,
+          "end": 10.24
+        },
+        {
+          "text": "50",
+          "start": 10.28,
+          "end": 10.72
+        },
+        {
+          "text": "xuống",
+          "start": 10.88,
+          "end": 11.04
+        },
+        {
+          "text": "còn",
+          "start": 11.08,
+          "end": 11.36
+        },
+        {
+          "text": "20",
+          "start": 11.4,
+          "end": 11.76
+        },
+        {
+          "text": "đến",
+          "start": 11.84,
+          "end": 12.08
+        },
+        {
+          "text": "30",
+          "start": 12.12,
+          "end": 12.32
+        },
+        {
+          "text": "phần",
+          "start": 12.4,
+          "end": 12.48
+        },
+        {
+          "text": "trăm.",
+          "start": 12.56,
+          "end": 12.96
+        },
+        {
+          "text": "Còn",
+          "start": 13,
+          "end": 13.12
+        },
+        {
+          "text": "theo",
+          "start": 13.2,
+          "end": 13.36
+        },
+        {
+          "text": "PropertyGuru",
+          "start": 13.44,
+          "end": 14.32
+        },
+        {
+          "text": "hơn",
+          "start": 14.56,
+          "end": 14.8
+        },
+        {
+          "text": "80",
+          "start": 14.88,
+          "end": 15.147
+        },
+        {
+          "text": "phần",
+          "start": 15.2,
+          "end": 15.28
+        },
+        {
+          "text": "trăm",
+          "start": 15.32,
+          "end": 15.44
+        },
+        {
+          "text": "người",
+          "start": 15.52,
+          "end": 15.68
+        },
+        {
+          "text": "mua",
+          "start": 15.76,
+          "end": 15.92
+        },
+        {
+          "text": "chỉ",
+          "start": 16.08,
+          "end": 16.24
+        },
+        {
+          "text": "vay",
+          "start": 16.32,
+          "end": 16.48
+        },
+        {
+          "text": "khi",
+          "start": 16.64,
+          "end": 16.8
+        },
+        {
+          "text": "lãi",
+          "start": 16.84,
+          "end": 16.96
+        },
+        {
+          "text": "suất",
+          "start": 17.04,
+          "end": 17.2
+        },
+        {
+          "text": "dưới",
+          "start": 17.28,
+          "end": 17.52
+        },
+        {
+          "text": "9",
+          "start": 17.6,
+          "end": 17.68
+        },
+        {
+          "text": "phần",
+          "start": 17.76,
+          "end": 17.88
+        },
+        {
+          "text": "trăm.",
+          "start": 17.92,
+          "end": 18.4
+        }
+      ]
+    },
+    {
+      "id": "scene4",
+      "durationSec": 9.09061224489796,
+      "speech": "Tại Bee Cons Central Park , phương thức thanh toán số ba và số bốn áp dụng lãi suất vay trần sáu phẩy chín phần trăm một năm, theo điều kiện cụ thể của từng phương thức.",
+      "words": [
+        {
+          "text": "Tại",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "Bcons",
+          "start": 0.24,
+          "end": 0.8
+        },
+        {
+          "text": "Central",
+          "start": 0.88,
+          "end": 1.2
+        },
+        {
+          "text": "Park",
+          "start": 1.28,
+          "end": 1.6
+        },
+        {
+          "text": ",",
+          "start": 1.6,
+          "end": 1.84
+        },
+        {
+          "text": "phương",
+          "start": 1.88,
+          "end": 2
+        },
+        {
+          "text": "thức",
+          "start": 2.04,
+          "end": 2.16
+        },
+        {
+          "text": "thanh",
+          "start": 2.2,
+          "end": 2.32
+        },
+        {
+          "text": "toán",
+          "start": 2.4,
+          "end": 2.56
+        },
+        {
+          "text": "số",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "3",
+          "start": 2.88,
+          "end": 3.04
+        },
+        {
+          "text": "và",
+          "start": 3.12,
+          "end": 3.24
+        },
+        {
+          "text": "số",
+          "start": 3.28,
+          "end": 3.44
+        },
+        {
+          "text": "4",
+          "start": 3.52,
+          "end": 3.68
+        },
+        {
+          "text": "áp",
+          "start": 3.92,
+          "end": 4.08
+        },
+        {
+          "text": "dụng",
+          "start": 4.12,
+          "end": 4.24
+        },
+        {
+          "text": "lãi",
+          "start": 4.32,
+          "end": 4.4
+        },
+        {
+          "text": "suất",
+          "start": 4.48,
+          "end": 4.64
+        },
+        {
+          "text": "vay",
+          "start": 4.72,
+          "end": 4.88
+        },
+        {
+          "text": "trần",
+          "start": 5.04,
+          "end": 5.36
+        },
+        {
+          "text": "6,9",
+          "start": 5.4,
+          "end": 6
+        },
+        {
+          "text": "phần",
+          "start": 6.08,
+          "end": 6.2
+        },
+        {
+          "text": "trăm",
+          "start": 6.24,
+          "end": 6.36
+        },
+        {
+          "text": "một",
+          "start": 6.4,
+          "end": 6.52
+        },
+        {
+          "text": "năm,",
+          "start": 6.56,
+          "end": 6.96
+        },
+        {
+          "text": "theo",
+          "start": 7,
+          "end": 7.12
+        },
+        {
+          "text": "điều",
+          "start": 7.16,
+          "end": 7.28
+        },
+        {
+          "text": "kiện",
+          "start": 7.32,
+          "end": 7.44
+        },
+        {
+          "text": "cụ",
+          "start": 7.52,
+          "end": 7.68
+        },
+        {
+          "text": "thể",
+          "start": 7.76,
+          "end": 8
+        },
+        {
+          "text": "của",
+          "start": 8.08,
+          "end": 8.16
+        },
+        {
+          "text": "từng",
+          "start": 8.24,
+          "end": 8.4
+        },
+        {
+          "text": "phương",
+          "start": 8.44,
+          "end": 8.56
+        },
+        {
+          "text": "thức.",
+          "start": 8.64,
+          "end": 9.12
+        }
+      ]
+    }
+  ]
+}

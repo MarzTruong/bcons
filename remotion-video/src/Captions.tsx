@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { C, fontFamily } from "./theme";
+import { fontFamily, useTheme } from "./theme";
 import { FPS, LEAD, type Word } from "./timing";
 
 type Chunk = { words: Word[]; from: number; to: number };
@@ -35,6 +35,7 @@ const buildChunks = (words: Word[]): Chunk[] => {
 };
 
 export const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
+  const C = useTheme();
   const frame = useCurrentFrame();
   const chunks = useMemo(() => buildChunks(words), [words]);
   const chunk = chunks.find((c) => frame >= c.from && frame < c.to);
@@ -62,11 +63,11 @@ export const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
           fontSize: 76,
           lineHeight: 1.25,
           textAlign: "center",
-          color: C.white,
+          color: C.text,
           opacity: pop,
           transform: `translateY(${(1 - pop) * 20}px)`,
           textShadow:
-            "0 4px 0 #000, 0 0 12px #000, 3px 3px 0 #000, -3px 3px 0 #000, 3px -3px 0 #000, -3px -3px 0 #000",
+            `0 4px 0 ${C.stroke}, 0 0 12px ${C.stroke}, 3px 3px 0 ${C.stroke}, -3px 3px 0 ${C.stroke}, 3px -3px 0 ${C.stroke}, -3px -3px 0 ${C.stroke}`,
         }}
       >
         {chunk.words.map((w, i) => {
@@ -78,7 +79,7 @@ export const Captions: React.FC<{ words: Word[] }> = ({ words }) => {
               style={{
                 display: "inline-block",
                 marginRight: 18,
-                color: active ? (isNumber ? C.teal : C.gold) : C.white,
+                color: active ? (isNumber ? C.teal : C.gold) : C.text,
                 transform: active ? "scale(1.1)" : "scale(1)",
               }}
             >

@@ -1,16 +1,28 @@
 import { Composition } from "remotion";
-import { BconsVideo } from "./BconsVideo";
-import { TOTAL_FRAMES } from "./timing";
+import { BconsVideo, type BconsVideoProps } from "./BconsVideo";
+import { parseSpec } from "./spec";
+import { FPS, buildTiming, type Timestamps } from "./timing";
+import defaultSpec from "../specs/dong-nai-ha-tang.json";
+import defaultTimestamps from "../specs/dong-nai-ha-tang.timestamps.json";
+
+const defaultProps: BconsVideoProps = {
+  spec: parseSpec(defaultSpec),
+  timestamps: defaultTimestamps as Timestamps,
+};
 
 export const RemotionRoot: React.FC = () => {
   return (
     <Composition
       id="BconsCentralPark"
       component={BconsVideo}
-      durationInFrames={TOTAL_FRAMES}
-      fps={30}
+      defaultProps={defaultProps}
+      durationInFrames={buildTiming(defaultProps.timestamps).TOTAL_FRAMES}
+      fps={FPS}
       width={1080}
       height={1920}
+      calculateMetadata={({ props }) => ({
+        durationInFrames: buildTiming(props.timestamps).TOTAL_FRAMES,
+      })}
     />
   );
 };

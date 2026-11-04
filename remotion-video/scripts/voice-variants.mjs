@@ -1,6 +1,10 @@
 // Tạo vài bản thử giọng cảnh 2 để so sánh (lưu ở audio-test/, không dùng cho video).
 import fs from "node:fs";
-import { SCENES, parseMarkup } from "./scenes.mjs";
+import { assertApproved, parseMarkup, resolveSpecPath } from "./spec-tools.mjs";
+import { parseSpec } from "../src/spec.ts";
+const spec = parseSpec(JSON.parse(fs.readFileSync(resolveSpecPath("dong-nai-ha-tang"), "utf8")));
+assertApproved(spec); // cổng chặn trước khi gọi ElevenLabs (tốn credit)
+const SCENES = spec.scenes;
 const KEY = process.env.ELEVENLABS_API_KEY;
 const VOICE = "9CCqsrTCLkHgQlKSMchK";
 const scene = SCENES.find((s) => s.id === "scene2");

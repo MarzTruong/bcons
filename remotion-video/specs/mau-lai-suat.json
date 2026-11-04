@@ -1,0 +1,59 @@
+{
+  "name": "mau-lai-suat",
+  "status": "draft",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Đây là số mẫu để xem bố cục: lãi suất giả định 7,5{bảy phẩy năm} phần trăm một năm.",
+      "cues": { "value": "7,5" },
+      "props": {
+        "badge": "SỐ MẪU - KHÔNG ĐĂNG",
+        "titleLines": ["LÃI SUẤT", "VAY MUA NHÀ", "(SỐ MẪU)"],
+        "cardLabel": "Lãi suất giả định",
+        "prefix": "Khoảng",
+        "value": 7.5,
+        "decimals": 1,
+        "unit": "%/năm",
+        "sourceId": "mau-1"
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "compare-bars",
+      "markup": "So sánh hai mức giả định: gửi tiết kiệm 5{năm} phần trăm và vay mua nhà 8{tám} phần trăm.",
+      "cues": { "a": "5", "b": "8" },
+      "props": {
+        "kicker": "SO SÁNH (SỐ MẪU)",
+        "title": "Gửi tiết kiệm và vay mua nhà",
+        "unit": "%",
+        "bars": [
+          { "label": "Gửi tiết kiệm (mẫu)", "value": 5, "cueKey": "a", "sourceId": "mau-2" },
+          { "label": "Vay mua nhà (mẫu)", "value": 8, "cueKey": "b", "sourceId": "mau-3" }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "data-cards",
+      "markup": "Ba thẻ số liệu mẫu: một, hai và ba.",
+      "cues": { "c1": "một,", "c2": "hai", "c3": "ba." },
+      "props": {
+        "kicker": "SỐ MẪU",
+        "title": "Thẻ số liệu mẫu",
+        "cards": [
+          { "tag": "MẪU 1", "big": "100", "sub": "đơn vị mẫu", "cueKey": "c1", "offset": -5, "sourceId": "mau-1" },
+          { "tag": "MẪU 2", "big": "200", "sub": "đơn vị mẫu", "cueKey": "c2", "offset": -5, "sourceId": "mau-2" },
+          { "tag": "MẪU 3", "big": "300", "sub": "đơn vị mẫu", "cueKey": "c3", "offset": -5, "sourceId": "mau-3" }
+        ]
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Thông điệp kết mẫu về dự án Bcons{Bee Cons} Central{Central} Park{Park}.",
+      "cues": {},
+      "props": { "message": "Thông điệp kết mẫu - chỉ để xem bố cục" }
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "name": "dong-nai-ha-tang-map",
+  "status": "approved",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Sau khi trở thành thành phố trực thuộc Trung ương, Đồng Nai ghi nhận sức hút đầu tư mạnh mẽ với gần 2,4{hai phẩy bốn} tỷ đô la Mỹ vốn FDI{F D I} trong 9{chín} tháng đầu năm.",
+      "cues": {
+        "value": "2,4"
+      },
+      "props": {
+        "badge": "Nguồn: Thông tin Chính phủ",
+        "titleLines": [
+          "ĐỒNG NAI",
+          "ĐÔ THỊ TRỰC THUỘC",
+          "TRUNG ƯƠNG"
+        ],
+        "cardLabel": "Vốn FDI (9 tháng đầu năm)",
+        "prefix": "Gần",
+        "value": 2.4,
+        "decimals": 1,
+        "unit": "Tỷ USD",
+        "sourceId": "fdi-9-thang"
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "geo-map",
+      "markup": "Mạng lưới giao thông liên vùng được mở rộng khi cao tốc Bến Lức -{} Long Thành chính thức khai thác toàn tuyến từ ngày 1{mùng một} tháng 10{mười} năm 2026,{hai nghìn không trăm hai mươi sáu,} kết nối sân bay Long Thành và cảng Phước An.",
+      "cues": {
+        "cao": "cao",
+        "ngay": "ngày",
+        "ket": "kết"
+      },
+      "props": {
+        "kicker": "KẾT NỐI HẠ TẦNG",
+        "title": "Tam giác kết nối Đồng Nai",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "center": [
+            106.76,
+            10.79
+          ],
+          "zoom": 10
+        },
+        "points": [
+          {
+            "key": "ben-luc",
+            "label": "Bến Lức",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "ben-luc",
+            "color": "white",
+            "cueKey": "cao",
+            "offset": 5,
+            "sourceId": "geo-ben-luc"
+          },
+          {
+            "key": "phuoc-an",
+            "label": "Cảng Phước An",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "phuoc-an",
+            "color": "gold",
+            "cueKey": "cao",
+            "offset": 50,
+            "sourceId": "geo-phuoc-an"
+          },
+          {
+            "key": "long-thanh",
+            "label": "Sân bay QT Long Thành",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "long-thanh",
+            "color": "gold",
+            "cueKey": "cao",
+            "offset": 80,
+            "sourceId": "geo-long-thanh"
+          },
+          {
+            "key": "central-park",
+            "label": "BCONS CENTRAL PARK",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "big": true,
+            "cueKey": "cao",
+            "offset": 110,
+            "sourceId": "geo-central-park"
+          }
+        ],
+        "lines": [
+          {
+            "key": "cao-toc",
+            "file": "geo/tuyen-minh-hoa-ben-luc-long-thanh.geojson",
+            "kind": "illustrative",
+            "color": "teal",
+            "width": 9,
+            "cueKey": "cao",
+            "drawFrames": 100
+          }
+        ],
+        "areas": [
+          {
+            "key": "tam-giac",
+            "file": "geo/tam-giac-ket-noi.geojson",
+            "kind": "illustrative",
+            "label": "Vùng minh họa",
+            "cueKey": "ket"
+          }
+        ],
+        "info": {
+          "title": "Cao tốc Bến Lức - Long Thành",
+          "text": "Khai thác toàn tuyến từ 01/10/2026",
+          "cueKey": "ngay",
+          "sourceId": "cao-toc-ben-luc"
+        },
+        "note": "Điểm theo tọa độ thật; tuyến và tam giác là sơ đồ minh họa, không phải hình tuyến hay ranh giới chính thức"
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "data-cards",
+      "markup": "Khu thương mại tự do Long Thành quy mô hơn 8.200{tám nghìn hai trăm} ha{héc ta} với tổng vốn 16{mười sáu} tỷ đô la Mỹ, dự kiến thu hút 150.000{một trăm năm mươi nghìn} lao động chất lượng cao và đào tạo 50.000{năm mươi nghìn} kỹ sư, chuyên gia công nghệ.",
+      "cues": {
+        "c1": "quy",
+        "c2": "thu",
+        "c3": "đào"
+      },
+      "props": {
+        "kicker": "CÚ HÍCH LỚN",
+        "title": "Khu thương mại tự do Long Thành",
+        "cards": [
+          {
+            "tag": "QUY MÔ & VỐN",
+            "big": "Hơn 8.200 ha",
+            "sub": "Tổng vốn 16 Tỷ USD",
+            "cueKey": "c1",
+            "offset": -10,
+            "sourceId": "ktmtd-quy-mo"
+          },
+          {
+            "tag": "NHÂN LỰC (ĐẾN 2030)",
+            "big": "150.000",
+            "sub": "lao động chất lượng cao",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "ktmtd-lao-dong"
+          },
+          {
+            "tag": "ĐÀO TẠO CHUYÊN SÂU",
+            "big": "~50.000",
+            "sub": "kỹ sư, chuyên gia công nghệ",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "ktmtd-dao-tao"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Việc triển khai đồng bộ các hạng mục theo quy hoạch tại Bcons{Bee Cons} Central{Central} Park{Park} sẽ góp phần đáp ứng nhu cầu an cư và đón đầu làn sóng đô thị hóa tại Đồng Nai.",
+      "cues": {},
+      "props": {
+        "message": "Phát triển đồng bộ theo quy hoạch - Đón đầu làn sóng đô thị hóa & nhu cầu an cư tại Đồng Nai"
+      }
+    }
+  ]
+}

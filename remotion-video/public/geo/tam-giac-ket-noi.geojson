@@ -1,0 +1,31 @@
+{
+  "type": "Feature",
+  "properties": {
+    "kind": "illustrative",
+    "name": "Tam giác kết nối: Bcons Central Park - Sân bay Long Thành - Cảng Phước An (nối 3 điểm thật, không phải ranh giới)",
+    "sourceId": "geo-minh-hoa"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          106.84408654581377,
+          10.959874417285395
+        ],
+        [
+          107.04195752766535,
+          10.773541785186673
+        ],
+        [
+          106.9942243322939,
+          10.616353354639697
+        ],
+        [
+          106.84408654581377,
+          10.959874417285395
+        ]
+      ]
+    ]
+  }
+}

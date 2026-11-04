@@ -35,7 +35,7 @@
 ## Quy ước làm việc
 - Làm việc trên nhánh `claude/trusting-feynman-1b00ns`. Không tạo PR nếu người dùng chưa yêu cầu.
 - Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
-- Video Remotion nằm trong `remotion-video/`. Đổi lời bình: sửa `scripts/scenes.mjs`, chạy `node --env-file=.env scripts/generate-voice.mjs` (tốn credit ElevenLabs, hỏi anh trước). Render và xuất lên Drive: `npm run render:drive`. Số liệu trong video phải được anh duyệt trước khi đăng.
+- Video Remotion nằm trong `remotion-video/`. Mỗi video là một spec `remotion-video/specs/<tên>.json` (lời bình `markup` + mẫu cảnh + `status`), bảng nguồn ở `docs/video/<tên>.md`. Làm video bằng lệnh `/bcons-video [chủ đề]` (4 cổng chờ anh duyệt). Tạo giọng: `node --env-file=.env scripts/generate-voice.mjs <tên>` (tốn credit ElevenLabs, hỏi anh trước; chỉ chạy khi spec `approved`). Render và xuất lên Drive: `npm run render:drive -- <tên>`. Spec `draft` hoặc có `sourceId` thiếu trong bảng nguồn thì cả hai lệnh từ chối chạy. Số liệu trong video phải được anh duyệt trước khi đăng.
 - Ngày hiện tại và lịch mở bán xem `docs/bcons-central-park.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
 
 ## Lệnh "Off" (kết thúc phiên làm việc)
