@@ -10,7 +10,7 @@ Mọi bài trên fanpage và TikTok chỉ có một việc: **đưa người xem
 ## 2. Dựng trang (anh làm, em chuẩn bị chữ và hình)
 | Mục | Đề xuất | Ghi chú |
 |---|---|---|
-| Tên | Dạng "Căn hộ Biên Hòa – Bcons Central Park | [tên anh]" | **Cần hỏi công ty** có cho dùng tên/logo dự án và có cần ghi "kênh tư vấn" không. Tránh tên nghe như trang chính thức của chủ đầu tư nếu chưa được phép |
+| Tên | **Đã chốt 04/11/2026: "Căn hộ Phan Trung – Bcons Central Park Biên Hòa"** (xem `fanpage-thiet-lap.md`) | Kênh thông tin, không gắn cá nhân, không dùng chữ "Official" |
 | Danh mục | Bất động sản | |
 | Nút chính | "Nhắn tin" | Không dùng nút "Gọi" (chưa quyết dùng hotline) |
 | Giới thiệu | 2-3 dòng: dự án ở đâu, kênh này làm gì, nhắn tin nhận gì | Em soạn |
@@ -54,7 +54,7 @@ Mỗi tuần: số cuộc nhắn tin, số người để lại số điện tho
 - Chính sách Meta thay đổi thường xuyên. Các quy định về cửa sổ nhắn tin và quảng cáo nên kiểm tra lại trên trang chính thức của Meta khi triển khai.
 
 ## 8. Cần anh quyết
-1. Tên trang và việc dùng tên/logo dự án (hỏi công ty).
+1. ~~Tên trang~~ đã chốt (xem `fanpage-thiet-lap.md`).
 2. Ai trả lời tin nhắn, giờ làm việc nào.
 3. Có dùng hotline công ty không.
 4. Bắt đầu ngày nào (đợt 2 mở ngày 29/11/2026, còn khoảng 25 ngày; dựng xong trong tuần này thì kịp đăng 3 tuần nội dung trước đợt 2).

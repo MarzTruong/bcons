@@ -36,8 +36,8 @@ Em hỏi lần lượt, mỗi câu một tin:
 (Mốc lấy từ khoảng giá chưa VAT trong tài liệu: Studio từ khoảng 2,06 tỷ; 3PN tới khoảng 6,09 tỷ. Cần kiểm tra lại bảng giá mới nhất trước khi bật.)
 
 **Câu 5 (số điện thoại + đồng ý):**
-> Để gửi anh/chị bảng so sánh và để tư vấn viên của [tên công ty, ví dụ Bcons PS] hỗ trợ chi tiết hơn, anh/chị cho em xin số điện thoại ạ.
-> Bằng việc để lại số, anh/chị đồng ý cho [tên công ty] liên hệ tư vấn về dự án Bcons Central Park qua điện thoại/Zalo/tin nhắn. Anh/chị có thể nhắn **DỪNG** bất cứ lúc nào để không nhận tin nữa.
+> Để gửi anh/chị bảng so sánh và để tư vấn viên của Bcons PS Land hỗ trợ chi tiết hơn, anh/chị cho em xin số điện thoại ạ.
+> Bằng việc để lại số, anh/chị đồng ý cho Bcons PS Land liên hệ tư vấn về dự án Bcons Central Park qua điện thoại/Zalo/tin nhắn. Anh/chị có thể nhắn **DỪNG** bất cứ lúc nào để không nhận tin nữa.
 
 Quick reply: `Tôi đồng ý, gửi số` · `Không để lại số`
 
@@ -115,7 +115,7 @@ Hiện cách đơn giản nhất: cuối ngày, mở Hộp thư Meta Business Su
 4. Thử bằng tài khoản Facebook khác trước khi công khai.
 
 ## Cần anh xác nhận
-1. Tên công ty ghi trong dòng đồng ý (Bcons PS? Bcons PS Land?).
+1. ~~Tên công ty trong dòng đồng ý~~ đã điền Bcons PS Land (anh xác nhận làm cho Bcons PS Land, 04/11/2026).
 2. Giờ làm việc của tư vấn viên.
 3. Công ty có quy định riêng khi thu số điện thoại khách (đồng ý, lưu trữ) không. Công ty chưa gửi quy định nội dung chính thức nên mọi câu chữ chờ anh duyệt.
 4. Có dùng hotline công ty trong tin trả lời không.
