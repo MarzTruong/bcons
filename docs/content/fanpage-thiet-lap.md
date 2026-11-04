@@ -6,15 +6,17 @@ Quyết định của anh (04/11/2026): tên trang như tiêu đề; kênh thôn
 ## A. Chuẩn bị sẵn (đã có trong repo)
 | Việc | File |
 |---|---|
-| Ảnh đại diện 1080×1080 | `docs/content/fanpage/avatar.png` |
-| Ảnh bìa 1640×624 | `docs/content/fanpage/cover.png` |
+| Ảnh đại diện 1080×1080 (cắt từ phối cảnh tổng thể) | `docs/content/fanpage/avatar.jpg` |
+| Ảnh bìa 1640×624 (phối cảnh tổng thể + tên trang) | `docs/content/fanpage/cover.jpg` |
+| Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `docs/content/fanpage/anh/` (11 ảnh) |
 | Ảnh bài ghim: so sánh 5 PTTT | `docs/content/messenger-qua/so-sanh-5-pttt.png` |
 | Kịch bản Messenger tự trả lời | `docs/content/messenger-kich-ban.md` |
 | Bảng Sheets lưu khách | "Bcons - Khach quan tam Messenger" |
 | Công cụ tính nhanh | link artifact đã gửi (dùng nội bộ) |
 
-Ảnh đại diện và ảnh bìa là bản chữ, **không dùng logo Bcons** vì trang không phải trang chính thức của chủ đầu tư. Nếu anh có logo hay ảnh phối cảnh được công ty cho dùng, thay vào.
-Ảnh bìa để chữ ở giữa vì điện thoại cắt hai bên.
+Ảnh đại diện và ảnh bìa dùng phối cảnh của dự án (Drive của anh, 04/11/2026). **Không dùng logo Bcons** làm ảnh đại diện vì trang không phải trang chính thức của chủ đầu tư; trong phối cảnh có chữ Bcons trên tòa nhà vì là hình của chủ đầu tư.
+Ảnh bìa để chữ ở giữa vì điện thoại cắt hai bên. Ảnh gốc phối cảnh rất nặng (34–80 MB), nằm trên Drive, không đưa vào repo.
+Mọi ảnh phối cảnh phải ghi "hình ảnh minh họa"; ảnh nhà mẫu ghi "nhà mẫu, nội thất minh họa" (căn hộ bàn giao hoàn thiện cơ bản theo danh mục của chủ đầu tư).
 
 ## B. Các bước tạo trang (anh làm; tên mục trên Facebook có thể khác chút)
 1. **Bảo mật trước:** trên Facebook cá nhân của anh, bật xác thực 2 lớp.
@@ -38,7 +40,7 @@ Quyết định của anh (04/11/2026): tên trang như tiêu đề; kênh thôn
 7. **Meta Business Suite:** mở bằng tài khoản quản trị, vào Hộp thư → Tự động hóa.
    - Tin chào, trả lời nhanh, tin ngoài giờ, luồng hỏi đáp: dán theo `messenger-kich-ban.md` (đã điền tên công ty Bcons PS Land; anh điền giờ làm việc).
    - Thử bằng một tài khoản Facebook khác, đi hết luồng, rồi mới công khai.
-8. **Đăng bài ghim và 3 bài đầu** (mục D), rồi mời bạn bè, người quen theo dõi trang.
+8. **Đăng bài ghim và 4 bài đầu** (mục D), rồi mời bạn bè, người quen theo dõi trang.
 9. **TikTok:** viết tiểu sử TikTok cùng thông điệp, ví dụ `Căn hộ Phan Trung – Bcons Central Park | Nhắn tin trên Facebook nhận bảng so sánh 5 PTTT`. Thêm liên kết khi trang Facebook có địa chỉ.
 
 ## C. Bảng kiểm trước khi công khai
@@ -72,7 +74,7 @@ Thông tin tham khảo theo chính sách chủ đầu tư tại 04/11/2026; chi�
 #BconsCentralPark #CănHộBiênHòa #PhanTrung
 ```
 
-**Bài 2, loại căn hộ (kèm ảnh mặt bằng căn, anh đính kèm nếu có):**
+**Bài 2, loại căn hộ.** Ảnh (đăng nhiều ảnh): `anh/nha-mau-A1-phong-khach.jpg` (A1, 3PN, 88 m2), `anh/nha-mau-A1-phong-ngu.jpg`, `anh/nha-mau-B4-phong-khach.jpg` (B4, 2PN-2WC, 73 m2), `anh/nha-mau-B4-phong-ngu.jpg`, `anh/nha-mau-C1-phong-khach.jpg` (C1, 2PN-1WC, 52 m2):
 ```
 Căn hộ ở Bcons Central Park có những loại nào?
 
@@ -87,10 +89,11 @@ Dự án có 5 tháp, mỗi tháp 22 tầng nổi và 2 tầng hầm; 2.820 căn
 Điều nên biết: giá mỗi căn khác nhau theo tầng, hướng và thời điểm, nên trang không đăng giá chung. Nhắn tin để nhận báo giá theo căn mà bạn quan tâm; tư vấn viên sẽ kiểm tra tình trạng căn tại thời điểm báo.
 
 Diện tích là diện tích tim tường theo tài liệu chủ đầu tư; giá luôn kèm VAT và phí bảo trì 2% tính riêng.
+Ảnh: nhà mẫu căn A1 (3PN), B4 (2PN) và C1 (2PN-1WC); nội thất nhà mẫu mang tính minh họa, căn hộ bàn giao hoàn thiện cơ bản theo danh mục của chủ đầu tư.
 #BconsCentralPark #CănHộBiênHòa
 ```
 
-**Bài 3, lịch giới thiệu đợt 2:**
+**Bài 3, lịch giới thiệu đợt 2.** Ảnh: `anh/phoi-canh-5-thap.jpg` (ghi "hình phối cảnh minh họa"):
 ```
 Bcons Central Park có lịch giới thiệu đợt 2 vào ngày 29/11/2026 (theo lịch của chủ đầu tư).
 
@@ -100,11 +103,11 @@ Nếu bạn đang cân nhắc, hai việc nên làm trước ngày đó:
 
 Nhắn tin cho trang, gửi vốn và mức trả hàng tháng, bạn sẽ nhận bản tính riêng trong ngày.
 
-Lịch có thể thay đổi theo thông báo của chủ đầu tư. Thông tin tham khảo, không phải cam kết.
+Lịch có thể thay đổi theo thông báo của chủ đầu tư. Thông tin tham khảo, không phải cam kết. Hình phối cảnh mang tính minh họa.
 #BconsCentralPark #CănHộBiênHòa
 ```
 
-**Bài 4, ba câu nên hỏi trước khi chọn phương thức thanh toán (có điểm đánh đổi thật):**
+**Bài 4, ba câu nên hỏi trước khi chọn phương thức thanh toán (có điểm đánh đổi thật).** Ảnh: `anh/phoi-canh-quang-truong.jpg` (hình phối cảnh minh họa):
 ```
 Trước khi chọn phương thức thanh toán, hãy tự hỏi 3 câu:
 
@@ -120,8 +123,26 @@ Thông tin tham khảo theo chính sách chủ đầu tư tại 04/11/2026; chi 
 #BconsCentralPark #CănHộBiênHòa
 ```
 
+**Bài 5, tiện ích hồ bơi.** Ảnh: `anh/phoi-canh-ho-boi.jpg` (hình phối cảnh minh họa):
+```
+Hồ bơi ở Bcons Central Park gồm những gì?
+
+• 1 hồ bơi resort, diện tích khoảng 315 m2
+• 1 hồ bơi trẻ em
+• 1 hồ massage thư giãn
+
+Dự án có tổng cộng 60 tiện ích nội khu, trong đó có quảng trường nhạc nước, khu thể thao, khu vui chơi trẻ em, cung đường đi bộ và khu thiền định (theo tài liệu chủ đầu tư).
+
+Điều nên biết: tiện ích chỉ dùng được sau khi bàn giao (dự kiến Quý II/2029), và có phí quản lý 11.000 đ/m2/tháng (chưa VAT) do chủ đầu tư quản lý.
+
+Muốn xem căn nào gần tiện ích bạn thích? Nhắn tin cho trang để được tư vấn.
+
+Hình ảnh phối cảnh mang tính minh họa. Thông tin tham khảo theo tài liệu chủ đầu tư, chi tiết theo hợp đồng.
+#BconsCentralPark #CănHộBiênHòa
+```
+
 ## E. Còn lại cần anh quyết hoặc xác nhận
-1. Tạo trang (mục B) và duyệt 4 bài ở mục D.
+1. Tạo trang (mục B) và duyệt 5 bài ở mục D.
 2. Giờ làm việc của tư vấn viên (điền vào tin ngoài giờ).
-3. Có thêm logo hay ảnh phối cảnh công ty cho phép dùng không.
+3. Công ty có cho dùng ảnh phối cảnh và ảnh nhà mẫu trên trang này không (anh nói cứ dùng; em ghi lại để anh nhớ nếu bị hỏi).
 4. VAT: công cụ tính nhanh và Master File dùng VAT 10% trên giá căn (theo file giá CĐT). Skill nội dung ghi VAT căn hộ có thể không tính trên phần giá trị quyền sử dụng đất, và file giá không tách riêng phần này. Anh xác nhận với bộ phận tài chính trước khi gửi khách "giá có VAT".
