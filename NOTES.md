@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 03/11/2026
+Cập nhật lần cuối: 04/11/2026
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -11,6 +11,7 @@ Cập nhật lần cuối: 03/11/2026
 - [x] Giọng đọc ElevenLabs (`eleven_v4`, voice `9CCqsrTCLkHgQlKSMchK`): script `scripts/generate-voice.mjs`, lời đọc/phụ đề tách riêng trong `scripts/scenes.mjs`, âm thanh trong `public/audio/`, timestamp trong `src/audio-timestamps.json`. Key trong `remotion-video/.env` (gitignored).
 - [x] Thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`) có `video/`, `data/` và file hướng dẫn cài máy thứ hai.
 - [x] Thêm lệnh "Off" vào `CLAUDE.md`.
+- [x] Quy trình render mới: `npm run render:drive` (trong `remotion-video/`) render xong tự chép mp4 sang Drive for desktop, đã chạy thử thành công (12,5 MB, `bcons-central-park-elevenlabs.mp4`). Script `scripts/render-drive.mjs`.
 
 ## Đang làm
 - [ ] Giọng cảnh 2 bị lệch giọng (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
@@ -50,7 +51,10 @@ Cập nhật lần cuối: 03/11/2026
 - Code, docs, kịch bản, mp3: GitHub (nhánh `claude/trusting-feynman-1b00ns`).
 - Dữ liệu nội bộ (`data/`, xlsx) và video render (`.mp4`): thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`), kèm file `HUONG-DAN-CAI-MAY-THU-HAI.md`.
 - API key ElevenLabs: chỉ trong `remotion-video/.env` trên từng máy, không đưa lên git/Drive.
-- Chưa làm: tải `.mp4` và `data/` lên thư mục Drive (anh kéo thả hoặc dùng Drive for desktop). Thư mục `data/` không có trên máy dùng phiên này.
+- Máy laptop này có Google Drive for desktop ở ổ `G:` (`G:\My Drive\Bcons - Dong bo thiet bi\`). Máy khác cần cài Drive for desktop; nếu Drive ở đường dẫn khác, đặt `DRIVE_VIDEO_DIR` trong `remotion-video/.env`.
+- Thư mục Drive `video/` đã có `bcons-central-park-map.mp4` và `bcons-tuan-final.mp4` do anh tự thêm (không phải do em render, em không đụng tới).
+- Còn chưa rõ: `data/bang-gia.csv` đã có trong thư mục Drive `data/` chưa, và thư mục `data/` cục bộ không có trên máy dùng phiên này.
+- Quy trình render hằng ngày: `cd remotion-video && npm run render:drive` (thêm tên file nếu muốn lưu tên khác). Lệnh này ghi đè file cùng tên trong Drive.
 - Video Remotion: số liệu (2,4 tỷ USD FDI, 8.200 ha, 16 tỷ USD, 150.000, 50.000, cao tốc khai thác 01/10/2026) lấy từ yêu cầu của anh, chưa đối chiếu tài liệu chủ đầu tư. Duyệt trước khi đăng.
 - Bản đồ cảnh 2 là sơ đồ minh họa, vị trí ước lượng.
 - Key ElevenLabs hiện không có quyền `Models`; đã bật `Models` Access nên liệt kê model được. Model trong tài khoản hỗ trợ tiếng Việt: `eleven_v4`, `eleven_v4_turbo`, `eleven_v3`, `eleven_turbo_v2_5`, `eleven_flash_v2_5`.

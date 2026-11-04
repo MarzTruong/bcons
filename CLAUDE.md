@@ -27,6 +27,7 @@
 ## Quy ước làm việc
 - Làm việc trên nhánh `claude/trusting-feynman-1b00ns`. Không tạo PR nếu người dùng chưa yêu cầu.
 - Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
+- Video Remotion nằm trong `remotion-video/`. Đổi lời bình: sửa `scripts/scenes.mjs`, chạy `node --env-file=.env scripts/generate-voice.mjs` (tốn credit ElevenLabs, hỏi anh trước). Render và xuất lên Drive: `npm run render:drive`. Số liệu trong video phải được anh duyệt trước khi đăng.
 - Ngày hiện tại và lịch mở bán xem `docs/bcons-central-park.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
 
 ## Lệnh "Off" (kết thúc phiên làm việc)
