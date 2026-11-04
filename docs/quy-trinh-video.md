@@ -1,0 +1,38 @@
+# Quy trình làm video Bcons Central Park (bản hợp nhất, 04/11/2026)
+
+Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remotion_bcons.md`. Hai file prompt gốc vẫn giữ làm tài liệu tham khảo, nhưng **không dán nguyên văn vào CLAUDE.md**.
+
+## 1. Nguyên tắc
+- Một CLAUDE.md duy nhất (gốc repo). Không tạo CLAUDE.md thứ hai trong `remotion-video/`.
+- Tách 3 giai đoạn, **có cổng duyệt của anh giữa các giai đoạn**: Nghiên cứu → Kịch bản → Dựng/Render.
+- Mọi số liệu phải có: ngày công bố, tên nguồn, link. Số liệu dự án lấy từ `docs/bcons-central-park.md`.
+
+## 2. Các bước
+| # | Giai đoạn | Làm gì | Đầu ra | Cổng duyệt |
+|---|-----------|--------|--------|-----------|
+| 1 | Nghiên cứu (1 lần/tuần) | Chạy Bản 1 (Master Prompt) trên Claude/Gemini có web search. Chỉ lấy nguồn chính thống. | Bảng số liệu có ngày + link | Anh chọn góc |
+| 2 | Kịch bản | Claude viết kịch bản 45–60 giây vào `docs/video/<tên>.md`, **kèm bảng nguồn từng con số** và danh sách kiểm tra mục 3 | File kịch bản | **Anh duyệt chữ + số liệu** |
+| 3 | Lời bình | Sửa `scripts/scenes.mjs` (cú pháp `hiển-thị{đọc}`) | scenes.mjs | Anh đồng ý tốn credit |
+| 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs` (ElevenLabs, tốn credit) | mp3 + timestamp | Anh nghe thử |
+| 5 | Render | `npm run lint` rồi `npm run render:drive` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** |
+
+Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark`, giọng ElevenLabs, phụ đề từng từ.
+
+## 3. Danh sách kiểm tra nội dung (bắt buộc trước bước 2 → anh duyệt)
+- [ ] Mỗi số liệu có nguồn + ngày; số dự án khớp `docs/bcons-central-park.md` (5 tháp, 22 tầng, 2.820 căn ở + 113 căn thương mại, 60 tiện ích).
+- [ ] Không "tiết kiệm tới 60% so với nhà phố", "điểm trũng đón sóng", "dòng vốn dịch chuyển mạnh" nếu chưa có nguồn. Không hứa tăng giá/lợi nhuận.
+- [ ] Số trong JSON mẫu của Bản 2 (85 triệu/m², 49,9 triệu/m², lãi 6,2%) chỉ là ví dụ, **không được dùng** nếu chưa có nguồn thật. Giá chủ đầu tư: tim tường 54–70 triệu/m² chưa VAT.
+- [ ] Nhắc giá thì nói rõ chưa VAT/có VAT và phí bảo trì 2%.
+- [ ] Không quảng cáo căn "CĐT LOCK"; không nói "sắp hết" khi chưa kiểm tra tình trạng.
+- [ ] Không so sánh dự án khác bằng số không nguồn.
+- [x] Cảnh cuối: **không đọc và không hiện số điện thoại** (anh quyết định 04/11/2026). Cuối video chỉ chạy thông tin dự án (tên, địa chỉ, tin nhắn/liên hệ qua kênh anh chọn). Không dùng cụm "Liên hệ: Tuấn - ..." của prompt cũ.
+- [ ] Công ty chưa gửi quy định nội dung chính thức → anh duyệt toàn bộ.
+
+## 4. Công cụ hỗ trợ
+- **Superpowers** (cài theo mục 5): dùng `brainstorming` khi lên ý tưởng/kịch bản mới, `writing-plans` + `verification-before-completion` khi sửa code Remotion/script, `systematic-debugging` khi render hoặc giọng đọc lỗi.
+- **Plugin Remotion** (đã cài): quy chuẩn viết composition.
+- **ECC**: không cài nguyên bộ (xem mục 5).
+
+## 5. Superpowers / ECC
+- **Superpowers: đã cài dạng skill của dự án** trong `.claude/skills/` (MIT, lấy từ `obra/superpowers` đúng commit `bb92a77`, bản ghim trong marketplace chính thức). Chỉ chép 5 skill: brainstorming, writing-plans, executing-plans, systematic-debugging, verification-before-completion. Không chép hook SessionStart và skill using-superpowers (ép dùng skill mọi lúc). Cách này dùng được vì lệnh `/plugin` không chạy trong app/PowerShell. Cần mở phiên mới để nhận skill.
+- **ECC: không cài** (anh quyết định 04/11/2026): bên thứ ba, thiên về lập trình, nặng hook.

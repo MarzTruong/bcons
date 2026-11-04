@@ -24,6 +24,14 @@
 - Chỉ nhắn khách đã đồng ý nhận tin; có danh sách từ chối; không gửi trùng; cá nhân hóa theo tên và nhu cầu.
 - Chưa chọn kênh gửi (xem `NOTES.md`).
 
+## Quy trình video (xem `docs/quy-trinh-video.md`)
+- 3 giai đoạn có cổng duyệt: Nghiên cứu → Kịch bản (kèm bảng nguồn từng số) → Dựng/Render. Không chạy "one-click" từ cào tin đến render; anh duyệt chữ và số liệu trước khi tạo giọng (tốn credit) và trước khi đăng.
+- Hai file `huong_dan_su_dung_prompt_remotion_bcons.md` và `prompt_cao_du_lieu_bds_bcons_central_park.md` chỉ là tài liệu tham khảo. Không dùng `edge-tts`, `props/bcons-latest.json`, composition `RealEstateShortVideo`; repo dùng `BconsCentralPark` + ElevenLabs.
+- Số trong JSON/ví dụ của các prompt đó (85 triệu/m², 49,9 triệu/m², 6,2%, "tiết kiệm 60%") là ví dụ, không có nguồn: không dùng.
+- Số lượng căn theo tài liệu CĐT: 2.820 căn ở + 113 căn thương mại (không ghi "~2.800").
+- Cảnh cuối video: không đọc/hiện số điện thoại hay tên cá nhân; chỉ chạy thông tin dự án (anh quyết định 04/11/2026). Bỏ cụm CTA "Liên hệ: Tuấn - ..." trong 2 file prompt.
+- Có Superpowers thì dùng brainstorming/plan/verification cho việc phức tạp; việc nhỏ làm thẳng.
+
 ## Quy ước làm việc
 - Làm việc trên nhánh `claude/trusting-feynman-1b00ns`. Không tạo PR nếu người dùng chưa yêu cầu.
 - Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
