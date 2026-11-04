@@ -79,7 +79,7 @@ Nội dung (chép từ `docs/bcons-central-park.md`, đã đối chiếu tài li
 |---|---|---|---|---|
 | 01 (thanh toán giãn) | 20% | Không | Không áp dụng | 8,5% |
 | 02 | 20% | 50% giải ngân sau 15 ngày | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng | Giá niêm yết |
-| 03 | 10% | 50% giải ngân sau 7 ngày | Trần 6,9%/năm, tối đa 48 tháng | Theo thông báo |
+| 03 | 10% | 50% giải ngân sau 7 ngày | Trần 6,9%/năm, tối đa 48 tháng | Không có |
 | 04 | 10% | 10% + 20% + 20% (3 đợt) | Trần 6,9%/năm | 2,45% |
 | 05 | 10% | 10% + 20% + 20% (3 đợt) | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng | 2,45% |
 
@@ -91,7 +91,7 @@ Ghi chú bắt buộc dưới bảng:
 - Dự án không bán cho người nước ngoài.
 
 Việc cần làm: dựng bảng này thành ảnh hoặc PDF (Canva hoặc Remotion), anh duyệt rồi mới đưa link vào tin cảm ơn.
-Còn thiếu: PTTT 03 chưa ghi rõ mức chiết khấu, PTTT 01 chưa xác nhận bản mới nhất. Cột đó để "Theo thông báo" tới khi anh xác nhận.
+Còn thiếu: PTTT 01 chưa xác nhận bản mới nhất. PTTT 03 không có chiết khấu (anh xác nhận 04/11/2026).
 
 ## 5. Tình huống đặc biệt
 
