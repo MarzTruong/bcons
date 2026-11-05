@@ -25,7 +25,7 @@
 - Chưa chọn kênh gửi (xem `NOTES.md`).
 
 ## Quy trình video (xem `docs/quy-trinh-video.md`)
-- 3 giai đoạn có cổng duyệt: Nghiên cứu → Kịch bản (kèm bảng nguồn từng số) → Dựng/Render. Không chạy "one-click" từ cào tin đến render; anh duyệt chữ và số liệu trước khi tạo giọng (tốn credit) và trước khi đăng.
+- 3 giai đoạn có cổng duyệt: Nghiên cứu → Kịch bản (kèm bảng nguồn từng số) → Storyboard (video có bản đồ/camera/ảnh chèn: `docs/video/<tên>-storyboard.md`, anh duyệt trước khi code và render) → Dựng/Render. Không chạy "one-click" từ cào tin đến render; anh duyệt chữ và số liệu trước khi tạo giọng (tốn credit) và trước khi đăng.
 - Hai file `huong_dan_su_dung_prompt_remotion_bcons.md` và `prompt_cao_du_lieu_bds_bcons_central_park.md` chỉ là tài liệu tham khảo. Không dùng `edge-tts`, `props/bcons-latest.json`, composition `RealEstateShortVideo`; repo dùng `BconsCentralPark` + ElevenLabs.
 - Số trong JSON/ví dụ của các prompt đó (85 triệu/m², 49,9 triệu/m², 6,2%, "tiết kiệm 60%") là ví dụ, không có nguồn: không dùng.
 - Số lượng căn theo tài liệu CĐT: 2.820 căn ở + 113 căn thương mại (không ghi "~2.800").
@@ -35,7 +35,7 @@
 ## Quy ước làm việc
 - Làm việc trên nhánh `claude/trusting-feynman-1b00ns`. Không tạo PR nếu người dùng chưa yêu cầu.
 - Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
-- Video Remotion nằm trong `remotion-video/`. Mỗi video là một spec `remotion-video/specs/<tên>.json` (lời bình `markup` + mẫu cảnh + `status`), bảng nguồn ở `docs/video/<tên>.md`. Làm video bằng lệnh `/bcons-video [chủ đề]` (4 cổng chờ anh duyệt). Tạo giọng: `node --env-file=.env scripts/generate-voice.mjs <tên>` (tốn credit ElevenLabs, hỏi anh trước; chỉ chạy khi spec `approved`). Render và xuất lên Drive: `npm run render:drive -- <tên>`. Spec `draft` hoặc có `sourceId` thiếu trong bảng nguồn thì cả hai lệnh từ chối chạy. Số liệu trong video phải được anh duyệt trước khi đăng.
+- Video Remotion nằm trong `remotion-video/`. Mỗi video là một spec `remotion-video/specs/<tên>.json` (lời bình `markup` + mẫu cảnh + `status`), bảng nguồn ở `docs/video/<tên>.md`. Làm video bằng lệnh `/bcons-video [chủ đề]` (4 cổng chờ anh duyệt). Tạo giọng: `node --env-file=.env scripts/generate-voice.mjs <tên>` (tốn credit ElevenLabs, hỏi anh trước; chỉ chạy khi spec `approved`). Render và xuất lên Drive: `npm run render:drive -- <tên>` (video thành phẩm ra `remotion-video/out/video/`, file tạm như khung thử, log, props để trong `remotion-video/out/tam/`; không thả file lẫn trong `out/`). Spec `draft` hoặc có `sourceId` thiếu trong bảng nguồn thì cả hai lệnh từ chối chạy. Số liệu trong video phải được anh duyệt trước khi đăng.
 - Ngày hiện tại và lịch mở bán xem `docs/bcons-central-park.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
 
 ## Lệnh "Off" (kết thúc phiên làm việc)

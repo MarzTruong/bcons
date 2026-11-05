@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 05/11/2026 (phiên Off; làm việc ngày 04–05/11/2026, nhánh `claude/peaceful-carson-qnjpwr`)
+Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fanpage 04–05/11/2026 trên nhánh `claude/peaceful-carson-qnjpwr`)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -22,6 +22,11 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off; làm việc ngày 04–05/11/
 - [x] 04/11/2026: hệ phong cách và chuyển động cho spec: `style` (classic, sang, navy, xanh) trong `src/theme.ts`, `motion` (classic, truot, nay, mo) trong `src/motion.ts`, khai báo trong spec (hạ tầng Biên Hòa dùng `xanh` + `mo`). Test hồi quy: băm khung hình `dong-nai-ha-tang` vẫn giống hệt; 48 test qua.
 - [x] 04/11/2026: kiểm tra báo cáo Gemini, sửa các khẳng định bị thổi phồng (13-15% là lãi suất thực sau ưu đãi, không nêu diện tích FTZ vì 8.100/8.200 ha mâu thuẫn, Biên Hòa - Vũng Tàu giai đoạn 1 chỉ "dự kiến", bỏ Vành đai 3 Tây Ninh 95%). PTTT 03 xác nhận bản mới nhất; PTTT 05 giống PTTT 02 (CĐT hỗ trợ ân hạn lãi gốc, không nêu thời hạn).
 
+- [x] 05/11/2026: 2 video từ kịch bản Gemini số 2 và 4: `cho-thue-kcn-bien-hoa-2026` (A, màu sang/chuyển động truot) và `tai-thiet-kcn-bien-hoa-1` (B, navy/nay). Spec `approved`, đã tạo giọng (anh nghe được), đã render đủ bản bản đồ vệ tinh (A 58,9 giây, B 56,8 giây) và chép Drive `video/`. Chờ anh xem trọn video và duyệt trước khi đăng; em chưa xem trọn video, chỉ xem khung thử.
+- [x] Quy ước anh đặt 05/11/2026 (đã lưu memory): giọng miền Nam voice `9CCqsrTCLkHgQlKSMchK`, đọc "ngàn" không "nghìn", tên riêng tiếng Anh đọc tiếng Anh (BIDV{bee eye dee vee}); lời đọc thiên tầm nhìn quảng bá (chú thích nhỏ để ở chữ trên màn hình và bảng nguồn, vẫn không hứa tăng giá/lợi nhuận); video có bản đồ/camera/ảnh phải có storyboard theo giây để anh duyệt trước khi code và render (`docs/video/<tên>-storyboard.md`, đã thêm vào `/bcons-video` cổng 4 và `docs/quy-trinh-video.md`); video thành phẩm ra `remotion-video/out/video/`, file tạm ra `out/tam/`.
+- [x] 05/11/2026: mẫu `geo-map` nâng cấp: nền vệ tinh Mapbox (`satellite-streets-v12`), camera nhiều chặng theo lời đọc (center/zoom hoặc `fit` tự tính vừa vùng, toán trong `src/geoCamera.ts`), ranh tự vẽ, làm tối vùng ngoài, nhấp sáng, thẻ số nổi neo vào vùng, thẻ số liệu phía trên bản đồ (vùng y 1500-1650 dành cho phụ đề), nhãn km trên đường nối, ảnh chèn cross-fade, chữ gõ dần. `project-close` có thêm ảnh phối cảnh. Cổng kiểm tra chặn dữ liệu `provisional` và ảnh tên `placeholder`.
+- [x] 05/11/2026: ranh KCN lấy từ OpenStreetMap: anh xuất GeoJSON từ Overpass Turbo vào `map/`; script `npm run geo:fetch` (trong `remotion-video/`) đọc `map/` hoặc gọi Overpass, lưu `public/geo/osm/` (cờ `--refresh`, `--remote`, `--search "tên" --bbox ...`); `npm run geo:derive` tạo lớp minh họa (phân vùng KCN Biên Hòa 1 hình tròn cắt theo tỉ lệ diện tích tin báo; đường chim bay kèm km từ dự án) vào `public/geo/minh-hoa/`. Anh chạy thử `--remote` trên máy anh: Overpass lấy được Loteco và Amata, 3 khu còn lại quá giờ (mirror công cộng không ổn định). Diện tích đa giác OSM: Loteco 99,9 ha, Biên Hòa II 401,9, Amata 416,9 (chưa gộp phần mở rộng 185,9), Biên Hòa 1 298,1, khu đất dự án 2,9 ha.
+- [x] 05/11/2026: ảnh phối cảnh anh chép vào `anh/ẢNH GỐC` (22 ảnh, khoảng 2 GB, đã thêm `anh/` vào `.gitignore`); dùng 2 ảnh thu nhỏ 2400 px trong `remotion-video/public/images/`: `phoi-canh-green-park.jpg` (video A) và `phoi-canh-tong-the.jpg` (video B).
 - [x] 04–05/11/2026 Fanpage Facebook: anh chốt tên **"Căn hộ Phan Trung – Bcons Central Park Biên Hòa"**, kênh thông tin không gắn cá nhân, anh làm cho Bcons PS Land (sàn phân phối chính thức); công ty không quan tâm chuyện sale tự lập trang. Anh đã tạo trang trên Facebook (loại Doanh nghiệp, hạng mục Người môi giới bất động sản, dòng giới thiệu đã dán); đang ở bước thông tin liên hệ (để trống web, SĐT, email, địa chỉ; giờ mở cửa chọn "Không có giờ mở cửa"). Chưa rõ anh đã tải ảnh và đăng bài chưa.
 - [x] Tài liệu fanpage (đều nháp chờ anh duyệt): `docs/content/fanpage-de-xuat.md` (đề xuất tổng), `docs/content/fanpage-thiet-lap.md` (các bước tạo trang, dòng giới thiệu, bảng kiểm, 5 bài đầu), `docs/content/messenger-kich-ban.md` (Messenger tự trả lời, đã điền tên công ty Bcons PS Land), `docs/content/doi-chieu-nguon-gia-tri-du-an.md` (bảng "ý nào có nguồn": b.school chưa có nguồn, Aeon Mall chỉ nói được là dự án và không dùng "lớn nhất Miền Nam", TP. Đồng Nai trực thuộc TW, metro không nêu km...).
 - [x] Hình cho fanpage: `docs/content/messenger-qua/so-sanh-5-pttt.{html,png}` (bảng so sánh 5 PTTT, PTTT 03 không chiết khấu), `docs/content/fanpage/cover.jpg`, `avatar.jpg` (cắt từ phối cảnh tổng thể), `anh/` 11 ảnh phối cảnh và nhà mẫu A1/B4/C1 đã thu nhỏ. Ảnh gốc phối cảnh (34–80MB) và HEIC chưa dùng nằm trên Drive. Đã gửi anh 4 file qua khung chat; chưa lên Drive vì connector Drive không nhận file nhị phân lớn.
@@ -32,7 +37,7 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off; làm việc ngày 04–05/11/
 - [x] Quyết định chung của phiên: không có connector Meta nào điều khiển Messenger; dùng Meta Business Suite miễn phí. MyChatBot tốn phí, để sau. Meta Ads connector chỉ làm quảng cáo, để sau tuần 3–4 của trang.
 
 ## Đang làm
-- [ ] Giọng cảnh 2 bị lệch giọng (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
+- [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
 - [ ] Kịch bản video đợt 2 (giới thiệu ngày 29/11/2026) trong `docs/video/dot-2.md`. Bản nháp, chờ anh duyệt.
 - [ ] Anh hoàn tất tạo fanpage: tải `cover.jpg` và `avatar.jpg`, nút "Nhắn tin", thêm quản trị viên dự phòng, bật xác thực 2 lớp, cài Meta Business Suite > Hộp thư > Tự động hóa theo `messenger-kich-ban.md`, thử bằng tài khoản khác, duyệt và đăng 5 bài đầu.
@@ -40,6 +45,10 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off; làm việc ngày 04–05/11/
 - [x] Superpowers: đã chép 5 skill vào `.claude/skills/` (commit gốc `bb92a77`), chưa commit; mở phiên mới để dùng. ECC: anh quyết định không cài (04/11/2026). `/plugin` không chạy trong PowerShell/app.
 - [x] Quyết định 04/11/2026: bỏ CTA đọc/hiện số điện thoại; cuối video chỉ chạy thông tin dự án. Nếu sau này muốn dùng số, cần xác nhận quy định TikTok/Meta và công ty (hotline công ty an toàn hơn).
 - [ ] Anh duyệt `docs/quy-trinh-video.md`. Hai file prompt cũ vẫn untracked (có chứa SĐT cá nhân), chưa commit.
+
+- [ ] Anh xem trọn 2 video mới (`cho-thue-kcn-bien-hoa-2026`, `tai-thiet-kcn-bien-hoa-1`) trước khi đăng. Lưu ý cho video B: Aeon Mall đang là **điểm tạm anh chọn** (10.927817, 106.835207), ghi "gần đúng"; vùng 21,5 / 44 / 286 / 51,6 ha là hình tròn minh họa (nét đứt), không phải ranh thật. Ranh OSM lệch số chính thức (Amata -19%, Biên Hòa 1 -11%) và chưa đối chiếu hồ sơ chủ đầu tư.
+- [ ] Cần tọa độ/ranh thật của Aeon Mall và, nếu có, ranh quy hoạch thật của các vùng 44/286/21,5/51,6 ha (GeoJSON/KMZ). Có thì sửa `scripts/build-geo.mjs` và bỏ `geo:derive` cho các vùng đó.
+- [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
 - [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `Gemini Deep Research/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.

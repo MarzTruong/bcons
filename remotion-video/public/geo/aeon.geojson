@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "aeon",
+        "name": "Aeon Mall Biên Hòa",
+        "sourceId": "geo-aeon",
+        "fetchedAt": "2026-11-04",
+        "approximate": "điểm tạm do anh chọn, chưa phải tọa độ khu đất Aeon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.83520655583497,
+          10.927817077580567
+        ]
+      }
+    }
+  ]
+}

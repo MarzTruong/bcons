@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"kind":"illustrative","label":"khoảng 3,7 km","note":"Đường chim bay từ Bcons Central Park đến tâm khu (tính bằng Turf), không phải quãng đường đi"},"geometry":{"type":"LineString","coordinates":[[106.84408654581377,10.959874417285395],[106.83520655583497,10.927817077580567]]}}]}

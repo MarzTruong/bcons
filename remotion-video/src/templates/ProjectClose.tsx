@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, interpolate, spring, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame } from "remotion";
 import { useTheme } from "../theme";
 import { LEAD } from "../timing";
 import { clamp, type TemplateProps } from "./common";
@@ -16,8 +16,33 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
     interpolate(frame, [LEAD + 40, frames - 40], [0, message.length], clamp),
   );
   const glow = 0.5 + 0.5 * Math.sin(frame / 8);
+  const kb = interpolate(frame, [0, frames], [1, 1.1], clamp);
   return (
     <AbsoluteFill style={{ padding: "150px 70px 0", justifyContent: "flex-start" }}>
+      {props.image ? (
+        <div
+          style={{
+            position: "relative",
+            height: 900,
+            borderRadius: 44,
+            overflow: "hidden",
+            border: `5px solid ${C.teal}`,
+            opacity: zoom,
+            boxShadow: `0 0 ${80 + glow * 60}px ${C.teal}55`,
+          }}
+        >
+          <Img src={staticFile(props.image.file)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${kb})` }} />
+          <AbsoluteFill style={{ background: `linear-gradient(180deg, #0000 45%, ${C.scrim}f0 100%)` }} />
+          <div style={{ position: "absolute", left: 40, right: 40, bottom: 34, textAlign: "center" }}>
+            <div style={{ fontSize: 34, fontWeight: 600, color: C.gold }}>DỰ ÁN</div>
+            <div style={{ fontSize: 96, fontWeight: 800, lineHeight: 1.05 }}>
+              BCONS <span style={{ color: C.teal }}>CENTRAL PARK</span>
+            </div>
+            <div style={{ fontSize: 34, color: C.muted, marginTop: 10 }}>236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai</div>
+          </div>
+          <div style={{ position: "absolute", top: 20, right: 26, fontSize: 24, color: "#fffc", textShadow: "0 2px 8px #000" }}>{props.image.label}</div>
+        </div>
+      ) : (
       <div
         style={{
           transform: `scale(${scale * drift})`,
@@ -40,9 +65,10 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
           236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai
         </div>
       </div>
+      )}
       <div
         style={{
-          marginTop: 50,
+          marginTop: props.image ? 36 : 50,
           minHeight: 290,
           fontSize: 50,
           fontWeight: 700,

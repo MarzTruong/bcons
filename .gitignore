@@ -5,3 +5,5 @@ remotion-video/out/
 *.mp4
 .env
 remotion-video/audio-test/
+
+/anh/
