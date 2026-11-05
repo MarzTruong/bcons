@@ -1,0 +1,805 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 14.315102040816326,
+      "speech": "Khu công nghiệp Biên Hòa 1 đang thành khu đô thị. Một khu đất ở đây có phương án đấu giá, giá khởi điểm chín ngàn ba trăm sáu mươi ba tỷ đồng, công bố tháng mười một năm hai ngàn không trăm hai mươi lăm. Trong đó, hai mươi mốt phẩy năm héc-ta là phần được đem đấu.",
+      "words": [
+        {
+          "text": "Khu",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "công",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "nghiệp",
+          "start": 0.36,
+          "end": 0.56
+        },
+        {
+          "text": "Biên",
+          "start": 0.6,
+          "end": 0.72
+        },
+        {
+          "text": "Hòa",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "1",
+          "start": 1.04,
+          "end": 1.28
+        },
+        {
+          "text": "đang",
+          "start": 1.36,
+          "end": 1.6
+        },
+        {
+          "text": "thành",
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "text": "khu",
+          "start": 1.92,
+          "end": 2
+        },
+        {
+          "text": "đô",
+          "start": 2.08,
+          "end": 2.2
+        },
+        {
+          "text": "thị.",
+          "start": 2.24,
+          "end": 2.56
+        },
+        {
+          "text": "Một",
+          "start": 2.88,
+          "end": 2.96
+        },
+        {
+          "text": "khu",
+          "start": 3.04,
+          "end": 3.12
+        },
+        {
+          "text": "đất",
+          "start": 3.2,
+          "end": 3.28
+        },
+        {
+          "text": "ở",
+          "start": 3.36,
+          "end": 3.44
+        },
+        {
+          "text": "đây",
+          "start": 3.48,
+          "end": 3.68
+        },
+        {
+          "text": "có",
+          "start": 3.76,
+          "end": 3.84
+        },
+        {
+          "text": "phương",
+          "start": 3.92,
+          "end": 4.08
+        },
+        {
+          "text": "án",
+          "start": 4.16,
+          "end": 4.24
+        },
+        {
+          "text": "đấu",
+          "start": 4.32,
+          "end": 4.4
+        },
+        {
+          "text": "giá,",
+          "start": 4.48,
+          "end": 5.04
+        },
+        {
+          "text": "giá",
+          "start": 5.08,
+          "end": 5.2
+        },
+        {
+          "text": "khởi",
+          "start": 5.28,
+          "end": 5.44
+        },
+        {
+          "text": "điểm",
+          "start": 5.48,
+          "end": 5.76
+        },
+        {
+          "text": "9.363",
+          "start": 5.8,
+          "end": 7.36
+        },
+        {
+          "text": "tỷ",
+          "start": 7.44,
+          "end": 7.52
+        },
+        {
+          "text": "đồng,",
+          "start": 7.56,
+          "end": 8
+        },
+        {
+          "text": "công",
+          "start": 8.04,
+          "end": 8.16
+        },
+        {
+          "text": "bố",
+          "start": 8.24,
+          "end": 8.4
+        },
+        {
+          "text": "tháng",
+          "start": 8.48,
+          "end": 8.56
+        },
+        {
+          "text": "11",
+          "start": 8.64,
+          "end": 9.04
+        },
+        {
+          "text": "năm",
+          "start": 9.12,
+          "end": 9.28
+        },
+        {
+          "text": "2025.",
+          "start": 9.36,
+          "end": 10.92
+        },
+        {
+          "text": "Trong",
+          "start": 10.96,
+          "end": 11.12
+        },
+        {
+          "text": "đó,",
+          "start": 11.16,
+          "end": 11.547
+        },
+        {
+          "text": "21,5",
+          "start": 11.573,
+          "end": 12.4
+        },
+        {
+          "text": "ha",
+          "start": 12.48,
+          "end": 12.96
+        },
+        {
+          "text": "là",
+          "start": 13.04,
+          "end": 13.2
+        },
+        {
+          "text": "phần",
+          "start": 13.28,
+          "end": 13.44
+        },
+        {
+          "text": "được",
+          "start": 13.52,
+          "end": 13.6
+        },
+        {
+          "text": "đem",
+          "start": 13.68,
+          "end": 13.76
+        },
+        {
+          "text": "đấu.",
+          "start": 13.84,
+          "end": 14.32
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "durationSec": 12.695510204081632,
+      "speech": "Khu công nghiệp đầu tiên của Việt Nam, lập năm một ngàn chín trăm sáu mươi ba, trên ba trăm ba mươi lăm héc-ta . Phương án chuyển đổi gồm khoảng bốn mươi bốn héc-ta trung tâm hành chính và hơn hai trăm tám mươi sáu héc-ta khu đô thị dịch vụ.",
+      "words": [
+        {
+          "text": "Khu",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "công",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "nghiệp",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "đầu",
+          "start": 0.64,
+          "end": 0.8
+        },
+        {
+          "text": "tiên",
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "text": "của",
+          "start": 1.12,
+          "end": 1.2
+        },
+        {
+          "text": "Việt",
+          "start": 1.24,
+          "end": 1.36
+        },
+        {
+          "text": "Nam,",
+          "start": 1.44,
+          "end": 1.92
+        },
+        {
+          "text": "lập",
+          "start": 1.96,
+          "end": 2.16
+        },
+        {
+          "text": "năm",
+          "start": 2.24,
+          "end": 2.32
+        },
+        {
+          "text": "1963,",
+          "start": 2.36,
+          "end": 3.88
+        },
+        {
+          "text": "trên",
+          "start": 4.08,
+          "end": 4.24
+        },
+        {
+          "text": "335",
+          "start": 4.4,
+          "end": 5.2
+        },
+        {
+          "text": "ha",
+          "start": 5.28,
+          "end": 5.68
+        },
+        {
+          "text": ".",
+          "start": 5.68,
+          "end": 6
+        },
+        {
+          "text": "Phương",
+          "start": 6.04,
+          "end": 6.16
+        },
+        {
+          "text": "án",
+          "start": 6.24,
+          "end": 6.32
+        },
+        {
+          "text": "chuyển",
+          "start": 6.4,
+          "end": 6.56
+        },
+        {
+          "text": "đổi",
+          "start": 6.64,
+          "end": 6.88
+        },
+        {
+          "text": "gồm",
+          "start": 6.96,
+          "end": 7.2
+        },
+        {
+          "text": "khoảng",
+          "start": 7.28,
+          "end": 7.52
+        },
+        {
+          "text": "44",
+          "start": 7.6,
+          "end": 8.04
+        },
+        {
+          "text": "ha",
+          "start": 8.08,
+          "end": 8.4
+        },
+        {
+          "text": "trung",
+          "start": 8.48,
+          "end": 8.64
+        },
+        {
+          "text": "tâm",
+          "start": 8.72,
+          "end": 8.8
+        },
+        {
+          "text": "hành",
+          "start": 8.88,
+          "end": 8.96
+        },
+        {
+          "text": "chính",
+          "start": 9.04,
+          "end": 9.28
+        },
+        {
+          "text": "và",
+          "start": 9.52,
+          "end": 9.6
+        },
+        {
+          "text": "hơn",
+          "start": 9.68,
+          "end": 9.92
+        },
+        {
+          "text": "286",
+          "start": 10,
+          "end": 11
+        },
+        {
+          "text": "ha",
+          "start": 11.04,
+          "end": 11.36
+        },
+        {
+          "text": "khu",
+          "start": 11.52,
+          "end": 11.68
+        },
+        {
+          "text": "đô",
+          "start": 11.72,
+          "end": 11.8
+        },
+        {
+          "text": "thị",
+          "start": 11.84,
+          "end": 11.96
+        },
+        {
+          "text": "dịch",
+          "start": 12,
+          "end": 12.16
+        },
+        {
+          "text": "vụ.",
+          "start": 12.24,
+          "end": 12.72
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "durationSec": 12.956734693877552,
+      "speech": "Khu đất đấu giá nằm trong lô năm mươi mốt phẩy sáu héc-ta và tổng mức đầu tư dự kiến khoảng hai mươi ba ngàn tỷ đồng. Ngoài ra, Aeon Mall Biên Hòa có tổng mức đầu tư hơn sáu ngàn tỷ. Biên Hòa đang thay đổi diện mạo.",
+      "words": [
+        {
+          "text": "Khu",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "đất",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "đấu",
+          "start": 0.36,
+          "end": 0.48
+        },
+        {
+          "text": "giá",
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "text": "nằm",
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "text": "trong",
+          "start": 1.12,
+          "end": 1.28
+        },
+        {
+          "text": "lô",
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "text": "51,6",
+          "start": 1.6,
+          "end": 2.533
+        },
+        {
+          "text": "ha",
+          "start": 2.56,
+          "end": 3.08
+        },
+        {
+          "text": "và",
+          "start": 3.28,
+          "end": 3.36
+        },
+        {
+          "text": "tổng",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "mức",
+          "start": 3.64,
+          "end": 3.76
+        },
+        {
+          "text": "đầu",
+          "start": 3.84,
+          "end": 3.92
+        },
+        {
+          "text": "tư",
+          "start": 4,
+          "end": 4.16
+        },
+        {
+          "text": "dự",
+          "start": 4.24,
+          "end": 4.4
+        },
+        {
+          "text": "kiến",
+          "start": 4.48,
+          "end": 4.72
+        },
+        {
+          "text": "khoảng",
+          "start": 4.8,
+          "end": 5.04
+        },
+        {
+          "text": "23.000",
+          "start": 5.2,
+          "end": 5.84
+        },
+        {
+          "text": "tỷ",
+          "start": 5.92,
+          "end": 6
+        },
+        {
+          "text": "đồng.",
+          "start": 6.04,
+          "end": 6.56
+        },
+        {
+          "text": "Ngoài",
+          "start": 6.587,
+          "end": 6.72
+        },
+        {
+          "text": "ra,",
+          "start": 6.8,
+          "end": 7.2
+        },
+        {
+          "text": "Aeon",
+          "start": 7.24,
+          "end": 7.44
+        },
+        {
+          "text": "Mall",
+          "start": 7.52,
+          "end": 7.68
+        },
+        {
+          "text": "Biên",
+          "start": 7.72,
+          "end": 7.84
+        },
+        {
+          "text": "Hòa",
+          "start": 7.92,
+          "end": 8.16
+        },
+        {
+          "text": "có",
+          "start": 8.24,
+          "end": 8.4
+        },
+        {
+          "text": "tổng",
+          "start": 8.48,
+          "end": 8.64
+        },
+        {
+          "text": "mức",
+          "start": 8.68,
+          "end": 8.8
+        },
+        {
+          "text": "đầu",
+          "start": 8.88,
+          "end": 8.96
+        },
+        {
+          "text": "tư",
+          "start": 9.04,
+          "end": 9.2
+        },
+        {
+          "text": "hơn",
+          "start": 9.28,
+          "end": 9.52
+        },
+        {
+          "text": "6.000",
+          "start": 9.6,
+          "end": 10
+        },
+        {
+          "text": "tỷ.",
+          "start": 10.08,
+          "end": 10.52
+        },
+        {
+          "text": "Biên",
+          "start": 10.72,
+          "end": 10.88
+        },
+        {
+          "text": "Hòa",
+          "start": 10.96,
+          "end": 11.28
+        },
+        {
+          "text": "đang",
+          "start": 11.44,
+          "end": 11.68
+        },
+        {
+          "text": "thay",
+          "start": 11.76,
+          "end": 11.92
+        },
+        {
+          "text": "đổi",
+          "start": 12,
+          "end": 12.16
+        },
+        {
+          "text": "diện",
+          "start": 12.24,
+          "end": 12.4
+        },
+        {
+          "text": "mạo.",
+          "start": 12.48,
+          "end": 12.96
+        }
+      ]
+    },
+    {
+      "id": "scene4",
+      "durationSec": 11.911836734693878,
+      "speech": "Bee Cons Central Park ở hai trăm ba mươi sáu Phan Trung, Tam Hiệp, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi chín, giữa lúc Biên Hòa đang thay đổi diện mạo. Muốn bảng nguồn từng dòng, comment tái thiết.",
+      "words": [
+        {
+          "text": "Bcons",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "Central",
+          "start": 0.64,
+          "end": 0.96
+        },
+        {
+          "text": "Park",
+          "start": 1.04,
+          "end": 1.36
+        },
+        {
+          "text": "ở",
+          "start": 1.6,
+          "end": 1.68
+        },
+        {
+          "text": "236",
+          "start": 1.84,
+          "end": 2.72
+        },
+        {
+          "text": "Phan",
+          "start": 2.8,
+          "end": 2.96
+        },
+        {
+          "text": "Trung,",
+          "start": 3.04,
+          "end": 3.36
+        },
+        {
+          "text": "Tam",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "Hiệp,",
+          "start": 3.64,
+          "end": 4
+        },
+        {
+          "text": "dự",
+          "start": 4.04,
+          "end": 4.16
+        },
+        {
+          "text": "kiến",
+          "start": 4.24,
+          "end": 4.4
+        },
+        {
+          "text": "bàn",
+          "start": 4.48,
+          "end": 4.56
+        },
+        {
+          "text": "giao",
+          "start": 4.64,
+          "end": 4.88
+        },
+        {
+          "text": "quý",
+          "start": 4.96,
+          "end": 5.12
+        },
+        {
+          "text": "2",
+          "start": 5.2,
+          "end": 5.36
+        },
+        {
+          "text": "năm",
+          "start": 5.44,
+          "end": 5.6
+        },
+        {
+          "text": "2029,",
+          "start": 5.64,
+          "end": 6.88
+        },
+        {
+          "text": "giữa",
+          "start": 7.04,
+          "end": 7.2
+        },
+        {
+          "text": "lúc",
+          "start": 7.24,
+          "end": 7.36
+        },
+        {
+          "text": "Biên",
+          "start": 7.4,
+          "end": 7.52
+        },
+        {
+          "text": "Hòa",
+          "start": 7.6,
+          "end": 7.84
+        },
+        {
+          "text": "đang",
+          "start": 7.92,
+          "end": 8.16
+        },
+        {
+          "text": "thay",
+          "start": 8.2,
+          "end": 8.32
+        },
+        {
+          "text": "đổi",
+          "start": 8.4,
+          "end": 8.56
+        },
+        {
+          "text": "diện",
+          "start": 8.64,
+          "end": 8.8
+        },
+        {
+          "text": "mạo.",
+          "start": 8.84,
+          "end": 9.12
+        },
+        {
+          "text": "Muốn",
+          "start": 9.36,
+          "end": 9.52
+        },
+        {
+          "text": "bảng",
+          "start": 9.56,
+          "end": 9.68
+        },
+        {
+          "text": "nguồn",
+          "start": 9.72,
+          "end": 9.92
+        },
+        {
+          "text": "từng",
+          "start": 10,
+          "end": 10.16
+        },
+        {
+          "text": "dòng,",
+          "start": 10.24,
+          "end": 10.72
+        },
+        {
+          "text": "comment",
+          "start": 10.92,
+          "end": 11.12
+        },
+        {
+          "text": "tái",
+          "start": 11.2,
+          "end": 11.28
+        },
+        {
+          "text": "thiết.",
+          "start": 11.36,
+          "end": 11.92
+        }
+      ]
+    }
+  ]
+}

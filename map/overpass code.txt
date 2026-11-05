@@ -1,0 +1,49 @@
+[out:json][timeout:30];
+area["ISO3166-1"="VN"]->.searchArea;
+(
+  way["landuse"="industrial"]["name"~"Loteco|LOTECO", i](area.searchArea);
+  relation["landuse"="industrial"]["name"~"Loteco|LOTECO", i](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+
+[out:json][timeout:30];
+area["ISO3166-1"="VN"]->.searchArea;
+(
+  way["landuse"="industrial"]["name"~"Amata|AMATA", i](area.searchArea);
+  relation["landuse"="industrial"]["name"~"Amata|AMATA", i](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+
+[out:json][timeout:30];
+area["ISO3166-1"="VN"]->.searchArea;
+(
+  way["landuse"="industrial"]["name"~"Biên Hòa 2|Biên Hòa II", i](area.searchArea);
+  relation["landuse"="industrial"]["name"~"Biên Hòa 2|Biên Hòa II", i](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+
+[out:json][timeout:30];
+area["ISO3166-1"="VN"]->.searchArea;
+(
+  way["landuse"="industrial"]["name"~"Biên Hòa 1|Biên Hòa I", i](area.searchArea);
+  relation["landuse"="industrial"]["name"~"Biên Hòa 1|Biên Hòa I", i](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+
+[out:json][timeout:30];
+area["ISO3166-1"="VN"]->.searchArea;
+(
+  way["name"="Khu nhà ở Phức hợp cao tầng phường Tam Hiệp"](area.searchArea);
+  relation["name"="Khu nhà ở Phức hợp cao tầng phường Tam Hiệp"](area.searchArea);
+);
+out body;
+>;
+out skel qt;

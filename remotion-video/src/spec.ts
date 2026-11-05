@@ -120,11 +120,16 @@ export const GeoLine = z
     color: GeoColor,
     width: z.number().optional(),
     cueKey,
+    /** Lệch frame so với mốc cue. */
+    offset: z.number().optional(),
     /** Số frame để tuyến vẽ xong. */
     drawFrames: z.number().int().min(1),
     sourceId: z.string().min(1).optional(),
   })
   .superRefine(officialNeedsSource);
+
+/** Mốc thời gian: theo cue (cộng offset frame) hoặc, khi không có cueKey, frame tuyệt đối trong cảnh. */
+const timing = { cueKey: cueKey.optional(), offset: z.number().optional() };
 
 export const GeoArea = z
   .object({
@@ -133,18 +138,73 @@ export const GeoArea = z
     kind: GeoKind,
     label: z.string(),
     cueKey,
+    /** Lệch frame so với mốc cue (âm lớn = hiện sẵn từ đầu cảnh). */
+    offset: z.number().optional(),
+    color: GeoColor.optional(),
+    /** Độ mờ lớp tô khi hiện đủ (mặc định 0,2). */
+    fillOpacity: z.number().min(0).max(1).optional(),
+    /** Nếu có: đường ranh tự vẽ dần trong ngần này frame (không thì hiện ngay). */
+    drawFrames: z.number().int().min(1).optional(),
+    /** Nhấp sáng một nhịp tại các mốc này. */
+    pulses: z.array(z.object({ cueKey, offset: z.number().optional() })).optional(),
+    /** Sau mốc này, vùng mờ xuống độ đậm `to` (0-1). */
+    dimAt: z.object({ cueKey, offset: z.number().optional(), to: z.number().min(0).max(1) }).optional(),
     sourceId: z.string().min(1).optional(),
   })
   .superRefine(officialNeedsSource);
+
+/** Một chặng camera: bay tới `to` trong `frames` frame, bắt đầu tại cue (+offset). */
+const CamTarget = z.union([
+  z.object({ center: lngLat, zoom: z.number(), shiftY: z.number().optional() }),
+  /** Tự tính khung nhìn vừa các vùng/điểm có key này. */
+  z.object({
+    fit: z.array(z.string()).min(1),
+    padding: z
+      .union([z.number(), z.object({ top: z.number(), bottom: z.number(), left: z.number(), right: z.number() })])
+      .optional(),
+    maxZoom: z.number().optional(),
+  }),
+]);
+export const GeoMove = z.object({ ...timing, frames: z.number().int().min(1), to: CamTarget });
+
+/** Thẻ số nổi neo vào một vùng/điểm trên bản đồ (vị trí tính theo camera). */
+export const GeoCallout = z.object({
+  anchor: z.object({ area: z.string().optional(), point: z.string().optional() }),
+  tag: z.string(),
+  big: z.string(),
+  sub: z.string().optional(),
+  cueKey,
+  offset: z.number(),
+  /** Thẻ mờ đi từ mốc này (tùy chọn). */
+  hideAt: z.object(timing).optional(),
+  /** Dịch thẻ so với điểm neo (px). */
+  dx: z.number().optional(),
+  dy: z.number().optional(),
+  sourceId,
+});
 
 export const GeoMapProps = z.object({
   kicker: z.string(),
   title: z.string(),
   mapStyle: z.string().startsWith("mapbox://styles/"),
-  camera: z.object({ center: lngLat, zoom: z.number() }),
+  /** Camera ban đầu: center+zoom (shiftY = điểm đó hiện cao hơn tâm màn hình bấy nhiêu px) hoặc fit vào các vùng/điểm. */
+  camera: CamTarget,
   points: z.array(GeoPoint),
   lines: z.array(GeoLine),
   areas: z.array(GeoArea),
+  /** Chặng camera tiếp theo (tùy chọn). Không khai thì camera đứng yên ở `camera`. */
+  moves: z.array(GeoMove).optional(),
+  /** Làm tối vùng ngoài `areaKey` từ mốc này. */
+  dim: z.object({ areaKey: z.string(), ...timing, opacity: z.number().min(0).max(1).optional() }).optional(),
+  callouts: z.array(GeoCallout).optional(),
+  /** Thẻ số liệu dưới bản đồ. */
+  cards: z.array(DataCard).max(3).optional(),
+  /** Ảnh chèn (phối cảnh) cross-fade lên bản đồ từ mốc này. */
+  image: z
+    .object({ file: z.string(), label: z.string(), ...timing, sourceId })
+    .optional(),
+  /** Dòng chữ gõ dần ở cuối cảnh. */
+  message: z.object({ text: z.string(), ...timing }).optional(),
   /** Thẻ thông tin tùy chọn, hiện khi từ cues[cueKey] được đọc. */
   info: z.object({ title: z.string(), text: z.string(), cueKey, sourceId }).optional(),
   note: z.string(),
@@ -152,6 +212,8 @@ export const GeoMapProps = z.object({
 
 export const ProjectCloseProps = z.object({
   message: z.string(),
+  /** Ảnh phối cảnh dự án (file trong public/). Không có thì dùng thẻ chữ như cũ. */
+  image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
 });
 
 const sceneBase = {

@@ -77,7 +77,14 @@ function cueKeysOf(scene) {
     case "compare-bars":
       return p.bars.map((b) => b.cueKey);
     case "geo-map":
-      return [...p.points, ...p.lines, ...p.areas, ...(p.info ? [p.info] : [])].map((x) => x.cueKey);
+      return [
+        ...[...p.points, ...p.lines, ...p.areas, ...(p.info ? [p.info] : [])].map((x) => x.cueKey),
+        ...p.areas.flatMap((a) => [...(a.pulses ?? []).map((x) => x.cueKey), ...(a.dimAt ? [a.dimAt.cueKey] : [])]),
+        ...(p.moves ?? []).map((x) => x.cueKey),
+        ...(p.callouts ?? []).flatMap((x) => [x.cueKey, x.hideAt?.cueKey]),
+        ...(p.cards ?? []).map((x) => x.cueKey),
+        ...[p.dim, p.image, p.message].filter(Boolean).map((x) => x.cueKey),
+      ].filter(Boolean);
     default:
       return [];
   }
@@ -189,6 +196,13 @@ function* featuresOf(json) {
 export function checkGeoFiles(spec, publicDir) {
   const errors = [];
   for (const scene of spec.scenes) {
+    // Ảnh chèn phải có file thật, không phải ảnh giữ chỗ.
+    const img = scene.props?.image;
+    if (img?.file) {
+      const where = `Cảnh ${scene.id}, ảnh ${img.file}`;
+      if (!fs.existsSync(path.join(publicDir, img.file))) errors.push(`${where}: không thấy file`);
+      else if (/placeholder/i.test(path.basename(img.file))) errors.push(`${where}: là ảnh giữ chỗ. Thay bằng ảnh phối cảnh thật của chủ đầu tư.`);
+    }
     if (scene.template !== "geo-map") continue;
     const p = scene.props;
     const layers = [
@@ -219,6 +233,10 @@ export function checkGeoFiles(spec, publicDir) {
             break;
           }
         }
+      }
+      const provisional = feats.find((f) => f.properties?.provisional);
+      if (provisional) {
+        errors.push(`${where}: dữ liệu TẠM (provisional: ${provisional.properties.provisional}). Thay bằng tọa độ/ranh thật trước khi render đủ.`);
       }
       if (layer.type === "điểm" && !feats.some((f) => f.properties?.key === layer.featureKey)) {
         errors.push(`${where}: không có feature với properties.key = "${layer.featureKey}" (featureKey)`);

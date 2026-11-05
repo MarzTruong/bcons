@@ -1,0 +1,780 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.55,
+    "similarity_boost": 0.8,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 12.695510204081632,
+      "speech": "Cho thuê căn hộ, khu nào lợi suất cao? Theo số liệu batdongsan.com dẫn trên CafeF, Biên Hòa bốn phẩy bốn phần trăm một năm, Thủ Đức ba phẩy ba Quận chín hai phẩy bảy Quận hai hai phẩy một .",
+      "words": [
+        {
+          "text": "Cho",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "thuê",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "căn",
+          "start": 0.36,
+          "end": 0.48
+        },
+        {
+          "text": "hộ,",
+          "start": 0.56,
+          "end": 1.04
+        },
+        {
+          "text": "khu",
+          "start": 1.08,
+          "end": 1.28
+        },
+        {
+          "text": "nào",
+          "start": 1.36,
+          "end": 1.6
+        },
+        {
+          "text": "lợi",
+          "start": 1.68,
+          "end": 1.76
+        },
+        {
+          "text": "suất",
+          "start": 1.84,
+          "end": 2
+        },
+        {
+          "text": "cao?",
+          "start": 2.08,
+          "end": 2.32
+        },
+        {
+          "text": "Theo",
+          "start": 2.72,
+          "end": 2.84
+        },
+        {
+          "text": "số",
+          "start": 2.88,
+          "end": 3
+        },
+        {
+          "text": "liệu",
+          "start": 3.04,
+          "end": 3.2
+        },
+        {
+          "text": "batdongsan.com",
+          "start": 3.32,
+          "end": 4.4
+        },
+        {
+          "text": "dẫn",
+          "start": 4.48,
+          "end": 4.72
+        },
+        {
+          "text": "trên",
+          "start": 4.76,
+          "end": 4.88
+        },
+        {
+          "text": "CafeF,",
+          "start": 4.96,
+          "end": 5.76
+        },
+        {
+          "text": "Biên",
+          "start": 5.84,
+          "end": 6
+        },
+        {
+          "text": "Hòa",
+          "start": 6.08,
+          "end": 6.32
+        },
+        {
+          "text": "4,4",
+          "start": 6.48,
+          "end": 7.013
+        },
+        {
+          "text": "phần",
+          "start": 7.067,
+          "end": 7.28
+        },
+        {
+          "text": "trăm",
+          "start": 7.32,
+          "end": 7.4
+        },
+        {
+          "text": "một",
+          "start": 7.44,
+          "end": 7.6
+        },
+        {
+          "text": "năm,",
+          "start": 7.68,
+          "end": 8.16
+        },
+        {
+          "text": "Thủ",
+          "start": 8.2,
+          "end": 8.28
+        },
+        {
+          "text": "Đức",
+          "start": 8.32,
+          "end": 8.64
+        },
+        {
+          "text": "3,3",
+          "start": 8.68,
+          "end": 9.12
+        },
+        {
+          "text": "Quận",
+          "start": 9.6,
+          "end": 9.76
+        },
+        {
+          "text": "9",
+          "start": 9.84,
+          "end": 10.08
+        },
+        {
+          "text": "2,7",
+          "start": 10.24,
+          "end": 10.8
+        },
+        {
+          "text": "Quận",
+          "start": 11.2,
+          "end": 11.36
+        },
+        {
+          "text": "2",
+          "start": 11.44,
+          "end": 11.68
+        },
+        {
+          "text": "2,1",
+          "start": 11.92,
+          "end": 12.4
+        },
+        {
+          "text": ".",
+          "start": 12.4,
+          "end": 12.72
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "durationSec": 12.538775510204081,
+      "speech": "Cầu thuê đến từ đâu? Theo Ban Quản lý các khu công nghiệp Đồng Nai, Loteco lấp đầy chín mươi chín phẩy hai mươi sáu phần trăm, Biên Hòa hai là chín mươi ba phẩy chín mươi bảy và Amata là chín mươi phẩy tám mươi sáu .",
+      "words": [
+        {
+          "text": "Cầu",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "thuê",
+          "start": 0.24,
+          "end": 0.4
+        },
+        {
+          "text": "đến",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "từ",
+          "start": 0.68,
+          "end": 0.8
+        },
+        {
+          "text": "đâu?",
+          "start": 0.84,
+          "end": 1.24
+        },
+        {
+          "text": "Theo",
+          "start": 1.44,
+          "end": 1.6
+        },
+        {
+          "text": "Ban",
+          "start": 1.68,
+          "end": 1.76
+        },
+        {
+          "text": "Quản",
+          "start": 1.8,
+          "end": 1.92
+        },
+        {
+          "text": "lý",
+          "start": 2,
+          "end": 2.12
+        },
+        {
+          "text": "các",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "KCN",
+          "start": 2.36,
+          "end": 2.8
+        },
+        {
+          "text": "Đồng",
+          "start": 2.88,
+          "end": 3.04
+        },
+        {
+          "text": "Nai,",
+          "start": 3.12,
+          "end": 3.68
+        },
+        {
+          "text": "Loteco",
+          "start": 3.8,
+          "end": 4.24
+        },
+        {
+          "text": "lấp",
+          "start": 4.28,
+          "end": 4.48
+        },
+        {
+          "text": "đầy",
+          "start": 4.52,
+          "end": 4.72
+        },
+        {
+          "text": "99,26",
+          "start": 4.8,
+          "end": 6.12
+        },
+        {
+          "text": "phần",
+          "start": 6.16,
+          "end": 6.32
+        },
+        {
+          "text": "trăm,",
+          "start": 6.36,
+          "end": 6.8
+        },
+        {
+          "text": "Biên",
+          "start": 6.88,
+          "end": 7.04
+        },
+        {
+          "text": "Hòa",
+          "start": 7.12,
+          "end": 7.36
+        },
+        {
+          "text": "2",
+          "start": 7.52,
+          "end": 7.76
+        },
+        {
+          "text": "là",
+          "start": 8,
+          "end": 8.16
+        },
+        {
+          "text": "93,97",
+          "start": 8.24,
+          "end": 9.44
+        },
+        {
+          "text": "và",
+          "start": 9.84,
+          "end": 10.08
+        },
+        {
+          "text": "Amata",
+          "start": 10.2,
+          "end": 10.64
+        },
+        {
+          "text": "là",
+          "start": 10.8,
+          "end": 10.96
+        },
+        {
+          "text": "90,86",
+          "start": 11,
+          "end": 12.373
+        },
+        {
+          "text": ".",
+          "start": 12.373,
+          "end": 12.56
+        }
+      ]
+    },
+    {
+      "id": "scene3",
+      "durationSec": 15.177142857142858,
+      "speech": "Vốn đầu tư cũng đổ vào. Tám tháng đầu năm hai ngàn không trăm hai mươi sáu, Đồng Nai thu hút gần một phẩy tám mươi tám tỷ đô la Mỹ vốn FDI và hơn tám trăm sáu mươi ngàn tỷ đồng vốn trong nước. Theo CafeLand nhiều chuyên gia muốn ở ngay khu vực làm việc.",
+      "words": [
+        {
+          "text": "Vốn",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "đầu",
+          "start": 0.28,
+          "end": 0.4
+        },
+        {
+          "text": "tư",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "text": "cũng",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "đổ",
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "text": "vào.",
+          "start": 1.28,
+          "end": 1.72
+        },
+        {
+          "text": "Tám",
+          "start": 1.92,
+          "end": 2.08
+        },
+        {
+          "text": "tháng",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "đầu",
+          "start": 2.4,
+          "end": 2.56
+        },
+        {
+          "text": "năm",
+          "start": 2.64,
+          "end": 2.72
+        },
+        {
+          "text": "2026,",
+          "start": 2.8,
+          "end": 4.24
+        },
+        {
+          "text": "Đồng",
+          "start": 4.4,
+          "end": 4.56
+        },
+        {
+          "text": "Nai",
+          "start": 4.6,
+          "end": 4.8
+        },
+        {
+          "text": "thu",
+          "start": 4.88,
+          "end": 4.96
+        },
+        {
+          "text": "hút",
+          "start": 5.04,
+          "end": 5.2
+        },
+        {
+          "text": "gần",
+          "start": 5.28,
+          "end": 5.44
+        },
+        {
+          "text": "1,88",
+          "start": 5.6,
+          "end": 6.56
+        },
+        {
+          "text": "tỷ",
+          "start": 6.72,
+          "end": 6.88
+        },
+        {
+          "text": "USD",
+          "start": 6.96,
+          "end": 7.36
+        },
+        {
+          "text": "vốn",
+          "start": 7.52,
+          "end": 7.68
+        },
+        {
+          "text": "FDI",
+          "start": 7.84,
+          "end": 8.4
+        },
+        {
+          "text": "và",
+          "start": 8.64,
+          "end": 8.76
+        },
+        {
+          "text": "hơn",
+          "start": 8.8,
+          "end": 9.12
+        },
+        {
+          "text": "860",
+          "start": 9.16,
+          "end": 9.973
+        },
+        {
+          "text": "ngàn",
+          "start": 10,
+          "end": 10.16
+        },
+        {
+          "text": "tỷ",
+          "start": 10.24,
+          "end": 10.36
+        },
+        {
+          "text": "đồng",
+          "start": 10.4,
+          "end": 10.64
+        },
+        {
+          "text": "vốn",
+          "start": 10.68,
+          "end": 10.88
+        },
+        {
+          "text": "trong",
+          "start": 10.92,
+          "end": 11.04
+        },
+        {
+          "text": "nước.",
+          "start": 11.12,
+          "end": 11.44
+        },
+        {
+          "text": "Theo",
+          "start": 11.6,
+          "end": 11.76
+        },
+        {
+          "text": "CafeLand",
+          "start": 11.8,
+          "end": 12.4
+        },
+        {
+          "text": "nhiều",
+          "start": 12.72,
+          "end": 12.88
+        },
+        {
+          "text": "chuyên",
+          "start": 12.92,
+          "end": 13.04
+        },
+        {
+          "text": "gia",
+          "start": 13.12,
+          "end": 13.36
+        },
+        {
+          "text": "muốn",
+          "start": 13.52,
+          "end": 13.76
+        },
+        {
+          "text": "ở",
+          "start": 13.84,
+          "end": 13.92
+        },
+        {
+          "text": "ngay",
+          "start": 14,
+          "end": 14.16
+        },
+        {
+          "text": "khu",
+          "start": 14.24,
+          "end": 14.4
+        },
+        {
+          "text": "vực",
+          "start": 14.44,
+          "end": 14.56
+        },
+        {
+          "text": "làm",
+          "start": 14.6,
+          "end": 14.72
+        },
+        {
+          "text": "việc.",
+          "start": 14.8,
+          "end": 15.2
+        }
+      ]
+    },
+    {
+      "id": "scene4",
+      "durationSec": 13.662040816326531,
+      "speech": "Bee Cons Central Park ở hai trăm ba mươi sáu Phan Trung, Tam Hiệp, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi chín, là một lựa chọn để mình cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment bài toán thuê.",
+      "words": [
+        {
+          "text": "Bcons",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "Central",
+          "start": 0.64,
+          "end": 0.96
+        },
+        {
+          "text": "Park",
+          "start": 1.04,
+          "end": 1.36
+        },
+        {
+          "text": "ở",
+          "start": 1.6,
+          "end": 1.68
+        },
+        {
+          "text": "236",
+          "start": 1.84,
+          "end": 2.72
+        },
+        {
+          "text": "Phan",
+          "start": 2.8,
+          "end": 2.96
+        },
+        {
+          "text": "Trung,",
+          "start": 3.04,
+          "end": 3.4
+        },
+        {
+          "text": "Tam",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "Hiệp,",
+          "start": 3.68,
+          "end": 4
+        },
+        {
+          "text": "dự",
+          "start": 4.04,
+          "end": 4.16
+        },
+        {
+          "text": "kiến",
+          "start": 4.24,
+          "end": 4.4
+        },
+        {
+          "text": "bàn",
+          "start": 4.48,
+          "end": 4.56
+        },
+        {
+          "text": "giao",
+          "start": 4.64,
+          "end": 4.88
+        },
+        {
+          "text": "quý",
+          "start": 4.96,
+          "end": 5.12
+        },
+        {
+          "text": "2",
+          "start": 5.2,
+          "end": 5.36
+        },
+        {
+          "text": "năm",
+          "start": 5.44,
+          "end": 5.56
+        },
+        {
+          "text": "2029,",
+          "start": 5.6,
+          "end": 7.04
+        },
+        {
+          "text": "là",
+          "start": 7.08,
+          "end": 7.12
+        },
+        {
+          "text": "một",
+          "start": 7.16,
+          "end": 7.28
+        },
+        {
+          "text": "lựa",
+          "start": 7.32,
+          "end": 7.44
+        },
+        {
+          "text": "chọn",
+          "start": 7.52,
+          "end": 7.76
+        },
+        {
+          "text": "để",
+          "start": 7.84,
+          "end": 7.92
+        },
+        {
+          "text": "mình",
+          "start": 7.96,
+          "end": 8.08
+        },
+        {
+          "text": "cân",
+          "start": 8.16,
+          "end": 8.32
+        },
+        {
+          "text": "nhắc",
+          "start": 8.4,
+          "end": 8.56
+        },
+        {
+          "text": "cho",
+          "start": 8.64,
+          "end": 8.72
+        },
+        {
+          "text": "nhu",
+          "start": 8.76,
+          "end": 8.88
+        },
+        {
+          "text": "cầu",
+          "start": 8.96,
+          "end": 9.12
+        },
+        {
+          "text": "ở",
+          "start": 9.28,
+          "end": 9.44
+        },
+        {
+          "text": "và",
+          "start": 9.52,
+          "end": 9.64
+        },
+        {
+          "text": "cho",
+          "start": 9.68,
+          "end": 9.84
+        },
+        {
+          "text": "thuê",
+          "start": 9.92,
+          "end": 10.16
+        },
+        {
+          "text": "trong",
+          "start": 10.2,
+          "end": 10.32
+        },
+        {
+          "text": "khu",
+          "start": 10.36,
+          "end": 10.48
+        },
+        {
+          "text": "vực.",
+          "start": 10.56,
+          "end": 10.8
+        },
+        {
+          "text": "Muốn",
+          "start": 10.96,
+          "end": 11.08
+        },
+        {
+          "text": "bảng",
+          "start": 11.12,
+          "end": 11.28
+        },
+        {
+          "text": "nguồn",
+          "start": 11.32,
+          "end": 11.44
+        },
+        {
+          "text": "từng",
+          "start": 11.52,
+          "end": 11.68
+        },
+        {
+          "text": "dòng,",
+          "start": 11.76,
+          "end": 12.24
+        },
+        {
+          "text": "comment",
+          "start": 12.44,
+          "end": 12.64
+        },
+        {
+          "text": "bài",
+          "start": 12.72,
+          "end": 12.8
+        },
+        {
+          "text": "toán",
+          "start": 12.88,
+          "end": 13.04
+        },
+        {
+          "text": "thuê.",
+          "start": 13.08,
+          "end": 13.68
+        }
+      ]
+    }
+  ]
+}

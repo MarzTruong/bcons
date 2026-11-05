@@ -34,6 +34,17 @@ const out = {
   "tuyen-minh-hoa-ben-luc-long-thanh.geojson": line,
   "tam-giac-ket-noi.geojson": triangle,
 };
+// Aeon Mall Biên Hòa: chưa có tọa độ khu đất thật. Điểm dưới đây do anh chọn làm điểm tạm (05/11/2026),
+// ghi trong bảng nguồn là "gần đúng". Khi có tọa độ thật thì sửa ở đây và chạy lại (đổi sang `provisional` để chặn render nếu cần).
+out["aeon.geojson"] = turf.featureCollection([
+  turf.point([106.83520655583497, 10.927817077580567], {
+    key: "aeon",
+    name: "Aeon Mall Biên Hòa",
+    sourceId: "geo-aeon",
+    fetchedAt: FETCHED,
+    approximate: "điểm tạm do anh chọn, chưa phải tọa độ khu đất Aeon",
+  }),
+]);
 for (const [file, data] of Object.entries(out)) {
   fs.writeFileSync(`public/geo/${file}`, JSON.stringify(data, null, 2) + "\n");
 }

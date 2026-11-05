@@ -1,0 +1,453 @@
+{
+  "name": "cho-thue-kcn-bien-hoa-2026",
+  "status": "approved",
+  "style": "sang",
+  "motion": "truot",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "compare-bars",
+      "markup": "Cho thuê căn hộ, khu nào lợi suất cao? Theo số liệu batdongsan.com dẫn trên CafeF, Biên Hòa 4,4{bốn phẩy bốn} phần trăm một năm, Thủ Đức 3,3{ba phẩy ba} Quận 9{chín} 2,7{hai phẩy bảy} Quận 2{hai} 2,1{hai phẩy một}.",
+      "cues": {
+        "a": "Biên",
+        "b": "Thủ",
+        "c": "9",
+        "d": "2"
+      },
+      "props": {
+        "kicker": "THEO BATDONGSAN.COM, CAFEF 21/11/2025",
+        "title": "Lợi suất cho thuê căn hộ",
+        "unit": "%/năm",
+        "bars": [
+          {
+            "label": "Biên Hòa",
+            "value": 4.4,
+            "cueKey": "a",
+            "sourceId": "thue-bh"
+          },
+          {
+            "label": "Thủ Đức",
+            "value": 3.3,
+            "cueKey": "b",
+            "sourceId": "thue-td"
+          },
+          {
+            "label": "Quận 9",
+            "value": 2.7,
+            "cueKey": "c",
+            "sourceId": "thue-q9"
+          },
+          {
+            "label": "Quận 2",
+            "value": 2.1,
+            "cueKey": "d",
+            "sourceId": "thue-q2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "geo-map",
+      "markup": "Cầu thuê đến từ đâu? Theo Ban Quản lý các KCN{khu công nghiệp} Đồng Nai, Loteco lấp đầy 99,26{chín mươi chín phẩy hai mươi sáu} phần trăm, Biên Hòa 2{hai} là 93,97{chín mươi ba phẩy chín mươi bảy} và Amata là 90,86{chín mươi phẩy tám mươi sáu}.",
+      "cues": {
+        "c1": "Loteco",
+        "c2": "Biên",
+        "c3": "Amata"
+      },
+      "props": {
+        "kicker": "BAN QUẢN LÝ KCN ĐỒNG NAI (TRANG CHƯA GHI NGÀY CẬP NHẬT)",
+        "title": "Tỷ lệ lấp đầy khu công nghiệp",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "kcn-loteco",
+            "kcn-bien-hoa-2",
+            "kcn-amata",
+            "project"
+          ],
+          "padding": {
+            "top": 380,
+            "bottom": 440,
+            "left": 90,
+            "right": 90
+          }
+        },
+        "points": [
+          {
+            "key": "project",
+            "label": "Bcons Central Park",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "cueKey": "c1",
+            "offset": -400,
+            "sourceId": "geo-central-park",
+            "big": true
+          }
+        ],
+        "lines": [],
+        "areas": [
+          {
+            "key": "kcn-loteco",
+            "file": "geo/osm/kcn-loteco.geojson",
+            "kind": "official",
+            "label": "LOTECO",
+            "cueKey": "c1",
+            "offset": -24,
+            "color": "gold",
+            "sourceId": "geo-osm-loteco",
+            "drawFrames": 36,
+            "dimAt": {
+              "cueKey": "c2",
+              "offset": -24,
+              "to": 0.3
+            }
+          },
+          {
+            "key": "kcn-bien-hoa-2",
+            "file": "geo/osm/kcn-bien-hoa-2.geojson",
+            "kind": "official",
+            "label": "BIÊN HÒA II",
+            "cueKey": "c2",
+            "offset": -24,
+            "color": "teal",
+            "sourceId": "geo-osm-bh2",
+            "drawFrames": 36,
+            "dimAt": {
+              "cueKey": "c3",
+              "offset": -24,
+              "to": 0.3
+            }
+          },
+          {
+            "key": "kcn-amata",
+            "file": "geo/osm/kcn-amata.geojson",
+            "kind": "official",
+            "label": "AMATA",
+            "cueKey": "c3",
+            "offset": -24,
+            "color": "white",
+            "sourceId": "geo-osm-amata",
+            "drawFrames": 36
+          }
+        ],
+        "moves": [
+          {
+            "frames": 42,
+            "to": {
+              "fit": [
+                "kcn-loteco"
+              ],
+              "padding": {
+                "top": 420,
+                "bottom": 440,
+                "left": 200,
+                "right": 200
+              },
+              "maxZoom": 14.8
+            },
+            "cueKey": "c1",
+            "offset": -24
+          },
+          {
+            "frames": 42,
+            "to": {
+              "fit": [
+                "kcn-bien-hoa-2"
+              ],
+              "padding": {
+                "top": 420,
+                "bottom": 440,
+                "left": 160,
+                "right": 160
+              },
+              "maxZoom": 14.5
+            },
+            "cueKey": "c2",
+            "offset": -24
+          },
+          {
+            "frames": 42,
+            "to": {
+              "fit": [
+                "kcn-amata"
+              ],
+              "padding": {
+                "top": 420,
+                "bottom": 440,
+                "left": 160,
+                "right": 160
+              },
+              "maxZoom": 14.5
+            },
+            "cueKey": "c3",
+            "offset": -24
+          }
+        ],
+        "callouts": [
+          {
+            "anchor": {
+              "area": "kcn-loteco"
+            },
+            "tag": "KCN LOTECO",
+            "big": "99,26%",
+            "sub": "lấp đầy, diện tích 100 ha",
+            "cueKey": "c1",
+            "offset": -5,
+            "dy": -110,
+            "sourceId": "kcn-loteco",
+            "hideAt": {
+              "cueKey": "c2",
+              "offset": -14
+            }
+          },
+          {
+            "anchor": {
+              "area": "kcn-bien-hoa-2"
+            },
+            "tag": "KCN BIÊN HÒA II",
+            "big": "93,97%",
+            "sub": "lấp đầy, diện tích 394,63 ha",
+            "cueKey": "c2",
+            "offset": -5,
+            "dy": -110,
+            "sourceId": "kcn-bh2",
+            "hideAt": {
+              "cueKey": "c3",
+              "offset": -14
+            }
+          },
+          {
+            "anchor": {
+              "area": "kcn-amata"
+            },
+            "tag": "KCN AMATA",
+            "big": "90,86%",
+            "sub": "lấp đầy, diện tích 513,01 ha",
+            "cueKey": "c3",
+            "offset": -5,
+            "dy": -110,
+            "sourceId": "kcn-amata"
+          }
+        ],
+        "note": "Ranh KCN theo dữ liệu OpenStreetMap, có thể lệch số diện tích chính thức"
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "geo-map",
+      "markup": "Vốn đầu tư cũng đổ vào. Tám tháng đầu năm 2026,{hai ngàn không trăm hai mươi sáu,} Đồng Nai thu hút gần 1,88{một phẩy tám mươi tám} tỷ USD{đô la Mỹ} vốn FDI và hơn 860{tám trăm sáu mươi} ngàn tỷ đồng vốn trong nước. Theo CafeLand nhiều chuyên gia muốn ở ngay khu vực làm việc.",
+      "cues": {
+        "c1": "FDI",
+        "c2": "860",
+        "c3": "CafeLand",
+        "z1": "gia",
+        "z2": "ở",
+        "z3": "khu"
+      },
+      "props": {
+        "kicker": "ĐỒNG NAI, 8 THÁNG ĐẦU 2026",
+        "title": "Vốn đầu tư và nhu cầu ở",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "kcn-loteco",
+            "kcn-bien-hoa-2",
+            "kcn-amata",
+            "project"
+          ],
+          "padding": {
+            "top": 830,
+            "bottom": 440,
+            "left": 220,
+            "right": 90
+          }
+        },
+        "points": [
+          {
+            "key": "project",
+            "label": "Bcons Central Park",
+            "file": "geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "cueKey": "c1",
+            "offset": -400,
+            "sourceId": "geo-central-park",
+            "big": true
+          }
+        ],
+        "lines": [
+          {
+            "key": "km-loteco",
+            "file": "geo/minh-hoa/km-loteco.geojson",
+            "kind": "illustrative",
+            "color": "gold",
+            "width": 5,
+            "cueKey": "z1",
+            "offset": 5,
+            "drawFrames": 24,
+            "sourceId": "km-chim-bay"
+          },
+          {
+            "key": "km-bh2",
+            "file": "geo/minh-hoa/km-bien-hoa-2.geojson",
+            "kind": "illustrative",
+            "color": "gold",
+            "width": 5,
+            "cueKey": "z2",
+            "offset": 5,
+            "drawFrames": 24,
+            "sourceId": "km-chim-bay"
+          },
+          {
+            "key": "km-amata",
+            "file": "geo/minh-hoa/km-amata.geojson",
+            "kind": "illustrative",
+            "color": "gold",
+            "width": 5,
+            "cueKey": "z3",
+            "offset": 5,
+            "drawFrames": 24,
+            "sourceId": "km-chim-bay"
+          }
+        ],
+        "areas": [
+          {
+            "key": "kcn-loteco",
+            "file": "geo/osm/kcn-loteco.geojson",
+            "kind": "official",
+            "label": "LOTECO",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "gold",
+            "sourceId": "geo-osm-loteco",
+            "pulses": [
+              {
+                "cueKey": "z1"
+              }
+            ]
+          },
+          {
+            "key": "kcn-bien-hoa-2",
+            "file": "geo/osm/kcn-bien-hoa-2.geojson",
+            "kind": "official",
+            "label": "BIÊN HÒA II",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "teal",
+            "sourceId": "geo-osm-bh2",
+            "pulses": [
+              {
+                "cueKey": "z2"
+              }
+            ]
+          },
+          {
+            "key": "kcn-amata",
+            "file": "geo/osm/kcn-amata.geojson",
+            "kind": "official",
+            "label": "AMATA",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "white",
+            "sourceId": "geo-osm-amata",
+            "pulses": [
+              {
+                "cueKey": "z3"
+              }
+            ]
+          },
+          {
+            "key": "du-an",
+            "file": "geo/osm/du-an-central-park.geojson",
+            "kind": "official",
+            "label": "",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "red",
+            "sourceId": "geo-osm-du-an"
+          }
+        ],
+        "moves": [
+          {
+            "frames": 50,
+            "to": {
+              "fit": [
+                "du-an"
+              ],
+              "padding": {
+                "top": 850,
+                "bottom": 450,
+                "left": 200,
+                "right": 200
+              },
+              "maxZoom": 18
+            },
+            "offset": 87
+          },
+          {
+            "frames": 60,
+            "to": {
+              "fit": [
+                "kcn-loteco",
+                "kcn-bien-hoa-2",
+                "kcn-amata",
+                "project"
+              ],
+              "padding": {
+                "top": 830,
+                "bottom": 440,
+                "left": 220,
+                "right": 90
+              }
+            },
+            "cueKey": "c3",
+            "offset": -60
+          }
+        ],
+        "cards": [
+          {
+            "tag": "VỐN FDI",
+            "big": "Gần 1,88 tỷ USD",
+            "sub": "theo VnEconomy 05/09/2026",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "fdi-8t"
+          },
+          {
+            "tag": "VỐN TRONG NƯỚC",
+            "big": "Hơn 860 ngàn tỷ",
+            "sub": "tính đến 20/08/2026",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "trong-nuoc-8t"
+          },
+          {
+            "tag": "NHẬN ĐỊNH, KHÔNG CÓ SỐ LIỆU",
+            "big": "Ở gần nơi làm việc",
+            "sub": "xu hướng chuyên gia, theo CafeLand 25/06/2026",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "chuyen-gia"
+          }
+        ],
+        "note": "Ranh KCN theo OpenStreetMap; nét nối là đường chim bay đến tâm khu, không phải quãng đường đi"
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý 2{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} là một lựa chọn để mình cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment bài toán thuê.",
+      "cues": {},
+      "props": {
+        "message": "Dự kiến bàn giao Quý II/2029. Comment “bài toán thuê” để nhận bảng nguồn từng dòng",
+        "image": {
+          "file": "images/phoi-canh-green-park.jpg",
+          "label": "Hình ảnh phối cảnh mang tính minh họa",
+          "sourceId": "phoi-canh"
+        }
+      }
+    }
+  ]
+}

@@ -31,9 +31,11 @@ if (tsErrors.length) {
 // Cảnh bản đồ cần token Mapbox (đặt REMOTION_MAPBOX_TOKEN cho bundle).
 if (spec.scenes.some((s) => s.template === "geo-map")) loadMapboxEnv();
 const file = process.argv[3] ?? `${name}.mp4`;
-const out = path.join("out", file);
-fs.mkdirSync("out", { recursive: true });
-const propsFile = path.join("out", `props-${name}.json`);
+// out/video = video thành phẩm; out/tam = file tạm (props, khung kiểm tra, log). Cả out/ đã gitignore.
+const out = path.join("out", "video", file);
+fs.mkdirSync(path.join("out", "video"), { recursive: true });
+fs.mkdirSync(path.join("out", "tam", "props"), { recursive: true });
+const propsFile = path.join("out", "tam", "props", `props-${name}.json`);
 fs.writeFileSync(
   propsFile,
   JSON.stringify({ spec, timestamps }),
@@ -56,7 +58,9 @@ if (!target || !fs.existsSync(target)) {
   process.exit(1);
 }
 
-const render = spawnSync("npx", ["remotion", "render", COMPOSITION, out, `--props=${propsFile}`], {
+// Cảnh bản đồ Mapbox cần WebGL qua ANGLE và render tuần tự (concurrency 1).
+const mapFlags = spec.scenes.some((s) => s.template === "geo-map") ? ["--gl=angle", "--concurrency=1"] : [];
+const render = spawnSync("npx", ["remotion", "render", COMPOSITION, out, `--props=${propsFile}`, ...mapFlags], {
   stdio: "inherit",
   shell: true,
 });

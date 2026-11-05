@@ -16,7 +16,7 @@ Em chạy quy trình video của dự án Bcons Central Park. Đọc trước: `
 - Số trong ví dụ của hai file prompt cũ (85 triệu/m², 49,9 triệu/m², 6,2%, "tiết kiệm 60%") không có nguồn: không dùng.
 - Quy tắc nội dung (CLAUDE.md): không cam kết lợi nhuận, không hứa tăng giá, không so sánh dự án khác bằng số không nguồn, không nói "sắp hết" khi chưa kiểm tra tình trạng căn, không quảng cáo căn "CĐT LOCK", căn đã cọc là đã bán, không bán cho người nước ngoài. Nhắc giá thì nói rõ chưa VAT/có VAT và phí bảo trì 2%. Số lượng: 2.820 căn ở + 113 căn thương mại.
 - Cảnh cuối: không đọc, không hiện số điện thoại hay tên cá nhân; chỉ thông tin dự án.
-- Cảnh có thông tin địa lý dùng mẫu `geo-map` (xem `docs/video/geo-nguon.md`, ví dụ `remotion-video/specs/dong-nai-ha-tang-map.json`). Điểm phải có tọa độ có nguồn (anh cung cấp từ Google Maps hoặc nguồn chính thức), ghi vào bảng nguồn. **Không vẽ tuyến hay ranh giới giả cho giống thật**: lớp chưa có dữ liệu chính thức phải đặt `kind: "illustrative"` (nét đứt, nhãn minh họa) và `note` nói rõ là sơ đồ minh họa. Bản đồ cần token Mapbox: `MAPBOX_TOKEN_KEY` trong `remotion-video/.env`; kiểm bằng `npm run check:mapbox`; xem thử một khung bằng `npm run still -- BconsCentralPark out/x.png --frame=N --props=<file> --gl=angle`. Chú thích "© Mapbox © OpenStreetMap" luôn hiện (đã có sẵn trong mẫu).
+- Cảnh có thông tin địa lý dùng mẫu `geo-map` (xem `docs/video/geo-nguon.md`, ví dụ `remotion-video/specs/dong-nai-ha-tang-map.json`). Điểm phải có tọa độ có nguồn (anh cung cấp từ Google Maps hoặc nguồn chính thức), ghi vào bảng nguồn. **Không vẽ tuyến hay ranh giới giả cho giống thật**: lớp chưa có dữ liệu chính thức phải đặt `kind: "illustrative"` (nét đứt, nhãn minh họa) và `note` nói rõ là sơ đồ minh họa. Bản đồ cần token Mapbox: `MAPBOX_TOKEN_KEY` trong `remotion-video/.env`; kiểm bằng `npm run check:mapbox`; xem thử một khung bằng `npm run still -- BconsCentralPark out/tam/x.png --frame=N --props=<file> --gl=angle`. Chú thích "© Mapbox © OpenStreetMap" luôn hiện (đã có sẵn trong mẫu).
 
 ## Xác định đang ở giai đoạn nào
 Dựa vào file trên đĩa, không hỏi lại những gì đã có. Slug `<name>` (a-z, 0-9, gạch ngang) do em đề xuất ở cổng 1 và anh duyệt.
@@ -24,7 +24,7 @@ Dựa vào file trên đĩa, không hỏi lại những gì đã có. Slug `<nam
 - Có `docs/video/<name>.md` nhưng chưa có `remotion-video/specs/<name>.json` → **Cổng 2**.
 - Có spec `draft`, anh chưa duyệt → chờ cổng 2.
 - Spec `approved`, chưa có `remotion-video/specs/<name>.timestamps.json` → **Cổng 3**.
-- Có timestamp, chưa có mp4 trong `remotion-video/out/` → **Cổng 4**.
+- Có timestamp, chưa có mp4 trong `remotion-video/out/video/` → **Cổng 4**.
 Nếu `$ARGUMENTS` trống hoặc trùng tên một video có sẵn, hỏi anh muốn làm tiếp video nào hay làm chủ đề mới.
 
 ## Cổng 1 — Số liệu và góc làm
@@ -45,7 +45,8 @@ Nếu `$ARGUMENTS` trống hoặc trùng tên một video có sẵn, hỏi anh m
 3. Khi anh đồng ý: `cd remotion-video && node --env-file=.env scripts/generate-voice.mjs <name>`. Báo thời lượng từng cảnh. Nhờ anh nghe thử (`remotion-video/public/audio/<name>/`).
 4. **DỪNG.** Chờ anh nói nghe được rồi.
 
-## Cổng 4 — Render và duyệt trước khi đăng
-1. `cd remotion-video && npm run lint`, rồi `npm run render:drive -- <name>` (render ra `out/<name>.mp4` và chép lên Drive).
+## Cổng 4 — Storyboard, render và duyệt trước khi đăng
+0. **Storyboard (bắt buộc với video có bản đồ, camera chuyển động hoặc ảnh chèn; video chỉ có thẻ số liệu thì bỏ qua).** Trước khi viết code hoặc render, viết `docs/video/<name>-storyboard.md`: từng cảnh một bảng theo giây (mốc giây lấy từ `specs/<name>.timestamps.json`, không đoán): lời đọc, camera, hiệu ứng, chữ nhỏ cố định; mục "Dữ liệu cần trước khi làm" (tọa độ, ảnh, ranh giới: chưa có thì nói chưa có); mục "Việc code". Lời bình và giọng không đổi nên không tốn credit. **DỪNG. Chờ anh duyệt storyboard**, rồi mới làm code, render thử vài khung chính cho anh xem, rồi mới render đủ.
+1. `cd remotion-video && npm run lint`, rồi `npm run render:drive -- <name>` (render ra `out/video/<name>.mp4` và chép lên Drive; file tạm (khung thử, log, props) để trong `out/tam/`, không để lẫn vào `out/`).
 2. Báo đường dẫn file và thời lượng. **Nhắc: anh xem và duyệt trước khi đăng; em không đăng.**
 3. Cuối phiên nhắc anh gõ "Off" để cập nhật NOTES.md và commit.
