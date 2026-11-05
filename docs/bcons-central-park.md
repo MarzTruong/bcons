@@ -45,7 +45,7 @@ Chung cho mọi PTTT: khách cá nhân; ký HĐMB trực tiếp CĐT hoặc khá
 |---|---|---|---|---|
 | 01 (thanh toán giãn) | 20% | Không | Không áp dụng | 8,5% |
 | 02 | 20% | 50% giải ngân sau 15 ngày | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng | Giá niêm yết |
-| 03 | 10% | 50% giải ngân sau 7 ngày | Trần 6,9%/năm, tối đa 48 tháng, không quá 24 tháng từ thông báo bàn giao; CĐT trả phần chênh | Theo thông báo (chưa ghi rõ) |
+| 03 | 10% | 50% giải ngân sau 7 ngày | Trần 6,9%/năm, tối đa 48 tháng, không quá 24 tháng từ thông báo bàn giao; CĐT trả phần chênh | Không có (anh xác nhận 04/11/2026) |
 | 04 | 10% | 10% + 20% + 20% (3 đợt) | Trần 6,9%/năm như PTTT 03 | 2,45% |
 | 05 | 10% | 10% + 20% + 20% (3 đợt) | CĐT hỗ trợ lãi và ân hạn gốc, tối đa 24 tháng (không nêu trần 6,9%) | 2,45% |
 
