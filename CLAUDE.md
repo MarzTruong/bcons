@@ -11,13 +11,20 @@
 - Google Drive dự án (thư mục gốc id `1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ`): training, Q&A, PTTT, TVC, phối cảnh, mặt bằng. Đọc bằng connector Google Drive khi cần.
 - Master File (`MasterFile_BconsCentralPark_ver2.xlsx`) do người dùng gửi qua upload. Có sheet GiaTongHop (giá), KhachHang (khách), HoaHong (nội bộ).
 
-## Quy tắc bắt buộc
-1. **Không commit dữ liệu cá nhân hoặc nội bộ**: tên/SĐT khách, hoa hồng, thưởng nóng, file xlsx. `data/` và `*.xlsx` đã nằm trong `.gitignore`; giữ nguyên.
-2. **Số liệu lấy từ tài liệu chủ đầu tư**, không tự suy ra. Thiếu thì ghi "chưa có" và hỏi lại, không đoán.
-3. **Nội dung quảng cáo thận trọng**: không cam kết lợi nhuận, không hứa tăng giá, không so sánh dự án khác bằng số liệu không có nguồn, không nói căn "sắp hết" nếu chưa kiểm tra tình trạng. Công ty chưa gửi quy định nội dung chính thức, nên mọi nội dung đều phải để người dùng duyệt trước khi dùng.
+## Quy tắc cứng (pháp lý, dữ liệu; không nới)
+1. **Không commit dữ liệu cá nhân hoặc nội bộ**: tên/SĐT khách, hoa hồng, thưởng nóng, file xlsx, API key. `data/` và `*.xlsx` đã nằm trong `.gitignore`; giữ nguyên.
+2. **Số liệu dự án lấy từ tài liệu chủ đầu tư**, không tự suy ra. Thiếu thì ghi "chưa có" và hỏi lại.
+3. **Không cam kết lợi nhuận, không hứa tăng giá.**
 4. **Căn đã cọc = đã bán**, không tư vấn. Căn "CĐT LOCK" chưa mở bán, không quảng cáo.
-5. Không bán cho người nước ngoài. Phí bảo trì 2% và VAT phải nói rõ khi nhắc giá.
-6. Phân biệt rõ giá **chưa VAT** và **có VAT**; PTTT 01 đã trừ 8,5%, PTTT 04/05 trừ 2,45% so với giá PTTT 02. Lãi suất trần 6,9% chỉ có ở PTTT 03 và 04, **không** có ở PTTT 05.
+5. Không bán cho người nước ngoài. Nhắc giá thì nói rõ **chưa VAT/có VAT** và phí bảo trì 2%. PTTT 01 đã trừ 8,5%, PTTT 04/05 trừ 2,45% so với giá PTTT 02. Lãi suất trần 6,9% chỉ có ở PTTT 03 và 04, **không** có ở PTTT 05.
+6. Thu thông tin khách phải có ô đồng ý nhận tin (không tick sẵn). Nội dung chỉ vào lịch đăng tự động sau khi anh duyệt.
+
+## Gợi ý sáng tạo (linh hoạt, ưu tiên nội dung hay)
+- Hook, cách dẫn chuyện, cảm xúc, giọng quảng bá, so sánh hình ảnh: tự do sáng tạo, thử nhiều kiểu, đề xuất phương án táo bạo.
+- Số liệu thị trường (lãi suất, hạ tầng, giá khu vực) nên có nguồn; chú thích nguồn để ở bảng nguồn hoặc chữ nhỏ trên màn hình, không làm câu chữ cứng lại.
+- Hạn chế so sánh dự án khác bằng số không có nguồn, hoặc nói "sắp hết" khi chưa kiểm tra giỏ hàng; nếu cần thì ghi rõ là nhận định.
+- Ảnh phối cảnh ghi "hình ảnh minh họa".
+- Thiết kế hệ thống tự động hóa: `docs/superpowers/specs/2026-11-05-bcons-automation-pipeline-design.md`.
 
 ## Tin nhắn hàng loạt
 - Không dùng Zalo/Facebook cá nhân để nhắn hàng loạt (dễ bị khóa). Kênh phù hợp: Zalo OA/ZNS, SMS brandname, email.
