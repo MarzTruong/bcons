@@ -98,7 +98,7 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 - Số liệu tình trạng căn là ảnh chụp tại thời điểm nhận file (ngày 30/10/2026); cần cập nhật trước khi quảng cáo.
 
 ## Đồng bộ nhiều thiết bị
-- Code, docs, kịch bản, mp3: GitHub (nhánh `claude/trusting-feynman-1b00ns`).
+- Code, docs, kịch bản, mp3: GitHub (nhánh `main`).
 - Dữ liệu nội bộ (`data/`, xlsx) và video render (`.mp4`): thư mục Drive riêng tư "Bcons - Dong bo thiet bi" (id `1yzMS8oTXBiBv4RvgIUScsj_XxYkZiWux`), kèm file `HUONG-DAN-CAI-MAY-THU-HAI.md`.
 - API key ElevenLabs: chỉ trong `remotion-video/.env` trên từng máy, không đưa lên git/Drive.
 - Máy laptop này có Google Drive for desktop ở ổ `G:` (`G:\My Drive\Bcons - Dong bo thiet bi\`). Máy khác cần cài Drive for desktop; nếu Drive ở đường dẫn khác, đặt `DRIVE_VIDEO_DIR` trong `remotion-video/.env`.
