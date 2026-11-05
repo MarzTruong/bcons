@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 04/11/2026 (phiên Off cuối ngày)
+Cập nhật lần cuối: 05/11/2026 (phiên Off; làm việc ngày 04–05/11/2026, nhánh `claude/peaceful-carson-qnjpwr`)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -22,10 +22,20 @@ Cập nhật lần cuối: 04/11/2026 (phiên Off cuối ngày)
 - [x] 04/11/2026: hệ phong cách và chuyển động cho spec: `style` (classic, sang, navy, xanh) trong `src/theme.ts`, `motion` (classic, truot, nay, mo) trong `src/motion.ts`, khai báo trong spec (hạ tầng Biên Hòa dùng `xanh` + `mo`). Test hồi quy: băm khung hình `dong-nai-ha-tang` vẫn giống hệt; 48 test qua.
 - [x] 04/11/2026: kiểm tra báo cáo Gemini, sửa các khẳng định bị thổi phồng (13-15% là lãi suất thực sau ưu đãi, không nêu diện tích FTZ vì 8.100/8.200 ha mâu thuẫn, Biên Hòa - Vũng Tàu giai đoạn 1 chỉ "dự kiến", bỏ Vành đai 3 Tây Ninh 95%). PTTT 03 xác nhận bản mới nhất; PTTT 05 giống PTTT 02 (CĐT hỗ trợ ân hạn lãi gốc, không nêu thời hạn).
 
+- [x] 04–05/11/2026 Fanpage Facebook: anh chốt tên **"Căn hộ Phan Trung – Bcons Central Park Biên Hòa"**, kênh thông tin không gắn cá nhân, anh làm cho Bcons PS Land (sàn phân phối chính thức); công ty không quan tâm chuyện sale tự lập trang. Anh đã tạo trang trên Facebook (loại Doanh nghiệp, hạng mục Người môi giới bất động sản, dòng giới thiệu đã dán); đang ở bước thông tin liên hệ (để trống web, SĐT, email, địa chỉ; giờ mở cửa chọn "Không có giờ mở cửa"). Chưa rõ anh đã tải ảnh và đăng bài chưa.
+- [x] Tài liệu fanpage (đều nháp chờ anh duyệt): `docs/content/fanpage-de-xuat.md` (đề xuất tổng), `docs/content/fanpage-thiet-lap.md` (các bước tạo trang, dòng giới thiệu, bảng kiểm, 5 bài đầu), `docs/content/messenger-kich-ban.md` (Messenger tự trả lời, đã điền tên công ty Bcons PS Land), `docs/content/doi-chieu-nguon-gia-tri-du-an.md` (bảng "ý nào có nguồn": b.school chưa có nguồn, Aeon Mall chỉ nói được là dự án và không dùng "lớn nhất Miền Nam", TP. Đồng Nai trực thuộc TW, metro không nêu km...).
+- [x] Hình cho fanpage: `docs/content/messenger-qua/so-sanh-5-pttt.{html,png}` (bảng so sánh 5 PTTT, PTTT 03 không chiết khấu), `docs/content/fanpage/cover.jpg`, `avatar.jpg` (cắt từ phối cảnh tổng thể), `anh/` 11 ảnh phối cảnh và nhà mẫu A1/B4/C1 đã thu nhỏ. Ảnh gốc phối cảnh (34–80MB) và HEIC chưa dùng nằm trên Drive. Đã gửi anh 4 file qua khung chat; chưa lên Drive vì connector Drive không nhận file nhị phân lớn.
+- [x] Google Sheets "Bcons - Khach quan tam Messenger" (id `1c6K4ZC23cXreDt4sex2eSO-ObLO4YBF0KoBLlBp2-mU`): tab KhachQuanTam (14 cột, có dropdown), TuChoi, HuongDan. Mới có tiêu đề, chưa có dữ liệu khách.
+- [x] Công cụ tính nhanh (artifact riêng tư): https://claude.ai/artifact/PUaqHdDkV1Wu89crJH74si. Lọc 638 căn còn bán (A 347, B 150, E 141) theo vốn có sẵn và mức trả góp hàng tháng sau bàn giao, 5 PTTT, tin nhắn gửi khách. Cách tính đối chiếu với sheet TraGia (căn A4-01), lệch tối đa 1 đồng. Dữ liệu giá nằm trong trang, **không đưa lên git**; file nguồn nằm ở thư mục tạm của phiên (mất khi container bị thu hồi), muốn sửa thì đọc lại artifact rồi cập nhật bằng URL.
+- [x] Đã đọc artifact "Giá & Mặt bằng Bcons" (https://claude.ai/artifact/FkQB9zb7n87fyU8M2oMpBV, anh có sẵn): chỉ có tháp A, B, E; Lotus (C) và Palm (D) chưa có giá.
+- [x] 04/11/2026: anh xác nhận **PTTT 03 không có chiết khấu**; đã sửa `docs/bcons-central-park.md`.
+- [x] Quyết định chung của phiên: không có connector Meta nào điều khiển Messenger; dùng Meta Business Suite miễn phí. MyChatBot tốn phí, để sau. Meta Ads connector chỉ làm quảng cáo, để sau tuần 3–4 của trang.
+
 ## Đang làm
 - [ ] Giọng cảnh 2 bị lệch giọng (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `remotion-video/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
 - [ ] Kịch bản video đợt 2 (giới thiệu ngày 29/11/2026) trong `docs/video/dot-2.md`. Bản nháp, chờ anh duyệt.
+- [ ] Anh hoàn tất tạo fanpage: tải `cover.jpg` và `avatar.jpg`, nút "Nhắn tin", thêm quản trị viên dự phòng, bật xác thực 2 lớp, cài Meta Business Suite > Hộp thư > Tự động hóa theo `messenger-kich-ban.md`, thử bằng tài khoản khác, duyệt và đăng 5 bài đầu.
 
 - [x] Superpowers: đã chép 5 skill vào `.claude/skills/` (commit gốc `bb92a77`), chưa commit; mở phiên mới để dùng. ECC: anh quyết định không cài (04/11/2026). `/plugin` không chạy trong PowerShell/app.
 - [x] Quyết định 04/11/2026: bỏ CTA đọc/hiện số điện thoại; cuối video chỉ chạy thông tin dự án. Nếu sau này muốn dùng số, cần xác nhận quy định TikTok/Meta và công ty (hotline công ty an toàn hơn).
@@ -42,25 +52,35 @@ Cập nhật lần cuối: 04/11/2026 (phiên Off cuối ngày)
 - [ ] `specs/mau-lai-suat.json` là spec thử bằng số mẫu (draft), chỉ để xem bố cục `compare-bars`, không đăng.
 - [ ] Tin nhắn tự động hàng loạt: chọn kênh, làm bộ mẫu tin, tool gửi từ file danh sách.
 - [ ] Dựng video thật (cần ảnh/render/video gốc, công cụ AI hoặc CapCut).
+- [ ] **VAT 10%**: công cụ tính nhanh và Master File dùng VAT 10% trên cả giá căn (theo file giá CĐT). Skill nội dung ghi VAT căn hộ có thể không tính trên phần giá trị quyền sử dụng đất, file giá không tách riêng. Anh xác nhận với bộ phận tài chính trước khi gửi khách "giá có VAT".
+- [ ] Đối chiếu còn thiếu: trường b.school (Q&A chỉ có nhà trẻ tầng 2), khoảng cách 236 Phan Trung tới trung tâm hành chính / Aeon Mall Biên Hòa / ga metro dự kiến, ngày chính xác TP. Đồng Nai trực thuộc TW (24/4 và 30/4/2026 mới từ tóm tắt tìm kiếm), mốc khởi công và hoàn thành cầu Cát Lái, Long Hưng, tiến độ Aeon Mall năm 2026; lợi suất cho thuê 4,4%/năm của Gemini chưa mở bài gốc.
+- [ ] Công cụ tính nhanh: cập nhật khi bảng giá hoặc giỏ hàng chung đổi (cần Master File mới); chưa có tháp C, D; lãi vay 9,5%/năm và kỳ hạn 20 năm là giả định lấy từ sheet VayNH.
+- [ ] Giờ làm việc của tư vấn viên (điền vào tin ngoài giờ); có dùng hotline công ty không.
+- [ ] Đưa ảnh/bộ bài lên Drive của anh (hiện anh tự tải từ khung chat hoặc từ repo); có thể tạo Google Doc chứa chữ bộ bài và bảng kiểm nếu anh cần.
+- [ ] Làm bio TikTok cùng thông điệp với fanpage, thêm liên kết khi trang có địa chỉ; có thể làm video TikTok từ ảnh nhà mẫu/phối cảnh.
+- [ ] Ảnh HEIC nhà mẫu (A1, B4, C1) chưa chuyển đổi và chưa dùng.
+- [ ] Quảng cáo Meta (Messenger) để sau tuần 3–4; anh duyệt ngân sách và nội dung trước khi bật.
 
 ## Tư liệu hình/video trong Drive (đã liệt kê, em chưa xem được nội dung)
 - Flycam (thư mục `1_FOLJkPOh657pT8_L71i456LzCfVv8on`): `1.mp4` (27MB), `2.mp4` (49MB), `3.mp4` (39MB); thư mục `Final` có `Tổng 1 + 2.mov` (70MB) và `Video 1.mp4` (30MB).
 - TVC: `TVC Bcons Central Park.mp4` (570MB) trong 12. TVC/VIDEO > 1. TVC.
 - Mẫu căn hộ A: `Hộp đơn A1.jpg`, `Hộp đơn A2.jpg` (~10MB mỗi ảnh). Thư mục mẫu C và D chưa liệt kê.
-- 4. PHỐI CẢNH (ẢNH NÉN, ẢNH GỐC) và 9. NHÀ MẪU > Nhà mẫu căn A1: em liệt kê thấy trống hoặc chưa có quyền xem file bên trong; cần kiểm tra quyền chia sẻ.
+- 04/11/2026: anh gửi 4 link thư mục chia sẻ (phối cảnh `1ybrbk0J6E2nHxfnN6gK95iyb3tNWVXfO`, nhà mẫu C1 `1KeDfaagRLI12gUXA2rEOQHpuhWlTtFgK`, B4 `1e8uGw01-RMuoLa5w1_HuGU2NTfXQdHyl`, A1 `1AMxeu5TjQWqCDH1v0ecJQoghxWmlRLVw`). Liệt kê được bằng connector; tải bằng `curl https://drive.google.com/uc?export=download&id=<id>` với file chia sẻ bằng link (connector chỉ trả base64, quá nặng). Đã xem 4 phối cảnh ban đêm và các ảnh JPG nhà mẫu A1/B4/C1; phối cảnh có thêm file ở trang kế tiếp chưa mở.
 - Em không xem video trực tiếp qua connector Drive. Video anh upload vào phiên thì em trích khung hình để xem được: đã xem 4 clip flycam (1, 5, 10, 9), mô tả trong `docs/video/flycam.md`.
 
-- Phối cảnh 3D, render nhà mẫu và ảnh nhà mẫu thật đã có trên Drive (ẢNH GỐC có file `202605_BPTH_ST38/ST39...jpg` 40–50MB; nhà mẫu A1: PHONGKHACH01/02, PNMT01/03, PHONGNGU2-03; nội thất C1). Connector Drive không cho em xem nội dung ảnh, cần anh đính kèm trực tiếp vào phiên.
+- Ảnh nhà mẫu A1 (88 m2, 3PN), B4 (73 m2, 2PN-2WC), C1 (52 m2, 2PN-1WC) là ảnh chụp nhà mẫu; nội thất minh họa, căn hộ bàn giao hoàn thiện cơ bản theo danh mục CĐT. Mọi ảnh phối cảnh phải ghi "hình ảnh minh họa".
 - Clip flycam 1 đã vẽ ranh giới (file video nằm trong phiên, không đưa lên git).
 
 ## Câu hỏi còn mở (cần anh trả lời)
 1. **Quy định nội dung quảng cáo** của công ty: điều không được nói, cách xưng hô, cụm từ bắt buộc, disclaimer pháp lý.
 2. **Kênh nhắn hàng loạt**: Zalo OA/ZNS, SMS brandname hay email? Ngân sách?
 3. **Danh sách khách** sẽ nhắn: nhóm nào, ai đã đồng ý nhận tin? (Sheet KhachHang có khoảng 300 dòng, đa số "không quan tâm" hoặc đã có sale khác chăm.)
-4. **PTTT 03**: thông báo không ghi rõ mức chiết khấu. Cần xác nhận.
+4. ~~PTTT 03 chiết khấu~~: anh xác nhận 04/11/2026 là không có chiết khấu (đã sửa docs).
 5. **PTTT 01**: em đọc bản trên Drive, chưa đối chiếu với bản anh gửi lại từng chữ. (PTTT 03: anh xác nhận 04/11/2026 là bản mới nhất.)
 6. Đợt 2 mở những căn nào (236 căn đang CĐT lock có phải là căn mở ở đợt 2 không)? Ảnh hưởng đến việc nhắn "còn bao nhiêu căn".
-7. Phối cảnh, ảnh nhà mẫu và TVC (`TVC Bcons Central Park.mp4`, 570MB) có được dùng để cắt video ngắn không?
+7. Phối cảnh, ảnh nhà mẫu: anh nói cứ dùng cho fanpage; TVC (`TVC Bcons Central Park.mp4`, 570MB) có được dùng để cắt video ngắn không thì chưa hỏi.
+8. Tên và số liên hệ trên trang: có dùng hotline công ty không? Giờ làm việc tư vấn viên?
+9. VAT 10% trên giá căn hộ có đúng với cách CĐT thu không (xem mục Chưa làm)?
 
 ## Ghi chú kỹ thuật
 - Master File có sheet nội bộ (KhachHang, HoaHong). Chỉ đọc cục bộ, không đưa lên git.
@@ -79,4 +99,6 @@ Cập nhật lần cuối: 04/11/2026 (phiên Off cuối ngày)
 - Video Remotion: số liệu (2,4 tỷ USD FDI, 8.200 ha, 16 tỷ USD, 150.000, 50.000, cao tốc khai thác 01/10/2026) lấy từ yêu cầu của anh, chưa đối chiếu tài liệu chủ đầu tư. Duyệt trước khi đăng.
 - Bản đồ cảnh 2 là sơ đồ minh họa, vị trí ước lượng.
 - Key ElevenLabs hiện không có quyền `Models`; đã bật `Models` Access nên liệt kê model được. Model trong tài khoản hỗ trợ tiếng Việt: `eleven_v4`, `eleven_v4_turbo`, `eleven_v3`, `eleven_turbo_v2_5`, `eleven_flash_v2_5`.
+- Phiên 04–05/11/2026 làm trên nhánh `claude/peaceful-carson-qnjpwr` (theo yêu cầu của môi trường đám mây), không phải nhánh trong `CLAUDE.md`; đã push, không tạo PR. Container đám mây không có `data/`, `.env`, node_modules.
+- Công cụ cho Facebook/TikTok: không có connector đăng bài hay điều khiển Messenger. Có `tiktok`, `TikTok for Business`, Meta Ads (đứt kết nối từng lúc), Canva (chưa bật trong phiên), Google Drive/Sheets/Docs. Connector Drive chỉ nhận nội dung nhỏ khi ghi file (base64 nằm trong lệnh).
 - Nhận lệnh "Off" để tự cập nhật notes, commit, push (xem `CLAUDE.md`).
