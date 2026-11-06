@@ -33,7 +33,7 @@ test("buildTelegramRequests: sendVideo (caption ≤ 1.024) + sendMessage FB chia
     mp4Path: mp4,
     caption: { tiktok: "t".repeat(2000), facebook: "f".repeat(5000) },
   });
-  assert.equal(reqs.length, 3);
+  assert.equal(reqs.length, 4); // video + 1 tin TikTok (dài hơn 1.024) + 2 tin FB
   assert.match(reqs[0].url, /^https:\/\/api\.telegram\.org\/bot123:abc\/sendVideo$/);
   assert.ok(reqs[0].body.get("caption").length <= 1024);
   assert.equal(reqs[0].body.get("chat_id"), "42");
@@ -74,4 +74,27 @@ test("đã duyệt đủ thì gửi; bài công ty (không video) gửi tin ch�
   await sendApproved({ captionPath: g.c, mp4Path: null, env: ENV, fetchFn: f2.fn });
   assert.ok(f2.calls.every((u) => /sendMessage$/.test(u)));
   assert.equal(f2.calls.length, 2);
+});
+
+test("rà soát: TikTok dài hơn 1.024 không bị cắt (gửi thành tin riêng)", () => {
+  const { mp4 } = setup();
+  const tt = "t".repeat(1500);
+  const reqs = buildTelegramRequests({ token: "1:a", chatId: "42", mp4Path: mp4, caption: { tiktok: tt, facebook: "f" }, label: "x" });
+  assert.ok(reqs[0].body.get("caption").length < 1024);
+  const sent = reqs.slice(1).map((r) => r.body.get("text")).join("");
+  assert.ok(sent.includes(tt));
+});
+
+test("rà soát: caption đã duyệt nhưng vi phạm quy tắc hiện hành thì không gửi", async () => {
+  const { c, mp4 } = setup();
+  duyetCaption(c);
+  duyetVideo(c, mp4);
+  // giả lập caption duyệt trước khi quy tắc chặt hơn: sửa tay cả nội dung lẫn dấu vân tay
+  const { bodyHash } = await import("../scripts/caption.mjs");
+  let t = fs.readFileSync(c, "utf8").replace("Bài FB", "Gọi 0905 935 935");
+  t = t.replace(/noiDungSha256: "[^"]*"/, `noiDungSha256: "${bodyHash(t)}"`);
+  fs.writeFileSync(c, t);
+  const f = fakeFetch();
+  await assert.rejects(sendApproved({ captionPath: c, mp4Path: mp4, env: ENV, fetchFn: f.fn }), /số điện thoại/);
+  assert.equal(f.calls.length, 0);
 });

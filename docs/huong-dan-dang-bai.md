@@ -40,6 +40,14 @@ Vào https://business.facebook.com, chọn fanpage "Căn hộ Phan Trung – Bco
 
 Sửa caption sau khi duyệt, hoặc render lại video → `send:telegram` từ chối, phải duyệt lại (bước 2 hoặc 4).
 
+**Sau khi duyệt trên máy anh** (lệnh duyệt ghi vào file `caption.md`), lưu và đẩy lên GitHub để cloud và các máy khác thấy cùng trạng thái:
+```powershell
+git add du-an
+git commit -m "Duyet <tên>"
+git push
+```
+Hook chặn commit vẫn chạy, nên không lo lỡ đưa `.env` hay video lên.
+
 ## Mỗi bài từ công ty
 1. Anh thả ảnh/video/bài công ty vào Drive, gửi em link (hoặc dán vào chat). Em gọi skill `bai-cong-ty`: giữ nguyên thông tin gốc, viết lại `caption.md` trong `du-an/<mã>/content/bai-cong-ty/<ngày>-<tên>/`, thêm dòng Sheet "Chờ duyệt".
 2. Anh duyệt: `npm run duyet:caption -- --bai ../../du-an/bcons-central-park/content/bai-cong-ty/<ngày>-<tên>`.

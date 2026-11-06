@@ -61,3 +61,28 @@ test("writeMeta cập nhật frontmatter, giữ nguyên nội dung", () => {
   assert.deepEqual(c.meta.kenh, ["facebook", "tiktok"]);
   assert.equal(bodyHash(out), bodyHash(CLEAN));
 });
+
+test("rà soát: SĐT có ngoặc, máy bàn, 84 không dấu +; không bắt nhầm ngày/%/số căn", () => {
+  for (const p of ["(+84) 912 345 678", "Hotline (028) 3823 4567", "84912345678"]) {
+    assert.ok(checkCaption(make(`Gọi ${p}`, "x")).some((e) => /số điện thoại/.test(e)), p);
+  }
+  assert.deepEqual(checkCaption(make("Lãi 0,5% ngày 05/11/2026, dự án 2.820 căn ở.", "x")), []);
+});
+
+test("rà soát: giá căn kiểu tỉ / tr / không có chữ giá; VAT kiểm riêng từng phần", () => {
+  assert.ok(checkCaption(make("Giá bán chỉ 2 tỉ/căn", "x")).some((e) => /VAT/.test(e)));
+  assert.ok(checkCaption(make("Chỉ 1,9 tỷ sở hữu căn hộ", "x")).some((e) => /VAT/.test(e)));
+  assert.ok(checkCaption(make("Trả trước 300tr là có căn", "x")).some((e) => /VAT/.test(e)));
+  const fbOk = make("Căn 2PN giá 3,1 tỷ chưa VAT, chưa gồm phí bảo trì 2%.", "Căn hộ giá từ 2 tỷ");
+  assert.ok(checkCaption(fbOk).some((e) => /TikTok/.test(e) && /VAT/.test(e)));
+});
+
+test("rà soát: cụm sinh lời, số lợi nhuận; file có BOM vẫn đọc đúng", () => {
+  assert.ok(checkCaption(make("Cam kết sinh lời", "x")).length > 0);
+  assert.ok(checkCaption(make("Lợi nhuận 20%/năm", "x")).length > 0);
+  const bom = "﻿" + CLEAN;
+  assert.equal(parseCaption(bom).meta.status, "draft");
+  assert.deepEqual(checkCaption(bom), []);
+  assert.equal(bodyHash(bom), bodyHash(CLEAN));
+  assert.ok(!writeMeta(bom, { status: "approved" }).includes("status: draft"));
+});

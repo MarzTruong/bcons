@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseCaption } from "./caption.mjs";
+import { checkCaption, parseCaption } from "./caption.mjs";
 import { approvalState, captionPathFor } from "./caption-cli.mjs";
 import { takeProjectFlag } from "./project.mjs";
 
@@ -38,9 +38,12 @@ export function buildTelegramRequests({ token, chatId, mp4Path, caption, label =
     const body = new FormData();
     body.set("chat_id", chatId);
     body.set("supports_streaming", "true");
-    body.set("caption", tiktok.slice(0, VIDEO_CAPTION_MAX));
+    // Caption TikTok dài hơn giới hạn của Telegram: gửi video kèm nhãn ngắn, caption đầy đủ gửi thành tin riêng (không cắt chữ).
+    const fits = tiktok.length <= VIDEO_CAPTION_MAX;
+    body.set("caption", fits ? tiktok : `${label} (caption TikTok ở tin kế tiếp)`);
     body.set("video", new Blob([fs.readFileSync(mp4Path)], { type: "video/mp4" }), path.basename(mp4Path));
     reqs.push({ url: api("sendVideo"), body });
+    if (!fits) for (const part of chunkText(`TIKTOK ${label}\n\n${tiktok}`)) reqs.push(msg(api, chatId, part));
   } else if (tiktok) {
     for (const part of chunkText(`TIKTOK ${label}\n\n${tiktok}`)) reqs.push(msg(api, chatId, part));
   }
@@ -64,6 +67,8 @@ export async function sendApproved({ captionPath, mp4Path, env = process.env, fe
   const text = fs.readFileSync(captionPath, "utf8");
   const st = approvalState(text, mp4Path);
   if (!st.ok) throw new Error(`Chưa gửi: ${st.reason}. Duyệt bằng npm run duyet:caption / duyet:video.`);
+  const errs = checkCaption(text); // kiểm lại theo quy tắc hiện hành, phòng caption duyệt trước khi quy tắc chặt hơn
+  if (errs.length) throw new Error(`Chưa gửi, caption vi phạm quy tắc:\n- ${errs.join("\n- ")}`);
   if (mp4Path && fs.statSync(mp4Path).size > MAX_BYTES) throw new Error("Video lớn hơn 50 MB, Telegram không nhận. Render bản nhẹ hơn.");
   const caption = parseCaption(text);
   for (const r of buildTelegramRequests({ token, chatId, mp4Path, caption, label })) {
@@ -83,6 +88,7 @@ async function main(argv) {
   const i = rest.indexOf("--bai");
   if (i >= 0) {
     const bai = rest[i + 1];
+    if (!bai) throw new Error("Thiếu đường dẫn sau --bai (vd. --bai ../../du-an/bcons-central-park/content/bai-cong-ty/<thư mục>)");
     await sendApproved({ captionPath: captionPathFor(null, projDir, bai), mp4Path: null, label: path.basename(bai) });
     console.log(`Đã gửi bài ${path.basename(bai)} về Telegram.`);
     return;

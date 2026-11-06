@@ -44,6 +44,8 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 
 - [x] 06/11/2026: anh gửi lại 2 artifact (Tính nhanh, Giá & Mặt bằng); em đọc lại được mã nguồn đầy đủ bằng công cụ Artifact (lệnh `read`), nên mã nguồn công cụ tính **không còn bị mất**. Link ghi trong `du-an/bcons-central-park/project.json` → `artifacts`. Lõi tính tiền (5 PTTT, VAT 10%, bảo trì 2%, vay 50% giá có VAT, trả đều) là hàm thuần, dùng lại cho landing (kế hoạch 03) mà không cần giá cả 996 căn. Giá trong artifact theo file CĐT 17/10/2026, tình trạng giỏ hàng 29/10/2026.
 
+- [x] 06/11/2026 kế hoạch 02 (`docs/superpowers/plans/2026-11-06-02-lich-dang-bai.md`): caption.md cho mỗi bài + bộ kiểm quy tắc (`check:caption`), duyệt gắn dấu vân tay (`duyet:caption`, `duyet:video`), gửi Telegram (`send:telegram`, `telegram:chat-id`), Sheet "Bcons - Lịch nội dung" (id trong `project.json`), hướng dẫn `docs/huong-dan-dang-bai.md`, skill `bai-cong-ty`, caption nháp cho 5 video (Sheet "Chờ duyệt"). Agent soát xong, đã sửa: kiểm VAT riêng từng phần FB/TikTok, SĐT có ngoặc/84, giá viết tỉ/tr, BOM, TikTok dài không bị cắt khi gửi, send kiểm lại quy tắc; 3 caption chỉnh câu chữ. 100 test qua.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -59,6 +61,9 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
+- [ ] Anh duyệt 5 caption nháp (Sheet "Chờ duyệt"). Video cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu, anh cân nhắc có đăng không.
+- [ ] Anh tạo bot Telegram (@BotFather) + `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` trong `engine/remotion/.env`; đăng ký Metricool Free, thử hẹn giờ 1 video TikTok để xác nhận gói Free tự đăng được.
+
 - [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.
 - [ ] Xác nhận cao tốc Biên Hòa - Vũng Tàu giai đoạn 1 đã thông xe 18/05/2026 chưa; khoảng cách từ 236 Phan Trung tới các tuyến chưa đo; Dat Xanh/PropertyGuru chỉ dựa một bài VnExpress.
 - [ ] Việc nhỏ hoãn lại: tên file xuất của render-drive chưa kiểm tra (shell:true), CompareBars lỗi NaN khi mọi giá trị bằng 0, key React có thể trùng, chưa có watermark DRAFT, chưa có kiểm tra số điện thoại bằng regex, `.env` nạp trước cổng trong render-drive. `package.json` engines `^20.19` nhưng cần Node >= 22.18 (type stripping khi test).

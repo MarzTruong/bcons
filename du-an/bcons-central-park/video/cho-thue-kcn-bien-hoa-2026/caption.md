@@ -22,4 +22,4 @@ Lưu ý: lợi suất là số trung bình đã công bố, không phải mức 
 📍 Bcons Central Park, 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029, là một lựa chọn để cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment "bài toán thuê".
 
 ## TikTok
-Lợi suất cho thuê căn hộ: Biên Hòa 4,4%/năm, Thủ Đức 3,3%, Quận 2 2,1% (batdongsan.com.vn qua CafeF). KCN quanh Biên Hòa lấp đầy trên 90%. Comment "bài toán thuê" để nhận bảng nguồn. #ChoThuêCănHộ #BiênHòa #KhuCôngNghiệp #BconsCentralPark #ĐầuTưBấtĐộngSản
+Lợi suất cho thuê căn hộ: Biên Hòa 4,4%/năm, Thủ Đức 3,3%, Quận 2 2,1% (batdongsan.com.vn qua CafeF; số trung bình, không chắc chắn cho từng căn). KCN quanh Biên Hòa lấp đầy trên 90%. Comment "bài toán thuê" để nhận bảng nguồn. #ChoThuêCănHộ #BiênHòa #KhuCôngNghiệp #BconsCentralPark #ĐầuTưBấtĐộngSản

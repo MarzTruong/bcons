@@ -6,7 +6,8 @@ const FRONT_RE = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
 const KEYS = ["status", "duyetLuc", "noiDungSha256", "videoSha256"];
 const TIKTOK_MAX = 2200;
 
-function splitFront(text) {
+function splitFront(raw) {
+  const text = raw.replace(/^\uFEFF/, ""); // bỏ BOM (Notepad trên Windows hay thêm)
   const m = text.match(FRONT_RE);
   return m ? { front: m[1], body: text.slice(m[0].length), offset: m[0].split("\n").length - 1 } : { front: "", body: text, offset: 0 };
 }
@@ -56,9 +57,16 @@ const BANNED = [
   "x2 tài sản",
   "sắp hết hàng",
   "căn cuối cùng",
+  "cam kết sinh lời",
+  "đảm bảo sinh lời",
+  "sinh lời chắc chắn",
 ];
-const PHONE_RE = /(?<![\d.,])(?:\+84|0)(?:[\s.-]?\d){8,10}(?![\d])/g;
-const PRICE_RE = /\d[\d.,]*\s*(tỷ|triệu)/i;
+// SĐT: 0xxx hoặc (+)84xxx, 9–11 chữ số, ngăn bởi cách/chấm/gạch; dấu ngoặc bỏ trước khi so.
+const PHONE_RE = /(?<![\d.,])(?:\+?84|0)(?:[\s.-]?\d){8,10}(?!\d)/g;
+// Giá (so trên chữ đã bỏ dấu): 2,06 tỷ / 2 tỉ / 300 triệu / 300tr
+const PRICE_RE = /\d[\d.,]*\s*(ty|ti|trieu|tr)\b/;
+// Ngữ cảnh giá căn hộ (không áp cho giá đấu giá đất, vốn đầu tư)
+const APT_RE = /\bcan\b|gia (ban|tu|chi tu)|so huu/;
 
 /** Danh sách lỗi (tiếng Việt). Rỗng = qua. */
 export function checkCaption(text) {
@@ -72,16 +80,24 @@ export function checkCaption(text) {
   if (tiktok && tiktok.length > TIKTOK_MAX) errs.push(`Caption TikTok dài ${tiktok.length} ký tự, tối đa 2.200`);
   if (meta.status === "approved" && !meta.duyetLuc) errs.push("status approved nhưng thiếu duyetLuc");
 
-  const whole = fold(text);
-  const hasVat = /\bvat\b/.test(whole) && /bao tri/.test(whole);
+  // FB và TikTok đăng riêng nên mỗi phần phải tự ghi VAT + phí bảo trì khi nhắc giá căn.
+  const vatOk = (sec) => !!sec && /\bvat\b/.test(fold(sec)) && /bao tri/.test(fold(sec));
+  const vatBySection = { facebook: vatOk(facebook), tiktok: vatOk(tiktok), "": false };
+  let sec = "";
+  const start = splitFront(text).offset;
   lines.forEach((line, i) => {
-    if (i < splitFront(text).offset) return; // bỏ qua frontmatter
-    for (const m of line.matchAll(PHONE_RE)) errs.push(`${lineOf(i)}: có số điện thoại "${m[0].trim()}" (không đưa SĐT vào bài)`);
+    if (i < start) return; // bỏ qua frontmatter
+    const h = line.match(/^##\s+(facebook|tiktok)\s*$/i);
+    if (h) {
+      sec = h[1].toLowerCase();
+      return;
+    }
+    for (const m of line.replace(/[()]/g, "").matchAll(PHONE_RE)) errs.push(`${lineOf(i)}: có số điện thoại "${m[0].trim()}" (không đưa SĐT vào bài)`);
     const f = fold(line);
     for (const b of BANNED) if (f.includes(fold(b))) errs.push(`${lineOf(i)}: cụm "${b}" (không hứa lợi nhuận/tăng giá, không nói sắp hết)`);
-    // Chỉ áp cho giá căn hộ (giá bán/giá từ/có chữ "căn"), không áp cho giá đấu giá đất, vốn đầu tư.
-    if (PRICE_RE.test(line) && /gia/.test(f) && /\bcan\b|gia (ban|tu|chi tu)/.test(f) && !hasVat) {
-      errs.push(`${lineOf(i)}: nhắc giá nhưng bài chưa ghi rõ VAT và phí bảo trì 2%`);
+    if (/loi nhuan\s*\d/.test(f)) errs.push(`${lineOf(i)}: nêu số lợi nhuận (không hứa lợi nhuận)`);
+    if (PRICE_RE.test(f) && APT_RE.test(f) && !vatBySection[sec]) {
+      errs.push(`${lineOf(i)}: nhắc giá căn nhưng phần ${sec === "tiktok" ? "TikTok" : "Facebook"} chưa ghi rõ VAT và phí bảo trì 2%`);
     }
   });
   return errs;

@@ -63,6 +63,7 @@ function takeBai(rest) {
   const i = rest.indexOf("--bai");
   if (i < 0) return { bai: null, rest };
   const bai = rest[i + 1];
+  if (!bai) throw new Error("Thiếu đường dẫn sau --bai (vd. --bai ../../du-an/bcons-central-park/content/bai-cong-ty/<thư mục>)");
   return { bai, rest: [...rest.slice(0, i), ...rest.slice(i + 2)] };
 }
 

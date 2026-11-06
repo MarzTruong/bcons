@@ -22,4 +22,4 @@ Nói thẳng: Bcons Central Park ở 236 Phan Trung dự kiến bàn giao Quý I
 Muốn bảng mốc hạ tầng có link nguồn từng dòng, comment "mốc hạ tầng", em gửi.
 
 ## TikTok
-Biên Hòa 2026: 2 cao tốc đã chạy, vành đai 3 hơn 80%, sân bay Long Thành dự kiến 24/12, metro còn nghiên cứu. Comment "mốc hạ tầng" để nhận bảng nguồn từng dòng. #BiênHòa #HạTầng #CaoTốc #SânBayLongThành #BconsCentralPark
+Biên Hòa 2026: Bến Lức – Long Thành thông toàn tuyến, Biên Hòa – Vũng Tàu khai thác 2 đoạn, vành đai 3 hơn 80%, sân bay Long Thành dự kiến 24/12, metro còn nghiên cứu. Comment "mốc hạ tầng" để nhận bảng nguồn từng dòng. #BiênHòa #HạTầng #CaoTốc #SânBayLongThành #BconsCentralPark
