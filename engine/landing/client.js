@@ -1,5 +1,7 @@
 // Chạy trên trình duyệt: chọn căn mẫu + PTTT → bảng từng đợt và trả góp ước tính; gửi form về Google Apps Script.
-import { CAP, PLANS, calc, pmt } from "./calc.mjs";
+import { CAP, PLANS, calc, pmt } from "./calc.js";
+
+const T0 = Date.now();
 
 const D = JSON.parse(document.getElementById("data").textContent);
 const $ = (id) => document.getElementById(id);
@@ -16,8 +18,8 @@ const S = { i: 0, k: "03" };
 function result() {
   const u = D.canMau[S.i];
   const c = calc(S.k, u.giaChuaVat[S.k]);
-  const lai = num($("lai").value);
-  const nam = num($("nam").value);
+  const lai = Math.min(30, Math.max(0, num($("lai").value)));
+  const nam = Math.min(35, Math.max(1, num($("nam").value) || 20));
   return { u, c, lai, nam, monthly: pmt(c.loan, lai, nam) };
 }
 
@@ -26,7 +28,7 @@ function render() {
   const p = PLANS[S.k];
   $("tag").textContent = p.tag;
   const capLine = p.cap && c.loan
-    ? `<div class="wide">Nếu lãi ngân hàng cao hơn ${String(CAP).replace(".", ",")}%/năm<span>Trong thời gian áp trần theo điều kiện của chủ đầu tư, trả góp khoảng ${trieu(pmt(c.loan, CAP, nam))}/tháng (cùng kỳ hạn ${nam} năm).</span></div>`
+    ? `<div class="wide">Lãi trần ${String(CAP).replace(".", ",")}%/năm theo điều kiện của chủ đầu tư<span>Áp dụng tối đa 48 tháng và không quá 24 tháng kể từ thông báo bàn giao; chủ đầu tư trả phần lãi vượt trần. Trong thời gian đó trả góp khoảng ${trieu(pmt(c.loan, CAP, nam))}/tháng; sau đó theo lãi ngân hàng (giả định ở trên).</span></div>`
     : "";
   const supLine = S.k === "02" || S.k === "05"
     ? '<div class="wide">Hỗ trợ của chủ đầu tư<span>Hỗ trợ lãi và ân hạn gốc từ lúc giải ngân đến thông báo bàn giao, tối đa 24 tháng. Số trả góp ở trên là sau thời gian hỗ trợ.</span></div>'
@@ -65,7 +67,6 @@ render();
 
 // ---- Form ----
 const PHONE = /^(?:\+?84|0)\d{9,10}$/;
-$("dongY").addEventListener("change", (e) => ($("send").disabled = !e.target.checked));
 
 function source() {
   const q = new URLSearchParams(location.search);
@@ -83,10 +84,10 @@ $("form").addEventListener("submit", async (e) => {
   if (!D.formUrl) return ($("err").textContent = "Trang đang chạy thử, chưa nhận đăng ký.");
   const { u, c, lai, nam, monthly } = result();
   const payload = {
-    ten, sdt, nhuCau: $("nhuCau").value, website: $("website").value, dongY: true,
-    canMa: u.ma, canLoai: u.loai, dt: u.dtTimTuong, pttt: PLANS[S.k].name,
-    giaChuaVat: c.P, tuCo: c.ownBefore, vay: c.loan, traGop: Math.round(monthly), lai, nam,
-    nguon: source(), trang: location.href,
+    ten, sdt, nhuCau: $("nhuCau").value, hp_x7: $("hp_x7").value, dongY: true, t: Date.now() - T0,
+    canLoai: u.loai, canMoTa: `tháp ${u.thap}, tầng ${u.tang}`, dt: u.dtTimTuong, pttt: PLANS[S.k].name,
+    giaChuaVat: c.P, giaCoVat: c.G, phiBaoTri: c.fee, tuCo: c.ownBefore, vay: c.loan, traGop: Math.round(monthly), lai, nam,
+    nguon: source(), trang: location.origin + location.pathname,
   };
   $("send").disabled = true;
   try {

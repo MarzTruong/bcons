@@ -39,6 +39,7 @@ input,select,textarea{width:100%;height:46px;border:1.5px solid var(--line);bord
 th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{font-size:11px;color:var(--muted);text-transform:uppercase}
 td.r,th.r{text-align:right}tr.bank td{color:var(--muted);background:var(--soft)}
 .note{font-size:12.5px;color:var(--muted)}
+.card span{display:block}
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;font-weight:400;color:var(--ink);margin:12px 0;background:var(--soft);padding:10px;border-radius:8px}
 .consent input{width:22px;height:22px;flex:0 0 auto;margin-top:2px;accent-color:var(--accent)}
 button.send{width:100%;height:50px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:16px;cursor:pointer}
@@ -52,7 +53,7 @@ footer{margin:32px 0 24px;font-size:12px;color:var(--muted)}footer a{color:var(-
 `;
 
 function consentText(dongY, projectName) {
-  return `Tôi đồng ý để <b>${esc(dongY.nguoiGiu || "[CHƯA ĐIỀN TÊN]")}</b>, ${esc(dongY.vaiTro)}, lưu họ tên và số điện thoại tôi vừa nhập để liên hệ tư vấn về dự án ${esc(projectName)} qua điện thoại hoặc Zalo. Thông tin chỉ dùng cho mục đích này, không chia sẻ cho bên thứ ba. Tôi có thể yêu cầu ngừng liên hệ và xóa thông tin bất cứ lúc nào bằng cách ${esc(dongY.kenhNgung)}. <a href="chinh-sach.html">Xem chính sách dữ liệu</a>.`;
+  return `Tôi đồng ý để <b>${esc(dongY.nguoiGiu || "[CHƯA ĐIỀN TÊN]")}</b>, ${esc(dongY.vaiTro)}, lưu họ tên, số điện thoại và lựa chọn của tôi trên trang này (căn hộ, phương thức thanh toán, nhu cầu) để liên hệ tư vấn về dự án ${esc(projectName)} qua điện thoại hoặc Zalo. Thông tin chỉ dùng cho mục đích này, không bán hay chia sẻ cho bên khác. Tôi có thể yêu cầu ngừng liên hệ và xóa thông tin bất cứ lúc nào bằng cách ${esc(dongY.kenhNgung)}. <a href="chinh-sach.html">Xem chính sách dữ liệu</a>.`;
 }
 
 /** Trang chủ landing. data = landing.json, project = project.json. draft = true thì hiện dải "BẢN NHÁP". */
@@ -61,15 +62,15 @@ export function renderPage(data, project, { draft = false } = {}) {
     .map(
       (u, i) => `<button class="card" type="button" data-i="${i}" aria-pressed="${i === 0}">
   <b>${esc(loaiNhan(u.loai))}</b>
-  <div class="m">${String(u.dtTimTuong).replace(".", ",")} m² tim tường · ${String(u.dtThongThuy).replace(".", ",")} m² thông thủy · tháp ${esc(u.thap)}, tầng ${u.tang}</div>
-  <div class="p">${ty(u.giaChuaVat["02"])}</div>
-  <div class="n">Giá PTTT 02/03 chưa VAT · có VAT ${ty(u.giaChuaVat["02"] * 1.1)} · phí bảo trì 2% tính riêng</div>
-  <div class="n">PTTT 01 (thanh toán giãn, đã trừ 8,5%): ${ty(u.giaChuaVat["01"])} chưa VAT</div>
+  <span class="m">${esc(String(u.dtTimTuong).replace(".", ","))} m² tim tường · ${esc(String(u.dtThongThuy).replace(".", ","))} m² thông thủy · tháp ${esc(u.thap)}, tầng ${esc(u.tang)}</span>
+  <span class="p">${ty(u.giaChuaVat["02"])}</span>
+  <span class="n">Giá PTTT 02/03 chưa VAT · có VAT ${ty(u.giaChuaVat["02"] * 1.1)} · phí bảo trì 2% tính riêng</span>
+  <span class="n">PTTT 01 (thanh toán giãn, đã trừ 8,5%): ${ty(u.giaChuaVat["01"])} chưa VAT</span>
 </button>`,
     )
     .join("\n");
   const json = JSON.stringify({
-    canMau: data.canMau,
+    canMau: data.canMau.map(({ ma, ...u }) => u), // không đưa mã căn lên trang (giỏ hàng đổi liên tục)
     lai: data.laiGiaDinh,
     nam: data.namGiaDinh,
     formUrl: data.formUrl,
@@ -80,7 +81,7 @@ export function renderPage(data, project, { draft = false } = {}) {
 <title>${esc(project.ten)} – Tính dòng tiền căn hộ</title>
 <meta name="description" content="${esc(data.moTa)}">
 <meta property="og:title" content="${esc(data.tieuDe)}"><meta property="og:description" content="${esc(data.moTa)}">
-<meta property="og:image" content="${esc(data.anhChinh.split("/").pop())}">
+<meta property="og:image" content="${esc((data.siteUrl ? data.siteUrl.replace(/\/$/, "") + "/" : "") + data.anhChinh.split("/").pop())}">${data.siteUrl ? `<meta property="og:url" content="${esc(data.siteUrl)}">` : ""}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <style>${CSS}</style></head>
 <body>
@@ -98,7 +99,7 @@ ${units}
 </div>
 
 <div class="panel">
-<label>Phương thức thanh toán</label>
+<p class="note" style="font-weight:700;margin:0">Phương thức thanh toán</p>
 <div class="chips" id="plans">${Object.entries(PLANS).map(([k, p], i) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k === "03"}">${p.name}</button>`).join("")}</div>
 <p class="note" id="tag"></p>
 <div class="row">
@@ -117,9 +118,9 @@ ${units}
 <div><label for="sdt">Số điện thoại / Zalo</label><input id="sdt" name="sdt" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20"></div>
 </div>
 <div style="margin-top:10px"><label for="nhuCau">Nhu cầu</label><select id="nhuCau" name="nhuCau"><option>Mua để ở</option><option>Mua cho thuê</option><option>Tìm hiểu thêm</option></select></div>
-<div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+<div class="hp" aria-hidden="true"><label for="hp_x7">Để trống ô này</label><input id="hp_x7" name="hp_x7" tabindex="-1" autocomplete="off"></div>
 <label class="consent"><input type="checkbox" id="dongY" name="dongY"><span>${consentText(data.dongY, project.ten)}</span></label>
-<button class="send" id="send" type="submit" disabled>Gửi, nhận bảng tính chi tiết</button>
+<button class="send" id="send" type="submit">Gửi, nhận bảng tính chi tiết</button>
 <p class="err" id="err" role="alert"></p>
 </form>
 <div class="ok" id="ok" hidden>Đã nhận thông tin. Tư vấn viên sẽ liên hệ anh/chị qua điện thoại hoặc Zalo sớm nhất.</div>
@@ -142,9 +143,11 @@ export function renderPolicy(data, project) {
 <h1>Chính sách dữ liệu cá nhân</h1>
 <p><b>Bên thu thập và giữ dữ liệu:</b> ${esc(d.nguoiGiu || "[CHƯA ĐIỀN TÊN]")}, ${esc(d.vaiTro)}.</p>
 <p><b>Dữ liệu thu thập:</b> họ tên, số điện thoại/Zalo, nhu cầu, căn hộ và phương thức thanh toán anh/chị chọn trên trang.</p>
-<p><b>Mục đích:</b> liên hệ tư vấn về dự án ${esc(project.ten)} và gửi bảng tính anh/chị yêu cầu. Không dùng cho mục đích khác, không bán hay chia sẻ cho bên thứ ba.</p>
+<p><b>Mục đích:</b> liên hệ tư vấn về dự án ${esc(project.ten)} và gửi bảng tính anh/chị yêu cầu. Không dùng cho mục đích khác, không bán hay chia sẻ cho bên khác.</p>
+<p><b>Nơi lưu và công cụ xử lý:</b> dữ liệu được lưu trong Google Sheets (Google) và thông báo cho tư vấn viên qua Telegram; máy chủ của các dịch vụ này có thể đặt ngoài Việt Nam. Ngoài các dịch vụ kỹ thuật đó, không bên nào khác nhận dữ liệu.</p>
 <p><b>Thời gian lưu:</b> đến khi anh/chị yêu cầu xóa, hoặc tối đa 24 tháng kể từ lần liên hệ gần nhất.</p>
-<p><b>Quyền của anh/chị:</b> xem, sửa, rút lại đồng ý, yêu cầu ngừng liên hệ và xóa dữ liệu bất cứ lúc nào bằng cách ${esc(d.kenhNgung)}.</p>
+<p><b>Quyền của anh/chị:</b> xem, sửa, rút lại đồng ý, yêu cầu ngừng liên hệ và xóa dữ liệu bất cứ lúc nào bằng cách ${esc(d.kenhNgung)}${data.fanpageUrl ? ` (<a href="${esc(data.fanpageUrl)}">mở fanpage</a>)` : ""}.</p>
+<p>Chính sách này áp dụng theo quy định pháp luật Việt Nam về bảo vệ dữ liệu cá nhân. Mẫu ô đồng ý: v1-2026-11-06.</p>
 <p><a href="index.html">Quay lại trang chính</a></p>
 </main></body></html>
 `;

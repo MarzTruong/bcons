@@ -1,7 +1,7 @@
 {
   "tieuDe": "Bcons Central Park Biên Hòa: tự tính dòng tiền căn hộ theo 5 phương thức thanh toán",
   "moTa": "Căn hộ 236 Phan Trung, Tam Hiệp, TP. Đồng Nai. Chọn căn mẫu, chọn phương thức thanh toán, xem từng đợt tiền và trả góp ước tính.",
-  "anhChinh": "assets/images/phoi-canh-tong-the.jpg",
+  "anhChinh": "assets/images/phoi-canh-tong-the-web.jpg",
   "nguonGia": "bảng giá chủ đầu tư ngày 17/10/2026",
   "laiGiaDinh": 9.5,
   "namGiaDinh": 20,
@@ -96,5 +96,6 @@
     "kenhNgung": "nhắn \"NGỪNG\" cho fanpage Căn hộ Phan Trung – Bcons Central Park Biên Hòa"
   },
   "formUrl": "",
-  "fanpageUrl": ""
+  "fanpageUrl": "",
+  "siteUrl": ""
 }

@@ -29,17 +29,29 @@ export function checkLanding(data, { draft = false } = {}) {
   return errs;
 }
 
+/** Trên máy có bảng giá (data/<mã>/bang-gia.csv): căn mẫu phải còn bán (không đã cọc, không CĐT LOCK). Cloudflare không có file này thì bỏ qua. */
+export function checkStillForSale(data, csvPath) {
+  if (!fs.existsSync(csvPath)) return [];
+  const lines = fs.readFileSync(csvPath, "utf8").replace(/^\uFEFF/, "").split(/\r?\n/);
+  // Cột cuối là "Có thể tư vấn? (đã cọc = đã bán)"; mã căn và cột cuối không chứa dấu phẩy.
+  if (!/Có thể tư vấn/.test(lines[0].split(",").at(-1))) return [];
+  const status = new Map(lines.slice(1).filter(Boolean).map((l) => [l.split(",")[0], l.split(",").at(-1).trim()]));
+  return data.canMau.filter((u) => status.has(u.ma) && status.get(u.ma) !== "CÒN BÁN").map((u) => `Căn mẫu ${u.ma} không còn bán (${status.get(u.ma)}), chọn căn khác`);
+}
+
 export function buildLanding(projDir, outRoot, { draft = false } = {}) {
   const project = readProjectConfig(projDir);
   const data = JSON.parse(fs.readFileSync(path.join(projDir, "landing", "landing.json"), "utf8"));
-  const errs = checkLanding(data, { draft });
+  const errs = [...checkLanding(data, { draft }), ...checkStillForSale(data, path.join(projDir, "..", "..", "data", project.ma, "bang-gia.csv"))];
   if (errs.length) throw new Error(`Chưa đăng được landing:\n- ${errs.join("\n- ")}`);
   const out = path.join(outRoot, project.ma);
   fs.rmSync(out, { recursive: true, force: true });
   fs.mkdirSync(out, { recursive: true });
   fs.writeFileSync(path.join(out, "index.html"), renderPage(data, project, { draft }));
   fs.writeFileSync(path.join(out, "chinh-sach.html"), renderPolicy(data, project));
-  for (const f of ["calc.mjs", "client.js"]) fs.copyFileSync(path.join(HERE, f), path.join(out, f));
+  // .js (không phải .mjs) để mọi máy chủ trả đúng loại file JavaScript
+  fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
+  fs.copyFileSync(path.join(HERE, "client.js"), path.join(out, "client.js"));
   fs.copyFileSync(path.join(projDir, data.anhChinh), path.join(out, path.basename(data.anhChinh)));
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");
   return out;
