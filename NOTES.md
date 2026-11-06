@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fanpage 04–05/11/2026 trên nhánh `claude/peaceful-carson-qnjpwr`)
+Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 xong, landing đã lên mạng)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -48,6 +48,10 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 
 - [x] 06/11/2026: bot Telegram chạy trên laptop (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`); Claude Code 2.1.319 cài trên laptop, đã đăng nhập. Metricool MCP đã bật (brand 7877084, Asia/Saigon): hẹn `ha-tang-bien-hoa-2026` Thứ Hai 09/11/2026 18:00 cho TikTok (bài 418673360, nhãn AI bật vì giọng AI, "nội dung thương hiệu" bật) và Facebook Reel (bài 418673533). Link Drive dùng trực tiếp được, không cần nối Drive trong Metricool. Sheet dòng 4 = "Đã lên lịch".
 
+- [x] 06/11/2026 kế hoạch 03 (`docs/superpowers/plans/2026-11-06-03-landing-crm.md`): landing lên mạng tại https://bcons-central-park-dsj.pages.dev (Cloudflare **Pages**, tự build khi push `main`; `siteUrl`, `fanpageUrl` đã điền). Apps Script gắn Sheet CRM (tab Landing) nhận form + báo Telegram 2 tin; anh đã gửi thử, chạy ổn. Fanpage: https://www.facebook.com/profile.php?id=61596313797415. 134 test qua.
+- [x] 06/11/2026: bot laptop lưu 3 caption viết lại (bỏ khuôn ✅) + `docs/quy-tac-caption.md` + dòng CLAUDE.md (commit 0e34f86); em soát, `check:caption` OK, đã chép 3 caption mới vào Sheet Lịch nội dung (vẫn "Chờ duyệt").
+- [x] 06/11/2026: nghiên cứu nhạc nền/hiệu ứng: đề xuất ghép nhạc (Pixabay, giấy phép thương mại; nhỏ dưới giọng, tự giảm khi có lời) + hiệu ứng (tạo bằng ElevenLabs Sound Effects) ngay trong Remotion, xuất thêm bản không nhạc. Không khuyên tải clip TikTok có nhạc đăng Facebook (logo TikTok bị giảm hiển thị, nhạc TikTok chỉ cấp phép trên TikTok). Metricool chỉ thêm nhạc Top 100 TikTok khi tài khoản Business + tự đăng.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -63,8 +67,11 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
-- [ ] Anh duyệt 3 caption đã viết lại 06/11/2026: `cho-thue-kcn-bien-hoa-2026`, `lai-suat-vay-mua-nha-2026`, `tai-thiet-kcn-bien-hoa-1` (Sheet còn bản cũ, cập nhật khi anh duyệt). Video cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu, anh cân nhắc có đăng không. `dong-nai-ha-tang`, `dong-nai-ha-tang-map`: anh bỏ khỏi việc cần duyệt (06/11/2026, là nháp hoặc đã đăng).
-- [ ] Anh tạo bot Telegram (@BotFather) + `TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` trong `engine/remotion/.env`; đăng ký Metricool Free, thử hẹn giờ 1 video TikTok để xác nhận gói Free tự đăng được.
+- [ ] **Chờ anh "OK"**: làm nhạc nền + hiệu ứng âm thanh cho video (hướng A, xem Đã làm 06/11). Anh chọn 3–5 bản nhạc; tạo hiệu ứng ElevenLabs tốn credit, hỏi trước.
+- [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng `ha-tang-bien-hoa-2026` lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó làm kế hoạch 04 (báo cáo tuần, skill `social-analytics`).
+- [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
+- [ ] Nếu đã lỡ tạo project Cloudflare **Workers** thì xóa (giữ Pages). `wrangler.jsonc` có thể bỏ nếu không dùng.
+- [ ] Anh duyệt 3 caption đã viết lại 06/11/2026 (anh nói sẽ xem sau): `cho-thue-kcn-bien-hoa-2026`, `lai-suat-vay-mua-nha-2026`, `tai-thiet-kcn-bien-hoa-1` (Sheet đã có bản mới). Video cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu, anh cân nhắc có đăng không. `dong-nai-ha-tang`, `dong-nai-ha-tang-map`: anh bỏ khỏi việc cần duyệt (06/11/2026, là nháp hoặc đã đăng).
 
 - [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.
 - [ ] Xác nhận cao tốc Biên Hòa - Vũng Tàu giai đoạn 1 đã thông xe 18/05/2026 chưa; khoảng cách từ 236 Phan Trung tới các tuyến chưa đo; Dat Xanh/PropertyGuru chỉ dựa một bài VnExpress.
@@ -106,6 +113,9 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 9. VAT 10% trên giá căn hộ có đúng với cách CĐT thu không (xem mục Chưa làm)?
 
 ## Ghi chú kỹ thuật
+- Bot laptop: nút "Lưu lên GitHub" chạy `git pull --rebase`; nếu GitHub có bản mới của chính file bot thì Windows có thể không cho thay file (06/11 lỗi "unable to unlink ... Invalid argument", để lại file chép dở làm lần sau báo "untracked files would be overwritten"). Cách xử lý: đóng cửa sổ bot, xóa các file chép dở trong danh sách báo lỗi, `git pull --rebase --autostash`, `git push`, mở lại bot. Laptop có thể còn thay đổi cục bộ từ autostash, kiểm `git status` khi tiện.
+- MCP `context7`/`playwright` (`docs/huong-dan-mcp.md`): không bắt buộc, chưa cài trên laptop; skill `tdd-financial-calc` bỏ (calc.mjs đã có test đối chiếu TraGia).
+- Cloud không gọi được script.google.com và help.metricool.com (proxy chặn).
 - Master File có sheet nội bộ (KhachHang, HoaHong). Chỉ đọc cục bộ, không đưa lên git.
 - Giá PTTT 04/05 trong Master File là tự tính (giá PTTT 02 × 0,9755), chủ đầu tư chưa ra bảng giá riêng.
 - Ngày bàn giao trong file là giả định 30/06/2029 (chủ đầu tư chỉ ghi "dự kiến Quý II/2029").
