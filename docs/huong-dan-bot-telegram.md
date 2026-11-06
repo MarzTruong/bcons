@@ -1,0 +1,64 @@
+# Bot Telegram Bcons: giao việc bằng tin nhắn
+
+Bot chạy trên **laptop**. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Laptop tắt hoặc ngủ thì bot ngừng; tin anh nhắn lúc đó sẽ được làm khi laptop mở lại và bot chạy lại.
+
+Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều khiển được bot. Người khác nhắn vào, bot im lặng.
+
+## Cài một lần (lần cuối anh phải dùng PowerShell)
+
+1. Lấy bản mới nhất. Mở PowerShell:
+   ```powershell
+   cd D:\Claude\bcons
+   git pull
+   ```
+2. Kiểm tra file `engine\remotion\.env` có đủ 2 dòng (mở bằng Notepad):
+   ```
+   TELEGRAM_BOT_TOKEN=...
+   TELEGRAM_CHAT_ID=...
+   ```
+   Chưa có `TELEGRAM_CHAT_ID`: nhắn "hi" cho bot rồi chạy `cd engine\remotion` và `npm run telegram:chat-id`.
+3. Kiểm tra **Claude Code** trên laptop (để bot giao việc tự do cho Claude):
+   ```powershell
+   claude --version
+   ```
+   Nếu báo lỗi không có lệnh `claude`: cài theo hướng dẫn chính thức tại https://docs.claude.com/en/docs/claude-code (mục cài đặt cho Windows), rồi chạy `claude` một lần để đăng nhập tài khoản Claude của anh, gõ `/exit` để thoát.
+4. **Chạy bot:** vào `D:\Claude\bcons`, bấm đúp **`Bcons-Bot.cmd`**. Một cửa sổ đen hiện ra, Telegram nhận tin "🤖 Bot Bcons đã chạy". Để cửa sổ đó mở (thu nhỏ được). Đóng cửa sổ là tắt bot.
+5. **Cho bot tự chạy khi mở máy** (nên làm):
+   - Bấm `Windows + R`, gõ `shell:startup`, Enter, một thư mục mở ra.
+   - Chuột phải vào `Bcons-Bot.cmd` → **Show more options** → **Create shortcut**, kéo shortcut vừa tạo vào thư mục đó.
+6. (Tùy chọn) Để laptop không ngủ khi cắm sạc: Settings → System → Power → Screen and sleep → "When plugged in, put my device to sleep after" = **Never**.
+
+## Lệnh
+
+| Anh nhắn | Bot làm |
+|---|---|
+| `/huongdan` | Danh sách lệnh |
+| `/danhsach` | Trạng thái từng video: caption nháp/đã duyệt, có video chưa, video đã duyệt chưa |
+| `/xem <tên>` | Gửi caption Facebook + TikTok và bản xem thử video |
+| `/duyet <tên>` | Duyệt caption + video, gửi bản đăng về Telegram, tự lưu lên GitHub |
+| `/render <tên>` | Render video (vài phút), xong gửi bản xem thử |
+| `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy |
+| `/capnhat` | Lấy bản mới nhất từ GitHub (những gì em làm trên cloud), tự cài thư viện nếu cần |
+| `/moi` | Bắt đầu cuộc trò chuyện Claude mới |
+| Câu bình thường | Giao việc cho Claude Code trên laptop (vd. "rút gọn caption video cho thuê", "viết thêm hashtag cho video lãi suất") |
+
+`<tên>` là tên video, xem bằng `/danhsach` (vd. `ha-tang-bien-hoa-2026`).
+
+## Một video từ đầu tới cuối
+1. Em (Claude trên cloud, anh nhắn qua app Claude) viết kịch bản + caption, đẩy lên GitHub.
+2. Anh nhắn bot `/capnhat`.
+3. Đã có giọng chưa? Chưa thì `/giong <tên>` → bấm Đồng ý.
+4. `/render <tên>` → xem bản thử trên điện thoại.
+5. Ưng: `/duyet <tên>` → bot gửi bản đăng (video + caption TikTok + bài Facebook) và lưu lên GitHub.
+6. Hẹn giờ: TikTok trên Metricool, Facebook trên Meta Business Suite (hoặc nhờ em hẹn qua kết nối Metricool khi đã bật).
+
+## Giao việc tự do (cách B)
+- Câu nào không bắt đầu bằng `/` được chuyển cho Claude Code trên laptop. Claude **chỉ được** đọc/sửa file, chạy kiểm tra, tìm web. Claude **không được** tạo giọng, render, lưu hay đẩy lên GitHub.
+- Claude sửa file xong, bot hỏi: **💾 Lưu lên GitHub** hoặc **↩️ Bỏ thay đổi** (bỏ = cất vào `git stash`, lấy lại được).
+- Claude nhớ cuộc trò chuyện trong 3 giờ; muốn bắt đầu chủ đề mới thì nhắn `/moi`.
+- Việc lớn (làm video mới từ đầu, nghiên cứu số liệu nhiều nguồn) nên giao em qua app Claude như bây giờ: em có đủ công cụ và nhớ bối cảnh tốt hơn.
+
+## Gặp lỗi
+- Bot báo lỗi kèm vài dòng cuối của log. Chụp màn hình gửi em.
+- Bot không trả lời: kiểm tra cửa sổ "Bot Bcons" còn mở không, laptop có mạng không. Bấm đúp `Bcons-Bot.cmd` để chạy lại.
+- Bot tự chạy lại sau 10 giây nếu bị dừng giữa chừng.

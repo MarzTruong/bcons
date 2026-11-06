@@ -1,5 +1,7 @@
 # Hướng dẫn đăng bài (Facebook + TikTok)
 
+> **Cách dễ nhất:** dùng bot Telegram (`docs/huong-dan-bot-telegram.md`): `/render`, `/xem`, `/duyet` thay cho các lệnh `npm` bên dưới. Các lệnh dưới đây giữ lại để dùng khi bot chưa chạy.
+
 Sheet quản lý: **Bcons - Lịch nội dung** (https://docs.google.com/spreadsheets/d/1XxfKqnrqsAYaI8kZLir4XiAk_-pjYbxgoVdGYxVFoP0). Mỗi bài một dòng. Chỉ dòng **Đã duyệt** mới được đưa lên lịch đăng.
 
 ## Làm một lần trên máy anh
