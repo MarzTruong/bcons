@@ -36,12 +36,12 @@ Cloudflare giờ dùng **Workers** để đăng trang (repo đã có sẵn `wran
    - **Enable Preview builds:** tắt (đỡ tạo bản thử mỗi lần em đẩy nhánh phụ)
    - **Protect with Cloudflare Access:** tắt (để khách vào được)
    - **Advanced settings:** Path `/`, API token để tự tạo; thêm biến **Variable name** `NODE_VERSION`, **Variable value** `22`
-4. Bấm **Deploy**. Khoảng 1–2 phút sau có link dạng `https://bcons-central-park.<tên-tài-khoản>.workers.dev`. Từ đó mỗi lần em đẩy lên `main`, trang tự cập nhật.
+4. Bấm **Deploy**. Khoảng 1–2 phút sau có link dạng `https://bcons-central-park-dsj.pages.dev` (anh đã đăng 06/11/2026 qua Cloudflare **Pages**). Từ đó mỗi lần em đẩy lên `main`, trang tự cập nhật.
 
 ## Bước 4: Gắn link
-- **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://<tên>.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
-- **Fanpage:** Thêm nút (Add button) → **Tìm hiểu thêm** / **Đăng ký** → link `...?utm_source=facebook`.
-- Bình luận đầu bài Facebook: `...?utm_source=fb-post`.
+- **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://bcons-central-park-dsj.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
+- **Fanpage:** Thêm nút (Add button) → **Tìm hiểu thêm** / **Đăng ký** → link `https://bcons-central-park-dsj.pages.dev/?utm_source=facebook`.
+- Bình luận đầu bài Facebook: `https://bcons-central-park-dsj.pages.dev/?utm_source=fb-post`.
 Phần `utm_source` giúp biết khách đến từ đâu (cột **Nguồn** trong Sheet).
 
 ## Mỗi khi có khách
