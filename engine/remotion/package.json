@@ -43,7 +43,9 @@
     "still": "node scripts/with-env.mjs remotion still",
     "check:caption": "node scripts/caption-cli.mjs check",
     "duyet:caption": "node scripts/caption-cli.mjs duyet-caption",
-    "duyet:video": "node scripts/caption-cli.mjs duyet-video"
+    "duyet:video": "node scripts/caption-cli.mjs duyet-video",
+    "send:telegram": "node scripts/send-telegram.mjs",
+    "telegram:chat-id": "node scripts/telegram-chat-id.mjs"
   },
   "allowScripts": {
     "esbuild": false
