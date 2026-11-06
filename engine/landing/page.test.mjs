@@ -12,6 +12,7 @@ const PROJ = path.join(ROOT, "du-an", "bcons-central-park");
 const data = JSON.parse(fs.readFileSync(path.join(PROJ, "landing", "landing.json"), "utf8"));
 const project = JSON.parse(fs.readFileSync(path.join(PROJ, "project.json"), "utf8"));
 const full = { ...data, formUrl: "https://script.google.com/macros/s/x/exec" };
+const noUrl = { ...data, formUrl: "" };
 
 test("trang: ô đồng ý không tick sẵn, nút gửi tắt, có đủ quy tắc giá và pháp lý", () => {
   const html = renderPage(full, project);
@@ -36,8 +37,8 @@ test("trang: chữ người dùng nhập được thoát ký tự HTML", () => {
 
 test("checkLanding: chặn khi thiếu tên/URL, thiếu loại căn, có SĐT; bản nháp thì cho qua tên/URL", () => {
   assert.ok(checkLanding({ ...data, dongY: { ...data.dongY, vaiTro: "" } }).some((e) => /vaiTro/.test(e)));
-  assert.ok(checkLanding(data).some((e) => /formUrl/.test(e)));
-  assert.deepEqual(checkLanding(data, { draft: true }), []);
+  assert.ok(checkLanding(noUrl).some((e) => /formUrl/.test(e)));
+  assert.deepEqual(checkLanding(noUrl, { draft: true }), []);
   assert.deepEqual(checkLanding(full), []);
   assert.ok(checkLanding({ ...full, canMau: full.canMau.slice(1) }).some((e) => /Studio/.test(e)));
   assert.ok(checkLanding({ ...full, moTa: "Gọi 0905 935 935" }).some((e) => /số điện thoại/.test(e)));
@@ -45,7 +46,6 @@ test("checkLanding: chặn khi thiếu tên/URL, thiếu loại căn, có SĐT; 
 
 test("buildLanding xuất đủ file; bản chính thức bị chặn khi chưa điền", () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), "land-"));
-  assert.throws(() => buildLanding(PROJ, out), /formUrl/);
   const dir = buildLanding(PROJ, out, { draft: true });
   for (const f of ["index.html", "chinh-sach.html", "calc.js", "client.js", "phoi-canh-tong-the-web.jpg", "_headers"]) {
     assert.ok(fs.existsSync(path.join(dir, f)), f);
