@@ -28,8 +28,8 @@ Sheet quản lý: **Bcons - Lịch nội dung** (https://docs.google.com/spreads
 3. **Thử hẹn giờ 1 video TikTok** để chắc gói Free tự đăng được. Nếu không tự đăng được, dùng cách đăng tay từ điện thoại (mục dưới) và báo em.
 4. Khi TikTok vượt 20 bài/tháng hoặc muốn gộp số liệu FB + TikTok, cân nhắc gói Starter (khoảng 20–25 USD/tháng, kiểm giá trên trang Metricool).
 
-### 3. Meta Business Suite (hẹn giờ Facebook)
-Vào https://business.facebook.com, chọn fanpage "Căn hộ Phan Trung – Bcons Central Park Biên Hòa" → **Lập kế hoạch** (Planner). Miễn phí, không giới hạn bài.
+### 3. Facebook
+Fanpage "Căn hộ Phan Trung – Bcons Central Park Biên Hòa" đã nối Metricool: em hẹn Facebook Reel cùng lúc với TikTok. Meta Business Suite (https://business.facebook.com → Lập kế hoạch) chỉ dùng khi muốn tự đăng tay.
 
 ## Mỗi video
 | Bước | Ai | Làm gì |
@@ -39,7 +39,7 @@ Vào https://business.facebook.com, chọn fanpage "Căn hộ Phan Trung – Bco
 | 3 | Máy anh | `npm run voice -- <tên>` (tốn credit, anh đồng ý trước), `npm run render:drive -- <tên>`. |
 | 4 | Anh | Xem video. Ưng thì `npm run duyet:video -- <tên>`. |
 | 5 | Máy anh | `npm run send:telegram -- <tên>`: video + caption TikTok + bài FB về Telegram. |
-| 6 | Anh | **Facebook:** Business Suite → tải video → dán bài FB → hẹn giờ. **TikTok:** Metricool hẹn giờ, hoặc lưu video từ Telegram về điện thoại, đăng tay trên app TikTok kèm nhạc xu hướng. |
+| 6 | Em | Anh nhắn "hẹn đăng <tên> lúc <giờ>": em hẹn TikTok + Facebook Reel qua Metricool. Muốn tự chọn nhạc TikTok: tắt tự đăng bài đó, đến giờ đăng tay trên app; Facebook dùng file gốc từ Drive, **không** dùng clip tải từ TikTok (có logo TikTok, nhạc chỉ cấp phép trên TikTok). |
 | 7 | Anh / em | Sheet: "Đã lên lịch" + giờ đăng; đăng xong "Đã đăng" + link bài. Anh nhắn em "đã lên lịch <tên> <giờ>" thì em cập nhật giúp. |
 
 Sửa caption sau khi duyệt, hoặc render lại video → `send:telegram` từ chối, phải duyệt lại (bước 2 hoặc 4).

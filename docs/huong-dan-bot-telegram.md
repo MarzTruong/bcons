@@ -1,6 +1,6 @@
 # Bot Telegram Bcons: giao việc bằng tin nhắn
 
-Bot chạy trên **laptop**. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Laptop tắt hoặc ngủ thì bot ngừng. Tin anh nhắn lúc laptop tắt **không tự chạy** khi mở máy lại (để tránh render/duyệt ngoài ý muốn); bot báo đã bỏ qua, anh nhắn lại nếu vẫn cần.
+Bot chạy trên **một máy** tại một thời điểm: laptop (`D:\Claude\bcons`) hoặc PC (`E:\Claude\bcons`). Mở bot ở máy nào thì lệnh render/tạo giọng chạy trên máy đó; mở máy thứ hai thì bot máy sau tự thoát. Dưới đây ghi đường dẫn laptop, trên PC thay `D:` bằng `E:`. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Máy chạy bot tắt hoặc ngủ thì bot ngừng. Tin anh nhắn lúc máy tắt **không tự chạy** khi mở máy lại (để tránh render/duyệt ngoài ý muốn); bot báo đã bỏ qua, anh nhắn lại nếu vẫn cần.
 
 Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với bot (`TELEGRAM_CHAT_ID` trong `.env`), điều khiển được bot. Người khác nhắn vào, hoặc thêm bot vào nhóm, bot im lặng. Bot không nhận tin chuyển tiếp (forward).
 

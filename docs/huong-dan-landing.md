@@ -24,19 +24,9 @@ Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/land
    - Bấm **Deploy**, chép **Web app URL** (dạng `https://script.google.com/macros/s/.../exec`) gửi em.
 7. **Khi em gửi bản `Code.gs` mới** (sửa lỗi, đổi mẫu tin): dán đè code, Lưu, rồi **Triển khai → Quản lý bản triển khai (Manage deployments) → biểu tượng ✏️ → Phiên bản: Phiên bản mới (New version) → Triển khai**. Không tạo "Bản triển khai mới" lần nữa (sẽ ra link khác, trang không gửi tới được).
 
-## Bước 3: Cloudflare (đăng trang miễn phí), khoảng 10 phút
-Cloudflare giờ dùng **Workers** để đăng trang (repo đã có sẵn `wrangler.jsonc` cho việc này).
-1. Tạo tài khoản miễn phí tại https://dash.cloudflare.com/sign-up.
-2. **Compute → Workers & Pages → Create** → **Import a repository** → chọn GitHub, cấp quyền cho repo **MarzTruong/bcons**.
-3. Màn hình "Set up your application":
-   - **Project name:** `bcons-central-park` (phải đúng tên này, trùng với `wrangler.jsonc`)
-   - **Build command:** `node engine/landing/build.mjs`
-   - **Deploy command:** để nguyên `npx wrangler deploy`
-   - **Preview command:** để nguyên
-   - **Enable Preview builds:** tắt (đỡ tạo bản thử mỗi lần em đẩy nhánh phụ)
-   - **Protect with Cloudflare Access:** tắt (để khách vào được)
-   - **Advanced settings:** Path `/`, API token để tự tạo; thêm biến **Variable name** `NODE_VERSION`, **Variable value** `22`
-4. Bấm **Deploy**. Khoảng 1–2 phút sau có link dạng `https://bcons-central-park-dsj.pages.dev` (anh đã đăng 06/11/2026 qua Cloudflare **Pages**). Từ đó mỗi lần em đẩy lên `main`, trang tự cập nhật.
+## Bước 3: Cloudflare Pages (đăng trang miễn phí) — đã xong 06/11/2026
+Trang đang chạy tại https://bcons-central-park-dsj.pages.dev. Mỗi lần em đẩy lên `main`, Cloudflare tự build lại (1–2 phút).
+Cấu hình đã dùng (khi cần làm lại cho dự án khác): **Workers & Pages → Create → Pages → Connect to Git** → repo **MarzTruong/bcons**, nhánh `main`, Framework preset **None**, Build command `node engine/landing/build.mjs`, Build output directory `engine/landing/dist/bcons-central-park`, biến môi trường `NODE_VERSION` = `22`. Không dùng Workers (đã bỏ `wrangler.jsonc`).
 
 ## Bước 4: Gắn link
 - **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://bcons-central-park-dsj.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").

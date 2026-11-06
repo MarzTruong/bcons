@@ -1,3 +1,5 @@
+> **Bản lịch sử.** Đường dẫn trong file này (`remotion-video/`, `config/project.json`...) là trước kế hoạch 01. Cấu trúc hiện tại: `CLAUDE.md` và `du-an/<mã>/`.
+
 # Thiết kế: Quy trình `/bcons-video` và thư viện mẫu cảnh có schema (04/11/2026)
 
 Trạng thái: anh đã duyệt (04/11/2026), giao em chọn phương án tốt nhất; cơ chế chặn tự động ở mục 5.5 được giữ. Bước tiếp theo: lập kế hoạch dựng.

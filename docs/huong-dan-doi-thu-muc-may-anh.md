@@ -1,3 +1,5 @@
+> **Đã làm xong trên laptop 06/11/2026.** Máy cài mới (như PC ổ E) chỉ cần `git clone`, không cần dời thư mục.
+
 # Dời thư mục trên máy anh (laptop, sau đó máy bàn)
 
 Repo trên GitHub đã chuyển sang cấu trúc mới (`engine/` + `du-an/<mã>/`). Khi anh `git pull`, git tự dời các file có trong git. Những file **chỉ có trên máy anh** (không lên git) thì git không đụng tới, nên phải chạy script dời một lần:

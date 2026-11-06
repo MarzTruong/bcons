@@ -71,7 +71,7 @@ Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 
 - [ ] **Chờ anh "OK"**: làm nhạc nền + hiệu ứng âm thanh cho video (hướng A, xem Đã làm 06/11). Anh chọn 3–5 bản nhạc; tạo hiệu ứng ElevenLabs tốn credit, hỏi trước.
 - [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng `ha-tang-bien-hoa-2026` lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó làm kế hoạch 04 (báo cáo tuần, skill `social-analytics`).
 - [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
-- [ ] Nếu đã lỡ tạo project Cloudflare **Workers** thì xóa (giữ Pages). `wrangler.jsonc` có thể bỏ nếu không dùng.
+- [ ] Nếu đã lỡ tạo project Cloudflare **Workers** thì xóa (giữ Pages). `wrangler.jsonc` đã bỏ.
 - [ ] Anh duyệt 3 caption đã viết lại 06/11/2026 (anh nói sẽ xem sau): `cho-thue-kcn-bien-hoa-2026`, `lai-suat-vay-mua-nha-2026`, `tai-thiet-kcn-bien-hoa-1` (Sheet đã có bản mới). Video cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu, anh cân nhắc có đăng không. `dong-nai-ha-tang`, `dong-nai-ha-tang-map`: anh bỏ khỏi việc cần duyệt (06/11/2026, là nháp hoặc đã đăng).
 
 - [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.

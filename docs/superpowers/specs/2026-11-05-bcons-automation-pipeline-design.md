@@ -1,3 +1,5 @@
+> **Bản lịch sử.** Đường dẫn trong file này (`remotion-video/`, `config/project.json`...) là trước kế hoạch 01. Cấu trúc hiện tại: `CLAUDE.md` và `du-an/<mã>/`.
+
 # Thiết kế: Hệ thống tự động hóa kênh Facebook/TikTok và phễu khách (05/11/2026)
 
 Trạng thái: **nháp, chờ anh duyệt**. Gộp từ file anh gửi (`Brainstorm_X_y_d_ng_FB_Tiktok.txt`, `master_plan_bcons_automation_pipeline.md`) với repo hiện có. Sau khi duyệt: lập kế hoạch dựng (`writing-plans`).

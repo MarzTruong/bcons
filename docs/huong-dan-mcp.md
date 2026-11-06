@@ -3,7 +3,7 @@
 MCP = "phích cắm" cho Claude dùng thêm công cụ ngoài, ví dụ tra tài liệu Remotion mới nhất hay mở trình duyệt xem landing page.
 Repo **không** commit `.mcp.json`: Windows cần `cmd /c npx ...`, cloud/macOS/Linux dùng `npx ...`, một file chung không chạy được ở cả hai. Mỗi máy cài một lần ở phạm vi người dùng (`--scope user`), dùng cho mọi phiên.
 
-Chỉ cài 2 cái:
+Quyết định 06/11/2026: **không bắt buộc**. Phần lập trình chủ yếu làm ở cloud; cloud đã có trình duyệt Playwright và skill tra tài liệu Remotion (`remotion-docs`). Cài trên PC/laptop khi muốn Claude trên máy tự kiểm landing hay tra tài liệu (2 lệnh, không tốn phí):
 - `context7`: tra tài liệu chuẩn của Remotion 4.x, Node 22.
 - `playwright`: mở trình duyệt kiểm tra landing page (`engine/landing/`) và khung hình.
 Không cài `sequential-thinking` (model đã tự suy luận từng bước, cài thêm chỉ tốn ngữ cảnh).
