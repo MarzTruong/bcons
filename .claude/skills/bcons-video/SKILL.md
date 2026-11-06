@@ -38,8 +38,9 @@ Nếu `$ARGUMENTS` trống hoặc trùng tên một video có sẵn, hỏi anh m
 ## Cổng 2 — Kịch bản và spec
 1. Viết `du-an/<mã>/video/<name>/kich-ban.md` gồm: kịch bản 45-60 giây theo cảnh, mục `## Bảng nguồn` (cột đầu là id; bảng gồm id | số liệu | ngày công bố | nguồn | link) và danh sách kiểm tra mục 3 của `docs/quy-trinh-video.md` đã tick từng dòng.
 2. Viết `du-an/<mã>/video/<name>/spec.json` với `"status": "draft"`. Mẫu cảnh: `stat-hero`, `route-map`, `data-cards`, `compare-bars`, `geo-map` (bản đồ Mapbox thật cho thông tin địa lý), `project-close` (schema ở `engine/remotion/src/spec.ts`, ví dụ ở `du-an/bcons-central-park/video/dong-nai-ha-tang/spec.json`). Mỗi giá trị số có `sourceId` trỏ tới bảng nguồn. Lời bình dùng cú pháp `hiển-thị{đọc}`; `cues` trỏ tới chữ hiển thị sẽ được đọc.
-3. Chạy `cd engine/remotion && npm run check:spec -- <name>` và `npm run lint`; sửa tới khi qua.
-4. **DỪNG. Đưa anh đọc kịch bản + bảng nguồn và hỏi: "Anh duyệt chữ và số liệu chưa?"** Chỉ khi anh nói đã duyệt mới đổi `status` thành `"approved"`. Nếu anh sửa, sửa spec và kịch bản rồi hỏi lại.
+3. Viết `du-an/<mã>/video/<name>/caption.md` (`status: draft`, phần `## Facebook` và `## TikTok`) bằng skill `real-estate-content-creator`, chỉ dùng số đã có trong bảng nguồn. Định dạng: `docs/huong-dan-dang-bai.md` và kế hoạch `docs/superpowers/plans/2026-11-06-02-lich-dang-bai.md`.
+4. Chạy `cd engine/remotion && npm run check:spec -- <name>`, `npm run check:caption -- <name>` và `npm run lint`; sửa tới khi qua. Thêm dòng vào Sheet Lịch nội dung (id trong `project.json` → `lichNoiDungSheetId`, tab `LichDang`): Mã bài = `<name>`, Luồng `video`, Trạng thái `Chờ duyệt`, Caption FB/TikTok.
+5. **DỪNG. Đưa anh đọc kịch bản + bảng nguồn + caption và hỏi: "Anh duyệt chữ, số liệu và caption chưa?"** Chỉ khi anh nói đã duyệt mới đổi spec `status` thành `"approved"` và chạy `npm run duyet:caption -- <name>`. Nếu anh sửa, sửa rồi hỏi lại.
 
 ## Cổng 3 — Giọng đọc (tốn credit ElevenLabs)
 1. Đọc lại `markup` từ spec đã `approved` (chữ đã duyệt không được đổi sau cổng 2; nếu muốn đổi, quay lại cổng 2).
@@ -51,4 +52,5 @@ Nếu `$ARGUMENTS` trống hoặc trùng tên một video có sẵn, hỏi anh m
 0. **Storyboard (bắt buộc với video có bản đồ, camera chuyển động hoặc ảnh chèn; video chỉ có thẻ số liệu thì bỏ qua).** Trước khi viết code hoặc render, viết `du-an/<mã>/video/<name>/storyboard.md`: từng cảnh một bảng theo giây (mốc giây lấy từ `du-an/<mã>/video/<name>/timestamps.json`, không đoán): lời đọc, camera, hiệu ứng, chữ nhỏ cố định; mục "Dữ liệu cần trước khi làm" (tọa độ, ảnh, ranh giới: chưa có thì nói chưa có); mục "Việc code". Lời bình và giọng không đổi nên không tốn credit. **DỪNG. Chờ anh duyệt storyboard**, rồi mới làm code, render thử vài khung chính cho anh xem, rồi mới render đủ.
 1. `cd engine/remotion && npm run lint`, rồi `npm run render:drive -- <name>` (render ra `out/video/<name>.mp4` và chép lên Drive; file tạm (khung thử, log, props) để trong `out/tam/`, không để lẫn vào `out/`).
 2. Báo đường dẫn file và thời lượng. **Nhắc: anh xem và duyệt trước khi đăng; em không đăng.**
-3. Cuối phiên nhắc anh gõ "Off" để cập nhật NOTES.md và commit.
+3. Anh xem xong và ưng: anh chạy `npm run duyet:video -- <name>` rồi `npm run send:telegram -- <name>` (video + caption về điện thoại). Em cập nhật dòng Sheet: Trạng thái `Đã duyệt`, Duyệt lúc (lấy `duyetLuc` trong caption). Đăng theo `docs/huong-dan-dang-bai.md`.
+4. Cuối phiên nhắc anh gõ "Off" để cập nhật NOTES.md và commit.

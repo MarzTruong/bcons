@@ -14,7 +14,8 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 | 2 | Kịch bản + spec | Claude viết kịch bản 45–60 giây vào `du-an/<mã>/video/<tên>/kich-ban.md`, **kèm bảng nguồn từng con số** và danh sách kiểm tra mục 3, cùng `du-an/<mã>/video/<tên>/spec.json` (`status: draft`) | Kịch bản + spec | **Anh duyệt chữ + số liệu** (rồi spec mới được đổi sang `approved`) |
 | 3 | Lời bình | Lời bình nằm trong `markup` của spec (cú pháp `hiển-thị{đọc}`), đã duyệt ở bước 2 | spec `approved` | Anh đồng ý tốn credit |
 | 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs <tên>` (ElevenLabs, tốn credit; từ chối nếu spec chưa `approved`) | mp3 + timestamp | Anh nghe thử |
-| 5 | Render | (video có bản đồ/camera/ảnh chèn: viết `du-an/<mã>/video/<tên>/storyboard.md`, anh duyệt storyboard trước) `npm run lint` rồi `npm run render:drive -- <tên>` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** |
+| 2b | Caption | `du-an/<mã>/video/<tên>/caption.md` (FB + TikTok), `npm run check:caption -- <tên>`; duyệt cùng lúc với bước 2 (`npm run duyet:caption`) | caption `approved` | Anh duyệt chữ + caption |
+| 5 | Render | (video có bản đồ/camera/ảnh chèn: viết `du-an/<mã>/video/<tên>/storyboard.md`, anh duyệt storyboard trước) `npm run lint` rồi `npm run render:drive -- <tên>` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
 
 Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
 
