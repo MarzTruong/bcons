@@ -6,16 +6,15 @@ videoSha256: ""
 kenh: [facebook, tiktok]
 ---
 ## Facebook
-Khu công nghiệp Biên Hòa 1 đang chuyển thành khu đô thị. Vài con số để hình dung.
+Khu công nghiệp đầu tiên của Việt Nam đang được chuyển thành khu đô thị. Và nó nằm ở Biên Hòa.
 
-✅ KCN đầu tiên của Việt Nam, lập năm 1963, rộng 335 ha.
-✅ Phương án chuyển đổi: khoảng 44 ha trung tâm hành chính và hơn 286 ha khu đô thị dịch vụ.
-✅ Một khu đất 21,5 ha trong lô 51,6 ha có phương án đấu giá, giá khởi điểm 9.363 tỷ đồng; tổng mức đầu tư dự kiến của dự án khoảng 23.000 tỷ đồng (VnExpress, thông báo 19/11/2025).
-✅ Aeon Mall Biên Hòa có tổng mức đầu tư hơn 6.000 tỷ đồng (CafeF, 21/11/2025).
+KCN Biên Hòa 1, lập từ năm 1963, rộng 335 ha. Theo phương án chuyển đổi, khoảng 44 ha sẽ làm trung tâm hành chính, hơn 286 ha là khu đô thị dịch vụ. Ai ở Biên Hòa lâu năm chắc cũng thấy lạ: khu nhà máy hơn 60 năm tuổi, giờ lên phương án làm phố.
 
-Đây là phương án và dự án đang triển khai, tiến độ thực tế còn theo từng bước của nhà nước và chủ đầu tư.
+Tiền cũng không nhỏ. Riêng một khu đất 21,5 ha ở đây có phương án đấu giá khởi điểm 9.363 tỷ đồng, cả dự án dự kiến đầu tư khoảng 23.000 tỷ. Aeon Mall Biên Hòa cũng là dự án hơn 6.000 tỷ.
 
-📍 Bcons Central Park, 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029, giữa lúc Biên Hòa đang thay đổi diện mạo. Muốn bảng nguồn từng dòng, comment "tái thiết".
+Bcons Central Park cũng nằm trong thành phố đang đổi khác đó: 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029. Comment "tái thiết", em gửi nguồn từng con số nha.
+
+Đây là phương án đang triển khai, tiến độ theo nhà nước và chủ đầu tư từng dự án. Nguồn: VnExpress (thông báo 19/11/2025), CafeF (21/11/2025).
 
 ## TikTok
-KCN Biên Hòa 1 (335 ha, lập năm 1963) đang thành khu đô thị: 44 ha trung tâm hành chính, hơn 286 ha đô thị dịch vụ. Comment "tái thiết" để nhận bảng nguồn từng dòng. #BiênHòa #TáiThiếtĐôThị #KCNBiênHòa1 #BconsCentralPark #ĐồngNai
+Khu công nghiệp đầu tiên của Việt Nam đang thành khu đô thị, ngay Biên Hòa. 335 ha, lập từ 1963, theo phương án có khoảng 44 ha trung tâm hành chính, hơn 286 ha đô thị dịch vụ. Comment "tái thiết", em gửi nguồn từng con số nha. #BiênHòa #KCNBiênHòa1 #ĐồngNai #BconsCentralPark

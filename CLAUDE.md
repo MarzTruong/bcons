@@ -42,6 +42,7 @@
 - Số liệu thị trường (lãi suất, hạ tầng, giá khu vực) nên có nguồn; chú thích nguồn để ở bảng nguồn hoặc chữ nhỏ trên màn hình, không làm câu chữ cứng lại.
 - Hạn chế so sánh dự án khác bằng số không có nguồn, hoặc nói "sắp hết" khi chưa kiểm tra giỏ hàng; nếu cần thì ghi rõ là nhận định.
 - Ảnh phối cảnh ghi "hình ảnh minh họa".
+- Caption là quảng cáo: viết tự nhiên như người thật kể chuyện, không khuôn sẵn, không danh sách ✅ liệt kê số, nguồn và lưu ý gom thành chữ nhỏ cuối bài. Chi tiết: `docs/quy-tac-caption.md` (được ưu tiên hơn skill `real-estate-content-creator` khi viết caption).
 
 ## Tin nhắn hàng loạt
 - Không dùng Zalo/Facebook cá nhân để nhắn hàng loạt (dễ bị khóa). Kênh phù hợp: Zalo OA/ZNS, SMS brandname, email.

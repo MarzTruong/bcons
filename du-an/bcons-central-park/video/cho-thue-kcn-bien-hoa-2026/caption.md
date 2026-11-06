@@ -6,20 +6,17 @@ videoSha256: ""
 kenh: [facebook, tiktok]
 ---
 ## Facebook
-Cho thuê căn hộ, khu nào lợi suất cao hơn? Số liệu nói gì.
+Cho thuê căn hộ ở Biên Hòa, lợi suất hơn gấp đôi Quận 2: 4,4%/năm so với 2,1%.
 
-Lợi suất cho thuê căn hộ (batdongsan.com.vn, CafeF đăng 21/11/2025):
-✅ Biên Hòa 4,4%/năm
-✅ Thủ Đức 3,3%/năm
-✅ Quận 9 2,7%/năm
-✅ Quận 2 2,1%/năm
+Thủ Đức 3,3%, Quận 9 2,7%. Nhiều người nghe xong cũng bất ngờ, vì trước giờ cứ nghĩ cho thuê thì phải về phía TP.HCM.
 
-Cầu thuê đến từ đâu? Theo Ban Quản lý các KCN Đồng Nai: KCN Loteco lấp đầy 99,26%, Biên Hòa II 93,97%, Amata 90,86%.
-Vốn cũng đang vào: 8 tháng đầu 2026, Đồng Nai thu hút gần 1,88 tỷ USD vốn FDI và hơn 860 ngàn tỷ đồng vốn trong nước (VnEconomy, 5/9/2026).
+Nhưng nhìn quanh Biên Hòa thì dễ hiểu hơn. Loteco lấp đầy hơn 99%, Biên Hòa II gần 94%, Amata gần 91%. Nhà máy kín chỗ thì người làm cũng cần chỗ ở, và nhiều chuyên gia muốn ở luôn gần chỗ làm cho khỏi đi về mỗi ngày.
 
-Lưu ý: lợi suất là số trung bình đã công bố, không phải mức chắc chắn cho từng căn. Giá thuê thực tế còn tùy loại căn, nội thất và thời điểm.
+Vốn thì vẫn đang về: tám tháng đầu 2026, Đồng Nai hút gần 1,88 tỷ USD FDI và hơn 860 ngàn tỷ đồng vốn trong nước.
 
-📍 Bcons Central Park, 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029, là một lựa chọn để cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment "bài toán thuê".
+Anh chị đang tìm chỗ vừa để ở, vừa tính chuyện cho thuê về sau thì ghé xem Bcons Central Park nha, 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029. Comment "bài toán thuê", em gửi nguồn từng con số.
+
+Lợi suất là số khu vực theo batdongsan.com.vn (CafeF, 21/11/2025), không phải mức cam kết cho từng căn. Tỷ lệ lấp đầy: Ban Quản lý các KCN Đồng Nai. Vốn đầu tư: VnEconomy, 5/9/2026. Chuyện chuyên gia ở gần chỗ làm là nhận định theo CafeLand, 25/6/2026.
 
 ## TikTok
-Lợi suất cho thuê căn hộ: Biên Hòa 4,4%/năm, Thủ Đức 3,3%, Quận 2 2,1% (batdongsan.com.vn qua CafeF; số trung bình, không chắc chắn cho từng căn). KCN quanh Biên Hòa lấp đầy trên 90%. Comment "bài toán thuê" để nhận bảng nguồn. #ChoThuêCănHộ #BiênHòa #KhuCôngNghiệp #BconsCentralPark #ĐầuTưBấtĐộngSản
+Cho thuê căn hộ ở Biên Hòa 4,4%/năm, Quận 2 có 2,1%. Loteco, Biên Hòa II, Amata đều lấp đầy trên 90%. Comment "bài toán thuê", em gửi nguồn từng con số nha. (Số khu vực theo batdongsan.com.vn qua CafeF, 21/11/2025, không phải mức cam kết cho từng căn.) #ChoThuêCănHộ #BiênHòa #KhuCôngNghiệp #BconsCentralPark

@@ -6,20 +6,17 @@ videoSha256: ""
 kenh: [facebook, tiktok]
 ---
 ## Facebook
-Vay mua nhà năm 2026: lãi ưu đãi chỉ là nửa câu chuyện.
+Lúc ưu đãi, lãi vay mua nhà phổ biến 8,5–11%/năm. Hết ưu đãi, nhiều người trả 13–15%.
 
-Theo khảo sát quý II/2026 của VARS-IRE tại 10 ngân hàng (VnExpress đăng ngày 4/8/2026):
-✅ Lãi suất ưu đãi phổ biến 8,5–11%/năm.
-✅ Gói cố định 12 tháng: Agribank 8,2%, Vietcombank 9,8%, VietinBank 10,5%, BIDV 10,8%/năm.
-✅ Hết ưu đãi, lãi người vay thực trả phổ biến 13–15%/năm.
+Đó là đoạn dễ bị bỏ quên nhất khi tính mua nhà. Ai cũng nhìn con số năm đầu, ít ai ngồi tính tiếp mấy năm sau.
 
-Cùng bài: Dat Xanh Services ghi tỷ lệ hấp thụ nguồn cung mới giảm từ 45–50% xuống 20–30%; PropertyGuru cho biết hơn 80% người mua chỉ chấp nhận vay khi lãi dưới 9%/năm.
+Ngay cả gói cố định 12 tháng của bốn ngân hàng lớn cũng chênh nhau khá xa: Agribank 8,2%, Vietcombank 9,8%, VietinBank 10,5%, BIDV 10,8%. Mà hơn 80% người mua lại chỉ chấp nhận vay khi lãi dưới 9%.
 
-Vậy khi tính mua nhà, đừng chỉ nhìn lãi năm đầu. Tính luôn giai đoạn sau ưu đãi.
+Nên khi xem chính sách Bcons Central Park, anh chị để ý giúp em chỗ này: phương thức thanh toán 03 và 04 có lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức.
 
-Ở Bcons Central Park, phương thức thanh toán 03 và 04 có lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức (phương thức 05 không có mức trần này). Anh chị muốn em tính thử theo vốn và thu nhập của mình thì nhắn trang, em gửi bảng từng đợt.
+Anh chị nhắn trang số vốn với thu nhập của mình, em tính thử từng đợt cho dễ hình dung nha.
 
-Thông tin mang tính tham khảo, lãi suất thực tế theo ngân hàng tại thời điểm vay.
+Lãi suất thị trường: khảo sát quý II/2026 của VARS-IRE tại 10 ngân hàng; số 80%: PropertyGuru (cùng đăng trên VnExpress, 4/8/2026). Lãi thực tế theo ngân hàng tại thời điểm vay.
 
 ## TikTok
-Lãi vay mua nhà 2026: ưu đãi 8,5–11%, hết ưu đãi 13–15%/năm (VARS-IRE, quý II/2026). Anh chị đang tính vay bao nhiêu năm? Comment để em tính thử. #LãiSuấtVayMuaNhà #BconsCentralPark #BiênHòa #MuaNhàLầnĐầu #TàiChínhCáNhân
+Ưu đãi 8,5–11%/năm, hết ưu đãi phổ biến 13–15%. Mua nhà nhớ tính luôn đoạn sau nha. Anh chị định vay bao nhiêu năm? Comment đi, em tính thử cho. (VARS-IRE quý II/2026, VnExpress 4/8/2026) #LãiSuấtVayMuaNhà #MuaNhàLầnĐầu #BiênHòa #BconsCentralPark
