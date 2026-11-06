@@ -15,7 +15,7 @@ const PHONE_RE = /(?<![\d.,])(?:\+?84|0)(?:[\s.-]?\d){8,10}(?!\d)/;
 /** Lỗi dữ liệu landing (rỗng = đăng được). draft = true thì bỏ qua tên/URL form. */
 export function checkLanding(data, { draft = false } = {}) {
   const errs = [];
-  if (!draft && !data.dongY?.nguoiGiu?.trim()) errs.push("Chưa điền tên người giữ dữ liệu (dongY.nguoiGiu) cho ô đồng ý");
+  if (!data.dongY?.vaiTro?.trim()) errs.push("Thiếu bên giữ dữ liệu trong ô đồng ý (dongY.vaiTro)");
   if (!draft && !/^https:\/\/script\.google\.com\//.test(data.formUrl ?? "")) errs.push("Chưa có link nhận form (formUrl, link Web App của Apps Script)");
   const types = (data.canMau ?? []).map((u) => u.loai);
   for (const t of TYPES) if (!types.includes(t)) errs.push(`Thiếu căn mẫu loại ${t}`);

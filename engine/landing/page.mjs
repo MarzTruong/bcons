@@ -53,7 +53,7 @@ footer{margin:32px 0 24px;font-size:12px;color:var(--muted)}footer a{color:var(-
 `;
 
 function consentText(dongY, projectName) {
-  return `Tôi đồng ý để <b>${esc(dongY.nguoiGiu || "[CHƯA ĐIỀN TÊN]")}</b>, ${esc(dongY.vaiTro)}, lưu họ tên, số điện thoại và lựa chọn của tôi trên trang này (căn hộ, phương thức thanh toán, nhu cầu) để liên hệ tư vấn về dự án ${esc(projectName)} qua điện thoại hoặc Zalo. Thông tin chỉ dùng cho mục đích này, không bán hay chia sẻ cho bên khác. Tôi có thể yêu cầu ngừng liên hệ và xóa thông tin bất cứ lúc nào bằng cách ${esc(dongY.kenhNgung)}. <a href="chinh-sach.html">Xem chính sách dữ liệu</a>.`;
+  return `Tôi đồng ý để ${esc(dongY.vaiTro)} lưu họ tên, số điện thoại và lựa chọn của tôi trên trang này (căn hộ, phương thức thanh toán, nhu cầu) để liên hệ tư vấn về dự án ${esc(projectName)} qua điện thoại hoặc Zalo. Thông tin chỉ dùng cho mục đích này, không bán hay chia sẻ cho bên khác. Tôi có thể yêu cầu ngừng liên hệ và xóa thông tin bất cứ lúc nào bằng cách ${esc(dongY.kenhNgung)}. <a href="chinh-sach.html">Xem chính sách dữ liệu</a>.`;
 }
 
 /** Trang chủ landing. data = landing.json, project = project.json. draft = true thì hiện dải "BẢN NHÁP". */
@@ -141,7 +141,7 @@ export function renderPolicy(data, project) {
   return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chính sách dữ liệu – ${esc(project.ten)}</title><style>${CSS}</style></head><body><main class="wrap">
 <h1>Chính sách dữ liệu cá nhân</h1>
-<p><b>Bên thu thập và giữ dữ liệu:</b> ${esc(d.nguoiGiu || "[CHƯA ĐIỀN TÊN]")}, ${esc(d.vaiTro)}.</p>
+<p><b>Bên thu thập và giữ dữ liệu:</b> ${esc(d.vaiTro)}.</p>
 <p><b>Dữ liệu thu thập:</b> họ tên, số điện thoại/Zalo, nhu cầu, căn hộ và phương thức thanh toán anh/chị chọn trên trang.</p>
 <p><b>Mục đích:</b> liên hệ tư vấn về dự án ${esc(project.ten)} và gửi bảng tính anh/chị yêu cầu. Không dùng cho mục đích khác, không bán hay chia sẻ cho bên khác.</p>
 <p><b>Nơi lưu và công cụ xử lý:</b> dữ liệu được lưu trong Google Sheets (Google) và thông báo cho tư vấn viên qua Telegram; máy chủ của các dịch vụ này có thể đặt ngoài Việt Nam. Ngoài các dịch vụ kỹ thuật đó, không bên nào khác nhận dữ liệu.</p>

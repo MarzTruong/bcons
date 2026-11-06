@@ -6,8 +6,8 @@ Trang landing gồm: thông tin dự án, 5 căn mẫu (mỗi loại một căn)
 
 Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/landing.json` (dữ liệu dự án).
 
-## Bước 1: Điền tên trong ô đồng ý (em làm khi anh gửi họ tên)
-Ô đồng ý và trang chính sách ghi tên anh là người giữ dữ liệu khách (phương án A). Tên **chỉ** xuất hiện ở hai chỗ đó, không có trên video hay bài đăng. Nếu thiếu tên, trang không đăng được (máy tự chặn).
+## Bước 1: Ô đồng ý (đã xong)
+Ô đồng ý ghi "Tôi đồng ý để chuyên viên tư vấn của Bcons PS Land (đơn vị phân phối chính thức) lưu...", không ghi tên cá nhân (anh quyết định 06/11/2026).
 
 ## Bước 2: Apps Script (nhận form, ghi Sheet, báo Telegram), khoảng 10 phút
 1. Mở Sheet **Bcons - Khach quan tam Messenger** trên Google Sheets (máy tính).
@@ -34,7 +34,7 @@ Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/land
    - Build output directory: `engine/landing/dist/bcons-central-park`
    - Project name: ví dụ `bcons-central-park` → trang sẽ là `https://bcons-central-park.pages.dev`
    - Environment variables: thêm `NODE_VERSION` = `22`
-4. Bấm **Save and Deploy**. Lần đầu sẽ **báo lỗi** vì chưa có tên và link form (máy cố ý chặn). Khi em điền xong và đẩy lên `main`, Cloudflare tự build lại và trang lên mạng. Từ đó mỗi lần em sửa trang, trang tự cập nhật.
+4. Bấm **Save and Deploy**. Lần đầu sẽ **báo lỗi** vì chưa có link form (máy cố ý chặn). Khi em điền xong và đẩy lên `main`, Cloudflare tự build lại và trang lên mạng. Từ đó mỗi lần em sửa trang, trang tự cập nhật.
 
 ## Bước 4: Gắn link
 - **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://<tên>.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
