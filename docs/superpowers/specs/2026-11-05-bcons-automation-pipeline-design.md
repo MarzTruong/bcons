@@ -172,6 +172,10 @@ Bỏ so với master plan: `filesystem-mcp`, `tavily`/`brave`, `meta-graph-mcp`,
 6. Không cài ECC vì không phù hợp dự án.
 7. Gộp master plan vào repo theo hướng em đề xuất (05/11/2026, "Ok").
 
+8. Cấu trúc mỗi dự án một thư mục (06/11/2026).
+9. Landing lấy mỗi loại căn một căn mẫu: Studio, 1PN-1WC, 2PN-1WC, 2PN-2WC, 3PN-2WC (06/11/2026). Chọn căn: còn bán, không CĐT LOCK, giá gần trung vị của loại đó; danh sách mã căn anh duyệt trước khi lên web.
+10. Đăng bài (đề xuất 06/11/2026, chờ anh chốt): FB qua Meta Business Suite (miễn phí, không giới hạn), TikTok qua Metricool gói Free (khoảng 20 bài hẹn giờ/tháng, đủ 3–4 video/tuần). Lên Metricool Starter (khoảng 20–25 USD/tháng, không giới hạn bài, giữ lịch sử số liệu) khi vượt 20 bài/tháng hoặc muốn gộp FB vào cùng báo cáo. Không cần API (chỉ có ở gói Advanced, khoảng 53–67 USD/tháng).
+
 ## 12. Em tự quyết (anh xem lại)
 - Lịch nội dung là Sheet mới, CRM dùng lại Sheet Messenger.
 - Báo cáo hiệu quả mỗi tuần, không 3 ngày/lần.
