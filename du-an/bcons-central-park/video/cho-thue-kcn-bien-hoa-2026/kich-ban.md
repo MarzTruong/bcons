@@ -1,6 +1,6 @@
 # Video "Cầu thuê từ khu công nghiệp Biên Hòa" (05/11/2026)
 
-Spec: `remotion-video/specs/cho-thue-kcn-bien-hoa-2026.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `sang` = nền kem kiểu báo chí, chuyển động `truot`). Kịch bản gốc từ báo cáo Gemini (`Gemini Deep Research/kich_ban_video_bds_bcons_central_park.md`, kịch bản 2), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
+Spec: `du-an/bcons-central-park/video/cho-thue-kcn-bien-hoa-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `sang` = nền kem kiểu báo chí, chuyển động `truot`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 2), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 
@@ -31,14 +31,14 @@ Em đã bỏ khỏi kịch bản gốc: "khởi công tháng 5/2026" và "2,67 h
 | geo-osm-bh2 | Ranh KCN Biên Hòa II (way/306132369), đa giác 401,9 ha | 05/11/2026 | OpenStreetMap contributors (ODbL), xuất bằng Overpass Turbo | https://www.openstreetmap.org/way/306132369 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; diện tích đa giác tính từ file có thể lệch số chính thức. Số chính thức 394,63 ha. |
 | geo-osm-amata | Ranh KCN Amata (way/583464295), đa giác 416,9 ha; chưa gộp phần mở rộng way/1016015905 | 05/11/2026 | OpenStreetMap contributors (ODbL), xuất bằng Overpass Turbo | https://www.openstreetmap.org/way/583464295 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; diện tích đa giác tính từ file có thể lệch số chính thức. Số chính thức 513,01 ha, lệch -19%. |
 | geo-central-park | Vị trí Bcons Central Park: 10.959874417285395, 106.84408654581377 (vĩ độ, kinh độ) | 05/11/2026 | Anh cung cấp (sao chép từ Google Maps) | https://www.google.com/maps?q=10.959874417285395,106.84408654581377 | Vị trí dự án theo anh. |
-| phoi-canh | Hình ảnh phối cảnh dự án (file 202605_BPTH_ST27_OV_GREEN PARK 2.png) | 05/11/2026 | Tài liệu chủ đầu tư (ảnh gốc anh chép vào thư mục anh/ẢNH GỐC, không đưa lên git) | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ảnh phối cảnh, luôn ghi "mang tính minh họa" trên màn hình. Bản thu nhỏ 2400 px trong remotion-video/public/images/. |
+| phoi-canh | Hình ảnh phối cảnh dự án (file 202605_BPTH_ST27_OV_GREEN PARK 2.png) | 05/11/2026 | Tài liệu chủ đầu tư (ảnh gốc anh chép vào thư mục anh/ẢNH GỐC, không đưa lên git) | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ảnh phối cảnh, luôn ghi "mang tính minh họa" trên màn hình. Bản thu nhỏ 2400 px trong du-an/bcons-central-park/assets/images/. |
 | geo-osm-du-an | Ranh khu đất dự án theo OSM (way/1015150479, "Khu nhà ở Phức hợp cao tầng phường Tam Hiệp"), đa giác 2,9 ha | 05/11/2026 | OpenStreetMap contributors (ODbL), xuất bằng Overpass Turbo | https://www.openstreetmap.org/way/1015150479 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; chưa đối chiếu với hồ sơ chủ đầu tư. |
 | km-chim-bay | Khoảng cách đường chim bay từ dự án đến tâm các khu (tính bằng Turf từ tọa độ trên) | 05/11/2026 | Tính từ tọa độ có nguồn (geo-central-park, ranh OSM, điểm Aeon) | https://turfjs.org/docs/api/distance | Không phải quãng đường đi. Số tính bằng scripts/geo-derive.mjs. |
 
-**Số về dự án (cảnh 4):** địa chỉ 236 Phan Trung và dự kiến bàn giao Quý II/2029 lấy từ `docs/bcons-central-park.md` (tài liệu chủ đầu tư).
+**Số về dự án (cảnh 4):** địa chỉ 236 Phan Trung và dự kiến bàn giao Quý II/2029 lấy từ `du-an/bcons-central-park/thong-tin.md` (tài liệu chủ đầu tư).
 
 ## Danh sách kiểm tra nội dung
-- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `docs/bcons-central-park.md`.
+- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `du-an/bcons-central-park/thong-tin.md`.
 - [x] Không hứa lợi nhuận hay giá thuê: 4,4% được trình bày là số khu vực (kicker ghi nguồn và ngày), lời đọc không nói dự án sẽ đạt mức đó. Giọng quảng bá theo hướng "một lựa chọn để cân nhắc".
 - [x] Không dùng số ví dụ của prompt cũ (không có 49,9 triệu/m²). Không nhắc giá nên không cần VAT/phí bảo trì.
 - [x] Không quảng cáo căn CĐT LOCK, không "sắp hết". Không so sánh dự án khác.

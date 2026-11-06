@@ -12,4 +12,4 @@ Input is usually a price list, a PTTT announcement, a training deck, a construct
    Mix formats (video talking head, faceless, FB analysis, listing, Threads) and funnel stages (kéo khách mới / nuôi khách đang cân nhắc / mời đến sự kiện). Suggest an order to post them and why.
 4. **Stop and let the user pick**, unless they asked for full drafts up front — then write the top 2-3 fully following video-script.md / social-post.md.
 
-Save the idea table to `docs/content/<date>-y-tuong-<slug>.md` with the fact list and its sources.
+Save the idea table to `du-an/bcons-central-park/content/<date>-y-tuong-<slug>.md` with the fact list and its sources.

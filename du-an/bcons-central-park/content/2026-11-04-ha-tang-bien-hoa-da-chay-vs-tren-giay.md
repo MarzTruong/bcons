@@ -1,5 +1,5 @@
 # Biên Hòa 2026: hạ tầng nào đã chạy, nào còn trên giấy — Video faceless 50s (Remotion)
-Trạng thái: nháp, chờ anh duyệt. Dự án: Bcons Central Park (nguồn: docs/bcons-central-park.md). Số liệu thị trường: báo cáo Gemini `Gemini Deep Research/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, em đã mở link gốc đối chiếu ngày 04/11/2026 (xem `docs/video/` các bảng nguồn đã có).
+Trạng thái: nháp, chờ anh duyệt. Dự án: Bcons Central Park (nguồn: du-an/bcons-central-park/thong-tin.md). Số liệu thị trường: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, em đã mở link gốc đối chiếu ngày 04/11/2026 (xem `du-an/<mã>/video/` các bảng nguồn đã có).
 
 ## Nội dung
 
@@ -43,7 +43,7 @@ Nếu anh muốn dựng bằng Remotion, chạy `/bcons-video <chủ đề>` —
 | vd3 | Vành đai 3, đoạn qua Đồng Nai dài 11 km đạt hơn 80% (cuối tháng 8/2026) | 09/09/2026 | VnExpress | https://vnexpress.net/dien-mao-90-km-duong-vanh-dai-ket-noi-tp-hcm-voi-dong-nai-tay-ninh-5117572.html |
 | san-bay | Sân bay Long Thành dự kiến khai thác từ 0h 24/12/2026 | 30/10/2026 | VnExpress (dẫn ACV) | https://vnexpress.net/san-bay-long-thanh-du-kien-khai-thac-tu-0h-ngay-24-12-5138000.html |
 | metro | Metro kéo dài, đoạn trên địa bàn Đồng Nai khoảng 41,4 km, ở mức nghiên cứu | 07/01/2026 | Cổng TTĐT Đồng Nai | https://dongnai.gov.vn/vi/news/hoat-dong-cua-lanh-dao-tinh/uu-tien-phuong-an-lien-thong-cac-tuyen-metro-ket-noi-thanh-pho-ho-chi-minh-voi-dong-nai-58606.html |
-| du-an | Bcons Central Park, 236 Phan Trung, Biên Hòa; dự kiến bàn giao Quý II/2029 | tài liệu chủ đầu tư | docs/bcons-central-park.md | docs/bcons-central-park.md |
+| du-an | Bcons Central Park, 236 Phan Trung, Biên Hòa; dự kiến bàn giao Quý II/2029 | tài liệu chủ đầu tư | du-an/bcons-central-park/thong-tin.md | du-an/bcons-central-park/thong-tin.md |
 
 ## Giả định và chỗ cần bổ sung
 - (giả định) Người xem ví dụ: người ở/thuê trọ tại Biên Hòa. Em chọn để có hình dung cụ thể, không có số liệu về nhóm này.

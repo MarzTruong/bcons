@@ -5,9 +5,15 @@
 - Mục tiêu của repo: (1) làm nội dung video bất động sản, (2) gửi tin nhắn tự động hàng loạt cho khách hàng.
 - Giao tiếp bằng **tiếng Việt**. Người dùng xưng "anh", Claude xưng "em". Trả lời ngắn gọn, nói thẳng, có số liệu.
 
+## Cấu trúc thư mục
+- `engine/`: code dùng chung (`engine/remotion/` dựng video, `engine/automation/` script tiện ích). Không chứa số liệu dự án.
+- `du-an/<mã>/`: mọi thứ của một dự án: `project.json`, `thong-tin.md`, `video/<tên>/` (spec.json, kich-ban.md, storyboard.md, caption.md, audio/), `assets/` (images, geo), `nguon/`, `content/`, `landing/`, `bao-cao/`. Dự án mới: chép `du-an/_mau/` (xem README trong đó).
+- `config.json`: dự án đang bán (`duAnDangBan`). Lệnh video nhận thêm `--du-an <mã>` để chạy cho dự án khác.
+- Không lên git, cũng chia theo dự án: `data/<mã>/`, `anh/<mã>/`.
+
 ## Nguồn dữ liệu (đọc trước khi viết nội dung)
-- `docs/bcons-central-park.md`: thông tin dự án, 5 phương thức thanh toán, lịch mở bán, tóm tắt bảng giá. Đây là nguồn chính, đã đối chiếu với tài liệu chủ đầu tư.
-- `data/bang-gia.csv`: giá và tình trạng từng căn (996 căn). File này **không đưa lên git**.
+- `du-an/bcons-central-park/thong-tin.md`: thông tin dự án, 5 phương thức thanh toán, lịch mở bán, tóm tắt bảng giá. Đây là nguồn chính, đã đối chiếu với tài liệu chủ đầu tư.
+- `data/bcons-central-park/bang-gia.csv`: giá và tình trạng từng căn (996 căn). File này **không đưa lên git**.
 - Google Drive dự án (thư mục gốc id `1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ`): training, Q&A, PTTT, TVC, phối cảnh, mặt bằng. Đọc bằng connector Google Drive khi cần.
 - Master File (`MasterFile_BconsCentralPark_ver2.xlsx`) do người dùng gửi qua upload. Có sheet GiaTongHop (giá), KhachHang (khách), HoaHong (nội bộ).
 
@@ -32,7 +38,7 @@
 - Chưa chọn kênh gửi (xem `NOTES.md`).
 
 ## Quy trình video (xem `docs/quy-trinh-video.md`)
-- 3 giai đoạn có cổng duyệt: Nghiên cứu → Kịch bản (kèm bảng nguồn từng số) → Storyboard (video có bản đồ/camera/ảnh chèn: `docs/video/<tên>-storyboard.md`, anh duyệt trước khi code và render) → Dựng/Render. Không chạy "one-click" từ cào tin đến render; anh duyệt chữ và số liệu trước khi tạo giọng (tốn credit) và trước khi đăng.
+- 3 giai đoạn có cổng duyệt: Nghiên cứu → Kịch bản (kèm bảng nguồn từng số) → Storyboard (video có bản đồ/camera/ảnh chèn: `du-an/<mã>/video/<tên>/storyboard.md`, anh duyệt trước khi code và render) → Dựng/Render. Không chạy "one-click" từ cào tin đến render; anh duyệt chữ và số liệu trước khi tạo giọng (tốn credit) và trước khi đăng.
 - Hai file `huong_dan_su_dung_prompt_remotion_bcons.md` và `prompt_cao_du_lieu_bds_bcons_central_park.md` chỉ là tài liệu tham khảo. Không dùng `edge-tts`, `props/bcons-latest.json`, composition `RealEstateShortVideo`; repo dùng `BconsCentralPark` + ElevenLabs.
 - Số trong JSON/ví dụ của các prompt đó (85 triệu/m², 49,9 triệu/m², 6,2%, "tiết kiệm 60%") là ví dụ, không có nguồn: không dùng.
 - Số lượng căn theo tài liệu CĐT: 2.820 căn ở + 113 căn thương mại (không ghi "~2.800").
@@ -41,9 +47,9 @@
 
 ## Quy ước làm việc
 - Làm việc trên nhánh `main`. Không tạo PR nếu người dùng chưa yêu cầu.
-- Nội dung sản phẩm viết bằng Markdown trong `docs/`; kịch bản video trong `docs/video/`.
-- Video Remotion nằm trong `remotion-video/`. Mỗi video là một spec `remotion-video/specs/<tên>.json` (lời bình `markup` + mẫu cảnh + `status`), bảng nguồn ở `docs/video/<tên>.md`. Làm video bằng lệnh `/bcons-video [chủ đề]` (4 cổng chờ anh duyệt). Tạo giọng: `node --env-file=.env scripts/generate-voice.mjs <tên>` (tốn credit ElevenLabs, hỏi anh trước; chỉ chạy khi spec `approved`). Render và xuất lên Drive: `npm run render:drive -- <tên>` (video thành phẩm ra `remotion-video/out/video/`, file tạm như khung thử, log, props để trong `remotion-video/out/tam/`; không thả file lẫn trong `out/`). Spec `draft` hoặc có `sourceId` thiếu trong bảng nguồn thì cả hai lệnh từ chối chạy. Số liệu trong video phải được anh duyệt trước khi đăng.
-- Ngày hiện tại và lịch mở bán xem `docs/bcons-central-park.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
+- Nội dung của dự án viết bằng Markdown trong `du-an/<mã>/` (bài đăng ở `content/`, kịch bản ở `video/<tên>/`); `docs/` chỉ chứa tài liệu chung (quy trình, thiết kế, kế hoạch).
+- Video Remotion nằm trong `engine/remotion/`. Mỗi video là một spec `du-an/<mã>/video/<tên>/spec.json` (lời bình `markup` + mẫu cảnh + `status`), bảng nguồn ở `du-an/<mã>/video/<tên>/kich-ban.md`. Làm video bằng lệnh `/bcons-video [chủ đề]` (4 cổng chờ anh duyệt). Tạo giọng (trong `engine/remotion/`): `npm run voice -- <tên>` (tốn credit ElevenLabs, hỏi anh trước; chỉ chạy khi spec `approved`). Render và xuất lên Drive: `npm run render:drive -- <tên>` (video thành phẩm ra `engine/remotion/out/video/`, file tạm như khung thử, log, props để trong `engine/remotion/out/tam/`; không thả file lẫn trong `out/`). Spec `draft` hoặc có `sourceId` thiếu trong bảng nguồn thì cả hai lệnh từ chối chạy. Số liệu trong video phải được anh duyệt trước khi đăng.
+- Ngày hiện tại và lịch mở bán xem `du-an/bcons-central-park/thong-tin.md`: đợt 2 giới thiệu ngày 29/11/2026, đợt 3 ngày 27/12/2026.
 
 ## Lệnh "Off" (kết thúc phiên làm việc)
 Khi người dùng gõ đúng "Off" (không phân biệt hoa thường), làm tự động theo thứ tự, không hỏi lại:

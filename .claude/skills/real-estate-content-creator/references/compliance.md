@@ -21,7 +21,7 @@ Re-read `CLAUDE.md` in the repo too: if it has a newer decision than this file, 
 
 ## Bcons Central Park specifics
 
-Source of truth: `docs/bcons-central-park.md`. These are the details most often gotten wrong:
+Source of truth: `du-an/bcons-central-park/thong-tin.md`. These are the details most often gotten wrong:
 
 - Scale: 5 tháp, 22 tầng nổi, **2.820 căn ở + 113 căn thương mại** (not "~2.800"), 60 tiện ích. Bàn giao **dự kiến Quý II/2029**.
 - Prices in the file are **chưa VAT**. Whenever you mention a price, say "chưa VAT" and that there is a **2% phí bảo trì** on top. Do not compute a with-VAT price yourself (VAT on apartments excludes land-use value, and the file doesn't give that split) → `[Cần bổ sung: giá đã gồm VAT theo bảng tính CĐT]` if needed.

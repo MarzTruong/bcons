@@ -1,6 +1,6 @@
 # Storyboard video `tai-thiet-kcn-bien-hoa-1` (05/11/2026)
 
-Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mốc giây lấy từ `specs/tai-thiet-kcn-bien-hoa-1.timestamps.json` (tính từ đầu từng cảnh). Kiểu: màu `navy`, chuyển động `nay`. Nền bản đồ đề xuất: ảnh vệ tinh có đường (`satellite-streets-v12`) để thấy khu đất thật; nếu anh muốn sáng hoặc tối hơn thì đổi.
+Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mốc giây lấy từ `du-an/bcons-central-park/video/tai-thiet-kcn-bien-hoa-1/timestamps.json` (tính từ đầu từng cảnh). Kiểu: màu `navy`, chuyển động `nay`. Nền bản đồ đề xuất: ảnh vệ tinh có đường (`satellite-streets-v12`) để thấy khu đất thật; nếu anh muốn sáng hoặc tối hơn thì đổi.
 
 > **Cập nhật 05/11/2026 (sau khi anh duyệt storyboard):** đã code xong cảnh bản đồ. Khác với bản storyboard ban đầu: (1) ranh KCN là **đa giác thật của OpenStreetMap** (không còn vòng tròn minh họa); (2) nền ảnh vệ tinh Mapbox `satellite-streets-v12`; (3) thẻ số liệu nằm **phía trên** bản đồ (vùng y 1500-1650 dành cho phụ đề); (4) không vẽ ranh phân vùng 44/286 ha và lô 21,5/51,6 ha vì chưa có dữ liệu, chỉ hiện thẻ số; (5) **ảnh phối cảnh đang là ảnh giữ chỗ** và **Aeon đang là điểm tạm**: cổng kiểm tra chặn render đủ cho tới khi có file thật.
 
@@ -12,7 +12,7 @@ Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.
 | 1 | Tọa độ tâm KCN Biên Hòa 1 (phường Trấn Biên) | **Chưa có.** Mapbox Geocoding và OpenStreetMap không tìm ra. Anh sao chép từ Google Maps. |
 | 2 | Tọa độ Aeon Mall Biên Hòa | **Chưa có.** Báo ghi vị trí trên đường Đặng Văn Trơn (phường Hiệp Hòa / Trấn Biên, các nguồn ghi không thống nhất); Mapbox chỉ tìm ra con đường (10,92652; 106,83556), không đủ để ghim đúng khu đất. Anh sao chép tọa độ khu đất từ Google Maps. |
 | 3 | Ranh giới KCN Biên Hòa 1 và khu 51,6 ha / 21,5 ha | Chưa có dữ liệu chính thức. Mặc định em vẽ **vòng minh họa đúng diện tích** (335 ha; trong đó khoảng 44 ha, 286 ha, 21,5 ha là hình phân vùng minh họa), nét đứt, có chữ "ranh giới minh họa". Có GeoJSON/KMZ ranh thật thì dùng thay. |
-| 4 | Ảnh phối cảnh dự án cho cảnh 4 | **Chưa có file.** Anh chép vào `remotion-video/public/images/` hoặc gửi vào phiên. |
+| 4 | Ảnh phối cảnh dự án cho cảnh 4 | **Chưa có file.** Anh chép vào `du-an/bcons-central-park/assets/images/` hoặc gửi vào phiên. |
 
 ## Cảnh 1: khoanh và highlight KCN Biên Hòa 1 (14,32 giây)
 Thay mẫu `stat-hero` bằng bản đồ toàn màn hình, vẫn giữ con số chạy "21,5 ha" làm điểm nhấn.

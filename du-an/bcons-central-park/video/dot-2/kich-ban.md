@@ -26,7 +26,7 @@ Caption: *Căn hộ xanh giữa lòng Biên Hòa. Giới thiệu đợt 2 ngày 
 ---
 
 ## Video 2 — "Chọn căn nào phù hợp?" (45 giây, dọc)
-Mục tiêu: giúp khách tự định vị nhu cầu. Dữ liệu từ `docs/bcons-central-park.md`.
+Mục tiêu: giúp khách tự định vị nhu cầu. Dữ liệu từ `du-an/bcons-central-park/thong-tin.md`.
 
 | Cảnh | Lời thoại (giọng đọc, thân thiện) |
 |---|---|

@@ -6,11 +6,11 @@ Quyết định của anh (04/11/2026): tên trang như tiêu đề; kênh thôn
 ## A. Chuẩn bị sẵn (đã có trong repo)
 | Việc | File |
 |---|---|
-| Ảnh đại diện 1080×1080 (cắt từ phối cảnh tổng thể) | `docs/content/fanpage/avatar.jpg` |
-| Ảnh bìa 1640×624 (phối cảnh tổng thể + tên trang) | `docs/content/fanpage/cover.jpg` |
-| Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `docs/content/fanpage/anh/` (11 ảnh) |
-| Ảnh bài ghim: so sánh 5 PTTT | `docs/content/messenger-qua/so-sanh-5-pttt.png` |
-| Kịch bản Messenger tự trả lời | `docs/content/messenger-kich-ban.md` |
+| Ảnh đại diện 1080×1080 (cắt từ phối cảnh tổng thể) | `du-an/bcons-central-park/content/fanpage/avatar.jpg` |
+| Ảnh bìa 1640×624 (phối cảnh tổng thể + tên trang) | `du-an/bcons-central-park/content/fanpage/cover.jpg` |
+| Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `du-an/bcons-central-park/content/fanpage/anh/` (11 ảnh) |
+| Ảnh bài ghim: so sánh 5 PTTT | `du-an/bcons-central-park/content/messenger-qua/so-sanh-5-pttt.png` |
+| Kịch bản Messenger tự trả lời | `du-an/bcons-central-park/content/messenger-kich-ban.md` |
 | Bảng Sheets lưu khách | "Bcons - Khach quan tam Messenger" |
 | Công cụ tính nhanh | link artifact đã gửi (dùng nội bộ) |
 
@@ -52,7 +52,7 @@ Mọi ảnh phối cảnh phải ghi "hình ảnh minh họa"; ảnh nhà mẫu 
 - [ ] Bài ghim có đủ ghi chú VAT, phí bảo trì 2%, "chính sách có thể thay đổi"
 
 ## D. Bài đăng đầu tiên (nháp, Facebook không hiển thị định dạng markdown nên viết thuần chữ)
-Quy tắc đã áp dụng: số liệu từ `docs/bcons-central-park.md`; giá ghi chưa VAT; không hứa lợi nhuận hay tăng giá; không "sắp hết"; lãi trần 6,9% chỉ gắn PTTT 03 và 04; PTTT 03 không chiết khấu. Em **không** thêm tên và số điện thoại cá nhân cuối bài (skill mặc định có "Tuấn - 0938…", nhưng anh đã chọn trang không gắn cá nhân); lời kêu gọi là nhắn tin.
+Quy tắc đã áp dụng: số liệu từ `du-an/bcons-central-park/thong-tin.md`; giá ghi chưa VAT; không hứa lợi nhuận hay tăng giá; không "sắp hết"; lãi trần 6,9% chỉ gắn PTTT 03 và 04; PTTT 03 không chiết khấu. Em **không** thêm tên và số điện thoại cá nhân cuối bài (skill mặc định có "Tuấn - 0938…", nhưng anh đã chọn trang không gắn cá nhân); lời kêu gọi là nhắn tin.
 
 **Bài 1 (ghim), kèm ảnh `so-sanh-5-pttt.png`:**
 ```

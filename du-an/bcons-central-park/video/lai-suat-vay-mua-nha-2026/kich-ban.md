@@ -1,6 +1,6 @@
 # Video "Lãi suất vay mua nhà 2026" (góc C, 04/11/2026)
 
-Spec: `remotion-video/specs/lai-suat-vay-mua-nha-2026.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026, chưa tạo giọng). Nguồn số liệu thị trường: báo cáo Gemini `Gemini Deep Research/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, đã mở link gốc đối chiếu 04/11/2026. Số về dự án lấy từ `docs/bcons-central-park.md`.
+Spec: `du-an/bcons-central-park/video/lai-suat-vay-mua-nha-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026, chưa tạo giọng). Nguồn số liệu thị trường: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, đã mở link gốc đối chiếu 04/11/2026. Số về dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 
@@ -26,10 +26,10 @@ Nội dung khớp bài gốc: số 13–15% là lãi suất người vay **thự
 | ls-hap-thu | Dat Xanh Services: tỷ lệ hấp thụ nguồn cung mới từ 45–50% (lãi 9–11%, 2025) xuống 20–30% (lãi 12–14%, nửa đầu 2026) | 04/08/2026 | VnExpress (dẫn Dat Xanh Services) | https://vnexpress.net/nguoi-mua-nha-doi-mat-lai-vay-13-15-sau-uu-dai-5104630.html | Đã mở bài, khớp. |
 | ls-80-phan-tram | PropertyGuru: hơn 80% người mua chỉ chấp nhận vay khi lãi suất dưới 9%/năm | 04/08/2026 | VnExpress (dẫn PropertyGuru) | https://vnexpress.net/nguoi-mua-nha-doi-mat-lai-vay-13-15-sau-uu-dai-5104630.html | Đã mở bài, khớp. |
 
-**Số về dự án (cảnh 4, không có trong schema nguồn nên ghi ở đây):** lãi suất vay trần 6,9%/năm của PTTT 03 và PTTT 04 lấy từ `docs/bcons-central-park.md` (tài liệu chủ đầu tư; thông báo 07/TB-BPTH và 09/TB-ĐTTH ngày 26/10/2026). Anh xác nhận 04/11/2026: nội dung PTTT 03 trong tài liệu là bản mới nhất, chưa có cập nhật. PTTT 05 không có mức trần 6,9% (chủ đầu tư hỗ trợ ân hạn lãi và gốc, giống PTTT 02) nên video không nhắc. PTTT 03 và 04 có thời hạn khác nhau (PTTT 03 tối đa 48 tháng, PTTT 04 gói lãi cố định tối đa 30 tháng): video **không nêu thời hạn** và nói "theo điều kiện cụ thể của từng phương thức".
+**Số về dự án (cảnh 4, không có trong schema nguồn nên ghi ở đây):** lãi suất vay trần 6,9%/năm của PTTT 03 và PTTT 04 lấy từ `du-an/bcons-central-park/thong-tin.md` (tài liệu chủ đầu tư; thông báo 07/TB-BPTH và 09/TB-ĐTTH ngày 26/10/2026). Anh xác nhận 04/11/2026: nội dung PTTT 03 trong tài liệu là bản mới nhất, chưa có cập nhật. PTTT 05 không có mức trần 6,9% (chủ đầu tư hỗ trợ ân hạn lãi và gốc, giống PTTT 02) nên video không nhắc. PTTT 03 và 04 có thời hạn khác nhau (PTTT 03 tối đa 48 tháng, PTTT 04 gói lãi cố định tối đa 30 tháng): video **không nêu thời hạn** và nói "theo điều kiện cụ thể của từng phương thức".
 
 ## Danh sách kiểm tra nội dung (mục 3 quy trình)
-- [x] Mỗi số liệu thị trường có nguồn + ngày + link, đã mở bài gốc. Số dự án khớp `docs/bcons-central-park.md` (6,9%, PTTT 04).
+- [x] Mỗi số liệu thị trường có nguồn + ngày + link, đã mở bài gốc. Số dự án khớp `du-an/bcons-central-park/thong-tin.md` (6,9%, PTTT 04).
 - [x] Không dùng "tiết kiệm 60%", "điểm trũng đón sóng", "dòng vốn dịch chuyển mạnh"; không hứa tăng giá/lợi nhuận.
 - [x] Không dùng số mẫu của Bản 2 (85 triệu/m², 49,9 triệu/m², 6,2%).
 - [x] Không nhắc giá bán nên không cần nêu VAT/phí bảo trì 2%.

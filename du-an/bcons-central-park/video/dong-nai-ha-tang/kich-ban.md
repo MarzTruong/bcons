@@ -1,6 +1,6 @@
 # Video "Đồng Nai - hạ tầng" (video đầu tiên, chuyển sang spec 04/11/2026)
 
-Spec: `remotion-video/specs/dong-nai-ha-tang.json`. Video làm trước khi có quy trình bảng nguồn.
+Spec: `du-an/bcons-central-park/video/dong-nai-ha-tang/spec.json`. Video làm trước khi có quy trình bảng nguồn.
 
 **Nguồn do anh cung cấp (04/11/2026):** bài đăng của trang Facebook "Thông tin Chính phủ", đăng "2 tháng 11 lúc 19:48" (ảnh chụp không hiện năm), kèm bình luận của chính trang đó. Link bài bắt đăng nhập nên em đối chiếu từng số với **ảnh chụp bài + bình luận anh gửi**.
 

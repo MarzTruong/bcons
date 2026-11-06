@@ -1,6 +1,6 @@
 # Storyboard video `cho-thue-kcn-bien-hoa-2026` (05/11/2026)
 
-Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mọi mốc giây dưới đây lấy từ `specs/cho-thue-kcn-bien-hoa-2026.timestamps.json` (giây tính từ đầu từng cảnh). Kiểu: màu `sang` (nền kem), chuyển động `truot`.
+Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mọi mốc giây dưới đây lấy từ `du-an/bcons-central-park/video/cho-thue-kcn-bien-hoa-2026/timestamps.json` (giây tính từ đầu từng cảnh). Kiểu: màu `sang` (nền kem), chuyển động `truot`.
 
 > **Cập nhật 05/11/2026 (sau khi anh duyệt storyboard):** đã code xong cảnh bản đồ. Khác với bản storyboard ban đầu: (1) ranh KCN là **đa giác thật của OpenStreetMap** (không còn vòng tròn minh họa); (2) nền ảnh vệ tinh Mapbox `satellite-streets-v12`; (3) thẻ số liệu nằm **phía trên** bản đồ (vùng y 1500-1650 dành cho phụ đề); (4) không vẽ ranh phân vùng 44/286 ha và lô 21,5/51,6 ha vì chưa có dữ liệu, chỉ hiện thẻ số; (5) **ảnh phối cảnh đang là ảnh giữ chỗ** và **Aeon đang là điểm tạm**: cổng kiểm tra chặn render đủ cho tới khi có file thật.
 
@@ -11,7 +11,7 @@ Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.
 | --- | --- | --- |
 | 1 | Tọa độ tâm KCN Loteco, KCN Biên Hòa II, KCN Amata (anh sao chép từ Google Maps như lần trước) | **Chưa có.** Em thử Mapbox Geocoding và OpenStreetMap đều không tìm ra. |
 | 2 | Ranh giới 3 KCN | Chưa có dữ liệu chính thức. Mặc định em vẽ **vòng tròn minh họa đúng diện tích** (Loteco 100 ha, Biên Hòa II 394,63 ha, Amata 513,01 ha) quanh tọa độ anh đưa, nét đứt, có chữ "ranh giới minh họa". Nếu anh có GeoJSON/KMZ ranh thật thì dùng thay. |
-| 3 | Ảnh phối cảnh dự án cho cảnh 4 | **Chưa có file.** Drive có thư mục "4. PHỐI CẢNH" nhưng em không xem được ảnh qua connector. Anh chép 1-2 ảnh ngang (JPG/PNG) vào `remotion-video/public/images/` hoặc gửi trực tiếp vào phiên. |
+| 3 | Ảnh phối cảnh dự án cho cảnh 4 | **Chưa có file.** Drive có thư mục "4. PHỐI CẢNH" nhưng em không xem được ảnh qua connector. Anh chép 1-2 ảnh ngang (JPG/PNG) vào `du-an/bcons-central-park/assets/images/` hoặc gửi trực tiếp vào phiên. |
 | 4 | Vị trí dự án | Có sẵn (anh đã cho: 10.959874, 106.844087). |
 
 ## Cảnh 1: thanh so sánh lợi suất (12,70 giây): giữ nguyên

@@ -2,7 +2,7 @@
 
 Trạng thái: **bản nháp, chờ anh duyệt** trước khi dán vào Meta Business Suite.
 Mục tiêu: thu thông tin khách quan tâm (có đồng ý nhận tư vấn), ghi vào Google Sheets "Bcons - Khach quan tam Messenger" (id `1c6K4ZC23cXreDt4sex2eSO-ObLO4YBF0KoBLlBp2-mU`).
-Số liệu lấy từ `docs/bcons-central-park.md`. Chỗ có `[...]` là anh cần điền hoặc xác nhận.
+Số liệu lấy từ `du-an/bcons-central-park/thong-tin.md`. Chỗ có `[...]` là anh cần điền hoặc xác nhận.
 
 ## Nguyên tắc
 - Hỏi ít: tối đa 5 câu. Hỏi số điện thoại sau cùng, kèm lý do.
@@ -73,7 +73,7 @@ Quick reply: `Tôi đồng ý, gửi số` · `Không để lại số`
 
 ## 4. Quà: Bảng so sánh 5 phương thức thanh toán
 
-Nội dung (chép từ `docs/bcons-central-park.md`, đã đối chiếu tài liệu chủ đầu tư):
+Nội dung (chép từ `du-an/bcons-central-park/thong-tin.md`, đã đối chiếu tài liệu chủ đầu tư):
 
 | PTTT | Khi ký HĐMB | Vay ngân hàng (MB) | Lãi suất | Chiết khấu |
 |---|---|---|---|---|
@@ -99,7 +99,7 @@ Còn thiếu: PTTT 01 chưa xác nhận bản mới nhất. PTTT 03 không có c
 - **Ngoài giờ làm việc:** "Cảm ơn anh/chị đã nhắn. Tư vấn viên sẽ trả lời anh/chị vào [giờ làm việc]. Anh/chị cứ để lại thông tin, em sẽ chuyển ngay ạ."
 - **Hỏi giá cụ thể, hỏi căn còn hay hết, hỏi lợi nhuận/giá tăng:** chuyển tư vấn viên. Không tự trả lời, không cam kết.
 - **Hỏi mua cho người nước ngoài:** "Dạ dự án hiện không bán cho người nước ngoài ạ."
-- **Hỏi pháp lý:** có thể trả lời theo `docs/bcons-central-park.md` (quy hoạch 1/500, ký thỏa thuận khi làm móng, ký HĐMB khi đủ điều kiện, bảo lãnh MB Bank) hoặc chuyển tư vấn viên.
+- **Hỏi pháp lý:** có thể trả lời theo `du-an/bcons-central-park/thong-tin.md` (quy hoạch 1/500, ký thỏa thuận khi làm móng, ký HĐMB khi đủ điều kiện, bảo lãnh MB Bank) hoặc chuyển tư vấn viên.
 
 ## 6. Cách ghi vào Google Sheets
 

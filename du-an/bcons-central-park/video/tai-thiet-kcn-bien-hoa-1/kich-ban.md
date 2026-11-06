@@ -1,6 +1,6 @@
 # Video "Tái thiết KCN Biên Hòa 1" (05/11/2026)
 
-Spec: `remotion-video/specs/tai-thiet-kcn-bien-hoa-1.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `navy` = navy và vàng, chuyển động `nay`). Kịch bản gốc từ báo cáo Gemini (`Gemini Deep Research/kich_ban_video_bds_bcons_central_park.md`, kịch bản 4), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
+Spec: `du-an/bcons-central-park/video/tai-thiet-kcn-bien-hoa-1/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `navy` = navy và vàng, chuyển động `nay`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 4), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 
@@ -28,14 +28,14 @@ Em đã bỏ khỏi kịch bản gốc: bảng giá đất "tăng 1,6 đến 9 l
 | geo-osm-bh1 | Ranh KCN Biên Hòa 1 (way/568387663), đa giác 298,1 ha | 05/11/2026 | OpenStreetMap contributors (ODbL), xuất bằng Overpass Turbo | https://www.openstreetmap.org/way/568387663 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; diện tích đa giác tính từ file có thể lệch số chính thức. Số chính thức 335 ha, lệch -11%. Không vẽ ranh phân vùng 44/286 ha hay lô 21,5/51,6 ha vì chưa có dữ liệu. |
 | geo-central-park | Vị trí Bcons Central Park: 10.959874417285395, 106.84408654581377 (vĩ độ, kinh độ) | 05/11/2026 | Anh cung cấp (sao chép từ Google Maps) | https://www.google.com/maps?q=10.959874417285395,106.84408654581377 | Vị trí dự án theo anh. |
 | geo-aeon | Vị trí Aeon Mall Biên Hòa: 10.927817077580567, 106.83520655583497 (vĩ độ, kinh độ) | 05/11/2026 | Anh chọn làm điểm tạm (chưa có tọa độ khu đất thật) | https://www.google.com/maps?q=10.927817077580567,106.83520655583497 | **Gần đúng**, anh chọn làm điểm tạm 05/11/2026. Thay khi có tọa độ thật. |
-| phoi-canh | Hình ảnh phối cảnh dự án (file 202605_BPTH_ST02_ARIAL_01_NIGHT (1).jpg) | 05/11/2026 | Tài liệu chủ đầu tư (ảnh gốc anh chép vào thư mục anh/ẢNH GỐC, không đưa lên git) | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ảnh phối cảnh, luôn ghi "mang tính minh họa" trên màn hình. Bản thu nhỏ 2400 px trong remotion-video/public/images/. |
+| phoi-canh | Hình ảnh phối cảnh dự án (file 202605_BPTH_ST02_ARIAL_01_NIGHT (1).jpg) | 05/11/2026 | Tài liệu chủ đầu tư (ảnh gốc anh chép vào thư mục anh/ẢNH GỐC, không đưa lên git) | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ảnh phối cảnh, luôn ghi "mang tính minh họa" trên màn hình. Bản thu nhỏ 2400 px trong du-an/bcons-central-park/assets/images/. |
 | geo-osm-du-an | Ranh khu đất dự án theo OSM (way/1015150479, "Khu nhà ở Phức hợp cao tầng phường Tam Hiệp"), đa giác 2,9 ha | 05/11/2026 | OpenStreetMap contributors (ODbL), xuất bằng Overpass Turbo | https://www.openstreetmap.org/way/1015150479 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; chưa đối chiếu với hồ sơ chủ đầu tư. |
 | km-chim-bay | Khoảng cách đường chim bay từ dự án đến tâm các khu (tính bằng Turf từ tọa độ trên) | 05/11/2026 | Tính từ tọa độ có nguồn (geo-central-park, ranh OSM, điểm Aeon) | https://turfjs.org/docs/api/distance | Không phải quãng đường đi. Số tính bằng scripts/geo-derive.mjs. |
 
-**Số về dự án (cảnh 4):** địa chỉ 236 Phan Trung, Tam Hiệp và dự kiến bàn giao Quý II/2029 lấy từ `docs/bcons-central-park.md` (tài liệu chủ đầu tư).
+**Số về dự án (cảnh 4):** địa chỉ 236 Phan Trung, Tam Hiệp và dự kiến bàn giao Quý II/2029 lấy từ `du-an/bcons-central-park/thong-tin.md` (tài liệu chủ đầu tư).
 
 ## Danh sách kiểm tra nội dung
-- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `docs/bcons-central-park.md`.
+- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `du-an/bcons-central-park/thong-tin.md`.
 - [x] Không hứa tăng giá hay lợi nhuận: lời đọc chỉ nói "Biên Hòa đang thay đổi diện mạo" (có nguồn), không nói giá sẽ tăng.
 - [x] Không dùng số ví dụ của prompt cũ. Không nhắc giá bán căn hộ nên không cần VAT/phí bảo trì.
 - [x] Không quảng cáo căn CĐT LOCK, không "sắp hết". Không so sánh dự án khác.

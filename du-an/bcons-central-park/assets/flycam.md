@@ -22,6 +22,6 @@ Còn `2.mp4`, `3.mp4` và thư mục `Final` (`Tổng 1 + 2.mov`, `Video 1.mp4`)
 - Các video bất động sản thường bị siết quy định về hình ảnh thực tế và minh họa; anh kiểm tra quy định nội dung của công ty trước khi đăng.
 
 ## Cập nhật theo xác nhận của anh (30/10/2026)
-- Clip 1 đúng là khu đất dự án. Đã vẽ ranh giới bằng `tools/draw_boundary.py` (đa giác nhập tay trên khung đầu, bám theo chuyển động camera). Ranh giới chỉ mang tính minh họa, không dùng để đo diện tích hay thay bản đồ pháp lý.
+- Clip 1 đúng là khu đất dự án. Đã vẽ ranh giới bằng `engine/automation/draw_boundary.py` (đa giác nhập tay trên khung đầu, bám theo chuyển động camera). Ranh giới chỉ mang tính minh họa, không dùng để đo diện tích hay thay bản đồ pháp lý.
 - Clip 5: trung tâm thương mại Vincom.
 - Clip 9 và 10 (vòng xoay Tam Hiệp, nhà xưởng): bỏ, không dùng.

@@ -13,8 +13,8 @@ Talk to the user in Vietnamese, calling him "anh" and yourself "em" (repo conven
 
 A wrong price, rate or legal claim in a public post can cost Tuấn his job and the buyer real money, and it can't be unposted from people's memory. So:
 
-1. **Find the project file before writing.** Each project has its own data file: `docs/<project-slug>.md` (today only `docs/bcons-central-park.md` exists). Read it fully, plus `CLAUDE.md` for the latest standing decisions. If the user names a project with no file (Bcons Garden, Eden Park, City…), say so, and either ask for the data or write with placeholders — never fill in from general knowledge, because your memory of those projects is unverified and possibly outdated.
-2. **Every number needs a home.** Each figure in the content must come from (a) the project file, (b) a file the user gave you in this session, or (c) a market source with publisher, date and link (e.g. the research in `Gemini Deep Research/` or `docs/video/*.md` source tables — reuse rows that were already checked). Record each in the source table of the output file.
+1. **Find the project file before writing.** Each project has its own data file: `docs/<project-slug>.md` (today only `du-an/bcons-central-park/thong-tin.md` exists). Read it fully, plus `CLAUDE.md` for the latest standing decisions. If the user names a project with no file (Bcons Garden, Eden Park, City…), say so, and either ask for the data or write with placeholders — never fill in from general knowledge, because your memory of those projects is unverified and possibly outdated.
+2. **Every number needs a home.** Each figure in the content must come from (a) the project file, (b) a file the user gave you in this session, or (c) a market source with publisher, date and link (e.g. the research in `du-an/bcons-central-park/nguon/gemini/` or `du-an/<mã>/video/*.md` source tables — reuse rows that were already checked). Record each in the source table of the output file.
 3. **Missing → placeholder, not a guess.** Use `[Cần bổ sung: <what exactly>]`, e.g. `[Cần bổ sung: giá thuê thực tế căn 2PN khu Tam Hiệp]`. If a missing fact is the backbone of the piece (e.g. a rent-vs-buy post with no rent data), ask before writing rather than producing something hollow.
 4. **Assumptions are labeled, not hidden.** Cash-flow math needs things no document gives (loan term, post-support floating rate, the buyer's income). Use them, but mark each as `(giả định)` in the content and list them in the output file, so the reader sees what is fact and what is scenario.
 5. **Planned ≠ done.** Infrastructure that is planned or under construction (metro extensions, Long Thành airport, expressways) must be worded as plan/progress with its date ("dự kiến…", "theo kế hoạch…"), never as something buyers can use today.
@@ -49,7 +49,7 @@ Run `python scripts/loan_calc.py -h` for all options. Explain the logic in the c
 
 ## 5. Output
 
-Save each piece to `docs/content/<YYYY-MM-DD>-<slug>.md` (create the folder if needed) and also show the ready-to-use text in chat so the user can review without opening the file. The file layout:
+Save each piece to `du-an/bcons-central-park/content/<YYYY-MM-DD>-<slug>.md` (create the folder if needed) and also show the ready-to-use text in chat so the user can review without opening the file. The file layout:
 
 ```markdown
 # <Tiêu đề> — <định dạng: Video TikTok 45s / Bài Facebook / …>
@@ -69,7 +69,7 @@ Trạng thái: nháp, chờ anh duyệt. Dự án: <tên> (nguồn: docs/<file>.
 - [x]/[ ] items from references/compliance.md
 ```
 
-Then run `python scripts/check_content.py docs/content/<file>.md` (add `--video` for scripts). It flags hype words, a phone number in a video, the 6.9% cap attached to the wrong PTTT, prices without a VAT note, and a missing source table. Fix what it finds or explain why a flag is a false positive.
+Then run `python scripts/check_content.py du-an/bcons-central-park/content/<file>.md` (add `--video` for scripts). It flags hype words, a phone number in a video, the 6.9% cap attached to the wrong PTTT, prices without a VAT note, and a missing source table. Fix what it finds or explain why a flag is a false positive.
 
 Everything is a draft until Tuấn approves it — the company hasn't issued official content rules yet. End your reply with the short list of things he must confirm (placeholders, assumptions, anything you weren't sure of).
 

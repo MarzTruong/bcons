@@ -1,6 +1,6 @@
 # Video "Hạ tầng Biên Hòa 2026: đã chạy hay còn trên giấy" (04/11/2026)
 
-Spec: `remotion-video/specs/ha-tang-bien-hoa-2026.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026; phong cách màu Xanh di sản `xanh`, chuyển động Mờ điện ảnh `mo`). Kịch bản gốc anh đã duyệt: `docs/content/2026-11-04-ha-tang-bien-hoa-da-chay-vs-tren-giay.md`. Số liệu thị trường từ báo cáo Gemini, em đã mở link gốc đối chiếu 04/11/2026. Nguồn địa lý: `docs/video/geo-nguon.md`.
+Spec: `du-an/bcons-central-park/video/ha-tang-bien-hoa-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026; phong cách màu Xanh di sản `xanh`, chuyển động Mờ điện ảnh `mo`). Kịch bản gốc anh đã duyệt: `du-an/bcons-central-park/content/2026-11-04-ha-tang-bien-hoa-da-chay-vs-tren-giay.md`. Số liệu thị trường từ báo cáo Gemini, em đã mở link gốc đối chiếu 04/11/2026. Nguồn địa lý: `du-an/bcons-central-park/assets/geo/NGUON.md`.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây)
 1. **Bản đồ (geo-map)** — hook, tách hai nhóm; 4 điểm thật hiện dần; đường nối minh họa Bến Lức - Long Thành.
@@ -18,14 +18,14 @@ Spec: `remotion-video/specs/ha-tang-bien-hoa-2026.json` (status `approved`: anh 
 | san-bay | Sân bay Long Thành dự kiến khai thác từ 0h 24/12/2026 | 30/10/2026 | VnExpress (dẫn ACV) | https://vnexpress.net/san-bay-long-thanh-du-kien-khai-thac-tu-0h-ngay-24-12-5138000.html | Đã mở bài, khớp; bài ghi "dự kiến". |
 | metro | Metro kéo dài, đoạn trên địa bàn Đồng Nai khoảng 41,4 km, ở mức nghiên cứu | 07/01/2026 | Cổng TTĐT Đồng Nai | https://dongnai.gov.vn/vi/news/hoat-dong-cua-lanh-dao-tinh/uu-tien-phuong-an-lien-thong-cac-tuyen-metro-ket-noi-thanh-pho-ho-chi-minh-voi-dong-nai-58606.html | Đã mở bài, khớp. |
 | geo-central-park | Bcons Central Park: 10.959874417285395, 106.84408654581377 (vĩ độ, kinh độ) | 04/11/2026 | Anh cung cấp (sao chép từ Google Maps) | https://www.google.com/maps?q=10.959874417285395,106.84408654581377 | Vị trí dự án theo anh. |
-| geo-phuoc-an | Cảng Phước An: 10.616353354639697, 106.9942243322939 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.616353354639697,106.9942243322939 | Xem docs/video/geo-nguon.md |
-| geo-long-thanh | Sân bay Long Thành: 10.773541785186673, 107.04195752766535 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.773541785186673,107.04195752766535 | Xem docs/video/geo-nguon.md |
+| geo-phuoc-an | Cảng Phước An: 10.616353354639697, 106.9942243322939 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.616353354639697,106.9942243322939 | Xem du-an/bcons-central-park/assets/geo/NGUON.md |
+| geo-long-thanh | Sân bay Long Thành: 10.773541785186673, 107.04195752766535 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.773541785186673,107.04195752766535 | Xem du-an/bcons-central-park/assets/geo/NGUON.md |
 | geo-ben-luc | Bến Lức: 10.652265, 106.4715 (vĩ độ, kinh độ) | 04/11/2026 | Mapbox Geocoding API (truy vấn "Bến Lức, Long An") | https://docs.mapbox.com/api/search/geocoding/ | Điểm gần đúng khu vực Bến Lức (An Thanh), không phải mốc chính thức của tuyến cao tốc. |
 
-**Số về dự án (cảnh 4):** dự kiến bàn giao Quý II/2029 và địa chỉ 236 Phan Trung lấy từ `docs/bcons-central-park.md` (tài liệu chủ đầu tư).
+**Số về dự án (cảnh 4):** dự kiến bàn giao Quý II/2029 và địa chỉ 236 Phan Trung lấy từ `du-an/bcons-central-park/thong-tin.md` (tài liệu chủ đầu tư).
 
 ## Danh sách kiểm tra nội dung
-- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `docs/bcons-central-park.md`.
+- [x] Mỗi số liệu có nguồn + ngày + link; số dự án khớp `du-an/bcons-central-park/thong-tin.md`.
 - [x] Không hứa tăng giá/lợi nhuận; có điểm đánh đổi thật (vốn nằm im đến bàn giao dự kiến).
 - [x] Không dùng số mẫu của Bản 2. Không nhắc giá nên không cần VAT/phí bảo trì.
 - [x] Không quảng cáo căn CĐT LOCK, không "sắp hết". Không so sánh dự án khác.
