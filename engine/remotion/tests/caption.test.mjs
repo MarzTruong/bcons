@@ -43,6 +43,8 @@ test("nhắc giá thì phải có VAT và phí bảo trì, lỗi nêu số dòng
   const errs = checkCaption(make("Giá từ 2,06 tỷ/căn", "x"));
   assert.ok(errs.some((e) => /VAT/.test(e) && /dòng 6/.test(e)), errs.join("|"));
   assert.deepEqual(checkCaption(make("Giá từ 2,06 tỷ chưa VAT, chưa gồm phí bảo trì 2%.", "x")), []);
+  assert.ok(checkCaption(make("Căn 2PN giá 3,1 tỷ", "x")).some((e) => /VAT/.test(e)));
+  assert.deepEqual(checkCaption(make("Khu đất đấu giá, giá khởi điểm 9.363 tỷ đồng.", "x")), []);
 });
 
 test("thiếu phần theo kênh, TikTok quá dài, approved thiếu duyetLuc", () => {

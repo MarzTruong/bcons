@@ -79,7 +79,8 @@ export function checkCaption(text) {
     for (const m of line.matchAll(PHONE_RE)) errs.push(`${lineOf(i)}: có số điện thoại "${m[0].trim()}" (không đưa SĐT vào bài)`);
     const f = fold(line);
     for (const b of BANNED) if (f.includes(fold(b))) errs.push(`${lineOf(i)}: cụm "${b}" (không hứa lợi nhuận/tăng giá, không nói sắp hết)`);
-    if (PRICE_RE.test(line) && /gia/.test(f) && !hasVat) {
+    // Chỉ áp cho giá căn hộ (giá bán/giá từ/có chữ "căn"), không áp cho giá đấu giá đất, vốn đầu tư.
+    if (PRICE_RE.test(line) && /gia/.test(f) && /\bcan\b|gia (ban|tu|chi tu)/.test(f) && !hasVat) {
       errs.push(`${lineOf(i)}: nhắc giá nhưng bài chưa ghi rõ VAT và phí bảo trì 2%`);
     }
   });
