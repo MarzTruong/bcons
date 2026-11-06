@@ -23,6 +23,7 @@
 ## Nguồn dữ liệu (đọc trước khi viết nội dung)
 - `du-an/<mã>/project.json` và `du-an/<mã>/thong-tin.md`: thông tin dự án, 5 PTTT, lịch mở bán, tóm tắt bảng giá (đã đối chiếu tài liệu CĐT).
 - `data/bcons-central-park/bang-gia.csv`: giá và tình trạng từng căn (996 căn), chỉ có trên máy anh.
+- Sheet "Bcons - Lịch nội dung" (id trong `project.json` → `lichNoiDungSheetId`): mỗi bài một dòng, trạng thái Nháp → Chờ duyệt → Đã duyệt → Đã lên lịch → Đã đăng. Quy trình đăng: `docs/huong-dan-dang-bai.md`.
 - Google Drive dự án (thư mục gốc id `1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ`): training, Q&A, PTTT, TVC, phối cảnh, mặt bằng. Đọc bằng connector Google Drive.
 - Master File (`MasterFile_BconsCentralPark_ver2.xlsx`) anh gửi qua upload: sheet GiaTongHop (giá), KhachHang (khách), HoaHong (nội bộ).
 
