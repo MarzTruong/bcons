@@ -44,7 +44,13 @@ Script không bao giờ ghi đè: nếu đích đã có file thì bỏ qua và b
    npm run lint
    ```
    `npm ci` chỉ cần nếu `node_modules` không dời được (báo lỗi khi chạy test). Cả `npm test` và `npm run lint` phải báo hết lỗi (`fail 0`, các dòng `OK`).
-7. Thử render một video có sẵn (không tốn credit ElevenLabs):
+7. Bật hook chặn commit file nhạy cảm (một lần mỗi máy):
+   ```powershell
+   cd ../..
+   git config core.hooksPath .githooks
+   cd engine/remotion
+   ```
+8. Thử render một video có sẵn (không tốn credit ElevenLabs):
    ```powershell
    npm run render:drive -- dong-nai-ha-tang
    ```

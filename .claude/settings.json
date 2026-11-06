@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run check:spec:*)",
+      "Bash(node --test:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./**/.env)",
+      "Read(./**/.env.*)",
+      "Edit(./.env)",
+      "Edit(./**/.env)",
+      "Edit(./**/.env.*)",
+      "Bash(git add .env:*)",
+      "Bash(git add -f:*)",
+      "Bash(git add --force:*)",
+      "Bash(git add data/:*)",
+      "Bash(git add anh/:*)",
+      "Bash(git add *.xlsx:*)",
+      "Bash(git add *.mp4:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/engine/automation/kiem-commit.mjs\" --hook"
+          }
+        ]
+      }
+    ]
+  }
+}

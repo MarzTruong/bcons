@@ -1,4 +1,5 @@
 ---
+name: bcons-video
 description: Làm video cho dự án đang bán (config.json) theo chủ đề, từ số liệu có nguồn đến file mp4, có 4 cổng chờ anh duyệt
 argument-hint: [chủ đề cần làm] [--du-an <mã>]
 ---
@@ -8,6 +9,7 @@ Chủ đề anh giao: **$ARGUMENTS**
 Em chạy quy trình video cho dự án `<mã>`: lấy từ `--du-an <mã>` trong chủ đề nếu có, không thì `duAnDangBan` trong `config.json` (hiện là `bcons-central-park`). Mọi file của video nằm trong `du-an/<mã>/video/<name>/`; lệnh `npm` chạy trong `engine/remotion/` và thêm `--du-an <mã>` nếu khác dự án đang bán. Đọc trước: `CLAUDE.md`, `docs/quy-trinh-video.md`, `du-an/<mã>/project.json`, `du-an/<mã>/thong-tin.md`, `docs/superpowers/specs/2026-11-04-bcons-video-pipeline-design.md`. Nói chuyện tiếng Việt, em xưng "em", gọi người dùng là "anh".
 
 ## Nguyên tắc không được phá
+- **Cổng 3 và 4 chỉ chạy trên máy anh** (có `engine/remotion/.env`). Nếu đang ở cloud (`CLAUDE_CODE_REMOTE=true`): làm xong cổng 1–2 (và storyboard), commit/push, rồi dặn anh `git pull` trên máy để chạy `npm run voice` / `npm run render:drive`.
 - **Dừng ở mỗi cổng và chờ anh trả lời.** Không tự đi tiếp sang bước sau, dù anh đã duyệt cổng trước (mỗi cổng là một lần duyệt riêng). Không "one-click".
 - Không bao giờ tự đặt `status: "approved"` trong spec. Chỉ đặt khi anh nói rõ đã duyệt chữ và số liệu ở cổng 2.
 - Không gọi ElevenLabs (`generate-voice.mjs`) khi anh chưa đồng ý tốn credit ở cổng 3.

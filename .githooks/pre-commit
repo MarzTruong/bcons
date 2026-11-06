@@ -1,0 +1,4 @@
+#!/bin/sh
+# Chặn commit .env, data/, anh/, *.xlsx, *.mp4, out/, node_modules/. Bật một lần mỗi máy:
+#   git config core.hooksPath .githooks
+exec node engine/automation/kiem-commit.mjs
