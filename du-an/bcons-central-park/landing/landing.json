@@ -1,0 +1,100 @@
+{
+  "tieuDe": "Bcons Central Park Biên Hòa: tự tính dòng tiền căn hộ theo 5 phương thức thanh toán",
+  "moTa": "Căn hộ 236 Phan Trung, Tam Hiệp, TP. Đồng Nai. Chọn căn mẫu, chọn phương thức thanh toán, xem từng đợt tiền và trả góp ước tính.",
+  "anhChinh": "assets/images/phoi-canh-tong-the.jpg",
+  "nguonGia": "bảng giá chủ đầu tư ngày 17/10/2026",
+  "laiGiaDinh": 9.5,
+  "namGiaDinh": 20,
+  "diemNoiBat": [
+    "236 Phan Trung, phường Tam Hiệp, TP. Đồng Nai (Biên Hòa)",
+    "5 tháp, mỗi tháp 22 tầng nổi và 2 tầng hầm",
+    "2.820 căn hộ ở và 113 căn thương mại dịch vụ",
+    "60 tiện ích: hồ bơi, quảng trường nhạc nước, khu thể thao, khu vui chơi trẻ em...",
+    "Dự kiến bàn giao Quý II/2029, bàn giao hoàn thiện cơ bản",
+    "Chủ đầu tư: Công ty CP Phát triển Đô thị Tam Hiệp (công ty con của Tập đoàn Bcons)"
+  ],
+  "canMau": [
+    {
+      "ma": "A21-26",
+      "loai": "Studio",
+      "thap": "Orchid (A)",
+      "tang": 21,
+      "dtTimTuong": 39.58,
+      "dtThongThuy": 35.92,
+      "giaChuaVat": {
+        "01": 2191302833,
+        "02": 2394866466,
+        "03": 2394866466,
+        "04": 2336192238,
+        "05": 2336192238
+      }
+    },
+    {
+      "ma": "A15-12",
+      "loai": "1PN-1WC",
+      "thap": "Orchid (A)",
+      "tang": 15,
+      "dtTimTuong": 42.95,
+      "dtThongThuy": 38.56,
+      "giaChuaVat": {
+        "01": 2396137333,
+        "02": 2618729329,
+        "03": 2618729329,
+        "04": 2554570460,
+        "05": 2554570460
+      }
+    },
+    {
+      "ma": "E6-09",
+      "loai": "2PN-1WC",
+      "thap": "Tamarind (E)",
+      "tang": 6,
+      "dtTimTuong": 51.65,
+      "dtThongThuy": 46.48,
+      "giaChuaVat": {
+        "01": 3091926199,
+        "02": 3379154332,
+        "03": 3379154332,
+        "04": 3296365051,
+        "05": 3296365051
+      }
+    },
+    {
+      "ma": "A18-09",
+      "loai": "2PN-2WC",
+      "thap": "Orchid (A)",
+      "tang": 18,
+      "dtTimTuong": 62.02,
+      "dtThongThuy": 56.91,
+      "giaChuaVat": {
+        "01": 3721073155,
+        "02": 4066746600,
+        "03": 4066746600,
+        "04": 3967111308,
+        "05": 3967111308
+      }
+    },
+    {
+      "ma": "A15-07",
+      "loai": "3PN-2WC",
+      "thap": "Orchid (A)",
+      "tang": 15,
+      "dtTimTuong": 87.14,
+      "dtThongThuy": 80.05,
+      "giaChuaVat": {
+        "01": 5286035469,
+        "02": 5777087945,
+        "03": 5777087945,
+        "04": 5635549290,
+        "05": 5635549290
+      }
+    }
+  ],
+  "dongY": {
+    "nguoiGiu": "",
+    "vaiTro": "chuyên viên tư vấn của Bcons PS Land (đơn vị phân phối chính thức)",
+    "kenhNgung": "nhắn \"NGỪNG\" cho fanpage Căn hộ Phan Trung – Bcons Central Park Biên Hòa"
+  },
+  "formUrl": "",
+  "fanpageUrl": ""
+}

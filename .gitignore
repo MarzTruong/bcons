@@ -16,3 +16,6 @@ engine/remotion/audio-test/
 
 # Thư mục cũ trên máy anh (sau git pull, trước khi chạy doi-thu-muc): không bao giờ add
 remotion-video/
+
+# Landing (bản xuất, Cloudflare tự build)
+engine/landing/dist/

@@ -35,7 +35,7 @@
     "lint": "eslint src && tsc && node scripts/check-spec.mjs --all",
     "render:drive": "node scripts/render-drive.mjs",
     "voice": "node --env-file=.env scripts/generate-voice.mjs",
-    "test": "node --test \"tests/*.test.mjs\" \"../automation/*.test.mjs\"",
+    "test": "node --test \"tests/*.test.mjs\" \"../automation/*.test.mjs\" \"../landing/*.test.mjs\"",
     "check:spec": "node scripts/check-spec.mjs",
     "check:mapbox": "node scripts/check-mapbox.mjs",
     "geo:fetch": "node scripts/geo-fetch.mjs",
@@ -46,7 +46,8 @@
     "duyet:video": "node scripts/caption-cli.mjs duyet-video",
     "send:telegram": "node scripts/send-telegram.mjs",
     "telegram:chat-id": "node scripts/telegram-chat-id.mjs",
-    "bot": "node scripts/bot/bot.mjs"
+    "bot": "node scripts/bot/bot.mjs",
+    "landing": "node ../landing/build.mjs"
   },
   "allowScripts": {
     "esbuild": false
