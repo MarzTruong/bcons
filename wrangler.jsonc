@@ -6,7 +6,6 @@
   "name": "bcons-central-park",
   "compatibility_date": "2026-11-01",
   "assets": {
-    "directory": "./engine/landing/dist/bcons-central-park",
-    "not_found_handling": "404-page"
+    "directory": "./engine/landing/dist/bcons-central-park"
   }
 }
