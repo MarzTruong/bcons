@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 
 export const ALLOWED = [
-  "Read", "Edit", "Write", "Glob", "Grep", "WebSearch", "WebFetch",
+  "Read", "Edit", "Write", "Glob", "Grep", "WebSearch", "WebFetch", "Skill",
   "Bash(npm test:*)", "Bash(npm run lint:*)", "Bash(npm run check:caption:*)", "Bash(npm run check:spec:*)",
   "Bash(node --test:*)", "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)",
 ];

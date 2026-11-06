@@ -44,6 +44,13 @@
 - Ảnh phối cảnh ghi "hình ảnh minh họa".
 - Caption là quảng cáo: viết tự nhiên như người thật kể chuyện, không khuôn sẵn, không danh sách ✅ liệt kê số, nguồn và lưu ý gom thành chữ nhỏ cuối bài. Chi tiết: `docs/quy-tac-caption.md` (được ưu tiên hơn skill `real-estate-content-creator` khi viết caption).
 
+## Skill dùng tự động (không cần anh gọi)
+- Viết/sửa code `engine/`: `test-driven-development` (test trước), xong việc `verification-before-completion`; lỗi khó: `systematic-debugging`.
+- Việc lớn: `brainstorming` → `writing-plans` → `executing-plans`.
+- Sửa giao diện landing (`engine/landing/`): `frontend-design` (hướng thiết kế) và `impeccable` (soát, chỉnh, `audit`/`polish`); giữ quy tắc giá/VAT/ô đồng ý.
+- Video: `bcons-video`; caption: `docs/quy-tac-caption.md`; bài công ty: `bai-cong-ty`; dự án mới: `bcons-project-init`.
+- Cần khả năng chưa có: `find-skills` tìm skill, **báo anh trước khi cài** (cài skill = thêm code người khác vào repo).
+
 ## Tin nhắn hàng loạt
 - Không dùng Zalo/Facebook cá nhân để nhắn hàng loạt (dễ bị khóa). Kênh phù hợp: Zalo OA/ZNS, SMS brandname, email.
 - Chỉ nhắn khách đã đồng ý nhận tin; có danh sách từ chối; không gửi trùng; cá nhân hóa theo tên và nhu cầu. Chưa chọn kênh gửi (xem `NOTES.md`).
