@@ -22,7 +22,7 @@ Mốc thời gian: đợt 2 giới thiệu 29/11/2026, đợt 3 ngày 27/12/2026
 **Không phải mục tiêu**
 - Không tự làm app TikTok hay dùng TikTok Content Posting API (cần giấy phép kinh doanh; anh quyết định 05/11/2026).
 - Không quét GitHub/plugin tự động để kéo công cụ về. Danh sách công cụ chọn một lần, ghi ở mục 7.
-- Không dời cấu trúc thư mục hiện có (`remotion-video/`, `docs/video/`, spec) sang cấu trúc mới của master plan.
+- Không dùng cấu trúc thư mục của master plan (`video-engine/`, `workspace/`); dùng cấu trúc theo dự án ở mục 5.4 (anh yêu cầu 06/11/2026).
 - Không đưa toàn bộ bảng giá lên web; chỉ giá các căn mẫu.
 - Không render 60fps; giữ 30fps.
 
@@ -78,6 +78,52 @@ Dùng lại Sheet "Bcons - Khach quan tam Messenger", thêm tab hoặc cột cho
 
 ### 5.3 Cấu hình dự án
 `config/project.json`: tên dự án, địa chỉ, tọa độ, chủ đầu tư, số căn, các PTTT, đường dẫn tài liệu nguồn (`docs/bcons-central-park.md`), từ khóa nghiên cứu (khu vực, hạ tầng liên quan), tên kênh. Prompt Gemini, mẫu cảnh `project-close` và landing đọc từ đây. Đổi dự án = thêm file `docs/<du-an>.md` và sửa `config/project.json`.
+
+### 5.4 Cấu trúc thư mục: mỗi dự án một thư mục riêng
+Nguyên tắc: **máy dùng chung, nội dung theo dự án**. Code (Remotion, landing, tự động hóa) viết một lần, không chứa tên dự án; mọi thứ của một dự án (thông tin, nguồn, video, bài đăng, ảnh, bản đồ, báo cáo) nằm trong `du-an/<mã-dự-án>/`. Thêm dự án = chép `du-an/_mau/` và điền.
+
+```text
+bcons/
+├── CLAUDE.md                     # quy tắc chung (pháp lý, cách làm việc)
+├── NOTES.md                      # nhật ký chung
+├── config.json                   # { "duAnDangBan": "bcons-central-park" }
+├── .claude/                      # skill + lệnh dùng chung (/bcons-video nhận thêm mã dự án)
+├── docs/                         # tài liệu chung: quy trình, prompt Gemini mẫu, thiết kế/kế hoạch
+├── engine/                       # code dùng chung, không có số liệu dự án
+│   ├── remotion/                 # = remotion-video/ hiện tại (src, scripts, tests, package.json)
+│   ├── landing/                  # khung landing page, đọc dữ liệu từ du-an/<mã>/landing/
+│   └── automation/               # Apps Script (form → Sheet → Telegram), gửi Telegram, công cụ (draw_boundary.py)
+└── du-an/
+    ├── _mau/                     # khung trống cho dự án mới
+    └── bcons-central-park/
+        ├── project.json          # cấu hình (mục 5.3)
+        ├── thong-tin.md          # = docs/bcons-central-park.md
+        ├── NOTES.md              # việc riêng của dự án (tách từ NOTES.md gốc)
+        ├── nguon/                # đối chiếu nguồn, báo cáo Gemini ("Gemini Deep Research/")
+        ├── video/<tên>/          # MỖI VIDEO MỘT THƯ MỤC:
+        │   ├── spec.json         #   spec (hiện ở remotion-video/specs/)
+        │   ├── timestamps.json
+        │   ├── kich-ban.md       #   kịch bản + bảng nguồn (hiện ở docs/video/)
+        │   ├── storyboard.md
+        │   ├── caption.md        #   caption FB/TikTok (mới)
+        │   └── audio/            #   mp3 ElevenLabs (hiện ở public/audio/<tên>/)
+        ├── assets/
+        │   ├── images/           # ảnh phối cảnh thu nhỏ dùng trong video
+        │   └── geo/              # GeoJSON (public/geo/ + map/)
+        ├── content/              # fanpage, Messenger, bài công ty đã biên tập
+        ├── landing/              # dữ liệu căn mẫu, chữ của trang
+        └── bao-cao/              # báo cáo hiệu quả tuần
+```
+
+Không lên git, cũng chia theo dự án: `data/<mã>/` (bảng giá, Master File), `anh/<mã>/` (ảnh gốc), `engine/remotion/out/<mã>/` (mp4). Tên thư mục trên Drive theo cùng mã dự án.
+
+Ràng buộc kỹ thuật cho người dựng:
+- Remotion đọc file tĩnh từ một thư mục `public`: lệnh render/tạo giọng truyền `--public-dir du-an/<mã>/` (hoặc tương đương), đường dẫn trong spec tính từ thư mục dự án (ví dụ `video/<tên>/audio/...`, `assets/geo/...`).
+- Lệnh nhận mã dự án, mặc định lấy `config.json`: `npm run render:drive -- <tên>` vẫn chạy được, thêm `--du-an <mã>` khi cần.
+- Chuyển thư mục là **bước đầu tiên của kế hoạch**, làm bằng `git mv` (giữ lịch sử), một commit riêng. Kiểm tra: `npm test` và `npm run lint` qua, băm khung hình `dong-nai-ha-tang` giống hệt trước khi dời.
+- File không lên git trên máy anh (`.env`, `data/`, `anh/`, `out/`, `audio-test/`) không tự dời theo `git pull`: cần script `engine/automation/doi-thu-muc` chạy một lần trên PC, có chế độ chạy thử in ra danh sách trước khi dời. Cập nhật `.gitignore` theo đường dẫn mới.
+- Cập nhật mọi đường dẫn trong `CLAUDE.md`, `NOTES.md`, `docs/quy-trinh-video.md`, `.claude/commands/bcons-video.md`, skill `real-estate-content-creator` (references).
+- Lịch nội dung và CRM vẫn là **một Sheet chung** có cột "Dự án" (khách có thể chuyển sang dự án khác).
 
 ## 6. Skill
 | Việc | Skill | Trạng thái |
