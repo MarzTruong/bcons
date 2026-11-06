@@ -24,17 +24,19 @@ Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/land
    - Bấm **Deploy**, chép **Web app URL** (dạng `https://script.google.com/macros/s/.../exec`) gửi em.
 7. **Khi em gửi bản `Code.gs` mới** (sửa lỗi, đổi mẫu tin): dán đè code, Lưu, rồi **Triển khai → Quản lý bản triển khai (Manage deployments) → biểu tượng ✏️ → Phiên bản: Phiên bản mới (New version) → Triển khai**. Không tạo "Bản triển khai mới" lần nữa (sẽ ra link khác, trang không gửi tới được).
 
-## Bước 3: Cloudflare Pages (đăng trang miễn phí), khoảng 10 phút
-1. Tạo tài khoản miễn phí tại https://dash.cloudflare.com/sign-up (dùng email của anh).
-2. Vào **Workers & Pages → Create** → chọn thẻ **Pages** (không phải Workers) → **Import an existing Git repository** → chọn GitHub, cấp quyền cho repo **MarzTruong/bcons**.
-3. Cấu hình:
-   - Framework preset: **None**; Root directory: để trống
-   - Production branch: `main`
-   - Build command: `node engine/landing/build.mjs`
-   - Build output directory: `engine/landing/dist/bcons-central-park`
-   - Project name: ví dụ `bcons-central-park` → trang sẽ là `https://bcons-central-park.pages.dev`
-   - Environment variables: thêm `NODE_VERSION` = `22`
-4. Bấm **Save and Deploy**. Lần đầu sẽ **báo lỗi** vì chưa có link form (máy cố ý chặn). Khi em điền xong và đẩy lên `main`, Cloudflare tự build lại và trang lên mạng. Từ đó mỗi lần em sửa trang, trang tự cập nhật.
+## Bước 3: Cloudflare (đăng trang miễn phí), khoảng 10 phút
+Cloudflare giờ dùng **Workers** để đăng trang (repo đã có sẵn `wrangler.jsonc` cho việc này).
+1. Tạo tài khoản miễn phí tại https://dash.cloudflare.com/sign-up.
+2. **Compute → Workers & Pages → Create** → **Import a repository** → chọn GitHub, cấp quyền cho repo **MarzTruong/bcons**.
+3. Màn hình "Set up your application":
+   - **Project name:** `bcons-central-park` (phải đúng tên này, trùng với `wrangler.jsonc`)
+   - **Build command:** `node engine/landing/build.mjs`
+   - **Deploy command:** để nguyên `npx wrangler deploy`
+   - **Preview command:** để nguyên
+   - **Enable Preview builds:** tắt (đỡ tạo bản thử mỗi lần em đẩy nhánh phụ)
+   - **Protect with Cloudflare Access:** tắt (để khách vào được)
+   - **Advanced settings:** Path `/`, API token để tự tạo; thêm biến **Variable name** `NODE_VERSION`, **Variable value** `22`
+4. Bấm **Deploy**. Khoảng 1–2 phút sau có link dạng `https://bcons-central-park.<tên-tài-khoản>.workers.dev`. Từ đó mỗi lần em đẩy lên `main`, trang tự cập nhật.
 
 ## Bước 4: Gắn link
 - **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://<tên>.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
