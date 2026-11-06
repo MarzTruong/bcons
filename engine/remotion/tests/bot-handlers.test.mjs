@@ -41,7 +41,7 @@ function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
     }
     if (cmd === "git" && args[0] === "diff") return { code: 0, out: "x\n" };
     if (cmd === "git" && args[0] === "rev-list") return { code: 0, out: "1\n" };
-    if (cmd === "npm" && args.includes("render:drive")) fs.writeFileSync(path.join(outDir, `${args.at(-1)}.mp4`), "video");
+    if (cmd === "npm" && args.includes("render:drive")) fs.writeFileSync(path.join(outDir, `${args.filter((a) => !a.startsWith("--")).at(-1)}.mp4`), "video");
     return { code: 0, out: "ok" };
   };
   const bot = createBot({
@@ -201,4 +201,22 @@ test("findClaudeExe tìm claude.exe ở thư mục cài mặc định", () => {
   const home = "C:/Users/Marz";
   assert.equal(findClaudeExe(home, (p) => p.replaceAll("\\", "/").endsWith(".local/bin/claude.exe")), path.join(home, ".local", "bin", "claude.exe"));
   assert.equal(findClaudeExe(home, () => false), null);
+});
+
+test("/sfx chỉ tạo hiệu ứng (tốn credit) sau khi bấm Đồng ý", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/sfx"));
+  assert.ok(!s.execs.some((e) => e.includes("sfx")));
+  assert.match(s.said.at(-1).text, /TỐN CREDIT/);
+  const data = s.said.at(-1).extra.reply_markup.inline_keyboard[0][0].callback_data;
+  await s.bot.handleUpdate(press(data));
+  assert.ok(s.execs.some((e) => e === "npm run sfx -- --dong-y"));
+});
+
+test("/render <tên> khongnhac → render bản không nhạc", async () => {
+  const s = setup();
+  fs.writeFileSync(path.join(s.outDir, "a-khong-nhac.mp4"), "x");
+  await s.bot.handleUpdate(msg("/render a khongnhac"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.execs.some((e) => e === "npm run render:drive -- a --khong-nhac"), s.execs.join("|"));
 });

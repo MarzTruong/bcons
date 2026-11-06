@@ -11,6 +11,7 @@ import {
 } from "./motion";
 import { Captions } from "./Captions";
 import { Watermark, WatermarkContext } from "./Watermark";
+import { SFX_VOLUME, musicVolume, sfxEvents } from "./amThanh";
 import { LEAD, buildTiming, cueFrame, type Timestamps } from "./timing";
 import type { Scene, VideoSpec } from "./spec";
 import { type TemplateProps } from "./templates/common";
@@ -106,7 +107,12 @@ const Background: React.FC = () => {
   );
 };
 
-export type BconsVideoProps = { spec: VideoSpec; timestamps: Timestamps };
+/** amThanh: do render-drive chuẩn bị (nhạc + hiệu ứng chép vào <du-an>/.am-thanh/). Không có = chỉ giọng đọc như cũ. */
+export type BconsVideoProps = {
+  spec: VideoSpec;
+  timestamps: Timestamps;
+  amThanh?: { nhac: string | null; sfx: string[] };
+};
 
 const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>) => {
   switch (scene.template) {
@@ -146,8 +152,10 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>) => {
   }
 };
 
-export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
-  const { SCENE_DATA, SCENE_STARTS } = buildTiming(timestamps);
+export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThanh }) => {
+  const timing = buildTiming(timestamps);
+  const { SCENE_DATA, SCENE_STARTS } = timing;
+  const sfx = amThanh?.sfx ?? [];
   const C = PALETTES[spec.style ?? "classic"];
   const motion = MOTIONS[spec.motion ?? "classic"];
   return (
@@ -192,6 +200,16 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
               </Sequence>
             );
           })}
+          {amThanh?.nhac ? (
+            <Audio src={staticFile(amThanh.nhac)} loop volume={(f: number) => musicVolume(f, timing)} />
+          ) : null}
+          {sfxEvents(spec, timing)
+            .filter((e) => sfx.includes(e.name))
+            .map((e) => (
+              <Sequence key={`${e.name}-${e.frame}`} from={e.frame} durationInFrames={60}>
+                <Audio src={staticFile(`.am-thanh/sfx/${e.name}.mp3`)} volume={SFX_VOLUME[e.name]} />
+              </Sequence>
+            ))}
           <Watermark
             hideFrom={
               spec.scenes[spec.scenes.length - 1]?.template === "project-close" ? SCENE_STARTS[SCENE_STARTS.length - 1] : undefined

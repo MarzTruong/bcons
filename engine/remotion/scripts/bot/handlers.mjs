@@ -164,13 +164,26 @@ export function createBot(deps) {
         await say(`✅ Đã duyệt ${name}, bản đăng ở các tin phía trên. ${saved}\nViệc còn lại: hẹn giờ trên Metricool (TikTok) và Business Suite (Facebook).`);
       });
     },
-    render([name]) {
+    render([name, opt]) {
       if (!checkName(name)) return;
+      // "/render <tên> khongnhac": bản chỉ có giọng + hiệu ứng, để anh tự chọn nhạc trên TikTok.
+      const khongNhac = opt === "khongnhac" || opt === "khong-nhac";
+      const file = `${name}${khongNhac ? "-khong-nhac" : ""}.mp4`;
       return enqueue(`render ${name}`, async () => {
-        await say(`Đang render ${name}, mất vài phút... (dừng: /huy)`);
-        await run("npm", ["run", "render:drive", "--", name], remotionDir, `Render ${name}`, 60 * 60e3);
-        await sendPreview(path.join(outDir, `${name}.mp4`), `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
+        await say(`Đang render ${name}${khongNhac ? " (không nhạc)" : ""}, mất vài phút... (dừng: /huy)`);
+        await run("npm", ["run", "render:drive", "--", name, ...(khongNhac ? ["--khong-nhac"] : [])], remotionDir, `Render ${name}`, 60 * 60e3);
+        await sendPreview(path.join(outDir, file), khongNhac ? `Bản không nhạc ${name} (để chọn nhạc trên TikTok).` : `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
       });
+    },
+    sfx() {
+      return ask("Tạo 3 hiệu ứng âm thanh (vút, tách, dồn) bằng ElevenLabs? Việc này TỐN CREDIT (ít, chỉ làm 1 lần).", "sfx", () =>
+        enqueue("tạo hiệu ứng", async () => {
+          await say("Đang tạo hiệu ứng âm thanh...");
+          const out = await run("npm", ["run", "sfx", "--", "--dong-y"], remotionDir, "Tạo hiệu ứng", 10 * 60e3);
+          const saved = await gitSave(["engine/remotion/am-thanh/sfx"], "Hieu ung am thanh").catch((e) => `Chưa lưu lên GitHub: ${e.message}`);
+          await say(`Xong hiệu ứng.\n${tail(out, 5)}\n${saved}\nTừ giờ /render tự có nhạc + hiệu ứng.`);
+        }),
+      );
     },
     giong([name]) {
       if (!checkName(name)) return;

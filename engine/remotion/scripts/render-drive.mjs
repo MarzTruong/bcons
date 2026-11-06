@@ -9,6 +9,7 @@ import { spawnSync } from "node:child_process";
 import { applyWatermark, checkTimestamps, prepareRun } from "./spec-tools.mjs";
 import { loadMapboxEnv } from "./env.mjs";
 import { readProjectConfig, takeProjectFlag } from "./project.mjs";
+import { prepareAudio } from "./am-thanh.mjs";
 
 try {
   process.loadEnvFile(".env");
@@ -17,7 +18,10 @@ try {
 }
 
 const COMPOSITION = "BconsCentralPark";
-const { projDir, rest } = takeProjectFlag(process.argv.slice(2));
+const { projDir, rest: args } = takeProjectFlag(process.argv.slice(2));
+// --khong-nhac: bản chỉ có giọng + hiệu ứng, để anh tự chọn nhạc trên TikTok.
+const khongNhac = args.includes("--khong-nhac");
+const rest = args.filter((a) => a !== "--khong-nhac");
 const name = rest[0];
 const { spec, timestampsPath } = prepareRun(name, { projDir }); // cổng chặn trước mọi việc khác
 if (!fs.existsSync(timestampsPath)) {
@@ -32,15 +36,20 @@ if (tsErrors.length) {
 }
 // Cảnh bản đồ cần token Mapbox (đặt REMOTION_MAPBOX_TOKEN cho bundle).
 if (spec.scenes.some((s) => s.template === "geo-map")) loadMapboxEnv();
-const file = rest[1] ?? `${name}.mp4`;
+const file = rest[1] ?? `${name}${khongNhac ? "-khong-nhac" : ""}.mp4`;
 // out/video = video thành phẩm; out/tam = file tạm (props, khung kiểm tra, log). Cả out/ đã gitignore.
 const out = path.join("out", "video", file);
 fs.mkdirSync(path.join("out", "video"), { recursive: true });
 fs.mkdirSync(path.join("out", "tam", "props"), { recursive: true });
 const propsFile = path.join("out", "tam", "props", `props-${name}.json`);
+const amThanh = prepareAudio({ name, projDir, preferred: spec.nhac, khongNhac });
+console.log(
+  amThanh.nhac ? `Nhạc nền: ${amThanh.nhacFile}` : khongNhac ? "Bản không nhạc." : "Chưa có nhạc trong am-thanh/nhac/ (render không nhạc).",
+  amThanh.sfx.length ? `Hiệu ứng: ${amThanh.sfx.join(", ")}` : "Chưa có hiệu ứng (chạy /sfx một lần).",
+);
 fs.writeFileSync(
   propsFile,
-  JSON.stringify({ spec: applyWatermark(spec, readProjectConfig(projDir)), timestamps }),
+  JSON.stringify({ spec: applyWatermark(spec, readProjectConfig(projDir)), timestamps, amThanh }),
 );
 
 function findDriveDir() {

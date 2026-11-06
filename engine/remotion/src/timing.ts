@@ -30,7 +30,7 @@ export const buildTiming = (ts: Timestamps) => {
     return acc;
   }, []);
   const TOTAL_FRAMES = SCENE_DATA.reduce((a, s) => a + s.frames, 0);
-  return { SCENE_DATA, SCENE_STARTS, TOTAL_FRAMES };
+  return { SCENE_DATA, SCENE_STARTS, TOTAL_FRAMES, LEAD, FPS };
 };
 
 /** Frame (tương đối trong cảnh) khi từ có chữ hiển thị `text` bắt đầu được đọc. */

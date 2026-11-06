@@ -83,3 +83,9 @@ test("hook Claude: add file cấm rồi commit trong cùng một lệnh bị ch�
   fs.rmSync(path.join(dir, "data"), { recursive: true });
   assert.equal(run(`${G} commit -m go`).status, 0);
 });
+
+test("nhạc tải về (am-thanh/) và âm thanh tạm của dự án bị chặn; hiệu ứng tự tạo thì được", () => {
+  assert.equal(findBlocked(["am-thanh/nhac/piano.mp3"]).length, 1);
+  assert.equal(findBlocked(["du-an/x/.am-thanh/nhac.mp3"]).length, 1);
+  assert.deepEqual(findBlocked(["engine/remotion/am-thanh/sfx/vut.mp3"]), []);
+});

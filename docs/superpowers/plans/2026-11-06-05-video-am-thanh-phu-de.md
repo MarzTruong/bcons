@@ -22,7 +22,7 @@
 ## C. Ranh giới bản đồ
 Vùng `official` mặc định: viền **vẽ dần theo chu vi** (không hiện sẵn), sau đó một **vệt sáng chạy vòng quanh ranh** lặp lại trong lúc nói về vùng đó. Áp dụng cho **các video bản đồ làm từ nay** (giây 0–2 video `tai-thiet-kcn-bien-hoa-1` chỉ là ví dụ anh đưa, không sửa video đó). Vùng minh họa giữ nét đứt.
 
-## D. Nhạc nền + hiệu ứng âm thanh
+## D. Nhạc nền + hiệu ứng âm thanh — đã làm 06/11/2026 (`src/amThanh.ts`, `scripts/am-thanh.mjs`, `scripts/tao-sfx.mjs`, bot `/sfx`, `/render <tên> khongnhac`). Nhạc ở `<repo>/am-thanh/nhac/` (không lên git), tự chọn theo tên video hoặc `spec.nhac`.
 - Spec thêm `audio.music` (tên file) và `audio.musicVolume`. Nhạc nhỏ dưới giọng (khoảng 12%), tự hạ khi có lời, lên nhẹ ở khoảng lặng, mở/kết nhỏ dần.
 - Nhạc: anh tải 3–5 bản từ Pixabay Music (giấy phép cho dùng thương mại) vào `am-thanh/nhac/` trên máy (không lên git, đồng bộ qua Drive như `anh/`).
 - Hiệu ứng: "vút" khi chuyển cảnh, "tách" khi số hiện, tiếng dồn trước cảnh kết; tạo một lần (ElevenLabs Sound Effects, tốn ít credit, hỏi trước) và lưu trong repo để dùng lại.

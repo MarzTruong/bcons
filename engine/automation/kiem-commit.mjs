@@ -16,6 +16,8 @@ const RULES = [
   [/\.mp4$/i, "video mp4"],
   [/(^|\/)out\//, "thư mục out/ (file render)"],
   [/(^|\/)node_modules\//, "node_modules/"],
+  [/^am-thanh\//, "am-thanh/ (nhạc tải về, giấy phép không cho phát tán)"],
+  [/^du-an\/[^/]+\/\.am-thanh\//, "âm thanh tạm khi render"],
 ];
 
 /** Trả danh sách { file, why } vi phạm. */

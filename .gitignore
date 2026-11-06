@@ -19,3 +19,7 @@ remotion-video/
 
 # Landing (bản xuất, Cloudflare tự build)
 engine/landing/dist/
+
+# Nhạc nền tải từ Pixabay (giấy phép không cho phát tán file nhạc) và âm thanh tạm khi render
+/am-thanh/
+du-an/*/.am-thanh/

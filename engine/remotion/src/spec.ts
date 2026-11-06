@@ -244,6 +244,8 @@ export const VideoSpecSchema = z.object({
   motion: z.enum(MOTION_NAMES).optional(),
   name: z.string().regex(/^[a-z0-9-]+$/),
   status: z.enum(["draft", "approved"]),
+  /** Tên file nhạc trong <repo>/am-thanh/nhac/ (không ghi thì tự chọn theo tên video). */
+  nhac: z.string().optional(),
   watermark: z
     .object({
       kieu: z.enum(["troi", "luoi", "qr"]),
