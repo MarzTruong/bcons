@@ -147,6 +147,12 @@ export function parseMarkup(markup) {
  * Cổng chặn dùng trước khi tạo giọng hoặc render: spec phải hợp lệ, `approved`,
  * và mọi sourceId có trong bảng nguồn. Chạy TRƯỚC khi đọc API key hay gọi mạng.
  */
+/** Gắn watermark mặc định của dự án (project.json → watermark) khi spec không tự khai báo. Không sửa spec gốc. */
+export function applyWatermark(spec, projectConfig) {
+  if (spec.watermark || !projectConfig?.watermark) return spec;
+  return { ...spec, watermark: projectConfig.watermark };
+}
+
 export function prepareRun(name, { projDir = activeProjDir() } = {}) {
   const vp = videoPaths(name, projDir);
   const specPath = vp.spec;

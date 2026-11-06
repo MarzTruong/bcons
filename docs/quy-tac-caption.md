@@ -20,4 +20,4 @@ Caption là quảng cáo, người đọc lướt điện thoại chứ không �
 - Kể chuyện cá nhân không có thật ("hồi em mua...", "khách em kể..."), hoặc nói "đang lên", "khách đông" khi chưa có nguồn.
 
 ## Không nới
-Quy tắc cứng trong `CLAUDE.md` giữ nguyên: số có nguồn, không hứa lợi nhuận hay tăng giá, giá ghi VAT và phí bảo trì 2%, trần 6,9% chỉ ở PTTT 03/04, hạ tầng tương lai ghi "dự kiến" hoặc "phương án", không SĐT, không tên cá nhân. Viết tự nhiên là đổi cách nói, không đổi sự thật.
+Quy tắc cứng trong `CLAUDE.md` giữ nguyên: số có nguồn, không hứa lợi nhuận hay tăng giá, giá ghi VAT và phí bảo trì 2%, trần 6,9% chỉ ở PTTT 03/04, hạ tầng tương lai ghi "dự kiến" hoặc "phương án", caption không ghi SĐT (video có tên + QR, landing có nút gọi/Zalo theo quy tắc 7 mới). Viết tự nhiên là đổi cách nói, không đổi sự thật.

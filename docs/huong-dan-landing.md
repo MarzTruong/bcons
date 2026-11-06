@@ -7,7 +7,7 @@ Trang landing gồm: thông tin dự án, 5 căn mẫu (mỗi loại một căn)
 Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/landing.json` (dữ liệu dự án).
 
 ## Bước 1: Ô đồng ý (đã xong)
-Ô đồng ý ghi "Tôi đồng ý để chuyên viên tư vấn của Bcons PS Land (đơn vị phân phối chính thức) lưu...", không ghi tên cá nhân (anh quyết định 06/11/2026).
+Ô đồng ý ghi "Tôi đồng ý để chuyên viên tư vấn của Bcons PS Land (đơn vị phân phối chính thức) lưu...", không ghi tên cá nhân (anh quyết định 06/11/2026). Cuối màn hình có thanh **Tuấn Trương · Gọi · Zalo** lấy từ `project.json` → `lienHe` (anh đổi quy tắc 06/11/2026 tối); link `/QR` (mã QR trong video) chuyển về trang chủ và ghi nguồn `qr`.
 
 ## Bước 2: Apps Script (nhận form, ghi Sheet, báo Telegram), khoảng 10 phút
 1. Mở Sheet **Bcons - Khach quan tam Messenger** trên Google Sheets (máy tính).

@@ -28,6 +28,16 @@ test("trang: ô đồng ý không tick sẵn, nút gửi tắt, có đủ quy t�
   for (const b of html.match(/<button class="card"[\s\S]*?<\/button>/g)) assert.ok(!b.includes("<div"), "không đặt div trong button");
 });
 
+test("trang: có nút Gọi và Zalo của tư vấn viên khi project.json có lienHe; không có thì không hiện", () => {
+  const html = renderPage(full, project);
+  assert.match(html, /href="tel:0938323139"/);
+  assert.match(html, /href="https:\/\/zalo\.me\/0938323139"/);
+  assert.ok(html.includes("Tuấn Trương"));
+  const none = renderPage(full, { ...project, lienHe: undefined });
+  assert.ok(!/tel:|zalo\.me/.test(none));
+  assert.ok(!/tel:|zalo\.me|0938/.test(renderPolicy(full, project)), "trang chính sách không cần SĐT");
+});
+
 test("trang: chữ người dùng nhập được thoát ký tự HTML", () => {
   const html = renderPage({ ...full, tieuDe: "<script>alert(1)</script>" }, project);
   assert.ok(!html.includes("<script>alert(1)"));
@@ -47,10 +57,13 @@ test("checkLanding: chặn khi thiếu tên/URL, thiếu loại căn, có SĐT; 
 test("buildLanding xuất đủ file; bản chính thức bị chặn khi chưa điền", () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), "land-"));
   const dir = buildLanding(PROJ, out, { draft: true });
-  for (const f of ["index.html", "chinh-sach.html", "calc.js", "client.js", "phoi-canh-tong-the-web.jpg", "_headers"]) {
+  for (const f of ["index.html", "chinh-sach.html", "calc.js", "client.js", "phoi-canh-tong-the-web.jpg", "_headers", "_redirects"]) {
     assert.ok(fs.existsSync(path.join(dir, f)), f);
   }
   assert.match(fs.readFileSync(path.join(dir, "index.html"), "utf8"), /BẢN NHÁP/);
+  const redirects = fs.readFileSync(path.join(dir, "_redirects"), "utf8");
+  assert.match(redirects, /^\/QR \/\?utm_source=qr 302$/m, "QR trong video (viết hoa) về landing, ghi nguồn qr");
+  assert.match(redirects, /^\/qr \/\?utm_source=qr 302$/m);
 });
 
 test("checkStillForSale: căn mẫu đã cọc hoặc CĐT LOCK thì chặn; không có bảng giá thì bỏ qua", () => {

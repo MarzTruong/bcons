@@ -1,16 +1,24 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
+import QRCode from "qrcode";
+import { loadFont } from "@remotion/google-fonts/PlayfairDisplay";
 import { useTheme } from "./theme";
 
+/** Font riêng cho tên (khác font nội dung), có dấu tiếng Việt. */
+export const { fontFamily: nameFont } = loadFont("italic", { weights: ["700"], subsets: ["vietnamese", "latin"] });
+
 /**
- * Watermark chống lấy clip. Chỉ tên kênh (fanpage), không tên cá nhân/SĐT (quy tắc 7).
- * - "troi": nhãn mờ đổi vị trí mỗi ~4 giây (trượt êm), khó cắt khung hay che một chỗ.
- * - "luoi": chữ chéo lặp mờ phủ cả khung (khó xóa nhất, hơi rối mắt).
+ * Watermark chống lấy clip.
+ * - "qr" (đang dùng, anh duyệt 06/11/2026): tên + mã QR nhỏ góc dưới phải; QR mở landing (utm_source=qr).
+ *   Cảnh cuối thay bằng khối tên + QR ở giữa (ProjectClose), góc dưới ẩn đi.
+ * - "troi": nhãn mờ đổi trái/phải mỗi ~4 giây ở dải trên cùng.
+ * - "luoi": chữ chéo lặp mờ phủ cả khung.
  */
 export type WatermarkConfig = {
-  text: string;
-  kieu: "troi" | "luoi";
-  /** Link landing hiện ở cảnh cuối (không có https://). */
+  kieu: "troi" | "luoi" | "qr";
+  text?: string;
+  ten?: string;
+  /** Kiểu qr: link QR mở. Kiểu khác: link hiện ở cảnh cuối. */
   link?: string;
   /** Gắn tên kênh vào thẻ số / chú thích bản đồ. */
   trongThe?: boolean;
@@ -61,11 +69,67 @@ const Badge: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
-export const Watermark: React.FC = () => {
+/** Ma trận QR (true = ô đen). Mức sửa lỗi L: ít ô nhất (25x25 với link viết hoa) để QR nhỏ ở góc vẫn quét được. */
+export const qrMatrix = (text: string): boolean[][] => {
+  const q = QRCode.create(text, { errorCorrectionLevel: "L" });
+  const n = q.modules.size;
+  return Array.from({ length: n }, (_, r) => Array.from({ length: n }, (_, c) => !!q.modules.get(r, c)));
+};
+
+/** QR vẽ bằng SVG, nền trắng, viền trắng 2 ô (cần cho máy quét). */
+export const QrCode: React.FC<{ text: string; size: number }> = ({ text, size }) => {
+  const m = useMemo(() => qrMatrix(text), [text]);
+  const n = m.length + 4;
+  let d = "";
+  m.forEach((row, r) => row.forEach((on, c) => { if (on) d += `M${c + 2} ${r + 2}h1v1h-1z`; }));
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${n} ${n}`} shapeRendering="crispEdges" style={{ display: "block", borderRadius: size * 0.06 }}>
+      <rect width={n} height={n} fill="#fff" />
+      <path d={d} fill="#111" />
+    </svg>
+  );
+};
+
+/** Khối tên + QR. small = góc màn hình suốt video; còn lại = cảnh cuối. */
+export const NameQr: React.FC<{ ten: string; link: string; small?: boolean }> = ({ ten, link, small }) => {
+  const C = useTheme();
+  const qr = small ? 124 : 200;
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: small ? 14 : 24,
+        padding: small ? "8px 8px 8px 18px" : "14px 14px 14px 30px",
+        borderRadius: small ? 18 : 28,
+        background: `${C.bg}cc`,
+        border: `2px solid ${C.teal}88`,
+      }}
+    >
+      <div style={{ fontFamily: nameFont, fontStyle: "italic", fontWeight: 700, fontSize: small ? 30 : 52, color: C.text, whiteSpace: "nowrap" }}>
+        {ten}
+      </div>
+      <QrCode text={link} size={qr} />
+    </div>
+  );
+};
+
+export const Watermark: React.FC<{ hideFrom?: number }> = ({ hideFrom }) => {
   const w = useWatermark();
   const frame = useCurrentFrame();
   const C = useTheme();
   if (!w) return null;
+  if (w.kieu === "qr") {
+    if (!w.ten || !w.link || (hideFrom !== undefined && frame >= hideFrom)) return null;
+    return (
+      <AbsoluteFill style={{ pointerEvents: "none" }}>
+        <div style={{ position: "absolute", right: 28, bottom: 34, opacity: 0.92 }}>
+          <NameQr ten={w.ten} link={w.link} small />
+        </div>
+      </AbsoluteFill>
+    );
+  }
+  if (!w.text) return null;
   if (w.kieu === "luoi") {
     const rows = Array.from({ length: 9 });
     return (
@@ -104,7 +168,7 @@ export const Watermark: React.FC = () => {
 export const CardTag: React.FC = () => {
   const w = useWatermark();
   const C = useTheme();
-  if (!w?.trongThe) return null;
+  if (!w?.trongThe || !w.text) return null;
   return (
     <div style={{ fontSize: 22, fontWeight: 600, color: C.muted, opacity: 0.8, marginTop: 10, letterSpacing: 1 }}>
       ⌂ {w.text}

@@ -6,9 +6,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import { checkTimestamps, prepareRun } from "./spec-tools.mjs";
+import { applyWatermark, checkTimestamps, prepareRun } from "./spec-tools.mjs";
 import { loadMapboxEnv } from "./env.mjs";
-import { takeProjectFlag } from "./project.mjs";
+import { readProjectConfig, takeProjectFlag } from "./project.mjs";
 
 try {
   process.loadEnvFile(".env");
@@ -40,7 +40,7 @@ fs.mkdirSync(path.join("out", "tam", "props"), { recursive: true });
 const propsFile = path.join("out", "tam", "props", `props-${name}.json`);
 fs.writeFileSync(
   propsFile,
-  JSON.stringify({ spec, timestamps }),
+  JSON.stringify({ spec: applyWatermark(spec, readProjectConfig(projDir)), timestamps }),
 );
 
 function findDriveDir() {

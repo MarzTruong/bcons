@@ -246,8 +246,11 @@ export const VideoSpecSchema = z.object({
   status: z.enum(["draft", "approved"]),
   watermark: z
     .object({
-      text: z.string().min(1),
-      kieu: z.enum(["troi", "luoi"]),
+      kieu: z.enum(["troi", "luoi", "qr"]),
+      /** Chữ cho kiểu troi/luoi. */
+      text: z.string().min(1).optional(),
+      /** Tên hiện cạnh QR (kiểu qr). */
+      ten: z.string().min(1).optional(),
       link: z.string().optional(),
       trongThe: z.boolean().optional(),
     })

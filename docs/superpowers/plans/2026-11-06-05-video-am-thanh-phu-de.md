@@ -28,12 +28,8 @@ Vùng `official` mặc định: viền **vẽ dần theo chu vi** (không hiện
 - Hiệu ứng: "vút" khi chuyển cảnh, "tách" khi số hiện, tiếng dồn trước cảnh kết; tạo một lần (ElevenLabs Sound Effects, tốn ít credit, hỏi trước) và lưu trong repo để dùng lại.
 - Render ra 2 bản: có nhạc (đăng tự động) và không nhạc (`-khong-nhac.mp4`, khi anh muốn chọn nhạc xu hướng trên TikTok).
 
-## E. Chống lấy cắp clip (watermark)
-1. Tên kênh **"Căn hộ Phan Trung"** mờ khoảng 30%, đổi vị trí chậm mỗi vài giây (khó cắt khung, khó che).
-2. Tên kênh nằm luôn trong các thẻ số, chú thích bản đồ (cắt đi là mất thông tin).
-3. Cảnh cuối hiện link landing (khách xem clip bị lấy cắp vẫn vào trang của anh).
-4. Mã nhận dạng trong thông tin file + giữ file dựng gốc làm bằng chứng khi báo cáo bản quyền với TikTok/Facebook.
-Không hiện tên cá nhân hay SĐT (quy tắc 7), nên không dùng tên tài khoản TikTok có tên anh.
+## E. Chống lấy cắp clip (watermark) — anh chốt 06/11/2026 tối, đã làm
+Tên **Tuấn Trương** (font Playfair Display nghiêng, khác font nội dung) + **mã QR** nhỏ góc dưới phải suốt video; cảnh cuối thu nhỏ thẻ dự án, thêm khối tên + QR ở giữa (góc ẩn đi). QR mở `HTTPS://BCONS-CENTRAL-PARK-DSJ.PAGES.DEV/QR` (viết hoa cho mã thưa, quét được khi nhỏ; kiểm giải mã ở 1080p và 720p) → `/?utm_source=qr`. Landing có thanh Gọi/Zalo. Cấu hình `project.json` → `watermark`, `lienHe`; `render:drive` tự gắn khi spec không khai báo. Quy tắc 7 trong CLAUDE.md đã sửa theo.
 
 ## F. Kiểm Master File bằng tài liệu CĐT (TDD)
 Test hiện tại so công cụ tính với Master File (cả hai cùng do AI làm). Thêm test lấy **tài liệu CĐT làm chuẩn**: lịch thanh toán từng PTTT cộng đủ 100%, chiết khấu 8,5% (PTTT 01), 2,45% (PTTT 04/05), VAT 10%, bảo trì 2%, trần 6,9% chỉ PTTT 03/04; đối chiếu khoảng 20 căn mẫu giữa bảng giá CĐT 17/10/2026 và sheet GiaTongHop. Anh đã để file trong Drive `Bcons - Dong bo thiet bi\data` (06/11/2026); dữ liệu chỉ để trên máy, test đọc từ `data/` (không lên git).
@@ -42,6 +38,5 @@ Test hiện tại so công cụ tính với Master File (cả hai cùng do AI l�
 B1 → A → B2/B3 → C → D → E → F. Mỗi bước: test trước, `npm test`, `npm run lint`, chụp khung trước/sau. Video cũ sẽ đổi hình có chủ đích (phụ đề, viền, watermark), nên băm khung hình cập nhật theo.
 
 ## Cần anh trả lời trước khi làm
-1. Chữ watermark "Căn hộ Phan Trung" được không?
 2. Hiệu ứng âm thanh: tạo bằng ElevenLabs (tốn ít credit) hay tải miễn phí trên Pixabay?
 3. Nhạc: anh tải 3–5 bản Pixabay (gợi ý tìm: "corporate inspiring", "ambient piano", "real estate").

@@ -53,6 +53,8 @@ export function buildLanding(projDir, outRoot, { draft = false } = {}) {
   fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
   fs.copyFileSync(path.join(HERE, "client.js"), path.join(out, "client.js"));
   fs.copyFileSync(path.join(projDir, data.anhChinh), path.join(out, path.basename(data.anhChinh)));
+  // QR trong video in link viết hoa /QR (mã thưa, dễ quét); chuyển về trang chủ và ghi nguồn "qr".
+  fs.writeFileSync(path.join(out, "_redirects"), "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n");
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");
   return out;
 }

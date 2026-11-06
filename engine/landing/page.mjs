@@ -48,6 +48,11 @@ button.send:disabled{opacity:.45;cursor:not-allowed}
 .ok{background:#E3F2E9;border:1px solid #1B7048;padding:12px;border-radius:10px;font-weight:600}
 .err{color:#9B2C1F;font-weight:600;font-size:13px}
 footer{margin:32px 0 24px;font-size:12px;color:var(--muted)}footer a{color:var(--muted)}
+.contact{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:8px;align-items:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--panel,#fff);border-top:1px solid var(--line,#ddd);box-shadow:0 -4px 16px #0001}
+.contact .who{flex:1;min-width:0;font-size:13px;line-height:1.2}.contact .who b{display:block;font-size:15px}
+.contact a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:10px;font-weight:700;text-decoration:none}
+.contact a.call{background:var(--accent);color:var(--accent-ink)}.contact a.zalo{background:#0068FF;color:#fff}
+body.has-contact{padding-bottom:76px}
 .draft{background:#7A4F00;color:#fff;text-align:center;padding:6px;font-weight:700}
 @media (max-width:520px){.row{grid-template-columns:1fr}h1{font-size:21px}}
 `;
@@ -57,6 +62,17 @@ function consentText(dongY, projectName) {
 }
 
 /** Trang chủ landing. data = landing.json, project = project.json. draft = true thì hiện dải "BẢN NHÁP". */
+/** Thanh liên hệ cố định cuối màn hình (anh đổi quy tắc 06/11/2026: landing có nút gọi/Zalo). */
+function contactBar(lh, tenDuAn) {
+  if (!lh?.sdt) return "";
+  const tel = String(lh.sdt).replace(/\D/g, "");
+  return `<nav class="contact" aria-label="Liên hệ tư vấn viên">
+<div class="who"><b>${esc(lh.ten)}</b>Tư vấn ${esc(tenDuAn)}</div>
+<a class="call" href="tel:${tel}">Gọi ${esc(lh.sdtHienThi ?? tel)}</a>
+${lh.zalo ? `<a class="zalo" href="${esc(lh.zalo)}" target="_blank" rel="noopener">Zalo</a>` : ""}
+</nav>`;
+}
+
 export function renderPage(data, project, { draft = false } = {}) {
   const units = data.canMau
     .map(
@@ -84,7 +100,7 @@ export function renderPage(data, project, { draft = false } = {}) {
 <meta property="og:image" content="${esc((data.siteUrl ? data.siteUrl.replace(/\/$/, "") + "/" : "") + data.anhChinh.split("/").pop())}">${data.siteUrl ? `<meta property="og:url" content="${esc(data.siteUrl)}">` : ""}
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <style>${CSS}</style></head>
-<body>
+<body${project.lienHe?.sdt ? ' class="has-contact"' : ""}>
 ${draft ? '<div class="draft">BẢN NHÁP – chưa đăng chính thức</div>' : ""}
 <header class="hero"><img src="${esc(data.anhChinh.split("/").pop())}" alt="Phối cảnh ${esc(project.ten)}"><div class="cap">Hình ảnh phối cảnh mang tính minh họa</div>
 <div class="wrap"><h1>${esc(data.tieuDe)}</h1><p class="sub">${esc(data.moTa)}</p><a class="cta" href="#tinh">Tính thử dòng tiền</a></div></header>
@@ -125,6 +141,7 @@ ${units}
 </form>
 <div class="ok" id="ok" hidden>Đã nhận thông tin. Tư vấn viên sẽ liên hệ anh/chị qua điện thoại hoặc Zalo sớm nhất.</div>
 </main>
+${contactBar(project.lienHe, project.ten)}
 <footer class="wrap">
 <p>Giá tham khảo theo ${esc(data.nguonGia)}, chưa gồm VAT 10% và phí bảo trì 2% trừ khi ghi rõ. PTTT 01 đã trừ chiết khấu 8,5%, PTTT 04/05 trừ 2,45% so với giá PTTT 02; PTTT 03 không chiết khấu. Lãi suất trần 6,9%/năm chỉ áp dụng cho PTTT 03 và 04 theo điều kiện của chủ đầu tư. Dự án không bán cho người nước ngoài. Nội dung mang tính tham khảo, không cam kết lợi nhuận hay giá trị tăng thêm.</p>
 <p>${esc(project.ten)} · ${esc(project.diaChi)} · Chủ đầu tư: ${esc(project.chuDauTu)} · Phân phối: ${esc(project.donViPhanPhoi)}. <a href="chinh-sach.html">Chính sách dữ liệu</a></p>

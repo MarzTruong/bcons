@@ -190,7 +190,11 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
               </Sequence>
             );
           })}
-          <Watermark />
+          <Watermark
+            hideFrom={
+              spec.scenes[spec.scenes.length - 1]?.template === "project-close" ? SCENE_STARTS[SCENE_STARTS.length - 1] : undefined
+            }
+          />
         </AbsoluteFill>
       </WatermarkContext.Provider>
       </MotionContext.Provider>
