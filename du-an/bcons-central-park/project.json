@@ -25,7 +25,7 @@
   ],
   "tenKenh": {
     "facebook": "Căn hộ Phan Trung – Bcons Central Park Biên Hòa",
-    "tiktok": ""
+    "tiktok": "tuantruong.bconsps"
   },
   "_nguon": "Số liệu chép từ thong-tin.md (tài liệu CĐT); tọa độ từ assets/geo/NGUON.md (geo-central-park).",
   "artifacts": {
@@ -38,5 +38,9 @@
       "moTa": "Giá và mặt bằng từng căn tháp A, B, E; cập nhật tình trạng trực tiếp từ Google Sheet giỏ hàng chung. Có giá từng căn (riêng tư)."
     }
   },
-  "lichNoiDungSheetId": "1XxfKqnrqsAYaI8kZLir4XiAk_-pjYbxgoVdGYxVFoP0"
+  "lichNoiDungSheetId": "1XxfKqnrqsAYaI8kZLir4XiAk_-pjYbxgoVdGYxVFoP0",
+  "congCuDang": {
+    "facebook": "Meta Business Suite (Metricool đã kết nối fanpage)",
+    "tiktok": "Metricool gói Free (tài khoản TikTok Business đã kết nối 06/11/2026)"
+  }
 }
