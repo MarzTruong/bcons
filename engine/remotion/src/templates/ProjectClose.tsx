@@ -3,10 +3,12 @@ import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame } f
 import { useTheme } from "../theme";
 import { LEAD } from "../timing";
 import { clamp, type TemplateProps } from "./common";
+import { useWatermark } from "../Watermark";
 
 /** Mẫu `project-close`: thẻ dự án + thông điệp gõ chữ. Không số điện thoại, không tên cá nhân. */
 export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, frames }) => {
   const C = useTheme();
+  const w = useWatermark();
   const frame = useCurrentFrame();
   const message = props.message;
   const zoom = spring({ frame, fps: 30, config: { damping: 18 }, durationInFrames: 60 });
@@ -90,6 +92,11 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
           color: C.faint,
         }}
       >
+        {w?.link ? (
+          <div style={{ fontSize: 34, fontWeight: 800, color: C.gold, marginBottom: 14, whiteSpace: "nowrap" }}>
+            Tự tính dòng tiền: {w.link}
+          </div>
+        ) : null}
         Thông tin mang tính tham khảo
       </div>
     </AbsoluteFill>

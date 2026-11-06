@@ -20,7 +20,7 @@
 3. **Nhấn chữ quan trọng**: spec thêm `emphasis` (danh sách chữ cần nhấn); số và chữ nhấn có lớp nền màu quét ngang, bật to nhẹ, viền sáng. Áp dụng cả tiêu đề cảnh (chữ hiện từng lớp).
 
 ## C. Ranh giới bản đồ
-Vùng `official` mặc định: viền **vẽ dần theo chu vi** (không hiện sẵn), sau đó một **vệt sáng chạy vòng quanh ranh** lặp lại trong lúc nói về vùng đó. Áp dụng cho cảnh 1 video `tai-thiet-kcn-bien-hoa-1` (giây 0–2) và các video bản đồ khác. Vùng minh họa giữ nét đứt.
+Vùng `official` mặc định: viền **vẽ dần theo chu vi** (không hiện sẵn), sau đó một **vệt sáng chạy vòng quanh ranh** lặp lại trong lúc nói về vùng đó. Áp dụng cho **các video bản đồ làm từ nay** (giây 0–2 video `tai-thiet-kcn-bien-hoa-1` chỉ là ví dụ anh đưa, không sửa video đó). Vùng minh họa giữ nét đứt.
 
 ## D. Nhạc nền + hiệu ứng âm thanh
 - Spec thêm `audio.music` (tên file) và `audio.musicVolume`. Nhạc nhỏ dưới giọng (khoảng 12%), tự hạ khi có lời, lên nhẹ ở khoảng lặng, mở/kết nhỏ dần.
@@ -36,7 +36,7 @@ Vùng `official` mặc định: viền **vẽ dần theo chu vi** (không hiện
 Không hiện tên cá nhân hay SĐT (quy tắc 7), nên không dùng tên tài khoản TikTok có tên anh.
 
 ## F. Kiểm Master File bằng tài liệu CĐT (TDD)
-Test hiện tại so công cụ tính với Master File (cả hai cùng do AI làm). Thêm test lấy **tài liệu CĐT làm chuẩn**: lịch thanh toán từng PTTT cộng đủ 100%, chiết khấu 8,5% (PTTT 01), 2,45% (PTTT 04/05), VAT 10%, bảo trì 2%, trần 6,9% chỉ PTTT 03/04; đối chiếu khoảng 20 căn mẫu giữa bảng giá CĐT 17/10/2026 và sheet GiaTongHop. Cần anh gửi lại Master File và file bảng giá/PTTT gốc của CĐT; dữ liệu chỉ để trên máy, test đọc từ `data/` (không lên git).
+Test hiện tại so công cụ tính với Master File (cả hai cùng do AI làm). Thêm test lấy **tài liệu CĐT làm chuẩn**: lịch thanh toán từng PTTT cộng đủ 100%, chiết khấu 8,5% (PTTT 01), 2,45% (PTTT 04/05), VAT 10%, bảo trì 2%, trần 6,9% chỉ PTTT 03/04; đối chiếu khoảng 20 căn mẫu giữa bảng giá CĐT 17/10/2026 và sheet GiaTongHop. Anh đã để file trong Drive `Bcons - Dong bo thiet bi\data` (06/11/2026); dữ liệu chỉ để trên máy, test đọc từ `data/` (không lên git).
 
 ## Thứ tự và kiểm tra
 B1 → A → B2/B3 → C → D → E → F. Mỗi bước: test trước, `npm test`, `npm run lint`, chụp khung trước/sau. Video cũ sẽ đổi hình có chủ đích (phụ đề, viền, watermark), nên băm khung hình cập nhật theo.

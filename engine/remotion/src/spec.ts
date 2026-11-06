@@ -244,6 +244,14 @@ export const VideoSpecSchema = z.object({
   motion: z.enum(MOTION_NAMES).optional(),
   name: z.string().regex(/^[a-z0-9-]+$/),
   status: z.enum(["draft", "approved"]),
+  watermark: z
+    .object({
+      text: z.string().min(1),
+      kieu: z.enum(["troi", "luoi"]),
+      link: z.string().optional(),
+      trongThe: z.boolean().optional(),
+    })
+    .optional(),
   scenes: z.array(SceneSchema).min(1),
 });
 

@@ -10,6 +10,7 @@ import {
   type TransitionKind,
 } from "./motion";
 import { Captions } from "./Captions";
+import { Watermark, WatermarkContext } from "./Watermark";
 import { LEAD, buildTiming, cueFrame, type Timestamps } from "./timing";
 import type { Scene, VideoSpec } from "./spec";
 import { type TemplateProps } from "./templates/common";
@@ -152,6 +153,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
   return (
     <ThemeContext.Provider value={C}>
       <MotionContext.Provider value={motion}>
+      <WatermarkContext.Provider value={spec.watermark}>
         <AbsoluteFill style={{ fontFamily, color: C.text, background: C.bg }}>
           <Background />
           {spec.scenes.map((scene, i) => {
@@ -188,7 +190,9 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
               </Sequence>
             );
           })}
+          <Watermark />
         </AbsoluteFill>
+      </WatermarkContext.Provider>
       </MotionContext.Provider>
     </ThemeContext.Provider>
   );

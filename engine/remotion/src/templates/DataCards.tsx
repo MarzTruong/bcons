@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { useTheme } from "../theme";
 import { useEnter } from "../motion";
 import { useSpring, type TemplateProps } from "./common";
+import { CardTag } from "../Watermark";
 
 const DataCard: React.FC<{ delay: number; tag: string; big: string; sub: string }> = ({
   delay,
@@ -27,6 +28,7 @@ const DataCard: React.FC<{ delay: number; tag: string; big: string; sub: string 
       <div style={{ fontSize: 36, fontWeight: 600, color: C.gold }}>{tag}</div>
       <div style={{ fontSize: 86, fontWeight: 800, lineHeight: 1.1, marginTop: 8 }}>{big}</div>
       <div style={{ fontSize: 46, fontWeight: 600, color: C.teal, marginTop: 6 }}>{sub}</div>
+      <CardTag />
     </div>
   );
 };
