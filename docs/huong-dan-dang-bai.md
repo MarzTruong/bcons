@@ -1,5 +1,7 @@
 # Hướng dẫn đăng bài (Facebook + TikTok)
 
+> **Hẹn giờ đăng:** nhắn em (Claude) "hẹn đăng <tên video> lúc <giờ>". Em dùng kết nối Metricool (đã bật 06/11/2026, brand id 7877084): lấy video thẳng từ link Google Drive (bản `render:drive` chép lên), tạo 2 bài hẹn giờ (TikTok dùng caption TikTok, Facebook Reel dùng bài Facebook), cập nhật Sheet. Anh không phải mở Metricool. Mỗi bài tính vào giới hạn khoảng 20 bài/tháng của gói Free.
+>
 > **Cách dễ nhất:** dùng bot Telegram (`docs/huong-dan-bot-telegram.md`): `/render`, `/xem`, `/duyet` thay cho các lệnh `npm` bên dưới. Các lệnh dưới đây giữ lại để dùng khi bot chưa chạy.
 
 Sheet quản lý: **Bcons - Lịch nội dung** (https://docs.google.com/spreadsheets/d/1XxfKqnrqsAYaI8kZLir4XiAk_-pjYbxgoVdGYxVFoP0). Mỗi bài một dòng. Chỉ dòng **Đã duyệt** mới được đưa lên lịch đăng.

@@ -46,6 +46,8 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 
 - [x] 06/11/2026 kế hoạch 02 (`docs/superpowers/plans/2026-11-06-02-lich-dang-bai.md`): caption.md cho mỗi bài + bộ kiểm quy tắc (`check:caption`), duyệt gắn dấu vân tay (`duyet:caption`, `duyet:video`), gửi Telegram (`send:telegram`, `telegram:chat-id`), Sheet "Bcons - Lịch nội dung" (id trong `project.json`), hướng dẫn `docs/huong-dan-dang-bai.md`, skill `bai-cong-ty`, caption nháp cho 5 video (Sheet "Chờ duyệt"). Agent soát xong, đã sửa: kiểm VAT riêng từng phần FB/TikTok, SĐT có ngoặc/84, giá viết tỉ/tr, BOM, TikTok dài không bị cắt khi gửi, send kiểm lại quy tắc; 3 caption chỉnh câu chữ. 100 test qua.
 
+- [x] 06/11/2026: bot Telegram chạy trên laptop (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`); Claude Code 2.1.319 cài trên laptop, đã đăng nhập. Metricool MCP đã bật (brand 7877084, Asia/Saigon): hẹn `ha-tang-bien-hoa-2026` Thứ Hai 09/11/2026 18:00 cho TikTok (bài 418673360, nhãn AI bật vì giọng AI, "nội dung thương hiệu" bật) và Facebook Reel (bài 418673533). Link Drive dùng trực tiếp được, không cần nối Drive trong Metricool. Sheet dòng 4 = "Đã lên lịch".
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
