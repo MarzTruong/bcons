@@ -114,8 +114,8 @@ function json_(o) {
 
 function sendTelegram_(text) {
   var props = PropertiesService.getScriptProperties();
-  var token = props.getProperty('TELEGRAM_BOT_TOKEN');
-  var chat = props.getProperty('TELEGRAM_CHAT_ID');
+  var token = (props.getProperty('TELEGRAM_BOT_TOKEN') || '').trim();
+  var chat = (props.getProperty('TELEGRAM_CHAT_ID') || '').trim();
   if (!token || !chat) return;
   UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
@@ -158,7 +158,17 @@ function doPost(e) {
   }
 }
 
-/** Chạy thử trong trình soạn Apps Script (nút Run): gửi 1 tin Telegram mẫu, không ghi Sheet. */
+/** Chạy thử trong trình soạn Apps Script: chọn "thuTelegram" ở ô chọn hàm rồi bấm Chạy. Gửi 1 tin mẫu, không ghi Sheet; lỗi ghi rõ trong Nhật ký thực thi. */
 function thuTelegram() {
-  sendTelegram_('✅ Apps Script landing Bcons đã nối Telegram.');
+  var props = PropertiesService.getScriptProperties();
+  var token = props.getProperty('TELEGRAM_BOT_TOKEN');
+  var chat = props.getProperty('TELEGRAM_CHAT_ID');
+  if (!token) return Logger.log('LỖI: thiếu thuộc tính TELEGRAM_BOT_TOKEN (Cài đặt dự án → Thuộc tính tập lệnh, gõ đúng tên, không dấu cách).');
+  if (!chat) return Logger.log('LỖI: thiếu thuộc tính TELEGRAM_CHAT_ID.');
+  var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token.trim() + '/sendMessage', {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    payload: JSON.stringify({ chat_id: chat.trim(), text: '✅ Apps Script landing Bcons đã nối Telegram.' }),
+  });
+  var body = JSON.parse(res.getContentText() || '{}');
+  Logger.log(body.ok ? 'OK: Telegram đã nhận tin thử.' : 'LỖI Telegram: ' + (body.description || res.getResponseCode()) + ' (kiểm tra lại token và chat id, không có dấu cách thừa).');
 }
