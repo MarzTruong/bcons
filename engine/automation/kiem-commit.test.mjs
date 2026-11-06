@@ -66,3 +66,20 @@ test("git pre-commit: có mp4 trong stage thì exit 1", () => {
   execFileSync("git", ["add", "v.mp4"], { cwd: dir });
   assert.equal(spawnSync("node", [SCRIPT], { cwd: dir }).status, 1);
 });
+
+test("hook Claude: add file cấm rồi commit trong cùng một lệnh bị chặn; gỡ file cấm khỏi git thì được", () => {
+  const dir = repo();
+  fs.mkdirSync(path.join(dir, "data"));
+  fs.writeFileSync(path.join(dir, "data", "gia.csv"), "x");
+  const G = "git";
+  const run = (command) =>
+    spawnSync("node", [SCRIPT, "--hook"], { input: JSON.stringify({ cwd: dir, tool_input: { command } }), encoding: "utf8" });
+  assert.equal(run(`${G} add data/gia.csv && ${G} commit -m x`).status, 2);
+  assert.equal(run(`${G} add -A && ${G} commit -m x`).status, 2);
+  // đã lỡ commit, giờ gỡ ra: không bị chặn
+  execFileSync("git", ["add", "data/gia.csv"], { cwd: dir });
+  execFileSync("git", ["-c", "user.email=a@b", "-c", "user.name=a", "-c", "core.hooksPath=/dev/null", "commit", "-qm", "lo"], { cwd: dir });
+  execFileSync("git", ["rm", "-q", "--cached", "data/gia.csv"], { cwd: dir });
+  fs.rmSync(path.join(dir, "data"), { recursive: true });
+  assert.equal(run(`${G} commit -m go`).status, 0);
+});

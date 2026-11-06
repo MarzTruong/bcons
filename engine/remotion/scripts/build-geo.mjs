@@ -1,5 +1,5 @@
 // Tạo các file GeoJSON trong du-an/<mã>/assets/geo/ từ tọa độ có nguồn (chạy lại được, kết quả tất định).
-// Tọa độ theo [kinh độ, vĩ độ]. Nguồn từng điểm ghi trong docs/video/geo-nguon.md.
+// Tọa độ theo [kinh độ, vĩ độ]. Nguồn từng điểm ghi trong du-an/<mã>/assets/geo/NGUON.md.
 // Tuyến và vùng ở đây là MINH HỌA (nối các điểm thật), không phải tuyến/ranh giới chính thức.
 import fs from "node:fs";
 import path from "node:path";

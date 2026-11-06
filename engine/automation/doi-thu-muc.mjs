@@ -51,7 +51,7 @@ export function buildPairs(root) {
   }
   for (const f of children(R("map"))) add(`map/${f}`, `${DA}/assets/geo/osm-xuat/${f}`);
   for (const f of children(R("Gemini Deep Research"))) add(`Gemini Deep Research/${f}`, `${DA}/nguon/gemini/${f}`);
-  add("docs/bcons-central-park.md", `${DA}/thong-tin.md`);
+  if (exists(R("docs/bcons-central-park.md"))) add("docs/bcons-central-park.md", `${DA}/thong-tin.md`);
   for (const f of children(R("docs/content"))) {
     if (f === "doi-chieu-nguon-gia-tri-du-an.md") add(`docs/content/${f}`, `${DA}/nguon/doi-chieu-gia-tri-du-an.md`);
     else add(`docs/content/${f}`, `${DA}/content/${f}`);
@@ -79,18 +79,23 @@ export function planMoves(root) {
 }
 
 /** Dời src → dst; thư mục trùng thì gộp từng con; không ghi đè. Trả danh sách file bị bỏ qua vì đã có. */
-function moveInto(src, dst, skipped) {
-  if (!exists(dst)) {
-    fs.mkdirSync(path.dirname(dst), { recursive: true });
-    fs.renameSync(src, dst);
-    return;
+function moveInto(src, dst, skipped, locked) {
+  try {
+    if (!exists(dst)) {
+      fs.mkdirSync(path.dirname(dst), { recursive: true });
+      fs.renameSync(src, dst);
+      return;
+    }
+    if (isDir(src) && isDir(dst)) {
+      for (const c of fs.readdirSync(src)) moveInto(path.join(src, c), path.join(dst, c), skipped, locked);
+      if (fs.readdirSync(src).length === 0) fs.rmdirSync(src);
+      return;
+    }
+    skipped.push(src);
+  } catch (e) {
+    // Windows hay khóa file (Defender, VS Code, cửa sổ terminal đang đứng trong thư mục): báo và đi tiếp.
+    locked.push({ src, code: e.code ?? e.message });
   }
-  if (isDir(src) && isDir(dst)) {
-    for (const c of fs.readdirSync(src)) moveInto(path.join(src, c), path.join(dst, c), skipped);
-    if (fs.readdirSync(src).length === 0) fs.rmdirSync(src);
-    return;
-  }
-  skipped.push(src);
 }
 
 /** Viết lại đường dẫn tĩnh trong spec: "geo/..." và "images/..." ở khóa "file" → "assets/...". */
@@ -146,13 +151,23 @@ export function run(root, { chay = false, log = console.log } = {}) {
     return { plan, skipped: [] };
   }
   const skipped = [];
-  for (const p of plan) if (p.action === "move" || p.action === "merge") moveInto(path.join(root, p.from), path.join(root, p.to), skipped);
+  const locked = [];
+  for (const p of plan) if (p.action === "move" || p.action === "merge") moveInto(path.join(root, p.from), path.join(root, p.to), skipped, locked);
   const specs = rewriteSpecs(root);
-  removeEmptyDirs(root, OLD_DIRS);
+  try {
+    removeEmptyDirs(root, OLD_DIRS);
+  } catch {
+    // thư mục đang bị khóa: để anh tự xóa sau
+  }
   for (const s of skipped) log(`BỎ QUA (đích đã có): ${path.relative(root, s)}`);
+  for (const l of locked) {
+    const nm = /node_modules/.test(l.src) ? " (không sao: chạy npm ci trong engine/remotion)" : "";
+    log(`KHÔNG DỜI ĐƯỢC (đang bị khóa, ${l.code}): ${path.relative(root, l.src)}${nm}`);
+  }
+  if (locked.length) log("Đóng VS Code, Remotion Studio và cửa sổ terminal đang đứng trong thư mục đó, rồi chạy lại lệnh --chay.");
   const left = OLD_DIRS.filter((d) => exists(path.join(root, d)));
   log(`\nĐã dời. Viết lại ${specs} spec. ${left.length ? `Thư mục cũ còn sót (kiểm rồi tự xóa): ${left.join(", ")}` : "Không còn thư mục cũ."}`);
-  return { plan, skipped };
+  return { plan, skipped, locked };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

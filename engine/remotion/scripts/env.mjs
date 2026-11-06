@@ -9,7 +9,7 @@ export function loadMapboxEnv(envPath = ".env", env = process.env) {
     const m = fs.readFileSync(envPath, "utf8").match(/^\s*MAPBOX_TOKEN_KEY\s*=\s*(.*)$/m);
     token = (m?.[1] ?? "").trim().replace(/^["']|["']$/g, "");
   }
-  if (!token) throw new Error("Thiếu MAPBOX_TOKEN_KEY trong remotion-video/.env");
+  if (!token) throw new Error("Thiếu MAPBOX_TOKEN_KEY trong engine/remotion/.env");
   env.REMOTION_MAPBOX_TOKEN = token;
   return token;
 }

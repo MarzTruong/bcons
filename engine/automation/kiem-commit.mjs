@@ -40,9 +40,25 @@ function git(args, cwd) {
 
 /** File sẽ vào commit: đã stage, cộng file đã theo dõi bị sửa nếu commit -a/--all. */
 export function filesForCommit(cwd, cmd = "") {
-  const staged = git(["diff", "--cached", "--name-only"], cwd);
-  const all = /\scommit\b[^;&|]*\s(-a\b|--all\b|-[a-zA-Z]*a[a-zA-Z]*\b)/.test(cmd) ? git(["diff", "--name-only"], cwd) : [];
-  return [...new Set([...staged, ...all])];
+  const staged = git(["diff", "--cached", "--name-only", "--diff-filter=d"], cwd);
+  const all = /\scommit\b[^;&|]*\s(-a\b|--all\b|-[a-zA-Z]*a[a-zA-Z]*\b)/.test(cmd) ? git(["diff", "--name-only", "--diff-filter=d"], cwd) : [];
+  return [...new Set([...staged, ...all, ...filesFromAdd(cwd, cmd)])];
+}
+
+/** "git add ... && git commit" trong cùng một lệnh: file sắp được add (chưa nằm trong stage lúc hook chạy). */
+export function filesFromAdd(cwd, cmd = "") {
+  const out = [];
+  for (const m of cmd.matchAll(/\bgit\s+add\s+([^;&|]*)/g)) {
+    const args = m[1].trim().split(/\s+/).filter(Boolean);
+    const paths = args.filter((a) => !a.startsWith("-"));
+    const all = args.some((a) => a === "-A" || a === "--all" || a === "-u") || paths.includes(".");
+    if (all) {
+      // file chưa theo dõi (không bị ignore) + file đã sửa
+      out.push(...git(["ls-files", "--others", "--exclude-standard"], cwd), ...git(["diff", "--name-only", "--diff-filter=d"], cwd));
+    }
+    out.push(...paths.filter((x) => x !== "."));
+  }
+  return out;
 }
 
 function report(blocked) {

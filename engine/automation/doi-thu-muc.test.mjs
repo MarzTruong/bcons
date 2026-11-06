@@ -45,7 +45,7 @@ test("đích đã có thì bỏ qua, không ghi đè; nguồn không có thì sk
   });
   const p = planMoves(root).find((x) => x.from === "remotion-video/.env");
   assert.equal(p.action, "skip-exists");
-  assert.equal(planMoves(root).find((x) => x.from === "docs/bcons-central-park.md").action, "skip-missing");
+  assert.equal(planMoves(root).find((x) => x.from === "docs/bcons-central-park.md"), undefined); // không có thì không in
   run(root, { chay: true, ...quiet });
   assert.equal(read(root, "engine/remotion/.env"), "CU");
   assert.equal(read(root, "remotion-video/.env"), "MOI");
@@ -104,4 +104,18 @@ test("spec được viết lại khi dời", () => {
   });
   run(root, { chay: true, ...quiet });
   assert.equal(JSON.parse(read(root, `${DA}/video/a/spec.json`)).scenes[0].props.image.file, "assets/images/a.jpg");
+});
+
+test("một mục dời lỗi (bị khóa) thì báo và vẫn dời các mục khác", () => {
+  const root = fakeRepo({
+    "remotion-video/.env": "K",
+    "data/gia.csv": "g",
+  });
+  // "engine" là file nên không tạo được engine/remotion/ → lỗi giống khi bị khóa
+  fs.writeFileSync(path.join(root, "engine"), "chặn");
+  const lines = [];
+  const { locked } = run(root, { chay: true, log: (l) => lines.push(l) });
+  assert.equal(locked.length, 1);
+  assert.ok(lines.some((l) => l.startsWith("KHÔNG DỜI ĐƯỢC")));
+  assert.equal(read(root, "data/bcons-central-park/gia.csv"), "g");
 });

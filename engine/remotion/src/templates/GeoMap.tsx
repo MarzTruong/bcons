@@ -232,7 +232,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
   useEffect(() => {
     const token = process.env.REMOTION_MAPBOX_TOKEN;
     if (!token) {
-      cancelRender(new Error("Thiếu REMOTION_MAPBOX_TOKEN. Đặt MAPBOX_TOKEN_KEY trong remotion-video/.env và chạy qua npm run dev / still / render:drive."));
+      cancelRender(new Error("Thiếu REMOTION_MAPBOX_TOKEN. Đặt MAPBOX_TOKEN_KEY trong engine/remotion/.env và chạy qua npm run dev / still / render:drive."));
       return;
     }
     if (!containerRef.current) return;

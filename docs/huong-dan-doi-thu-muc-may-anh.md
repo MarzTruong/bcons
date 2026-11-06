@@ -16,7 +16,7 @@ Script không bao giờ ghi đè: nếu đích đã có file thì bỏ qua và b
 
 ## Các bước (PowerShell, trong thư mục repo)
 
-1. Đóng Remotion Studio và mọi cửa sổ đang mở file trong `remotion-video\` (nếu không, Windows khóa file và git không dời được).
+1. Đóng Remotion Studio, VS Code, và mọi cửa sổ PowerShell/File Explorer đang đứng trong `remotion-video\` (nếu không, Windows khóa file và không dời được). Từ bước này tới hết bước 7, **không commit gì**.
 2. Kiểm tra không có thay đổi chưa commit:
    ```powershell
    git status
@@ -36,6 +36,7 @@ Script không bao giờ ghi đè: nếu đích đã có file thì bỏ qua và b
    node engine/automation/doi-thu-muc.mjs --chay
    ```
    Cuối cùng script báo "Không còn thư mục cũ" hoặc liệt kê thư mục còn sót (thường là `remotion-video\` chỉ còn file trùng). Kiểm tra rồi tự xóa thư mục đó.
+   Nếu thấy dòng `KHÔNG DỜI ĐƯỢC (đang bị khóa)`: đóng chương trình đang mở file đó rồi chạy lại đúng lệnh này (chạy lại không hỏng gì). Riêng `node_modules` không dời được thì bỏ qua, bước 6 sẽ cài lại.
 6. Kiểm tra:
    ```powershell
    cd engine/remotion
@@ -52,9 +53,9 @@ Script không bao giờ ghi đè: nếu đích đã có file thì bỏ qua và b
    ```
 8. Thử render một video có sẵn (không tốn credit ElevenLabs):
    ```powershell
-   npm run render:drive -- dong-nai-ha-tang
+   npm run render:drive -- dong-nai-ha-tang thu-sau-doi.mp4
    ```
-   Video ra `engine\remotion\out\video\` và được chép lên Drive như trước.
+   Video ra `engine\remotion\out\video\thu-sau-doi.mp4` và được chép lên Drive với tên đó (không đè video đã đăng). Xem thử xong thì xóa file thử trên Drive.
 
 ## Lệnh sau khi dời
 - Mọi lệnh `npm` chạy trong `engine\remotion\` thay vì `remotion-video\`. Tên lệnh giữ nguyên: `npm run voice -- <tên>`, `npm run render:drive -- <tên>`, `npm run lint`, `npm test`, `npm run dev`.
