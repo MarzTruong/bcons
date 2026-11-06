@@ -1,0 +1,15 @@
+{
+  "ma": "bcons-central-park",
+  "ten": "Bcons Central Park",
+  "tenPhapLy": "Khu nhà ở phức hợp cao tầng phường Tam Hiệp",
+  "diaChi": "236 Phan Trung, phường Tam Hiệp, TP. Đồng Nai (Biên Hòa)",
+  "toaDo": [106.84408654581377, 10.959874417285395],
+  "chuDauTu": "Công ty CP Phát triển Đô thị Tam Hiệp (công ty con của Tập đoàn Bcons)",
+  "donViPhanPhoi": "Bcons PS Land",
+  "soCan": { "o": 2820, "thuongMai": 113 },
+  "banGiaoDuKien": "Quý II/2029",
+  "thongTin": "thong-tin.md",
+  "tuKhoaNghienCuu": ["Biên Hòa", "Tam Hiệp", "Đồng Nai", "sân bay Long Thành", "khu công nghiệp Biên Hòa", "lãi suất vay mua nhà"],
+  "tenKenh": { "facebook": "Căn hộ Phan Trung – Bcons Central Park Biên Hòa", "tiktok": "" },
+  "_nguon": "Số liệu chép từ thong-tin.md (tài liệu CĐT); tọa độ từ assets/geo/NGUON.md (geo-central-park)."
+}

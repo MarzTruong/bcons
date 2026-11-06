@@ -95,3 +95,12 @@ test("readProjectConfig kiểm khóa bắt buộc", () => {
   fs.writeFileSync(path.join(dir, "project.json"), JSON.stringify(thieu));
   assert.throws(() => readProjectConfig(dir), /ten/);
 });
+
+test("project.json của Bcons Central Park khớp số CĐT; _mau đủ khóa", () => {
+  const cfg = readProjectConfig(path.join(REPO_ROOT, "du-an", "bcons-central-park"));
+  assert.equal(cfg.ma, "bcons-central-park");
+  assert.equal(cfg.soCan.o, 2820);
+  assert.equal(cfg.soCan.thuongMai, 113);
+  assert.doesNotThrow(() => readProjectConfig(path.join(REPO_ROOT, "du-an", "_mau")));
+  assert.equal(readActiveProject(), "bcons-central-park");
+});
