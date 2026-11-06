@@ -1,9 +1,15 @@
+# Dữ liệu nội bộ / cá nhân (theo dự án: data/<mã>/, anh/<mã>/)
 data/
-*.xlsx
-remotion-video/node_modules/
-remotion-video/out/
-*.mp4
-.env
-remotion-video/audio-test/
-
 /anh/
+*.xlsx
+.env
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Video và file nặng
+*.mp4
+
+# Remotion
+engine/remotion/node_modules/
+engine/remotion/out/
+engine/remotion/audio-test/

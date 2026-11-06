@@ -1,0 +1,509 @@
+{
+  "name": "tai-thiet-kcn-bien-hoa-1",
+  "status": "approved",
+  "style": "navy",
+  "motion": "nay",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "geo-map",
+      "markup": "Khu công nghiệp Biên Hòa 1 đang thành khu đô thị. Một khu đất ở đây có phương án đấu giá, giá khởi điểm 9.363{chín ngàn ba trăm sáu mươi ba} tỷ đồng, công bố tháng 11{mười một} năm 2025.{hai ngàn không trăm hai mươi lăm.} Trong đó, 21,5{hai mươi mốt phẩy năm} ha{héc-ta} là phần được đem đấu.",
+      "cues": {
+        "value": "21,5",
+        "b1": "Biên",
+        "b2": "9.363"
+      },
+      "props": {
+        "kicker": "KCN BIÊN HÒA 1, THEO TIN 11/2025",
+        "title": "Từ khu công nghiệp thành khu đô thị",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "center": [
+            106.854218,
+            10.920202
+          ],
+          "zoom": 12
+        },
+        "points": [],
+        "lines": [],
+        "areas": [
+          {
+            "key": "kcn-bien-hoa-1",
+            "file": "assets/geo/osm/kcn-bien-hoa-1.geojson",
+            "kind": "official",
+            "label": "KCN BIÊN HÒA 1",
+            "cueKey": "b1",
+            "offset": 10,
+            "color": "gold",
+            "sourceId": "geo-osm-bh1",
+            "drawFrames": 50,
+            "pulses": [
+              {
+                "cueKey": "b2"
+              },
+              {
+                "cueKey": "value"
+              }
+            ]
+          },
+          {
+            "key": "dau-gia-21-5",
+            "file": "assets/geo/minh-hoa/bh1-lo-21-5.geojson",
+            "kind": "illustrative",
+            "label": "",
+            "cueKey": "value",
+            "offset": -10,
+            "color": "red",
+            "fillOpacity": 0.4,
+            "drawFrames": 30,
+            "pulses": [
+              {
+                "cueKey": "value"
+              }
+            ]
+          }
+        ],
+        "moves": [
+          {
+            "frames": 48,
+            "to": {
+              "fit": [
+                "kcn-bien-hoa-1"
+              ],
+              "padding": {
+                "top": 380,
+                "bottom": 440,
+                "left": 90,
+                "right": 90
+              },
+              "maxZoom": 15
+            },
+            "cueKey": "b1",
+            "offset": 0
+          }
+        ],
+        "dim": {
+          "areaKey": "kcn-bien-hoa-1",
+          "cueKey": "b1",
+          "offset": 40,
+          "opacity": 0.5
+        },
+        "callouts": [
+          {
+            "anchor": {
+              "area": "kcn-bien-hoa-1"
+            },
+            "tag": "GIÁ KHỞI ĐIỂM",
+            "big": "9.363 tỷ đồng",
+            "sub": "theo tin 11/2025",
+            "cueKey": "b2",
+            "offset": -5,
+            "dy": 300,
+            "sourceId": "dau-gia-gia"
+          },
+          {
+            "anchor": {
+              "area": "dau-gia-21-5"
+            },
+            "tag": "PHẦN ĐẤT ĐƯỢC ĐEM ĐẤU GIÁ",
+            "big": "21,5 ha",
+            "cueKey": "value",
+            "offset": -5,
+            "dy": -110,
+            "sourceId": "dau-gia-21ha"
+          }
+        ],
+        "note": "Ranh KCN theo OpenStreetMap; vùng 21,5 ha chỉ là hình minh họa theo tỉ lệ diện tích, không phải ranh thật"
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "geo-map",
+      "markup": "Khu công nghiệp đầu tiên của Việt Nam, lập năm 1963,{một ngàn chín trăm sáu mươi ba,} trên 335{ba trăm ba mươi lăm} ha{héc-ta}. Phương án chuyển đổi gồm khoảng 44{bốn mươi bốn} ha{héc-ta} trung tâm hành chính và hơn 286{hai trăm tám mươi sáu} ha{héc-ta} khu đô thị dịch vụ.",
+      "cues": {
+        "c1": "335",
+        "c2": "44",
+        "c3": "286"
+      },
+      "props": {
+        "kicker": "KCN BIÊN HÒA 1, LẬP NĂM 1963",
+        "title": "Từ khu công nghiệp thành đô thị",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "kcn-bien-hoa-1"
+          ],
+          "padding": {
+            "top": 830,
+            "bottom": 440,
+            "left": 90,
+            "right": 90
+          },
+          "maxZoom": 15
+        },
+        "points": [],
+        "lines": [],
+        "areas": [
+          {
+            "key": "kcn-bien-hoa-1",
+            "file": "assets/geo/osm/kcn-bien-hoa-1.geojson",
+            "kind": "official",
+            "label": "",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "gold",
+            "sourceId": "geo-osm-bh1",
+            "pulses": [
+              {
+                "cueKey": "c1"
+              }
+            ]
+          },
+          {
+            "key": "hanh-chinh",
+            "file": "assets/geo/minh-hoa/bh1-hanh-chinh.geojson",
+            "kind": "illustrative",
+            "label": "Hành chính ~44 ha (minh họa)",
+            "cueKey": "c2",
+            "offset": -5,
+            "color": "teal",
+            "fillOpacity": 0.4,
+            "pulses": [
+              {
+                "cueKey": "c2"
+              }
+            ]
+          },
+          {
+            "key": "do-thi",
+            "file": "assets/geo/minh-hoa/bh1-do-thi.geojson",
+            "kind": "illustrative",
+            "label": "Đô thị dịch vụ >286 ha (minh họa)",
+            "cueKey": "c3",
+            "offset": -5,
+            "color": "gold",
+            "fillOpacity": 0.3,
+            "pulses": [
+              {
+                "cueKey": "c3"
+              }
+            ]
+          }
+        ],
+        "dim": {
+          "areaKey": "kcn-bien-hoa-1",
+          "offset": -400,
+          "opacity": 0.45
+        },
+        "cards": [
+          {
+            "tag": "DIỆN TÍCH KHU CÔNG NGHIỆP",
+            "big": "335 ha",
+            "sub": "khu công nghiệp đầu tiên của Việt Nam",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "kcn-335"
+          },
+          {
+            "tag": "PHƯƠNG ÁN: HÀNH CHÍNH",
+            "big": "Khoảng 44 ha",
+            "sub": "trung tâm hành chính",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "kcn-44"
+          },
+          {
+            "tag": "PHƯƠNG ÁN: ĐÔ THỊ",
+            "big": "Hơn 286 ha",
+            "sub": "khu đô thị dịch vụ",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "kcn-286"
+          }
+        ],
+        "note": "Ranh KCN theo OpenStreetMap; ranh phân vùng là hình minh họa theo tỉ lệ diện tích tin báo"
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "geo-map",
+      "markup": "Khu đất đấu giá nằm trong lô 51,6{năm mươi mốt phẩy sáu} ha{héc-ta} và tổng mức đầu tư dự kiến khoảng 23.000{hai mươi ba ngàn} tỷ đồng. Ngoài ra, Aeon Mall Biên Hòa có tổng mức đầu tư hơn 6.000{sáu ngàn} tỷ. Biên Hòa đang thay đổi diện mạo.",
+      "cues": {
+        "c1": "51,6",
+        "c2": "23.000",
+        "c3": "Aeon",
+        "n1": "Ngoài",
+        "n2": "đang"
+      },
+      "props": {
+        "kicker": "THEO TIN 11/2025",
+        "title": "Khu đất và dự án lớn",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "kcn-bien-hoa-1"
+          ],
+          "padding": {
+            "top": 830,
+            "bottom": 440,
+            "left": 90,
+            "right": 90
+          },
+          "maxZoom": 15
+        },
+        "points": [
+          {
+            "key": "aeon",
+            "label": "Aeon Mall Biên Hòa",
+            "file": "assets/geo/aeon.geojson",
+            "featureKey": "aeon",
+            "color": "white",
+            "cueKey": "n1",
+            "offset": 20,
+            "sourceId": "geo-aeon"
+          }
+        ],
+        "lines": [],
+        "areas": [
+          {
+            "key": "kcn-bien-hoa-1",
+            "file": "assets/geo/osm/kcn-bien-hoa-1.geojson",
+            "kind": "official",
+            "label": "KCN BIÊN HÒA 1",
+            "cueKey": "c1",
+            "offset": -400,
+            "color": "gold",
+            "sourceId": "geo-osm-bh1"
+          },
+          {
+            "key": "lo-51-6",
+            "file": "assets/geo/minh-hoa/bh1-lo-51-6.geojson",
+            "kind": "illustrative",
+            "label": "Lô 51,6 ha (minh họa)",
+            "cueKey": "c1",
+            "offset": -5,
+            "color": "red",
+            "fillOpacity": 0.4,
+            "drawFrames": 30,
+            "pulses": [
+              {
+                "cueKey": "c1"
+              }
+            ]
+          }
+        ],
+        "moves": [
+          {
+            "frames": 50,
+            "to": {
+              "center": [
+                106.83556,
+                10.92652
+              ],
+              "zoom": 15.3,
+              "shiftY": -195
+            },
+            "cueKey": "n1",
+            "offset": -10
+          },
+          {
+            "frames": 55,
+            "to": {
+              "fit": [
+                "kcn-bien-hoa-1",
+                "aeon"
+              ],
+              "padding": {
+                "top": 830,
+                "bottom": 440,
+                "left": 90,
+                "right": 90
+              }
+            },
+            "cueKey": "n2",
+            "offset": -20
+          }
+        ],
+        "dim": {
+          "areaKey": "kcn-bien-hoa-1",
+          "offset": -400,
+          "opacity": 0.35
+        },
+        "cards": [
+          {
+            "tag": "LÔ ĐẤT CÓ PHƯƠNG ÁN ĐẤU GIÁ",
+            "big": "51,6 ha",
+            "sub": "phương án đấu giá công bố tháng 11/2025",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "khu-51ha"
+          },
+          {
+            "tag": "TỔNG MỨC ĐẦU TƯ DỰ KIẾN",
+            "big": "Khoảng 23.000 tỷ",
+            "sub": "của dự án trên khu 51,6 ha",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "tmdt-23k"
+          },
+          {
+            "tag": "AEON MALL BIÊN HÒA",
+            "big": "Hơn 6.000 tỷ",
+            "sub": "tổng mức đầu tư, theo CafeF 21/11/2025",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "aeon"
+          }
+        ],
+        "note": "Ranh KCN theo OpenStreetMap; lô 51,6 ha là hình minh họa; vị trí Aeon Mall gần đúng"
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "geo-map",
+      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý 2{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} giữa lúc Biên Hòa đang thay đổi diện mạo. Muốn bảng nguồn từng dòng, comment tái thiết.",
+      "cues": {
+        "d1": "236",
+        "d2": "giữa",
+        "d3": "Muốn"
+      },
+      "props": {
+        "kicker": "BCONS CENTRAL PARK",
+        "title": "Giữa lúc Biên Hòa thay đổi",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "kcn-bien-hoa-1",
+            "aeon",
+            "project"
+          ],
+          "padding": {
+            "top": 380,
+            "bottom": 440,
+            "left": 90,
+            "right": 90
+          }
+        },
+        "points": [
+          {
+            "key": "project",
+            "label": "Bcons Central Park",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "cueKey": "d1",
+            "offset": -400,
+            "sourceId": "geo-central-park",
+            "big": true
+          },
+          {
+            "key": "aeon",
+            "label": "Aeon Mall Biên Hòa",
+            "file": "assets/geo/aeon.geojson",
+            "featureKey": "aeon",
+            "color": "white",
+            "cueKey": "d1",
+            "offset": -400,
+            "sourceId": "geo-aeon"
+          }
+        ],
+        "lines": [
+          {
+            "key": "km-bh1",
+            "file": "assets/geo/minh-hoa/km-bien-hoa-1.geojson",
+            "kind": "illustrative",
+            "color": "gold",
+            "width": 5,
+            "cueKey": "d2",
+            "offset": 45,
+            "drawFrames": 24,
+            "sourceId": "km-chim-bay"
+          },
+          {
+            "key": "km-aeon",
+            "file": "assets/geo/minh-hoa/km-aeon.geojson",
+            "kind": "illustrative",
+            "color": "white",
+            "width": 5,
+            "cueKey": "d2",
+            "offset": 60,
+            "drawFrames": 24,
+            "sourceId": "km-chim-bay"
+          }
+        ],
+        "areas": [
+          {
+            "key": "kcn-bien-hoa-1",
+            "file": "assets/geo/osm/kcn-bien-hoa-1.geojson",
+            "kind": "official",
+            "label": "KCN BIÊN HÒA 1",
+            "cueKey": "d1",
+            "offset": -400,
+            "color": "gold",
+            "sourceId": "geo-osm-bh1"
+          },
+          {
+            "key": "du-an",
+            "file": "assets/geo/osm/du-an-central-park.geojson",
+            "kind": "official",
+            "label": "",
+            "cueKey": "d1",
+            "offset": -400,
+            "color": "red",
+            "sourceId": "geo-osm-du-an"
+          }
+        ],
+        "moves": [
+          {
+            "frames": 45,
+            "to": {
+              "fit": [
+                "du-an"
+              ],
+              "padding": {
+                "top": 420,
+                "bottom": 450,
+                "left": 200,
+                "right": 200
+              },
+              "maxZoom": 18
+            },
+            "cueKey": "d1",
+            "offset": -6
+          },
+          {
+            "frames": 55,
+            "to": {
+              "fit": [
+                "kcn-bien-hoa-1",
+                "aeon",
+                "project"
+              ],
+              "padding": {
+                "top": 380,
+                "bottom": 440,
+                "left": 90,
+                "right": 90
+              }
+            },
+            "cueKey": "d2",
+            "offset": -10
+          }
+        ],
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Bcons Central Park",
+          "cueKey": "d3",
+          "offset": -10,
+          "sourceId": "phoi-canh"
+        },
+        "message": {
+          "text": "Dự kiến bàn giao Quý II/2029. Comment “tái thiết” để nhận bảng nguồn từng dòng",
+          "cueKey": "d3",
+          "offset": 0
+        },
+        "note": "Hình ảnh phối cảnh mang tính minh họa. Nét nối là đường chim bay. Thông tin mang tính tham khảo"
+      }
+    }
+  ]
+}
