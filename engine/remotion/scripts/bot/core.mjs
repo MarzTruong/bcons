@@ -14,6 +14,7 @@ export const HELP = [
   "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước)",
   "/capnhat – lấy bản mới nhất từ GitHub",
   "/moi – bắt đầu trò chuyện Claude mới",
+  "/huy – dừng việc đang chạy",
   "",
   "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên laptop.",
 ].join("\n");
@@ -26,11 +27,13 @@ export function parseCommand(raw) {
   return { cmd: head.slice(1).split("@")[0].toLowerCase(), args };
 }
 
-/** Chỉ nhận tin/nút bấm từ đúng cuộc trò chuyện của anh. */
+/** Chỉ nhận tin/nút bấm của chính anh, trong cuộc trò chuyện riêng với bot (không nhận nhóm). */
 export function isAuthorized(update, chatId) {
   if (!chatId) return false;
-  const chat = update?.message?.chat ?? update?.callback_query?.message?.chat;
-  return chat != null && String(chat.id) === String(chatId);
+  const m = update?.message ?? update?.callback_query?.message;
+  const from = update?.message?.from ?? update?.callback_query?.from;
+  if (!m?.chat || !from) return false;
+  return m.chat.type === "private" && String(m.chat.id) === String(chatId) && String(from.id) === String(chatId);
 }
 
 /** Trạng thái một video: caption, có mp4 chưa, video đã duyệt chưa. */

@@ -9,7 +9,10 @@ export const ALLOWED = [
 ];
 export const DENIED = [
   "Bash(npm run voice:*)", "Bash(npm run render:drive:*)", "Bash(git commit:*)", "Bash(git push:*)",
-  "Bash(git reset:*)", "Bash(git checkout:*)", "Bash(rm:*)",
+  "Bash(git reset:*)", "Bash(git checkout:*)", "Bash(git stash:*)", "Bash(rm:*)",
+  // Chặn "sửa rồi chạy" vòng qua lệnh test, hook, bot, cấu hình quyền (rào chống nhầm lẫn, không phải tường bảo mật tuyệt đối)
+  ...["**/package.json", "**/package-lock.json", ".claude/**", ".githooks/**", "*.cmd", "engine/remotion/scripts/bot/**", "engine/remotion/tests/**", "engine/automation/**", "**/.env"]
+    .flatMap((p) => [`Edit(./${p})`, `Write(./${p})`]),
 ];
 const SYSTEM = [
   "Anh dang giao viec qua bot Telegram, khong ngoi truoc may.",
@@ -22,9 +25,9 @@ const SESSION_RE = /^[0-9a-f-]{8,64}$/i;
 /** Tham số dòng lệnh cố định (không chứa chữ của người dùng). */
 export function buildClaudeArgs({ sessionId } = {}) {
   const args = [
-    "-p", "--output-format", "json", "--max-turns", "40",
-    "--allowedTools", ALLOWED.join(" "),
-    "--disallowedTools", DENIED.join(" "),
+    "-p", "--output-format", "json", "--max-turns", "40", "--permission-mode", "default",
+    "--allowedTools", ALLOWED.join(","),
+    "--disallowedTools", DENIED.join(","),
     "--append-system-prompt", SYSTEM,
   ];
   if (sessionId) {
@@ -40,8 +43,12 @@ export function parseClaudeOutput(stdout) {
   for (const l of lines) {
     try {
       const j = JSON.parse(l);
-      if (j && typeof j === "object" && "result" in j) {
-        return { text: String(j.result ?? ""), sessionId: j.session_id ?? null, isError: !!j.is_error };
+      if (j && typeof j === "object" && (j.type === "result" || "result" in j)) {
+        const sub = String(j.subtype ?? "");
+        const why = sub === "error_max_turns" ? "Claude dừng vì việc quá dài (hết số bước). Nhắn tiếp để làm nốt, hoặc chia nhỏ việc."
+          : sub.startsWith("error") ? `Claude gặp lỗi khi làm (${sub}).` : "";
+        const text = j.result ? String(j.result) : why || "(Claude không trả lời)";
+        return { text: why && j.result ? `${text}\n\n${why}` : text, sessionId: j.session_id ?? null, isError: !!j.is_error || sub.startsWith("error") };
       }
     } catch {
       // dòng không phải JSON
@@ -50,13 +57,20 @@ export function parseClaudeOutput(stdout) {
   return { text: String(stdout).trim().slice(-3000) || "(Claude không trả lời)", sessionId: null, isError: true };
 }
 
+/** Dừng hẳn tiến trình và các tiến trình con (Windows: taskkill /T, vì kill() chỉ dừng cmd.exe). */
+export function killTree(child) {
+  if (!child?.pid) return;
+  if (process.platform === "win32") spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], { windowsHide: true });
+  else child.kill("SIGTERM");
+}
+
 /** Trên Windows phải chạy qua shell (claude.cmd): bọc từng tham số trong ngoặc kép. */
 function winQuote(a) {
   return `"${String(a).replace(/"/g, '\\"')}"`;
 }
 
 /** Chạy Claude thật trên máy. Trả { text, sessionId, isError }. */
-export function runClaude(prompt, { sessionId, cwd, timeoutMs = 20 * 60e3 } = {}) {
+export function runClaude(prompt, { sessionId, cwd, timeoutMs = 20 * 60e3, onChild } = {}) {
   return new Promise((resolve) => {
     const args = buildClaudeArgs({ sessionId });
     const win = process.platform === "win32";
@@ -65,18 +79,25 @@ export function runClaude(prompt, { sessionId, cwd, timeoutMs = 20 * 60e3 } = {}
       : spawn("claude", args, { cwd });
     let out = "";
     let err = "";
-    const timer = setTimeout(() => child.kill(), timeoutMs);
+    onChild?.(child);
+    const timer = setTimeout(() => killTree(child), timeoutMs);
     child.stdout.on("data", (d) => (out += d));
     child.stderr.on("data", (d) => (err += d));
     child.on("error", (e) =>
       resolve({ text: `Không chạy được Claude Code trên máy (${e.message}). Cài Claude Code: xem docs/huong-dan-bot-telegram.md`, sessionId: null, isError: true }),
     );
-    child.on("close", () => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
       clearTimeout(timer);
       const r = parseClaudeOutput(out);
       if (r.isError && !out.trim() && err.trim()) r.text = err.trim().slice(-1500);
       resolve(r);
-    });
+    };
+    child.on("close", finish);
+    // Windows: cửa sổ con có thể giữ ống dẫn; tiến trình đã thoát thì 2 giây sau coi như xong.
+    child.on("exit", () => setTimeout(finish, 2000));
     child.stdin.end(prompt);
   });
 }

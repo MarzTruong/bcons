@@ -14,12 +14,15 @@ test("parseCommand: lệnh, tham số, bỏ @tênbot, tin tự do", () => {
   assert.deepEqual(parseCommand(""), { cmd: null, text: "" });
 });
 
-test("isAuthorized: chỉ đúng chat id, cả tin nhắn lẫn nút bấm", () => {
-  assert.equal(isAuthorized({ message: { chat: { id: 42 }, text: "hi" } }, "42"), true);
-  assert.equal(isAuthorized({ message: { chat: { id: 7 }, text: "hi" } }, "42"), false);
-  assert.equal(isAuthorized({ callback_query: { message: { chat: { id: 42 } }, from: { id: 42 } } }, "42"), true);
-  assert.equal(isAuthorized({ callback_query: { message: { chat: { id: 7 } } } }, "42"), false);
-  assert.equal(isAuthorized({ message: { chat: { id: 42 } } }, ""), false);
+test("isAuthorized: chỉ chính anh trong chat riêng, cả tin nhắn lẫn nút bấm; không nhận nhóm", () => {
+  const priv = { id: 42, type: "private" };
+  assert.equal(isAuthorized({ message: { chat: priv, from: { id: 42 }, text: "hi" } }, "42"), true);
+  assert.equal(isAuthorized({ message: { chat: { id: 7, type: "private" }, from: { id: 7 }, text: "hi" } }, "42"), false);
+  assert.equal(isAuthorized({ message: { chat: { id: 42, type: "group" }, from: { id: 42 } } }, "42"), false);
+  assert.equal(isAuthorized({ message: { chat: { id: 42, type: "group" }, from: { id: 9 } } }, "42"), false);
+  assert.equal(isAuthorized({ callback_query: { message: { chat: priv }, from: { id: 42 } } }, "42"), true);
+  assert.equal(isAuthorized({ callback_query: { message: { chat: priv }, from: { id: 9 } } }, "42"), false);
+  assert.equal(isAuthorized({ message: { chat: priv, from: { id: 42 } } }, ""), false);
 });
 
 function project() {

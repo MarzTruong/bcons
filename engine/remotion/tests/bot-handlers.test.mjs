@@ -3,14 +3,16 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { createBot } from "../scripts/bot/handlers.mjs";
+import { createBot, parsePorcelainZ } from "../scripts/bot/handlers.mjs";
 import { buildClaudeArgs, parseClaudeOutput } from "../scripts/bot/claude-bridge.mjs";
 import { parseCaption } from "../scripts/caption.mjs";
 
 const CHAT = "42";
-const msg = (text, id = 42) => ({ message: { chat: { id }, text } });
+const T0 = 1_000_000_000_000;
+const msg = (text, id = 42, extra = {}) => ({ message: { chat: { id, type: "private" }, from: { id }, date: T0 / 1000, text, ...extra } });
+const press = (data, date = T0 / 1000) => ({ callback_query: { id: "q", data, from: { id: 42 }, message: { chat: { id: 42, type: "private" }, date } } });
 
-function setup({ claude, gitStatus = "" } = {}) {
+function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
   const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "botr-"));
   const projDir = path.join(repoRoot, "du-an", "x");
   const outDir = path.join(repoRoot, "out");
@@ -25,6 +27,7 @@ function setup({ claude, gitStatus = "" } = {}) {
   const videos = [];
   const execs = [];
   const sent = [];
+  let statusCalls = 0;
   const tg = {
     sendMessage: async (_c, text, extra) => said.push({ text, extra }),
     sendVideo: async (_c, file, caption) => videos.push({ file, caption }),
@@ -32,8 +35,12 @@ function setup({ claude, gitStatus = "" } = {}) {
   };
   const exec = async (cmd, args) => {
     execs.push([cmd, ...args].join(" "));
-    if (cmd === "git" && args[0] === "status") return { code: 0, out: gitStatus };
+    if (cmd === "git" && args[0] === "status") {
+      statusCalls++;
+      return { code: 0, out: statusCalls > 1 && gitStatusAfter != null ? gitStatusAfter : gitStatus };
+    }
     if (cmd === "git" && args[0] === "diff") return { code: 0, out: "x\n" };
+    if (cmd === "git" && args[0] === "rev-list") return { code: 0, out: "1\n" };
     if (cmd === "npm" && args.includes("render:drive")) fs.writeFileSync(path.join(outDir, `${args.at(-1)}.mp4`), "video");
     return { code: 0, out: "ok" };
   };
@@ -41,7 +48,9 @@ function setup({ claude, gitStatus = "" } = {}) {
     tg, chatId: CHAT, projDir, outDir, repoRoot, remotionDir: repoRoot, exec,
     runClaude: claude ?? (async () => ({ text: "Xong.", sessionId: "abc-123", isError: false })),
     sendApproved: async (o) => sent.push(o),
-    now: () => 1000,
+    now: () => T0,
+    startedAt: T0,
+    cancel: () => true,
   });
   return { bot, said, videos, execs, sent, projDir, outDir };
 }
@@ -98,18 +107,19 @@ test("/giong chỉ chạy sau khi bấm Đồng ý; Hủy thì không chạy", a
   await s.bot.handleUpdate(msg("/giong a"));
   assert.ok(!s.execs.some((e) => e.includes("voice")));
   const data = s.said.at(-1).extra.reply_markup.inline_keyboard[0][0].callback_data;
-  await s.bot.handleUpdate({ callback_query: { id: "q", data, message: { chat: { id: 42 } } } });
+  await s.bot.handleUpdate(press(data));
   assert.ok(s.execs.some((e) => e === "npm run voice -- a"));
   await s.bot.handleUpdate(msg("/giong a"));
   const huy = s.said.at(-1).extra.reply_markup.inline_keyboard[0][1].callback_data;
-  await s.bot.handleUpdate({ callback_query: { id: "q2", data: huy, message: { chat: { id: 42 } } } });
+  await s.bot.handleUpdate(press(huy));
   assert.equal(s.execs.filter((e) => e.includes("voice")).length, 1);
 });
 
 test("cách B: tin tự do → Claude; có file đổi thì hỏi Lưu/Bỏ; giữ phiên", async () => {
   const calls = [];
   const s = setup({
-    gitStatus: " M du-an/x/video/a/caption.md\n",
+    gitStatus: "",
+    gitStatusAfter: " M du-an/x/video/a/caption.md\0",
     claude: async (text, opts) => {
       calls.push({ text, ...opts });
       return { text: "Đã rút gọn caption.", sessionId: "s-1", isError: false };
@@ -122,14 +132,16 @@ test("cách B: tin tự do → Claude; có file đổi thì hỏi Lưu/Bỏ; gi�
   const ask = s.said.at(-1);
   assert.match(ask.text, /caption\.md/);
   const luu = ask.extra.reply_markup.inline_keyboard[0][0].callback_data;
-  await s.bot.handleUpdate({ callback_query: { id: "q", data: luu, message: { chat: { id: 42 } } } });
-  assert.ok(s.execs.some((e) => e.startsWith("git commit -m Bot: rút gọn")));
+  await s.bot.handleUpdate(press(luu));
+  assert.ok(s.execs.some((e) => e.startsWith("git commit -m Bot: rút gọn") && e.endsWith("-- du-an/x/video/a/caption.md")));
   await s.bot.handleUpdate(msg("thêm hashtag"));
   assert.equal(calls[1].sessionId, "s-1");
 });
 
 test("buildClaudeArgs: không nhận chữ người dùng, cấm voice/render/push, kiểm session id", () => {
   const a = buildClaudeArgs({ sessionId: "3f2b9c1e-0a4d-4e8b-9f1a-2c3d4e5f6a7b" });
+  for (const x of a) assert.ok(!/["%!^]/.test(x), `ký tự nguy hiểm cho cmd.exe trong: ${x}`);
+  for (const x of ["package.json", ".claude/**", ".githooks/**", "scripts/bot/**"]) assert.ok(a[a.indexOf("--disallowedTools") + 1].includes(`Edit(./${x}`) || a[a.indexOf("--disallowedTools") + 1].includes(x), x);
   assert.ok(a.includes("-p") && a.includes("--resume"));
   const denied = a[a.indexOf("--disallowedTools") + 1];
   for (const x of ["npm run voice", "render:drive", "git push", "git commit"]) assert.ok(denied.includes(x), x);
@@ -140,4 +152,47 @@ test("parseClaudeOutput đọc JSON kết quả", () => {
   const r = parseClaudeOutput('log\n{"type":"result","result":"Xong","session_id":"s-9","is_error":false}');
   assert.deepEqual(r, { text: "Xong", sessionId: "s-9", isError: false });
   assert.equal(parseClaudeOutput("không phải json").isError, true);
+});
+
+test("rà soát: nút bấm cũ (trước khi bot khởi động) hoặc sai loại thì không chạy", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/giong a"));
+  const data = s.said.at(-1).extra.reply_markup.inline_keyboard[0][0].callback_data;
+  await s.bot.handleUpdate(press(data, T0 / 1000 - 3600));
+  await s.bot.handleUpdate(press(data.replace(":giong:", ":claude:")));
+  await s.bot.handleUpdate(press("ok:giong:1"));
+  assert.ok(!s.execs.some((e) => e.includes("voice")));
+  assert.ok(s.said.filter((m) => /hết hiệu lực/.test(m.text)).length >= 2);
+});
+
+test("rà soát: tin cũ lúc laptop tắt và tin chuyển tiếp bị bỏ qua", async () => {
+  const s = setup();
+  await s.bot.handleUpdate({ message: { ...msg("/render a").message, date: T0 / 1000 - 3600 } });
+  await s.bot.handleUpdate(msg("xóa hết", 42, { forward_origin: { type: "user" } }));
+  assert.equal(s.execs.length, 0);
+  assert.match(s.said[0].text, /tin cũ/);
+  assert.match(s.said[1].text, /chuyển tiếp/);
+});
+
+test("rà soát: Claude chỉ lưu/bỏ đúng file mình sửa, không đụng file có sẵn (mp3, việc dở)", async () => {
+  const s = setup({
+    gitStatus: "?? du-an/x/video/a/audio/scene1.mp3\0",
+    gitStatusAfter: "?? du-an/x/video/a/audio/scene1.mp3\0 M du-an/x/video/a/caption.md\0",
+  });
+  await s.bot.handleUpdate(msg("sửa caption"));
+  const bo = s.said.at(-1).extra.reply_markup.inline_keyboard[0][1].callback_data;
+  assert.doesNotMatch(s.said.at(-1).text, /scene1\.mp3/);
+  await s.bot.handleUpdate(press(bo));
+  const stash = s.execs.find((e) => e.startsWith("git stash"));
+  assert.ok(stash.endsWith("-- du-an/x/video/a/caption.md"), stash);
+});
+
+test("rà soát: /huy khi đang rảnh", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/huy"));
+  assert.match(s.said[0].text, /Không có việc/);
+});
+
+test("parsePorcelainZ đọc cả file đổi tên", () => {
+  assert.deepEqual(parsePorcelainZ(" M a.md\0R  moi.md\0cu.md\0?? x/y.mp3\0"), ["a.md", "moi.md", "cu.md", "x/y.mp3"]);
 });

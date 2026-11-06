@@ -1,8 +1,8 @@
 # Bot Telegram Bcons: giao việc bằng tin nhắn
 
-Bot chạy trên **laptop**. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Laptop tắt hoặc ngủ thì bot ngừng; tin anh nhắn lúc đó sẽ được làm khi laptop mở lại và bot chạy lại.
+Bot chạy trên **laptop**. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Laptop tắt hoặc ngủ thì bot ngừng. Tin anh nhắn lúc laptop tắt **không tự chạy** khi mở máy lại (để tránh render/duyệt ngoài ý muốn); bot báo đã bỏ qua, anh nhắn lại nếu vẫn cần.
 
-Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều khiển được bot. Người khác nhắn vào, bot im lặng.
+Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với bot (`TELEGRAM_CHAT_ID` trong `.env`), điều khiển được bot. Người khác nhắn vào, hoặc thêm bot vào nhóm, bot im lặng. Bot không nhận tin chuyển tiếp (forward).
 
 ## Cài một lần (lần cuối anh phải dùng PowerShell)
 
@@ -21,7 +21,7 @@ Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều 
    ```powershell
    claude --version
    ```
-   Nếu báo lỗi không có lệnh `claude`: cài theo hướng dẫn chính thức tại https://docs.claude.com/en/docs/claude-code (mục cài đặt cho Windows), rồi chạy `claude` một lần để đăng nhập tài khoản Claude của anh, gõ `/exit` để thoát.
+   Nếu báo lỗi không có lệnh `claude`: cài theo hướng dẫn chính thức tại https://docs.claude.com/en/docs/claude-code (mục cài đặt cho Windows). **Bắt buộc** chạy `claude` một lần trong PowerShell để đăng nhập tài khoản Claude của anh, rồi gõ `/exit`. Chưa đăng nhập thì bot chỉ báo lỗi khi anh giao việc tự do (các lệnh `/` vẫn chạy được).
 4. **Chạy bot:** vào `D:\Claude\bcons`, bấm đúp **`Bcons-Bot.cmd`**. Một cửa sổ đen hiện ra, Telegram nhận tin "🤖 Bot Bcons đã chạy". Để cửa sổ đó mở (thu nhỏ được). Đóng cửa sổ là tắt bot.
 5. **Cho bot tự chạy khi mở máy** (nên làm):
    - Bấm `Windows + R`, gõ `shell:startup`, Enter, một thư mục mở ra.
@@ -40,6 +40,7 @@ Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều 
 | `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy |
 | `/capnhat` | Lấy bản mới nhất từ GitHub (những gì em làm trên cloud), tự cài thư viện nếu cần |
 | `/moi` | Bắt đầu cuộc trò chuyện Claude mới |
+| `/huy` | Dừng việc đang chạy (render, tạo giọng, Claude) |
 | Câu bình thường | Giao việc cho Claude Code trên laptop (vd. "rút gọn caption video cho thuê", "viết thêm hashtag cho video lãi suất") |
 
 `<tên>` là tên video, xem bằng `/danhsach` (vd. `ha-tang-bien-hoa-2026`).
@@ -54,7 +55,8 @@ Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều 
 
 ## Giao việc tự do (cách B)
 - Câu nào không bắt đầu bằng `/` được chuyển cho Claude Code trên laptop. Claude **chỉ được** đọc/sửa file, chạy kiểm tra, tìm web. Claude **không được** tạo giọng, render, lưu hay đẩy lên GitHub.
-- Claude sửa file xong, bot hỏi: **💾 Lưu lên GitHub** hoặc **↩️ Bỏ thay đổi** (bỏ = cất vào `git stash`, lấy lại được).
+- Các giới hạn trên là rào chống nhầm lẫn, không phải khóa tuyệt đối; vì vậy bot luôn hỏi anh trước khi lưu lên GitHub.
+- Claude sửa file xong, bot hỏi: **💾 Lưu lên GitHub** hoặc **↩️ Bỏ thay đổi** (bỏ = cất vào `git stash`, lấy lại được). Chỉ những file Claude sửa trong lần đó được lưu/bỏ; file khác (giọng đọc, việc anh đang sửa dở) không bị đụng.
 - Claude nhớ cuộc trò chuyện trong 3 giờ; muốn bắt đầu chủ đề mới thì nhắn `/moi`.
 - Việc lớn (làm video mới từ đầu, nghiên cứu số liệu nhiều nguồn) nên giao em qua app Claude như bây giờ: em có đủ công cụ và nhớ bối cảnh tốt hơn.
 
@@ -62,3 +64,6 @@ Chỉ tài khoản Telegram của anh (`TELEGRAM_CHAT_ID` trong `.env`) điều 
 - Bot báo lỗi kèm vài dòng cuối của log. Chụp màn hình gửi em.
 - Bot không trả lời: kiểm tra cửa sổ "Bot Bcons" còn mở không, laptop có mạng không. Bấm đúp `Bcons-Bot.cmd` để chạy lại.
 - Bot tự chạy lại sau 10 giây nếu bị dừng giữa chừng.
+- Cửa sổ báo "Bot da chay o cua so khac": anh đã mở 2 lần, cứ đóng cửa sổ đó.
+- Cửa sổ báo "Thieu TELEGRAM_BOT_TOKEN...": kiểm tra lại file `.env` (bước 2).
+- Sau `/capnhat` có bản bot mới, bot tự khởi động lại trong vài giây.

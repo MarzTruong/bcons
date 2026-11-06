@@ -10,66 +10,103 @@ import { HELP, formatList, isAuthorized, parseCommand } from "./core.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
 const SESSION_TTL_MS = 3 * 3600e3;
+const TG_MAX_BYTES = 50 * 1024 * 1024;
 const tail = (s, n = 15) => String(s).trim().split(/\r?\n/).slice(-n).join("\n");
+
+/** Đọc `git status --porcelain=v1 -z -uall` → danh sách đường dẫn (tương đối gốc repo). */
+export function parsePorcelainZ(out) {
+  const parts = String(out).split("\0").filter(Boolean);
+  const paths = [];
+  for (let i = 0; i < parts.length; i++) {
+    const xy = parts[i].slice(0, 2);
+    paths.push(parts[i].slice(3));
+    if (xy[0] === "R" || xy[0] === "C") paths.push(parts[++i]); // tên cũ khi đổi tên
+  }
+  return paths;
+}
 
 /**
  * deps: { tg, chatId, projDir, outDir, repoRoot, remotionDir,
- *         exec(cmd, args, { cwd }) → Promise<{ code, out }>,
+ *         exec(cmd, args, { cwd, timeoutMs }) → Promise<{ code, out }>, cancel() → bool,
  *         runClaude(prompt, { sessionId, cwd }) → Promise<{ text, sessionId, isError }>,
- *         sendApproved({ captionPath, mp4Path, label }) → Promise, now() → number }
+ *         sendApproved({ captionPath, mp4Path, label }) → Promise,
+ *         now() → ms, startedAt (ms), restart() → void }
  */
 export function createBot(deps) {
   const { tg, chatId, projDir, outDir, repoRoot, remotionDir, exec, runClaude, sendApproved } = deps;
   const now = deps.now ?? (() => Date.now());
-  const say = (text, extra) => tg.sendMessage(chatId, text, extra);
+  const startedAt = deps.startedAt ?? now();
+  const runId = crypto.randomBytes(3).toString("hex"); // nút bấm của lần chạy trước hết hiệu lực
+  const say = (text, extra) =>
+    Promise.resolve()
+      .then(() => tg.sendMessage(chatId, text, extra))
+      .catch((e) => console.error(`Không gửi được tin Telegram: ${e.message}`));
   const pending = new Map(); // id → { kind, run }
-  let seq = 0;
   let session = null; // { id, at }
+  let current = null; // tên việc đang chạy
   let busy = false;
+  let restartAfter = false;
   const queue = [];
 
   function enqueue(label, job) {
     return new Promise((resolve) => {
       queue.push({ label, job, resolve });
-      if (busy) say(`Đang làm việc trước, đã xếp hàng: ${label}`);
-      pump();
+      if (busy) say(`Đang làm: ${current}. Đã xếp hàng: ${label}`);
+      pump().catch(() => {});
     });
   }
   async function pump() {
     if (busy || !queue.length) return;
     busy = true;
     const { label, job, resolve } = queue.shift();
+    current = label;
     try {
       await job();
     } catch (e) {
       await say(`Lỗi khi ${label}:\n${tail(e.message, 20)}`);
     } finally {
       busy = false;
+      current = null;
       resolve();
-      pump();
+      if (restartAfter && !queue.length) deps.restart?.();
+      pump().catch(() => {});
     }
   }
 
-  async function run(cmd, args, cwd, what) {
-    const r = await exec(cmd, args, { cwd });
+  async function run(cmd, args, cwd, what, timeoutMs) {
+    const r = await exec(cmd, args, { cwd, timeoutMs });
     if (r.code !== 0) throw new Error(`${what} không thành công:\n${tail(r.out)}`);
     return r.out;
   }
+  const git = (args) => exec("git", args, { cwd: repoRoot });
 
+  /** Lưu đúng các file chỉ định lên GitHub. Luôn đẩy cả commit cũ chưa đẩy. */
   async function gitSave(paths, message) {
     await run("git", ["add", "--", ...paths], repoRoot, "git add");
-    const st = await exec("git", ["diff", "--cached", "--name-only"], { cwd: repoRoot });
-    if (!st.out.trim()) return "Không có gì mới để lưu.";
-    await run("git", ["commit", "-m", message], repoRoot, "Lưu (commit)");
-    await run("git", ["pull", "--rebase"], repoRoot, "Lấy bản mới (pull)");
-    await run("git", ["push"], repoRoot, "Đẩy lên GitHub (push)");
-    return "Đã lưu lên GitHub.";
+    const staged = (await git(["diff", "--cached", "--name-only", "--", ...paths])).out.trim();
+    if (staged) await run("git", ["commit", "-m", message, "--", ...paths], repoRoot, "Lưu (commit)");
+    const pull = await git(["pull", "--rebase", "--autostash"]);
+    if (pull.code !== 0) {
+      await git(["rebase", "--abort"]);
+      throw new Error(`Lấy bản mới từ GitHub bị vướng (có thể trùng chỗ sửa). Đã lưu trên laptop, chưa đẩy lên. Báo em xử lý.\n${tail(pull.out)}`);
+    }
+    const ahead = Number((await git(["rev-list", "--count", "@{u}..HEAD"])).out.trim() || 0);
+    if (ahead > 0) await run("git", ["push"], repoRoot, "Đẩy lên GitHub (push)");
+    return staged || ahead > 0 ? "Đã lưu lên GitHub." : "Không có gì mới để lưu.";
+  }
+
+  async function changedPaths() {
+    return parsePorcelainZ((await git(["status", "--porcelain=v1", "-z", "-uall"])).out);
   }
 
   function ask(text, kind, action) {
-    const id = String(++seq);
+    if (kind === "claude") for (const [k, v] of pending) if (v.kind === "claude") pending.delete(k);
+    const id = `${runId}${crypto.randomBytes(4).toString("hex")}`;
     pending.set(id, { kind, run: action });
-    const labels = kind === "claude" ? [["💾 Lưu lên GitHub", `ok:${id}`], ["↩️ Bỏ thay đổi", `huy:${id}`]] : [["✅ Đồng ý", `ok:${id}`], ["✖️ Hủy", `huy:${id}`]];
+    const labels =
+      kind === "claude"
+        ? [["💾 Lưu lên GitHub", `ok:${kind}:${id}`], ["↩️ Bỏ thay đổi", `huy:${kind}:${id}`]]
+        : [["✅ Đồng ý", `ok:${kind}:${id}`], ["✖️ Hủy", `huy:${kind}:${id}`]];
     return say(text, buttons(labels));
   }
 
@@ -81,112 +118,129 @@ export function createBot(deps) {
     return true;
   }
 
+  async function sendPreview(mp4, caption) {
+    if (fs.statSync(mp4).size > TG_MAX_BYTES) return say(`Video nặng hơn 50 MB, Telegram không nhận. Xem trên Drive: ${path.basename(mp4)}`);
+    await tg.sendVideo(chatId, mp4, caption);
+  }
+
   const commands = {
-    async start() {
-      await say(HELP);
+    start: () => say(HELP),
+    huongdan: () => say(HELP),
+    danhsach: () => say(formatList(projDir, outDir)),
+    async huy() {
+      if (!busy) return say("Không có việc nào đang chạy.");
+      const ok = deps.cancel?.();
+      return say(ok ? `Đã dừng: ${current}.` : `Việc "${current}" không dừng giữa chừng được, chờ xong nhé.`);
     },
-    async huongdan() {
-      await say(HELP);
-    },
-    async danhsach() {
-      await say(formatList(projDir, outDir));
-    },
-    async xem([name]) {
+    xem([name]) {
       if (!checkName(name)) return;
-      const cap = videoPaths(name, projDir).caption;
-      if (fs.existsSync(cap)) {
-        const c = parseCaption(fs.readFileSync(cap, "utf8"));
-        await say(`📘 FACEBOOK – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
-        await say(`🎵 TIKTOK – ${name}\n\n${c.tiktok ?? "(chưa có)"}`);
-      } else await say(`${name}: chưa có caption.`);
-      const mp4 = path.join(outDir, `${name}.mp4`);
-      if (fs.existsSync(mp4)) await tg.sendVideo(chatId, mp4, `Bản xem thử ${name} (chưa phải bản đăng)`);
-      else await say(`${name}: chưa có video. Nhắn /render ${name}`);
+      return enqueue(`xem ${name}`, async () => {
+        const cap = videoPaths(name, projDir).caption;
+        if (fs.existsSync(cap)) {
+          const c = parseCaption(fs.readFileSync(cap, "utf8"));
+          await say(`📘 FACEBOOK – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
+          await say(`🎵 TIKTOK – ${name}\n\n${c.tiktok ?? "(chưa có)"}`);
+        } else await say(`${name}: chưa có caption.`);
+        const mp4 = path.join(outDir, `${name}.mp4`);
+        if (fs.existsSync(mp4)) await sendPreview(mp4, `Bản xem thử ${name} (chưa phải bản đăng)`);
+        else await say(`${name}: chưa có video. Nhắn /render ${name}`);
+      });
     },
     duyet([name]) {
       if (!checkName(name)) return;
       return enqueue(`duyệt ${name}`, async () => {
         const cap = videoPaths(name, projDir).caption;
         if (!fs.existsSync(cap)) return say(`${name}: chưa có caption, chưa duyệt được.`);
+        const rel = path.relative(repoRoot, cap);
         if (!approvalState(fs.readFileSync(cap, "utf8"), null).ok) duyetCaption(cap);
         const mp4 = path.join(outDir, `${name}.mp4`);
-        const saved = await gitSave([path.relative(repoRoot, cap)], `Duyet caption ${name}`);
-        if (!fs.existsSync(mp4)) return say(`Đã duyệt caption ${name}. ${saved}\nChưa có video: nhắn /render ${name}, xem xong nhắn lại /duyet ${name}.`);
+        if (!fs.existsSync(mp4)) {
+          const saved = await gitSave([rel], `Duyet caption ${name}`);
+          return say(`Đã duyệt caption ${name}. ${saved}\nChưa có video: nhắn /render ${name}, xem xong nhắn lại /duyet ${name}.`);
+        }
         if (!approvalState(fs.readFileSync(cap, "utf8"), mp4).ok) duyetVideo(cap, mp4);
         await sendApproved({ captionPath: cap, mp4Path: mp4, label: name });
-        const saved2 = await gitSave([path.relative(repoRoot, cap)], `Duyet video ${name}`);
-        await say(`✅ Đã duyệt ${name}, bản đăng ở các tin phía trên. ${saved2}\nViệc còn lại: hẹn giờ trên Metricool (TikTok) và Business Suite (Facebook).`);
+        const saved = await gitSave([rel], `Duyet ${name}`);
+        await say(`✅ Đã duyệt ${name}, bản đăng ở các tin phía trên. ${saved}\nViệc còn lại: hẹn giờ trên Metricool (TikTok) và Business Suite (Facebook).`);
       });
     },
     render([name]) {
       if (!checkName(name)) return;
       return enqueue(`render ${name}`, async () => {
-        await say(`Đang render ${name}, mất vài phút...`);
-        await run("npm", ["run", "render:drive", "--", name], remotionDir, `Render ${name}`);
-        await tg.sendVideo(chatId, path.join(outDir, `${name}.mp4`), `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
+        await say(`Đang render ${name}, mất vài phút... (dừng: /huy)`);
+        await run("npm", ["run", "render:drive", "--", name], remotionDir, `Render ${name}`, 60 * 60e3);
+        await sendPreview(path.join(outDir, `${name}.mp4`), `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
       });
     },
-    async giong([name]) {
+    giong([name]) {
       if (!checkName(name)) return;
-      await ask(`Tạo giọng ElevenLabs cho ${name}? Việc này TỐN CREDIT.`, "giong", () =>
+      return ask(`Tạo giọng ElevenLabs cho ${name}? Việc này TỐN CREDIT.`, "giong", () =>
         enqueue(`tạo giọng ${name}`, async () => {
           await say(`Đang tạo giọng ${name}...`);
-          const out = await run("npm", ["run", "voice", "--", name], remotionDir, `Tạo giọng ${name}`);
-          await say(`Xong giọng ${name}.\n${tail(out, 8)}\nTiếp: /render ${name}`);
+          const out = await run("npm", ["run", "voice", "--", name], remotionDir, `Tạo giọng ${name}`, 20 * 60e3);
+          const audio = path.relative(repoRoot, videoPaths(name, projDir).audioDir);
+          const saved = await gitSave([audio, path.relative(repoRoot, videoPaths(name, projDir).timestamps)], `Giong ${name}`).catch((e) => `Chưa lưu được giọng lên GitHub: ${e.message}`);
+          await say(`Xong giọng ${name}.\n${tail(out, 6)}\n${saved}\nTiếp: /render ${name}`);
         }),
       );
     },
     capnhat() {
       return enqueue("lấy bản mới", async () => {
         const lock = path.join(remotionDir, "package-lock.json");
-        const h = () => (fs.existsSync(lock) ? crypto.createHash("sha256").update(fs.readFileSync(lock)).digest("hex") : "");
-        const before = h();
+        const h = (f) => (fs.existsSync(f) ? crypto.createHash("sha256").update(fs.readFileSync(f)).digest("hex") : "");
+        const head = async () => (await git(["rev-parse", "HEAD"])).out.trim();
+        const before = { lock: h(lock), head: await head() };
         const out = await run("git", ["pull", "--ff-only"], repoRoot, "Lấy bản mới (git pull)");
         let extra = "";
-        if (h() !== before) {
-          await run("npm", ["ci"], remotionDir, "Cài thư viện (npm ci)");
-          extra = "\nĐã cài lại thư viện.";
+        if (h(lock) !== before.lock) {
+          await run("npm", ["ci"], remotionDir, "Cài thư viện (npm ci)", 20 * 60e3);
+          extra += "\nĐã cài lại thư viện.";
+        }
+        const botChanged = (await git(["diff", "--name-only", before.head, "HEAD", "--", "engine/remotion/scripts"])).out.trim();
+        if (botChanged) {
+          restartAfter = true;
+          extra += "\nCó bản bot mới: bot tự khởi động lại trong ít giây.";
         }
         await say(`Đã cập nhật.\n${tail(out, 5)}${extra}`);
       });
     },
-    async moi() {
+    moi() {
       session = null;
-      await say("Đã bắt đầu cuộc trò chuyện Claude mới.");
+      return say("Đã bắt đầu cuộc trò chuyện Claude mới.");
     },
   };
 
   function claudeTask(text) {
     return enqueue("việc giao cho Claude", async () => {
-      await say("Đã nhận, Claude đang làm trên laptop...");
+      const before = new Set(await changedPaths());
+      if (before.size) await say(`Lưu ý: laptop đang có ${before.size} file sửa dở chưa lưu. Em chỉ lưu/bỏ những file Claude sửa lần này.`);
+      await say("Đã nhận, Claude đang làm trên laptop... (dừng: /huy)");
       const fresh = session && now() - session.at < SESSION_TTL_MS ? session.id : undefined;
       const r = await runClaude(text, { sessionId: fresh, cwd: repoRoot });
       if (r.sessionId) session = { id: r.sessionId, at: now() };
       await say(r.text || "(Claude không trả lời)");
-      const st = await exec("git", ["status", "--porcelain"], { cwd: repoRoot });
-      const changed = st.out.split(/\r?\n/).filter(Boolean);
-      if (!changed.length) return;
-      const files = changed.map((l) => l.slice(3)).join("\n");
-      await ask(`Claude đã sửa ${changed.length} file:\n${files}\n\nLưu lên GitHub?`, "claude", async (ok) => {
-        if (ok) {
-          await enqueue("lưu thay đổi của Claude", async () => say(await gitSave(["."], `Bot: ${text.slice(0, 60)}`)));
-        } else {
-          await enqueue("bỏ thay đổi", async () => {
-            await run("git", ["stash", "push", "-u", "-m", `bot-bo-${now()}`], repoRoot, "Cất thay đổi (git stash)");
-            await say("Đã bỏ thay đổi (cất vào git stash, lấy lại được nếu cần).");
-          });
-        }
-      });
+      const mine = (await changedPaths()).filter((p) => !before.has(p));
+      if (!mine.length) return;
+      await ask(`Claude đã sửa ${mine.length} file:\n${mine.join("\n")}\n\nLưu lên GitHub?`, "claude", (ok) =>
+        ok
+          ? enqueue("lưu thay đổi của Claude", async () => say(await gitSave(mine, `Bot: ${text.slice(0, 60)}`)))
+          : enqueue("bỏ thay đổi", async () => {
+              await run("git", ["stash", "push", "-u", "-m", `bot-bo-${now()}`, "--", ...mine], repoRoot, "Cất thay đổi (git stash)");
+              await say("Đã bỏ thay đổi của Claude (cất vào git stash, lấy lại được nếu cần).");
+            }),
+      );
     });
   }
 
   async function onCallback(cq) {
-    const [act, id] = String(cq.data ?? "").split(":");
+    const [act, kind, id] = String(cq.data ?? "").split(":");
+    await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
     const p = pending.get(id);
-    await tg.answerCallback(cq.id).catch(() => {});
-    if (!p) return say("Nút này đã hết hiệu lực.");
+    if (!p || p.kind !== kind || (cq.message?.date ?? 0) * 1000 < startedAt - 5000) {
+      return say("Nút này đã hết hiệu lực (bot đã khởi động lại hoặc đã bấm rồi).");
+    }
     pending.delete(id);
-    if (p.kind === "claude") return p.run(act === "ok");
+    if (kind === "claude") return p.run(act === "ok");
     if (act === "ok") return p.run();
     return say("Đã hủy.");
   }
@@ -194,8 +248,15 @@ export function createBot(deps) {
   async function handleUpdate(update) {
     if (!isAuthorized(update, chatId)) return;
     if (update.callback_query) return onCallback(update.callback_query);
-    const text = update.message?.text;
+    const m = update.message;
+    const text = m?.text;
     if (!text) return;
+    if (m.date && m.date * 1000 < startedAt - 2 * 60e3) {
+      return say(`Bỏ qua tin cũ lúc laptop tắt: "${text.slice(0, 40)}". Nhắn lại nếu vẫn cần.`);
+    }
+    if (m.forward_origin || m.forward_from || m.forward_date) {
+      return say("Bot không nhận tin chuyển tiếp. Anh gõ trực tiếp lệnh hoặc yêu cầu nhé.");
+    }
     const c = parseCommand(text);
     if (!c.cmd) return claudeTask(c.text);
     const fn = commands[c.cmd];
