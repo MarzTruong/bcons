@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { checkCaption, parseCaption } from "./caption.mjs";
+import { captionOptsFor, checkCaption, parseCaption } from "./caption.mjs";
 import { approvalState, captionPathFor } from "./caption-cli.mjs";
 import { takeProjectFlag } from "./project.mjs";
 
@@ -67,7 +67,7 @@ export async function sendApproved({ captionPath, mp4Path, env = process.env, fe
   const text = fs.readFileSync(captionPath, "utf8");
   const st = approvalState(text, mp4Path);
   if (!st.ok) throw new Error(`Chưa gửi: ${st.reason}. Duyệt bằng npm run duyet:caption / duyet:video.`);
-  const errs = checkCaption(text); // kiểm lại theo quy tắc hiện hành, phòng caption duyệt trước khi quy tắc chặt hơn
+  const errs = checkCaption(text, captionOptsFor(captionPath)); // kiểm lại theo quy tắc hiện hành, phòng caption duyệt trước khi quy tắc chặt hơn
   if (errs.length) throw new Error(`Chưa gửi, caption vi phạm quy tắc:\n- ${errs.join("\n- ")}`);
   if (mp4Path && fs.statSync(mp4Path).size > MAX_BYTES) throw new Error("Video lớn hơn 50 MB, Telegram không nhận. Render bản nhẹ hơn.");
   const caption = parseCaption(text);

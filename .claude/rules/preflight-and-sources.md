@@ -21,6 +21,6 @@ Không sửa cổng chặn để "cho qua"; sửa spec/bảng nguồn.
 - Lớp bản đồ chưa có dữ liệu chính thức: `kind: "illustrative"` (nét đứt, ghi "minh họa"). Nguồn địa lý: `du-an/<mã>/assets/geo/NGUON.md`.
 
 ## Caption và duyệt bài (`engine/remotion/scripts/caption.mjs`, `caption-cli.mjs`)
-- `checkCaption` chặn: SĐT các kiểu phổ biến (0xxx, +84/84, có chấm/cách/gạch/ngoặc; không bắt được SĐT viết bằng chữ), cụm hứa lợi nhuận/tăng giá/"sắp hết"/"căn cuối cùng", nhắc giá căn (tỷ/tỉ/triệu/tr) mà phần FB hoặc phần TikTok đó không ghi VAT và phí bảo trì (kiểm riêng từng phần), thiếu phần FB/TikTok, TikTok > 2.200 ký tự.
+- `checkCaption` chặn: SĐT các kiểu phổ biến, trừ SĐT tư vấn viên trong `project.json` → `lienHe.sdt` (anh cho phép 06/11/2026; `captionOptsFor`) (0xxx, +84/84, có chấm/cách/gạch/ngoặc; không bắt được SĐT viết bằng chữ), cụm hứa lợi nhuận/tăng giá/"sắp hết"/"căn cuối cùng", nhắc giá căn (tỷ/tỉ/triệu/tr) mà phần FB hoặc phần TikTok đó không ghi VAT và phí bảo trì (kiểm riêng từng phần), thiếu phần FB/TikTok, TikTok > 2.200 ký tự.
 - Duyệt gắn dấu vân tay: `duyet:caption` lưu sha256 nội dung; `duyet:video` lưu sha256 của mp4. Sửa caption hoặc render lại → `send:telegram` từ chối; `send:telegram` cũng kiểm lại quy tắc hiện hành. Duyệt trên máy anh xong thì commit + push `caption.md`. Không tự chạy lệnh duyệt khi anh chưa nói rõ "duyệt".
 - Bài công ty: giữ nguyên thông tin gốc, không thêm số không có trong bài gốc (skill `bai-cong-ty`).

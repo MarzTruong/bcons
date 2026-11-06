@@ -22,12 +22,18 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
   const glow = 0.5 + 0.5 * Math.sin(frame / 8);
   const kb = interpolate(frame, [0, frames], [1, 1.1], clamp);
   return (
-    <AbsoluteFill style={{ padding: "150px 70px 0", justifyContent: "flex-start" }}>
+    <AbsoluteFill
+      style={{
+        // compact: thẻ + thông điệp căn giữa vùng phía trên khối tên + QR, nên khung cân trên/dưới dù nội dung dài ngắn khác nhau.
+        padding: compact ? "120px 70px 470px" : "150px 70px 0",
+        justifyContent: compact ? "center" : "flex-start",
+      }}
+    >
       {props.image ? (
         <div
           style={{
             position: "relative",
-            height: compact ? 640 : 900,
+            height: compact ? 760 : 900,
             borderRadius: 44,
             overflow: "hidden",
             border: `5px solid ${C.teal}`,
@@ -51,7 +57,7 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
         style={{
           transform: `scale(${scale * drift})`,
           opacity: zoom,
-          padding: compact ? "40px 30px" : "60px 40px",
+          padding: "60px 40px",
           borderRadius: 44,
           background: C.bg2,
           border: `5px solid ${C.teal}`,
@@ -60,7 +66,7 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
         }}
       >
         <div style={{ fontSize: 40, fontWeight: 600, color: C.gold }}>DỰ ÁN</div>
-        <div style={{ fontSize: compact ? 88 : 112, fontWeight: 800, lineHeight: 1.05, marginTop: 14 }}>
+        <div style={{ fontSize: 112, fontWeight: 800, lineHeight: 1.05, marginTop: 14 }}>
           BCONS
           <br />
           <span style={{ color: C.teal }}>CENTRAL PARK</span>
@@ -73,7 +79,7 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
       <div
         style={{
           marginTop: props.image ? 36 : 50,
-          minHeight: compact ? 190 : 290,
+          minHeight: compact ? 220 : 290,
           fontSize: compact ? 44 : 50,
           fontWeight: 700,
           lineHeight: 1.3,
@@ -86,9 +92,13 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
       {compact ? (
         <div
           style={{
+            // Khối tên + QR nằm phía dưới khung (cảnh cuối không có phụ đề), nội dung trải đều trên/dưới.
+            position: "absolute",
+            left: 0,
+            right: 0,
+            bottom: 150,
             display: "flex",
             justifyContent: "center",
-            marginTop: 10,
             opacity: interpolate(frame, [LEAD + 20, LEAD + 35], [0, 1], clamp),
             transform: `scale(${interpolate(frame, [LEAD + 20, LEAD + 35], [0.85, 1], clamp)})`,
           }}

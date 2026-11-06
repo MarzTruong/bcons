@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 // Đọc và kiểm caption.md (bài Facebook + caption TikTok) theo quy tắc cứng trong CLAUDE.md.
 // Định dạng: frontmatter (status, duyetLuc, noiDungSha256, videoSha256, kenh) rồi "## Facebook", "## TikTok".
 import crypto from "node:crypto";
@@ -69,7 +71,30 @@ const PRICE_RE = /\d[\d.,]*\s*(ty|ti|trieu|tr)\b/;
 const APT_RE = /\bcan\b|gia (ban|tu|chi tu)|so huu/;
 
 /** Danh sách lỗi (tiếng Việt). Rỗng = qua. */
-export function checkCaption(text) {
+/** Chuẩn hóa SĐT về dạng 0xxxxxxxxx để so khớp. */
+export const normPhone = (s) => {
+  const d = String(s).replace(/\D/g, "");
+  return d.startsWith("84") ? "0" + d.slice(2) : d;
+};
+
+/** SĐT được phép ghi trong caption: số của tư vấn viên trong project.json → lienHe.sdt (anh cho phép 06/11/2026). */
+export const allowedPhones = (projectConfig) => (projectConfig?.lienHe?.sdt ? [normPhone(projectConfig.lienHe.sdt)] : []);
+
+/** Tùy chọn kiểm caption theo dự án chứa file caption (tìm project.json ở thư mục cha gần nhất). */
+export function captionOptsFor(captionPath) {
+  let dir = path.dirname(path.resolve(captionPath));
+  for (let i = 0; i < 8; i++) {
+    const p = path.join(dir, "project.json");
+    if (fs.existsSync(p)) return { allowPhones: allowedPhones(JSON.parse(fs.readFileSync(p, "utf8"))) };
+    const up = path.dirname(dir);
+    if (up === dir) break;
+    dir = up;
+  }
+  return { allowPhones: [] };
+}
+
+export function checkCaption(text, { allowPhones = [] } = {}) {
+  const allow = new Set(allowPhones.map(normPhone));
   const errs = [];
   const { meta, facebook, tiktok } = parseCaption(text);
   const lines = text.replace(/\r\n/g, "\n").split("\n");
@@ -92,7 +117,9 @@ export function checkCaption(text) {
       sec = h[1].toLowerCase();
       return;
     }
-    for (const m of line.replace(/[()]/g, "").matchAll(PHONE_RE)) errs.push(`${lineOf(i)}: có số điện thoại "${m[0].trim()}" (không đưa SĐT vào bài)`);
+    for (const m of line.replace(/[()]/g, "").matchAll(PHONE_RE)) {
+      if (!allow.has(normPhone(m[0]))) errs.push(`${lineOf(i)}: có số điện thoại "${m[0].trim()}" (chỉ được ghi SĐT tư vấn viên trong project.json → lienHe)`);
+    }
     const f = fold(line);
     for (const b of BANNED) if (f.includes(fold(b))) errs.push(`${lineOf(i)}: cụm "${b}" (không hứa lợi nhuận/tăng giá, không nói sắp hết)`);
     if (/loi nhuan\s*\d/.test(f)) errs.push(`${lineOf(i)}: nêu số lợi nhuận (không hứa lợi nhuận)`);

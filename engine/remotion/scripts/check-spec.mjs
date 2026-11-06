@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parseSpec } from "../src/spec.ts";
 import { listVideos, takeProjectFlag, videoPaths } from "./project.mjs";
-import { checkCaption, parseCaption } from "./caption.mjs";
+import { captionOptsFor, checkCaption, parseCaption } from "./caption.mjs";
 import {
   checkCues,
   checkGeoFiles,
@@ -38,7 +38,7 @@ for (const name of names) {
     const capPath = videoPaths(name, projDir).caption;
     if (fs.existsSync(capPath)) {
       const cap = fs.readFileSync(capPath, "utf8");
-      const capErrs = checkCaption(cap);
+      const capErrs = checkCaption(cap, captionOptsFor(capPath));
       if (capErrs.length) {
         if (parseCaption(cap).meta.status === "approved") throw new Error(`caption.md: ${capErrs.join("; ")}`);
         console.warn(`CẢNH BÁO ${name} caption.md: ${capErrs.join("; ")}`);

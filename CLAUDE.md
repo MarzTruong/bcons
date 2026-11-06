@@ -35,7 +35,7 @@
 4. **Căn đã cọc = đã bán**, không tư vấn. Căn "CĐT LOCK" chưa mở bán, không quảng cáo.
 5. Không bán cho người nước ngoài. Nhắc giá thì nói rõ **chưa VAT/có VAT** và phí bảo trì 2%. PTTT 01 đã trừ 8,5%, PTTT 04/05 trừ 2,45% so với giá PTTT 02. Lãi suất trần 6,9% chỉ có ở PTTT 03 và 04, **không** có ở PTTT 05.
 6. Thu thông tin khách phải có ô đồng ý nhận tin (không tick sẵn). Nội dung chỉ vào lịch đăng tự động sau khi anh duyệt.
-7. Liên hệ cá nhân (anh đổi quy tắc 06/11/2026): video hiện **tên + mã QR** (mở landing) ở góc và cảnh cuối, cấu hình ở `project.json` → `watermark`; landing có nút **Gọi/Zalo** (`project.json` → `lienHe`). Lời đọc không đọc SĐT; caption và chữ trên video không ghi SĐT dạng chữ.
+7. Liên hệ cá nhân (anh đổi quy tắc 06/11/2026): video hiện **tên + mã QR** (mở landing) ở góc và cảnh cuối, cấu hình ở `project.json` → `watermark`; landing có nút **Gọi/Zalo** (`project.json` → `lienHe`). Caption được ghi SĐT của anh (chỉ số trong `lienHe`; số khác vẫn bị chặn). Lời đọc không đọc SĐT; chữ trên video không ghi SĐT dạng chữ (đã có QR).
 
 ## Gợi ý sáng tạo (linh hoạt, ưu tiên nội dung hay)
 - Hook, cách dẫn chuyện, cảm xúc, giọng quảng bá, so sánh hình ảnh: tự do sáng tạo, thử nhiều kiểu, đề xuất phương án táo bạo.

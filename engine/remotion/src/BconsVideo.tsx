@@ -182,7 +182,9 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps }) => {
                     cue,
                     frames: d.frames,
                   })}
-                  <Captions words={d.words} />
+                  {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
+                    <Captions words={d.words} />
+                  )}
                 </SceneTransition>
                 <Sequence from={LEAD} durationInFrames={d.audioFrames}>
                   <Audio src={staticFile(`video/${spec.name}/audio/${d.id}.mp3`)} />

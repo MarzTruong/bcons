@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { bodyHash, checkCaption, parseCaption, writeMeta } from "./caption.mjs";
+import { bodyHash, captionOptsFor, checkCaption, parseCaption, writeMeta } from "./caption.mjs";
 import { listVideos, takeProjectFlag, videoPaths } from "./project.mjs";
 
 /** Giờ Việt Nam dạng 2026-11-07T09:30:00+07:00. */
@@ -37,7 +37,7 @@ export function approvalState(captionText, mp4Path) {
 /** Duyệt caption: phải không có lỗi; ghi status, duyetLuc, noiDungSha256; xóa duyệt video cũ. */
 export function duyetCaption(captionPath, now = new Date()) {
   const text = fs.readFileSync(captionPath, "utf8");
-  const errs = checkCaption(text);
+  const errs = checkCaption(text, captionOptsFor(captionPath));
   if (errs.length) throw new Error(`Chưa duyệt được, caption còn lỗi:\n- ${errs.join("\n- ")}`);
   fs.writeFileSync(
     captionPath,
@@ -82,7 +82,7 @@ function main(argv) {
         failed = true;
         continue;
       }
-      const errs = checkCaption(fs.readFileSync(file, "utf8"));
+      const errs = checkCaption(fs.readFileSync(file, "utf8"), captionOptsFor(file));
       if (errs.length) {
         failed = true;
         console.error(`LỖI ${n}:\n  - ${errs.join("\n  - ")}`);

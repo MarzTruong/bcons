@@ -86,3 +86,18 @@ test("rà soát: cụm sinh lời, số lợi nhuận; file có BOM vẫn đọc
   assert.equal(bodyHash(bom), bodyHash(CLEAN));
   assert.ok(!writeMeta(bom, { status: "approved" }).includes("status: draft"));
 });
+
+test("SĐT: số của tư vấn viên (project.json → lienHe) được ghi trong caption, số khác vẫn bị chặn", () => {
+  const own = make("Nhắn em qua Zalo 0938.32.31.39 nha.", "Zalo 0938 323 139 #bienhoa");
+  assert.deepEqual(checkCaption(own, { allowPhones: ["0938323139"] }), []);
+  assert.ok(checkCaption(own).some((e) => /số điện thoại/.test(e)), "không truyền số được phép thì vẫn chặn");
+  const other = make("Gọi 0901 234 567 nha.", "x #bienhoa");
+  assert.ok(checkCaption(other, { allowPhones: ["0938323139"] }).some((e) => /0901 234 567/.test(e)));
+  assert.deepEqual(checkCaption(make("Gọi +84 938 323 139", "x"), { allowPhones: ["0938323139"] }), []);
+});
+
+test("captionOptsFor: caption trong du-an/<mã>/ lấy SĐT được phép từ project.json của dự án", async () => {
+  const { captionOptsFor } = await import("../scripts/caption.mjs");
+  const p = new URL("../../../du-an/bcons-central-park/video/ha-tang-bien-hoa-2026/caption.md", import.meta.url).pathname;
+  assert.deepEqual(captionOptsFor(p).allowPhones, ["0938323139"]);
+});
