@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parseSpec } from "../src/spec.ts";
 import { listVideos, takeProjectFlag, videoPaths } from "./project.mjs";
+import { checkCaption, parseCaption } from "./caption.mjs";
 import {
   checkCues,
   checkGeoFiles,
@@ -32,6 +33,16 @@ for (const name of names) {
     const links = checkSourceLinks(spec, md);
     if (!links.ok) {
       console.warn(`CẢNH BÁO ${name}: nguồn chưa có link http(s): ${links.unlinked.join(", ")} (tạo giọng/render sẽ bị chặn)`);
+    }
+    // Caption (nếu có): bản nháp có lỗi chỉ cảnh báo; bản đã duyệt có lỗi là lỗi.
+    const capPath = videoPaths(name, projDir).caption;
+    if (fs.existsSync(capPath)) {
+      const cap = fs.readFileSync(capPath, "utf8");
+      const capErrs = checkCaption(cap);
+      if (capErrs.length) {
+        if (parseCaption(cap).meta.status === "approved") throw new Error(`caption.md: ${capErrs.join("; ")}`);
+        console.warn(`CẢNH BÁO ${name} caption.md: ${capErrs.join("; ")}`);
+      }
     }
     console.log(`OK ${name} (${spec.status})`);
   } catch (e) {
