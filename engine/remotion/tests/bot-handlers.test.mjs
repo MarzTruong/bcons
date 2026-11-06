@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { createBot, parsePorcelainZ } from "../scripts/bot/handlers.mjs";
-import { buildClaudeArgs, parseClaudeOutput } from "../scripts/bot/claude-bridge.mjs";
+import { buildClaudeArgs, findClaudeExe, parseClaudeOutput } from "../scripts/bot/claude-bridge.mjs";
 import { parseCaption } from "../scripts/caption.mjs";
 
 const CHAT = "42";
@@ -195,4 +195,10 @@ test("rà soát: /huy khi đang rảnh", async () => {
 
 test("parsePorcelainZ đọc cả file đổi tên", () => {
   assert.deepEqual(parsePorcelainZ(" M a.md\0R  moi.md\0cu.md\0?? x/y.mp3\0"), ["a.md", "moi.md", "cu.md", "x/y.mp3"]);
+});
+
+test("findClaudeExe tìm claude.exe ở thư mục cài mặc định", () => {
+  const home = "C:/Users/Marz";
+  assert.equal(findClaudeExe(home, (p) => p.replaceAll("\\", "/").endsWith(".local/bin/claude.exe")), path.join(home, ".local", "bin", "claude.exe"));
+  assert.equal(findClaudeExe(home, () => false), null);
 });

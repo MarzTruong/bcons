@@ -1,6 +1,9 @@
 // Cách B: chuyển câu anh nhắn cho Claude Code chạy trên laptop (`claude -p`), dùng gói Claude anh đang có.
 // Câu của anh đi qua stdin, KHÔNG ghép vào dòng lệnh. Quyền bị giới hạn: không tạo giọng, không render, không commit/push.
 import { spawn } from "node:child_process";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 
 export const ALLOWED = [
   "Read", "Edit", "Write", "Glob", "Grep", "WebSearch", "WebFetch",
@@ -69,14 +72,23 @@ function winQuote(a) {
   return `"${String(a).replace(/"/g, '\\"')}"`;
 }
 
+/** Bản cài chính thức trên Windows nằm ở %USERPROFILE%\\.local\\bin\\claude.exe: chạy thẳng file .exe (không qua shell, không phụ thuộc PATH). */
+export function findClaudeExe(home = os.homedir(), exists = fs.existsSync) {
+  const exe = path.join(home, ".local", "bin", "claude.exe");
+  return exists(exe) ? exe : null;
+}
+
 /** Chạy Claude thật trên máy. Trả { text, sessionId, isError }. */
 export function runClaude(prompt, { sessionId, cwd, timeoutMs = 20 * 60e3, onChild } = {}) {
   return new Promise((resolve) => {
     const args = buildClaudeArgs({ sessionId });
     const win = process.platform === "win32";
-    const child = win
-      ? spawn("claude", args.map(winQuote), { cwd, shell: true, windowsHide: true })
-      : spawn("claude", args, { cwd });
+    const exe = win ? findClaudeExe() : null;
+    const child = exe
+      ? spawn(exe, args, { cwd, windowsHide: true })
+      : win
+        ? spawn("claude", args.map(winQuote), { cwd, shell: true, windowsHide: true })
+        : spawn("claude", args, { cwd });
     let out = "";
     let err = "";
     onChild?.(child);
