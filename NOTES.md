@@ -40,6 +40,8 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 
 - [x] 06/11/2026 (MASTER SETUP PROMPT, hạng mục 1–4): `CLAUDE.md` gọn 62 dòng + `.claude/rules/` (pipeline-constraints, preflight-and-sources, chỉ nạp khi đụng file liên quan); nhận diện cloud/máy anh; `.claude/settings.json` (cho phép lệnh an toàn, chặn đọc/sửa `.env`, chặn `git add` file nhạy cảm, hook chặn commit); `.githooks/pre-commit` + `engine/automation/kiem-commit.mjs` (cho phép mp3 giọng đọc); `/bcons-video` chuyển thành skill; skill `bcons-project-init` + `engine/automation/tao-du-an.mjs`; hướng dẫn MCP `docs/huong-dan-mcp.md` (context7, playwright cài theo máy, không commit `.mcp.json`, bỏ sequential-thinking). Hoãn: skill `social-analytics` (kế hoạch 04), `tdd-financial-calc` (kế hoạch 03).
 
+- [x] 06/11/2026: laptop (D:\Claude\bcons) đã chuyển sang nhánh `main` và dời xong thư mục: `.env`, `out`, `node_modules`, `audio-test` vào `engine/remotion/`, ảnh gốc vào `anh/bcons-central-park/`. 78 test qua, lint OK, đã bật hook chặn commit, render thử `dong-nai-ha-tang` có hình có tiếng. Laptop không có `data/` (bảng giá). Máy bàn chưa làm.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
