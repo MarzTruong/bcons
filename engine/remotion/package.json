@@ -45,7 +45,8 @@
     "duyet:caption": "node scripts/caption-cli.mjs duyet-caption",
     "duyet:video": "node scripts/caption-cli.mjs duyet-video",
     "send:telegram": "node scripts/send-telegram.mjs",
-    "telegram:chat-id": "node scripts/telegram-chat-id.mjs"
+    "telegram:chat-id": "node scripts/telegram-chat-id.mjs",
+    "bot": "node scripts/bot/bot.mjs"
   },
   "allowScripts": {
     "esbuild": false
