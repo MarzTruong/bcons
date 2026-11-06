@@ -42,6 +42,8 @@ Cập nhật lần cuối: 05/11/2026 (phiên Off cuối ngày; gồm phiên fan
 
 - [x] 06/11/2026: laptop (D:\Claude\bcons) đã chuyển sang nhánh `main` và dời xong thư mục: `.env`, `out`, `node_modules`, `audio-test` vào `engine/remotion/`, ảnh gốc vào `anh/bcons-central-park/`. 78 test qua, lint OK, đã bật hook chặn commit, render thử `dong-nai-ha-tang` có hình có tiếng. Laptop không có `data/` (bảng giá). Máy bàn chưa làm.
 
+- [x] 06/11/2026: anh gửi lại 2 artifact (Tính nhanh, Giá & Mặt bằng); em đọc lại được mã nguồn đầy đủ bằng công cụ Artifact (lệnh `read`), nên mã nguồn công cụ tính **không còn bị mất**. Link ghi trong `du-an/bcons-central-park/project.json` → `artifacts`. Lõi tính tiền (5 PTTT, VAT 10%, bảo trì 2%, vay 50% giá có VAT, trả đều) là hàm thuần, dùng lại cho landing (kế hoạch 03) mà không cần giá cả 996 căn. Giá trong artifact theo file CĐT 17/10/2026, tình trạng giỏ hàng 29/10/2026.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
