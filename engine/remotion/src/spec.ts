@@ -236,11 +236,11 @@ export const SceneSchema = z.discriminatedUnion("template", [
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */
-export const STYLE_NAMES = ["classic", "sang", "navy", "xanh"] as const;
+export const STYLE_NAMES = ["classic", "sang", "navy", "xanh", "banve"] as const;
 export type StyleName = (typeof STYLE_NAMES)[number];
 
 /** Phong cách chuyển động: classic = bản gốc (hiện mờ, lưới nền chạy). */
-export const MOTION_NAMES = ["classic", "truot", "nay", "mo"] as const;
+export const MOTION_NAMES = ["classic", "truot", "nay", "mo", "ve"] as const;
 export type MotionName = (typeof MOTION_NAMES)[number];
 
 export const VideoSpecSchema = z.object({

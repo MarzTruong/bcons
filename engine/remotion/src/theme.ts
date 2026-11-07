@@ -24,6 +24,8 @@ export type Palette = {
   stroke: string;
   scrim: string;
   bars: [string, string, string, string];
+  /** Phong cách bản vẽ kiến trúc: mẫu cảnh vẽ theo ngôn ngữ bản vẽ (templates/BanVe.tsx). */
+  banve?: true;
 };
 
 export const PALETTES: Record<StyleName, Palette> = {
@@ -98,6 +100,25 @@ export const PALETTES: Record<StyleName, Palette> = {
     stroke: "#07160f",
     scrim: "#0f2a20",
     bars: ["#7bd389", "#f2d28b", "#f08a5d", "#9cc9e8"],
+  },
+  // Bản vẽ kiến trúc (anh chọn 07/11/2026): giấy cyanotype xanh Phổ, mực trắng, một bút đỏ cho số chính.
+  banve: {
+    bg: "#16408f",
+    bg2: "#123679",
+    teal: "#ff8a6b",
+    gold: "#ffd9cc",
+    red: "#ff8a6b",
+    text: "#f5f8ff",
+    neutral: "#f5f8ff",
+    muted: "#dce6fbd9",
+    faint: "#dce6fb99",
+    dim: "#dce6fbb3",
+    onAccent: "#16408f",
+    grid: "rgba(245,248,255,0.07)",
+    stroke: "#0b2457",
+    scrim: "#123679",
+    bars: ["#ff8a6b", "#f5f8ff", "#9fc0ff", "#ffd9cc"],
+    banve: true,
   },
 };
 

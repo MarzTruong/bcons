@@ -10,6 +10,7 @@ import {
   type TransitionKind,
 } from "./motion";
 import { Captions } from "./Captions";
+import { BanVeDataCards, BanVeProjectClose, BanVeStatHero, BlueprintSheet } from "./templates/BanVe";
 import { Watermark, WatermarkContext } from "./Watermark";
 import { SFX_VOLUME, musicVolume, sfxEvents } from "./amThanh";
 import { LEAD, buildTiming, cueFrame, type Timestamps } from "./timing";
@@ -40,6 +41,7 @@ const Background: React.FC = () => {
   const C = useTheme();
   const { background } = useMotion();
   const frame = useCurrentFrame();
+  if (background === "blueprint" || C.banve) return <BlueprintSheet />;
   return (
     <AbsoluteFill
       style={{
@@ -116,7 +118,11 @@ export type BconsVideoProps = {
   khongGiong?: boolean;
 };
 
-const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>) => {
+const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, banve = false) => {
+  // Phong cách bản vẽ có mẫu riêng cho stat-hero, data-cards, project-close; mẫu khác dùng bản thường trên nền bản vẽ.
+  if (banve && scene.template === "stat-hero") return <BanVeStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
+  if (banve && scene.template === "data-cards") return <BanVeDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
+  if (banve && scene.template === "project-close") return <BanVeProjectClose {...(t as TemplateProps<"project-close">)} props={scene.props} />;
   switch (scene.template) {
     case "stat-hero":
       return (
@@ -191,7 +197,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     props: scene.props,
                     cue,
                     frames: d.frames,
-                  })}
+                  }, !!C.banve)}
                   {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
                     <Captions words={d.words} nhan={scene.nhan} />
                   )}

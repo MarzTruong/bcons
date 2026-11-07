@@ -3,8 +3,8 @@
   "so": 7,
   "tieuDe": "Lãi vay hạ nhiệt, mua nhà tính sao",
   "status": "approved",
-  "style": "classic",
-  "motion": "truot",
+  "style": "banve",
+  "motion": "ve",
   "scenes": [
     {
       "id": "scene1",

@@ -1,6 +1,6 @@
 # Storyboard video 7 "Lãi vay hạ nhiệt, mua nhà tính sao"
 
-Thời lượng ước tính khi chưa có giọng (khoảng 54 giây). Ảnh chụp: `npm run storyboard -- 07-lai-vay-ha-nhiet` (ra `engine/remotion/out/tam/storyboard/07-lai-vay-ha-nhiet/`). Kiểu: `classic` + chuyển động `truot`. Góc phải dưới luôn có tên + QR.
+Thời lượng ước tính khi chưa có giọng (khoảng 54 giây). Ảnh chụp: `npm run storyboard -- 07-lai-vay-ha-nhiet` (ra `engine/remotion/out/tam/storyboard/07-lai-vay-ha-nhiet/`). Kiểu: bản vẽ kiến trúc (`banve` + chuyển động `ve`, `DESIGN.md`). Góc phải dưới luôn có tên + QR.
 
 | Cảnh | Lời đọc | Chuyển động | Chữ nhỏ cố định | Dữ liệu |
 |---|---|---|---|---|

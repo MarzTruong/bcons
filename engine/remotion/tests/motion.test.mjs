@@ -59,3 +59,14 @@ test("mọi tên motion trong spec đều có định nghĩa", () => {
   }
   assert.ok(STYLE_NAMES.length >= 4);
 });
+
+test("phong cách bản vẽ (anh chọn 07/11/2026): style banve + motion ve (nền lưới bản vẽ, nét vẽ dần)", async () => {
+  assert.ok(STYLE_NAMES.includes("banve"));
+  assert.ok(MOTION_NAMES.includes("ve"));
+  assert.equal(MOTIONS.ve.background, "blueprint");
+  const { penDraw } = await import("../src/templates/banveGeo.ts");
+  assert.equal(penDraw(0, 10, 20, 500), 500, "chưa tới lúc vẽ: nét ẩn hết (dashoffset = độ dài)");
+  assert.equal(penDraw(40, 10, 20, 500), 0, "vẽ xong: hiện đủ");
+  const mid = penDraw(20, 10, 20, 500);
+  assert.ok(mid > 0 && mid < 500);
+});

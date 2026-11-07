@@ -4,7 +4,7 @@ import type { MotionName } from "./spec";
 
 export type EnterKind = "classic" | "slide" | "pop" | "blur";
 export type TransitionKind = "fade" | "slide" | "zoom" | "wipe";
-export type BackgroundKind = "grid" | "lines" | "dots" | "aurora";
+export type BackgroundKind = "grid" | "lines" | "dots" | "aurora" | "blueprint";
 export type Dir = "up" | "right" | "scale";
 
 export type MotionDef = {
@@ -31,6 +31,8 @@ export const MOTIONS: Record<MotionName, MotionDef> = {
   },
   // Mờ điện ảnh: từ nhòe sang rõ, chuyển cảnh mờ/zoom, nền cực quang.
   mo: { enter: "blur", transitions: ["fade", "zoom"], background: "aurora" },
+  // Vẽ (đi với style banve): nét bản vẽ tự vẽ dần, chuyển cảnh quét như lật tờ bản vẽ, nền lưới bản vẽ đứng yên.
+  ve: { enter: "classic", transitions: ["wipe", "fade"], background: "blueprint" },
 };
 
 /** Hiệu ứng xuất hiện của một phần tử theo tiến độ p (0 đến 1, spring có thể vượt 1). dist = quãng di chuyển (px). */
