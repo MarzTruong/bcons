@@ -123,8 +123,9 @@ export const Watermark: React.FC<{ hideFrom?: number }> = ({ hideFrom }) => {
     if (!w.ten || !w.link || (hideFrom !== undefined && frame >= hideFrom)) return null;
     return (
       <AbsoluteFill style={{ pointerEvents: "none" }}>
-        <div style={{ position: "absolute", right: 28, bottom: 34, opacity: 0.92 }}>
-          <NameQr ten={w.ten} link={w.link} small />
+        {/* Góc màn hình: chỉ QR, không tên (anh đổi 07/11/2026); tên + QR chỉ ở cảnh cuối. */}
+        <div style={{ position: "absolute", right: 30, bottom: 36, opacity: 0.95, padding: 6, borderRadius: 14, background: "#fff", boxShadow: "0 4px 14px #0006" }}>
+          <QrCode text={w.link} size={124} />
         </div>
       </AbsoluteFill>
     );

@@ -16,7 +16,7 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 | 3 | Lời bình | Lời bình nằm trong `markup` của spec (cú pháp `hiển-thị{đọc}`, chữ hiện dùng ký hiệu: `90%{chín mươi phần trăm}`), đã duyệt ở bước 2 | spec `approved` | Anh đồng ý tốn credit |
 | 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs <tên>` (ElevenLabs, tốn credit; từ chối nếu spec chưa `approved`) | mp3 + timestamp | Anh nghe thử |
 | 2b | Caption | `du-an/<mã>/video/<tên>/caption.md` (FB + TikTok), `npm run check:caption -- <tên>`; duyệt cùng lúc với bước 2 (`npm run duyet:caption`) | caption `approved` | Anh duyệt chữ + caption |
-| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` (bot `/render <tên>`): nhạc nền, hiệu ứng, tên + QR tự thêm | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
+| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` (bot `/render <tên>`): nhạc nền, hiệu ứng, QR góc + tên và QR cảnh cuối tự thêm | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
 
 Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
 

@@ -27,4 +27,4 @@ Màu theo số video: `engine/remotion/src/issues.ts` (`issueOf`). Mẫu cảnh 
 Giấy cyanotype xanh Phổ, mực trắng, bút đỏ cho số chính; đường kích thước tự vẽ; ghi chú đánh số; khung nhìn ảnh có dấu cắt. Chữ hoa có dấu cần line-height ≥ 1.04 và vùng cắt chừa 40 px.
 
 ## Chung
-Lề 72 px. Vùng phụ đề y≈1400–1760 và khối tên + QR góc phải dưới luôn để trống. Một chuyển động chính mỗi cảnh. Ảnh phối cảnh luôn ghi "minh họa".
+Lề 72 px. Vùng phụ đề y≈1400–1760 và ô QR góc phải dưới (chỉ QR, tên + QR ở cảnh cuối) luôn để trống. Một chuyển động chính mỗi cảnh. Ảnh phối cảnh luôn ghi "minh họa".
