@@ -10,6 +10,7 @@ import { REPO_ROOT, projectDir, readActiveProject } from "../project.mjs";
 import { killTree, runClaude } from "./claude-bridge.mjs";
 import { createBot } from "./handlers.mjs";
 import { createTg } from "./tg.mjs";
+import { onConflict } from "./core.mjs";
 
 const REMOTION_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const MAX_OUT = 200_000;
@@ -96,6 +97,8 @@ async function main() {
   await tg.sendMessage(chatId, `🤖 Bot Bcons đã chạy trên máy ${os.hostname()}. Nhắn /huongdan để xem lệnh.`).catch((e) => console.error(e.message));
   console.log("Bot đang chạy. Đóng cửa sổ này để tắt bot.");
   let offset = 0;
+  const startedAt = Date.now();
+  let warned = false;
   for (;;) {
     try {
       const updates = await tg.getUpdates(offset, 30);
@@ -106,8 +109,16 @@ async function main() {
       }
     } catch (e) {
       if (/409|terminated by other getUpdates/i.test(e.message)) {
-        console.error("Bot đang chạy ở một cửa sổ khác. Đóng cửa sổ này, chỉ để một cửa sổ bot.");
-        process.exit(EXIT_DUPLICATE);
+        if (onConflict(startedAt) === "thoat") {
+          console.error("Bot đang chạy ở máy/cửa sổ khác. Cửa sổ này tự đóng, giữ bot đang chạy.");
+          process.exit(EXIT_DUPLICATE);
+        }
+        if (!warned) {
+          warned = true;
+          await tg.sendMessage(chatId, `⚠️ Có bot thứ hai vừa mở ở máy khác. Bot trên ${os.hostname()} vẫn giữ, bot mới sẽ tự đóng.`).catch(() => {});
+        }
+        await sleep(15000);
+        continue;
       }
       console.error(`Mất kết nối Telegram (${e.message}), thử lại sau 5 giây...`);
       await sleep(5000);

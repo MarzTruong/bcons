@@ -20,6 +20,13 @@ export const HELP = [
   "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên laptop.",
 ].join("\n");
 
+/** Hai máy cùng mở bot (Telegram báo 409): máy MỚI mở thì thoát, máy ĐANG chạy lâu thì giữ và chờ máy kia thoát.
+ *  Tránh chuyện mở laptop làm tắt luôn bot trên PC ở nhà. */
+export const NEW_BOT_MS = 2 * 60_000;
+export function onConflict(startedAt, now = Date.now()) {
+  return now - startedAt < NEW_BOT_MS ? "thoat" : "cho";
+}
+
 /** "/duyet abc" → { cmd: "duyet", args: ["abc"] }; tin thường → { cmd: null, text }. */
 export function parseCommand(raw) {
   const text = (raw ?? "").trim();

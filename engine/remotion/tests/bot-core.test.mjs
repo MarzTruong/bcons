@@ -56,3 +56,10 @@ test("videoStatus và formatList phản ánh trạng thái từng video", () => 
   assert.match(text, /b-khong-caption/);
   assert.match(text, /c-xong/);
 });
+
+test("xung đột 409: bot vừa mở (dưới 2 phút) thì thoát; bot đã chạy lâu thì giữ, chờ bot kia thoát", async () => {
+  const { onConflict } = await import("../scripts/bot/core.mjs");
+  const t0 = 1_000_000;
+  assert.equal(onConflict(t0, t0 + 30_000), "thoat");
+  assert.equal(onConflict(t0, t0 + 3 * 60_000), "cho");
+});
