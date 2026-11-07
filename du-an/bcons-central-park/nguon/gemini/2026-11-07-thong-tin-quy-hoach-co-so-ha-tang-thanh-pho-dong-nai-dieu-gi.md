@@ -1,0 +1,40 @@
+# Gemini: thông tin quy hoạch, cơ sở hạ tầng thành phố đồng nai, điều gì làm dự án là tiềm năng (2026-11-07)
+
+> Model gemini-3.1-pro-preview, có tìm Google. **Số liệu CHƯA KIỂM**: Claude phải mở link gốc đối chiếu từng con số (cổng 1 của /bcons-video) trước khi dùng.
+
+Dưới đây là bảng tổng hợp các số liệu và sự kiện liên quan đến hạ tầng, quy hoạch và thị trường bất động sản tại Đồng Nai (tập trung Biên Hòa và vùng giáp ranh) trong 30 ngày qua (từ 08/10/2026 đến 07/11/2026), theo đúng các tiêu chí bạn yêu cầu:
+
+| Phân nhóm | Số liệu / sự kiện | Kỳ số liệu | Ngày công bố | Trích nguyên văn | Nguồn & Link gốc |
+|---|---|---|---|---|---|
+| Quy hoạch & Hạ tầng | Sân bay Long Thành đạt 99,5% khối lượng xây lắp đường cất hạ cánh, đường lăn, sân đỗ | Thực tế (tính đến giữa tháng 10/2026) | 06/11/2026 | "Tại dự án thành phần 3 do ACV làm chủ đầu tư, đến giữa tháng 10/2026... Trong 16 gói thầu xây lắp chính, bốn gói đã hoàn thành; đường cất hạ cánh, đường lăn và sân đỗ đạt 99,5%." | VnEconomy - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22S%C3%A2n+bay+Long+Th%C3%A0nh+ch%E1%BA%A1y+%C4%91ua+ho%C3%A0n+thi%E1%BB%87n+tr%C6%B0%E1%BB%9Bc+ng%C3%A0y+khai+th%C3%A1c%22+VnEconomy) |
+| Quy hoạch & Hạ tầng | Dời lịch thông xe nút giao Tân Hiệp (kết nối cao tốc Biên Hòa - Vũng Tàu và Bến Lức - Long Thành) | Kế hoạch (tháng 11/2026) | 01/11/2026 | "Mặc dù các hạng mục xây dựng cơ bản hoàn thành, phương án tổ chức giao thông và các thủ tục liên quan vẫn đang được cơ quan chức năng hoàn thiện, dự kiến đưa nút giao vào khai thác trong tháng 11/2026." | Pháp Luật Plus - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22N%C3%BAt+giao+T%C3%A2n+Hi%E1%BB%87p+l%C3%B9i+th%E1%BB%9Di+gian+th%C3%B4ng+xe+%C4%91%E1%BA%BFn+cu%E1%BB%91i+th%C3%A1ng+11%22) |
+| Quy hoạch & Hạ tầng | Chấm dứt hợp đồng thi công do chậm tiến độ tại Vành đai 3 TP.HCM đoạn qua Đồng Nai | Thực tế (tính đến 27/10/2026) | 29/10/2026 | "Ngày 27/10, Ban Quản lý dự án đầu tư xây dựng công trình giao thông TP Đồng Nai thông báo chấm dứt hợp đồng xây dựng với Công ty Cổ phần Xây dựng Tân Nam, nhà thầu thi công gói thầu xây dựng số 26 thuộc dự án thành phần 3, đường Vành đai 3 TP.HCM." | CafeF - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22C%E1%BA%ADn+c%E1%BA%A3nh+V%C3%A0nh+%C4%91ai+3+TP.HCM+%C4%91o%E1%BA%A1n+qua+%C4%90%E1%BB%93ng+Nai+sau+h%C6%A1n+3+n%C4%83m+thi+c%C3%B4ng%22+CafeF) |
+| Quy hoạch & Hạ tầng | Quy mô đề án Khu thương mại tự do Đồng Nai và dự kiến đóng góp kinh tế | Mục tiêu quy hoạch (đến năm 2030) | 04/11/2026 | "Theo Giám đốc Sở Tài chính Trương Thị Hương Bình, phương án khu thương mại tự do gồm bốn khu vực trong và xung quanh sân bay Long Thành, với tổng diện tích khoảng 7.444 ha... khu thương mại tự do được kỳ vọng đóng góp khoảng 8–10,5% GRDP của Đồng Nai và thu hút khoảng 150.000 lao động chất lượng cao đến năm 2030." | CafeF - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22B%C3%A0+Th%E1%BB%A7y+Ti%C3%AAn+t%E1%BB%ABng+ng%E1%BB%8F+%C3%BD+%C4%91%E1%BA%A7u+t%C6%B0+khu+th%C6%B0%C6%A1ng+m%E1%BA%A1i+t%E1%BB%B1+do+8.000+ha+c%E1%BA%A1nh+s%C3%A2n+bay+Long+Th%C3%A0nh%22) |
+| Quy hoạch & Hạ tầng | Tuyến Metro số 1 kéo dài về Biên Hòa và sân bay Long Thành | Kế hoạch (giai đoạn 2026 - 2030) | 11/10/2026 | "Tuyến Metro số 1 (Bến Thành - Suối Tiên) kéo dài đến Trung tâm hành chính TP Đồng Nai và sân bay Long Thành có chiều dài khoảng 43,5 km, tốc độ thiết kế tối đa 120 km/h... Dự án có tổng mức đầu tư khoảng 65.573 tỉ đồng, dự kiến triển khai trong giai đoạn 2026 - 2030" | Báo Lao Động - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%224+tuy%E1%BA%BFn+metro,+%C4%91%C6%B0%E1%BB%9Dng+s%E1%BA%AFt+k%E1%BA%BFt+n%E1%BB%91i+s%C3%A2n+bay+Long+Th%C3%A0nh%22+Lao+%C4%90%E1%BB%99ng) |
+| Kinh tế vĩ mô | Vốn FDI thu hút vào tỉnh Đồng Nai | Thực tế (10 tháng năm 2026) | 01/11/2026 | "Đồng Nai thu hút hơn 2,4 tỷ USD vốn FDI trong 10 tháng năm 2026, nhưng có 2.599 doanh nghiệp giải thể, gấp 2,1 lần cùng kỳ năm trước." | Báo Công Thương - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22%C4%90%E1%BB%93ng+Nai+h%C3%BAt+h%C6%A1n+2,4+t%E1%BB%B7+USD+v%E1%BB%91n+FDI+sau+10+th%C3%A1ng%22) |
+| Kinh tế vĩ mô | Lãi suất vay mua nhà cố định tại các NHTM | Thực tế (tháng 10/2026) | 05/11/2026 | "Khảo sát của Vietcap tại một số ngân hàng thương mại trong tháng 10/2026 cho thấy, lãi suất vay mua nhà cố định trong 1-2 năm đầu dao động từ 9-10,7%/năm, thấp hơn mức 9,5-11,5%/năm ghi nhận trong quý III/2026." | Tạp chí Điện tử Người Quan Sát - [Link tìm kiếm bài gốc ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://www.google.com/search?q=%22L%C3%A3i+su%E1%BA%A5t+vay+mua+nh%C3%A0+gi%E1%BA%A3m+xu%E1%BB%91ng+9%25%2Fn%C4%83m%2C+Vietcap+d%E1%BB%B1+b%C3%A1o+di%E1%BB%85n+bi%E1%BA%BFn+n%C4%83m+2027%22) |
+| Thị trường Biên Hòa | Mức tăng và mặt bằng giá chung cư tại TP. Biên Hòa cũ | Thực tế (Quý II/2024 - Quý II/2026) | 08/10/2026 | "Dữ liệu trên Batdongsan.com.vn trong tháng 9/2026 cho thấy, thị trường căn hộ TP. Biên Hòa cũ có giá mua bán phân hóa theo từng khu vực, dao động từ 20 – 66 triệu đồng/m2. Giá chung cư tại đây đã tăng 21% trong 2 năm qua, từ quý 2/2024 - quý 2/2026." | Vietstock - [Link bài gốc](https://vietstock.vn/2026/10/dao-quanh-bien-hoa-cu-mat-bang-gia-can-ho-da-doi-khac-ra-sao-4220-1499160.htm) |
+
+---
+**Các lưu ý thêm từ quá trình thu thập:**
+
+**(a) Các số liệu/chủ đề không tìm được nguồn chính thống công bố trong kỳ 30 ngày qua:**
+* Tiến độ hay thông tin mới nhất về việc chuyển đổi công năng KCN Biên Hòa 1 (các bài đăng từ nguồn chính thống đều cũ hơn 30 ngày, ví dụ từ tháng 07/2026).
+* Tỷ suất cho thuê căn hộ thực tế tại khu vực TP. Biên Hòa và phường Tam Hiệp.
+* Số liệu hoạt động sản xuất hoặc quy hoạch cụ thể của các KCN Amata, KCN Biên Hòa 2, Loteco trong 30 ngày vừa qua.
+* Các gói ưu đãi mua nhà ở thực cụ thể mới tung ra thị trường hoặc room tín dụng bất động sản cụ thể cho các ngân hàng được ban hành trong tháng 10 - 11/2026.
+* Bảng giá đất chính thức của tỉnh Đồng Nai (hiện tại trong tháng 10/2026 chỉ có công bố hồ sơ lấy ý kiến Dự thảo sửa đổi, bổ sung bảng giá đất lần đầu trên địa bàn tỉnh Đồng Nai áp dụng năm 2026).
+
+**(b) Các số liệu có sự mâu thuẫn giữa các nguồn:**
+* **Vốn FDI vào Đồng Nai 10 tháng năm 2026:** Báo Công Thương đăng ngày 01/11/2026 ghi nhận con số *"Đồng Nai thu hút hơn 2,4 tỷ USD"*; tuy nhiên trong báo cáo được đưa ra tại phiên họp thường kỳ tháng 10 của UBND thành phố Đồng Nai (đăng tải ngày 04/11/2026) lại ghi nhận *"Thu hút vốn đầu tư FDI (cấp mới và tăng vốn) trên 2,5 tỷ USD"*. (Sự chênh lệch có thể do thời điểm chốt số liệu báo cáo hoặc cách tính giữa các cơ quan ban ngành).
+
+## Trang Google mà Gemini đã đọc
+- [vneconomy.vn](https://vneconomy.vn/san-bay-long-thanh-chay-dua-hoan-thien-truoc-ngay-khai-thac.htm)
+- [baophapluat.vn](https://phapluatplus.baophapluat.vn/nut-giao-tan-hiep-lui-thoi-gian-thong-xe-den-cuoi-thang-11.html)
+- [cafef.vn](https://cafef.vn/can-canh-vanh-dai-3-tphcm-doan-qua-dong-nai-sau-hon-3-nam-thi-cong-18826102913335996.chn)
+- [cafef.vn](https://cafef.vn/ba-thuy-tien-tung-ngo-y-dau-tu-khu-thuong-mai-tu-do-8000-ha-canh-san-bay-long-thanh-tinh-hinh-sau-hon-1-nam-18826110411272887.chn)
+- [laodong.vn](https://laodong.vn/xa-hoi/4-tuyen-metro-duong-sat-ket-noi-san-bay-long-thanh-1781335.ldo)
+- [congthuong.vn](https://kinhte.congthuong.vn/dong-nai-hut-hon-2-4-ty-usd-von-fdi-sau-10-thang-479392.html)
+- [nguoiquansat.vn](https://nguoiquansat.vn/lai-suat-vay-mua-nha-giam-xuong-9-nam-vietcap-du-bao-dien-bien-nam-2027-326354.html)
+- [vietstock.vn](https://vietstock.vn/2026/10/dao-quanh-bien-hoa-cu-mat-bang-gia-can-ho-da-doi-khac-ra-sao-4220-1499160.htm)
+- [dongnai.gov.vn](https://dongnai.gov.vn/vi/wcag/Dinh-huong-Chien-luoc-Quy-hoach-phat-trien-KTXH/thanh-pho-dong-nai-chuan-bi-tien-de-cho-phat-trien-kinh-te-xa-hoi-nam-2027-13138.html)
