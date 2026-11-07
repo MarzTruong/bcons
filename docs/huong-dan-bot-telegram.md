@@ -1,6 +1,6 @@
 # Bot Telegram Bcons: giao việc bằng tin nhắn
 
-Bot chạy trên **một máy** tại một thời điểm: laptop (`D:\Claude\bcons`) hoặc PC (`E:\Claude\bcons`). Mở bot ở máy nào thì lệnh render/tạo giọng chạy trên máy đó; mở máy thứ hai thì bot máy sau tự thoát. Dưới đây ghi đường dẫn laptop, trên PC thay `D:` bằng `E:`. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Máy chạy bot tắt hoặc ngủ thì bot ngừng. Tin anh nhắn lúc máy tắt **không tự chạy** khi mở máy lại (để tránh render/duyệt ngoài ý muốn); bot báo đã bỏ qua, anh nhắn lại nếu vẫn cần.
+Bot chạy trên **một máy** tại một thời điểm: laptop (`D:\Claude\bcons`) hoặc PC (`E:\Claude\bcons`). Mở bot ở máy nào thì lệnh render/tạo giọng chạy trên máy đó. Mở bot ở cả hai máy thì máy sau **chờ**, chuyển qua lại bằng `/chuyenmay` (mục "Chuyển máy" bên dưới). Dưới đây ghi đường dẫn laptop, trên PC thay `D:` bằng `E:`. Anh nhắn bot trên Telegram (điện thoại hay máy tính đều được), bot chạy lệnh thay anh. Máy chạy bot tắt hoặc ngủ thì bot ngừng. Tin anh nhắn lúc máy tắt **không tự chạy** khi mở máy lại (để tránh render/duyệt ngoài ý muốn); bot báo đã bỏ qua, anh nhắn lại nếu vẫn cần.
 
 Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với bot (`TELEGRAM_CHAT_ID` trong `.env`), điều khiển được bot. Người khác nhắn vào, hoặc thêm bot vào nhóm, bot im lặng. Bot không nhận tin chuyển tiếp (forward).
 
@@ -74,3 +74,11 @@ Quy ước đặt tên (07/11/2026): mỗi video có **số cố định** và t
 - Cửa sổ báo "Bot da chay o cua so khac": anh đã mở 2 lần, cứ đóng cửa sổ đó.
 - Cửa sổ báo "Thieu TELEGRAM_BOT_TOKEN...": kiểm tra lại file `.env` (bước 2).
 - Sau `/capnhat` có bản bot mới, bot tự khởi động lại trong vài giây.
+
+## Chuyển máy (PC ⇄ laptop), từ 07/11/2026
+- Mở `Bcons-Bot.cmd` trên cả hai máy cũng được. Máy mở sau **không tắt**, mà chuyển sang **chờ** và nhắn Telegram kèm nút **"Chuyển sang <máy đó>"**.
+- Muốn đổi máy lúc nào: nhắn **`/chuyenmay`** → bấm máy muốn dùng. Khoảng 10–40 giây sau (chờ Drive đồng bộ), Telegram báo "✅ Bot đã chuyển sang …". Máy cũ chuyển sang chờ, không cần đóng cửa sổ.
+- Máy đang chạy bị tắt/ngủ/mất mạng hơn 3 phút: máy đang chờ **tự nhận việc** và báo Telegram.
+- Đang render/tạo giọng thì không chuyển (bot báo đợi xong hoặc `/huy`).
+- Đặt tên máy cho dễ đọc: thêm dòng `TEN_MAY=PC` (hoặc `TEN_MAY=Laptop`) vào `engine\remotion\.env` trên từng máy. Không đặt thì dùng tên Windows.
+- Cần Drive for desktop trên cả hai máy (thư mục `Bcons - Dong bo thiet bi\bot\` do bot tự tạo). Máy không có Drive thì bot chạy như cũ, không chuyển được.

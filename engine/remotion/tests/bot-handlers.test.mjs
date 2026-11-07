@@ -271,3 +271,18 @@ test("/render không kèm tên → hiện nút chọn video; bấm nút thì ren
   await new Promise((r) => setTimeout(r, 20));
   assert.equal(s.execs.filter((e) => e === "npm run render:drive -- a").length, 2, "gõ số cũng được");
 });
+
+test("/chuyenmay: liệt kê máy đang chờ thành nút; bấm thì yêu cầu chuyển (không chuyển khi đang chạy việc)", async () => {
+  const req = [];
+  const s = setup();
+  s.bot.setSwitcher({ self: "PC", standbys: () => [{ host: "LAPTOP" }], request: (h) => req.push(h) });
+  await s.bot.handleUpdate(msg("/chuyenmay"));
+  const kb = s.said.at(-1).extra.reply_markup.inline_keyboard;
+  assert.match(kb[0][0].text, /LAPTOP/);
+  await s.bot.handleUpdate(press(kb[0][0].callback_data));
+  assert.deepEqual(req, ["LAPTOP"]);
+  assert.match(s.said.at(-1).text, /chuyển.*LAPTOP/i);
+  s.bot.setSwitcher({ self: "PC", standbys: () => [], request: (h) => req.push(h) });
+  await s.bot.handleUpdate(msg("/chuyenmay"));
+  assert.match(s.said.at(-1).text, /Không có máy nào đang chờ/);
+});

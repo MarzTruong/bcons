@@ -12,14 +12,14 @@
 ## Máy đang chạy (tự nhận diện)
 - **Cloud** (biến môi trường `CLAUDE_CODE_REMOTE=true`, anh dùng từ laptop/điện thoại): nghiên cứu, viết `kich-ban.md`, `storyboard.md`, `caption.md`, `spec.json`, lập trình `engine/`, viết test, `npm test`, `npm run lint`, commit/push. Cloud có `REMOTION_MAPBOX_TOKEN` trong biến môi trường nên chụp được storyboard bản đồ (`npm run storyboard`). **Không** chạy `npm run voice` hay `npm run render:drive` (tốn credit/không có Drive): việc đó qua bot trên máy anh.
 - **Máy của anh** (laptop/máy bàn, có `engine/remotion/.env`): `git pull`, cổng chặn, `npm run voice` (sau khi anh đồng ý tốn credit), `npm run render:drive`.
-- **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/storyboard`, `/giong`, `/render`, `/duyet`, `/xem`, `/danhsach`, `/gemini`, `/sfx`, `/kiemgia`. Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
+- **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/storyboard`, `/giong`, `/render`, `/duyet`, `/xem`, `/danhsach`, `/gemini`, `/sfx`, `/kiemgia`, `/chuyenmay` (chuyển bot PC ⇄ laptop; mở bot cả hai máy thì máy sau chờ). Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
 
 ## Cấu trúc thư mục
 - `engine/`: code dùng chung (`engine/remotion/` dựng video, `engine/automation/` script tiện ích). Không chứa số liệu dự án.
 - `du-an/<mã>/`: mọi thứ của một dự án: `project.json`, `thong-tin.md`, `video/<tên>/` (spec.json, kich-ban.md, storyboard.md, caption.md, audio/), `assets/` (images, geo), `nguon/`, `content/`, `landing/`, `bao-cao/`. Dự án mới: skill `bcons-project-init` (chép `du-an/_mau/`).
 - `config.json`: dự án đang bán (`duAnDangBan`). Lệnh nhận thêm `--du-an <mã>` để chạy cho dự án khác.
 - Không lên git, cũng chia theo dự án: `data/<mã>/` (bảng giá), `anh/<mã>/` (ảnh gốc).
-- Dùng chung giữa các máy qua Drive "Bcons - Dong bo thiet bi" (code tự dò ổ, `findDriveRoot`/`sharedDir`): `video/` (render), `am-thanh/nhac/` (nhạc nền), `am-thanh/sfx/` (hiệu ứng ElevenLabs), `data/<mã>/gia/` (Master File, bảng giá), `data/<mã>/tai-lieu-cdt/` (tài liệu CĐT: mặt bằng, phối cảnh, PTTT, pháp lý, Q&A), `_luu-tru/` (đồ cũ). Sơ đồ: file `DOC-TRUOC.md` ở gốc thư mục Drive. Thêm dữ liệu dùng chung thì để trên Drive, không để riêng một máy.
+- Dùng chung giữa các máy qua Drive "Bcons - Dong bo thiet bi" (code tự dò ổ, `findDriveRoot`/`sharedDir`): `video/` (render), `am-thanh/nhac/` (nhạc nền), `am-thanh/sfx/` (hiệu ứng ElevenLabs), `data/<mã>/gia/` (Master File, bảng giá), `data/<mã>/tai-lieu-cdt/` (tài liệu CĐT: mặt bằng, phối cảnh, PTTT, pháp lý, Q&A), `bot/` (máy nào đang chạy bot), `_luu-tru/` (đồ cũ). Sơ đồ: file `DOC-TRUOC.md` ở gốc thư mục Drive. Thêm dữ liệu dùng chung thì để trên Drive, không để riêng một máy.
 - Quy tắc chi tiết: `.claude/rules/pipeline-constraints.md` (code video), `.claude/rules/preflight-and-sources.md` (cổng chặn, nguồn số liệu).
 
 ## Nguồn dữ liệu (đọc trước khi viết nội dung)

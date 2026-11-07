@@ -18,6 +18,7 @@ export const HELP = [
   "/storyboard <tên> – chụp hình từng cảnh để duyệt TRƯỚC khi tạo giọng (không tốn credit)",
   "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước)",
   "/capnhat – lấy bản mới nhất từ GitHub",
+  "/chuyenmay – chuyển bot sang máy khác đang mở bot (PC ⇄ laptop)",
   "/moi – bắt đầu trò chuyện Claude mới",
   "/huy – dừng việc đang chạy",
   "",

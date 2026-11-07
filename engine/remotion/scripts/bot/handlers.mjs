@@ -123,6 +123,9 @@ export function createBot(deps) {
     await tg.sendVideo(chatId, mp4, caption);
   }
 
+  /** Chuyển máy chạy bot (bot.mjs gắn vào): { self, standbys(), request(host) }. */
+  let switcher = null;
+
   const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard"]);
 
   const commands = {
@@ -192,6 +195,14 @@ export function createBot(deps) {
         }
         await say(`Xem xong: ưng thì nhắn Claude "duyệt storyboard ${name}" (rồi mới /giong ${name}); cần sửa cảnh nào thì nói cảnh đó.`);
       });
+    },
+    chuyenmay() {
+      if (!switcher) return say("Máy này chưa có Drive dùng chung nên chưa chuyển máy được.");
+      const list = switcher.standbys();
+      if (!list.length) return say(`Bot đang chạy trên ${switcher.self}. Không có máy nào đang chờ: mở Bcons-Bot.cmd trên máy kia trước, rồi nhắn lại /chuyenmay.`);
+      const rows = list.map((m) => [{ text: `➡️ Chuyển sang ${m.host}`, callback_data: `may:${m.host}`.slice(0, 64) }]);
+      rows.push([{ text: `Giữ trên ${switcher.self}`, callback_data: "may:" }]);
+      return say(`Bot đang chạy trên ${switcher.self}. Chuyển sang máy nào?`, { reply_markup: { inline_keyboard: rows } });
     },
     kiemgia() {
       return enqueue("kiểm Master File", async () => {
@@ -289,6 +300,15 @@ export function createBot(deps) {
   }
 
   async function onCallback(cq) {
+    if (String(cq.data ?? "").startsWith("may:")) {
+      await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+      const host = cq.data.slice(4);
+      if (!switcher) return say("Máy này chưa có Drive dùng chung nên chưa chuyển máy được.");
+      if (!host || host === switcher.self) return say(`Giữ bot trên ${switcher.self}.`);
+      if (busy) return say("Bot đang chạy một việc (render, tạo giọng...). Đợi xong hoặc nhắn /huy rồi chuyển máy.");
+      switcher.request(host);
+      return say(`Đang chuyển bot sang ${host} (khoảng 10–40 giây, chờ Drive đồng bộ)...`);
+    }
     if (String(cq.data ?? "").startsWith("chon:")) {
       const [, cmd, so, extra] = cq.data.split(":");
       await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
@@ -333,5 +353,9 @@ export function createBot(deps) {
     return fn(c.args);
   }
 
-  return { handleUpdate, _state: () => ({ busy, queue: queue.length, pending: pending.size, session }) };
+  return {
+    handleUpdate,
+    setSwitcher: (s) => (switcher = s),
+    _state: () => ({ busy, queue: queue.length, pending: pending.size, session }),
+  };
 }

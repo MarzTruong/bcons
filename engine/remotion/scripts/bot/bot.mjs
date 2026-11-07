@@ -11,6 +11,7 @@ import { killTree, runClaude } from "./claude-bridge.mjs";
 import { createBot } from "./handlers.mjs";
 import { createTg } from "./tg.mjs";
 import { onConflict } from "./core.mjs";
+import { MAY, requestSwitch, standbyDecision, standbysOf, startRole, stateDir, writeBeat } from "./may.mjs";
 
 const REMOTION_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const MAX_OUT = 200_000;
@@ -94,28 +95,95 @@ async function main() {
     runClaude: (prompt, o) => runClaude(prompt, { ...o, onChild: (c) => (currentChild = c) }),
     sendApproved: (o) => sendApproved({ ...o, env: process.env }),
   });
-  await tg.sendMessage(chatId, `🤖 Bot Bcons đã chạy trên máy ${os.hostname()}. Nhắn /huongdan để xem lệnh.`).catch((e) => console.error(e.message));
-  console.log("Bot đang chạy. Đóng cửa sổ này để tắt bot.");
-  let offset = 0;
-  const startedAt = Date.now();
-  let warned = false;
-  for (;;) {
+  // Tên máy hiện trên Telegram: TEN_MAY trong .env (vd. PC, Laptop), không có thì tên Windows.
+  const host = (process.env.TEN_MAY ?? "").trim() || os.hostname();
+  const dir = (() => {
     try {
-      const updates = await tg.getUpdates(offset, 30);
+      return stateDir();
+    } catch {
+      return null;
+    }
+  })();
+  let role = dir ? startRole(dir, host) : "chay";
+  let handover = null; // máy sẽ nhận bot (anh vừa bấm chuyển)
+  if (dir) {
+    bot.setSwitcher({
+      self: host,
+      standbys: () => standbysOf(dir, Date.now(), host),
+      request: (to) => {
+        requestSwitch(dir, to, host);
+        handover = to;
+      },
+    });
+  }
+  const beat = () => dir && writeBeat(dir, host, role);
+  setInterval(beat, MAY.beatMs).unref();
+  beat();
+
+  if (role === "cho") {
+    await tg
+      .sendMessage(chatId, `🖥 ${host} vừa mở bot, nhưng bot đang chạy trên máy khác. ${host} sẽ CHỜ.\nMuốn dùng ${host}: nhắn /chuyenmay rồi bấm "Chuyển sang ${host}".`, {
+        reply_markup: { inline_keyboard: [[{ text: `➡️ Chuyển sang ${host}`, callback_data: `may:${host}`.slice(0, 64) }]] },
+      })
+      .catch((e) => console.error(e.message));
+  } else {
+    console.log("Bot đang chạy. Đóng cửa sổ này để tắt bot.");
+    await tg.sendMessage(chatId, `🤖 Bot Bcons đã chạy trên máy ${host}. Nhắn /huongdan để xem lệnh.`).catch((e) => console.error(e.message));
+  }
+
+  let offset = 0;
+  let startedAt = Date.now();
+  let warned = false;
+  let viaSwitch = false; // vừa nhận bot từ máy khác: máy kia có thể còn đang nhận tin vài giây
+  for (;;) {
+    if (role === "cho") {
+      // Máy chờ: không nhận tin Telegram (để máy kia nhận), chỉ xem Drive mỗi 5 giây.
+      console.log(`Đang CHỜ (bot chạy trên máy khác). Nhắn /chuyenmay trên Telegram để chuyển sang ${host}.`);
+      for (;;) {
+        await sleep(5000);
+        const d = standbyDecision(dir, host);
+        if (d === "cho") continue;
+        role = "chay";
+        beat();
+        startedAt = Date.now();
+        viaSwitch = true;
+        offset = 0;
+        await tg
+          .sendMessage(chatId, d === "nhan-lenh" ? `✅ Bot đã chuyển sang ${host}.` : `✅ Máy đang chạy bot mất liên lạc hơn 3 phút, bot tự chuyển sang ${host}.`)
+          .catch(() => {});
+        console.log("Bot đang chạy. Đóng cửa sổ này để tắt bot.");
+        break;
+      }
+    }
+    try {
+      // chờ tin tối đa 10 giây/lượt: nhường máy nhanh khi anh bấm chuyển
+      const updates = await tg.getUpdates(offset, handover ? 0 : 10);
       for (const u of updates) {
         offset = u.update_id + 1;
         // Không chờ việc dài (render) xong mới đọc tin tiếp: việc tự xếp hàng trong bot.
         bot.handleUpdate(u).catch((e) => tg.sendMessage(chatId, `Lỗi: ${e.message}`).catch(() => {}));
       }
+      if (handover) {
+        // Báo Telegram đã đọc các tin tới đây (để máy kia không nhận lại), rồi chuyển sang chờ.
+        await tg.getUpdates(offset, 0).catch(() => {});
+        console.log(`Đã nhường bot cho ${handover}. Máy này chuyển sang CHỜ.`);
+        role = "cho";
+        handover = null;
+        beat();
+      }
     } catch (e) {
       if (/409|terminated by other getUpdates/i.test(e.message)) {
+        if (viaSwitch && Date.now() - startedAt < 2 * 60_000) {
+          await sleep(3000); // máy cũ đang dừng nhận tin, thử lại
+          continue;
+        }
         if (onConflict(startedAt) === "thoat") {
           console.error("Bot đang chạy ở máy/cửa sổ khác. Cửa sổ này tự đóng, giữ bot đang chạy.");
           process.exit(EXIT_DUPLICATE);
         }
         if (!warned) {
           warned = true;
-          await tg.sendMessage(chatId, `⚠️ Có bot thứ hai vừa mở ở máy khác. Bot trên ${os.hostname()} vẫn giữ, bot mới sẽ tự đóng.`).catch(() => {});
+          await tg.sendMessage(chatId, `⚠️ Có bot thứ hai vừa mở ở máy khác. Bot trên ${host} vẫn giữ, bot mới sẽ tự đóng.`).catch(() => {});
         }
         await sleep(15000);
         continue;

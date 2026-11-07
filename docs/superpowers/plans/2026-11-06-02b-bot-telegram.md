@@ -1,4 +1,4 @@
-> **Trạng thái:** Đã xong 06/11/2026. Bổ sung 07/11: `/sfx`, `/render <tên> khongnhac`, bot chạy lâu được giữ khi mở trùng, báo tên máy.
+> **Trạng thái:** Đã xong 06/11/2026. Bổ sung 07/11: `/sfx`, `/render <tên> khongnhac`, bot chạy lâu được giữ khi mở trùng, báo tên máy; chọn video bằng số/nút; `/chuyenmay` + máy chờ tự nhận việc (`scripts/bot/may.mjs`, trạng thái trên Drive `bot/`).
 
 # Kế hoạch 02b: Bot Telegram điều khiển pipeline (chạy trên laptop)
 
