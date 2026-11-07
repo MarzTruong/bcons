@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong (lịch sử).
+
 > **Bản lịch sử.** Đường dẫn trong file này (`remotion-video/`, `config/project.json`...) là trước kế hoạch 01. Cấu trúc hiện tại: `CLAUDE.md` và `du-an/<mã>/`.
 
 # Thiết kế: Quy trình `/bcons-video` và thư viện mẫu cảnh có schema (04/11/2026)

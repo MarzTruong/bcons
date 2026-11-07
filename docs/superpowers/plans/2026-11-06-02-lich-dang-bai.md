@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong 06/11/2026. Còn theo dõi: Metricool tự đăng TikTok lần đầu (09/11/2026).
+
 # Kế hoạch 02: Caption, duyệt bài và lịch đăng
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

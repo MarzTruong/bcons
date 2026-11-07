@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong 06/11/2026. Bổ sung 07/11: `/sfx`, `/render <tên> khongnhac`, bot chạy lâu được giữ khi mở trùng, báo tên máy.
+
 # Kế hoạch 02b: Bot Telegram điều khiển pipeline (chạy trên laptop)
 
 > Anh duyệt 06/11/2026 ("OK, chạy trên laptop trước và làm cả 2 cách"). Thực hiện trực tiếp trong phiên (native), soát cuối bằng agent.

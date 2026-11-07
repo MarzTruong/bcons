@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong 05/11/2026 (lịch sử, đường dẫn cũ).
+
 # Bản đồ Mapbox cho video (mẫu cảnh `geo-map`) Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans (anh đã chọn tự làm trong phiên). Steps use checkbox (`- [ ]`) syntax.

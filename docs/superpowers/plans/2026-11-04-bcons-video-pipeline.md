@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong 04/11/2026 (lịch sử, đường dẫn cũ). Hiện hành: `CLAUDE.md`, `docs/quy-trinh-video.md`.
+
 # Bcons Video Pipeline Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

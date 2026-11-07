@@ -19,7 +19,7 @@
 - `du-an/<mã>/`: mọi thứ của một dự án: `project.json`, `thong-tin.md`, `video/<tên>/` (spec.json, kich-ban.md, storyboard.md, caption.md, audio/), `assets/` (images, geo), `nguon/`, `content/`, `landing/`, `bao-cao/`. Dự án mới: skill `bcons-project-init` (chép `du-an/_mau/`).
 - `config.json`: dự án đang bán (`duAnDangBan`). Lệnh nhận thêm `--du-an <mã>` để chạy cho dự án khác.
 - Không lên git, cũng chia theo dự án: `data/<mã>/` (bảng giá), `anh/<mã>/` (ảnh gốc).
-- Dùng chung giữa các máy qua Drive "Bcons - Dong bo thiet bi" (code tự dò ổ, `findDriveRoot`/`sharedDir`): `video/` (render), `am-thanh/nhac/` (nhạc nền), `data/` (bảng giá). Thêm dữ liệu dùng chung thì để trên Drive, không để riêng một máy.
+- Dùng chung giữa các máy qua Drive "Bcons - Dong bo thiet bi" (code tự dò ổ, `findDriveRoot`/`sharedDir`): `video/` (render), `am-thanh/nhac/` (nhạc nền), `data/<mã>/gia/` (Master File, bảng giá), `data/<mã>/tai-lieu-cdt/` (tài liệu CĐT: mặt bằng, phối cảnh, PTTT, pháp lý, Q&A), `_luu-tru/` (đồ cũ). Sơ đồ: file `DOC-TRUOC.md` ở gốc thư mục Drive. Thêm dữ liệu dùng chung thì để trên Drive, không để riêng một máy.
 - Quy tắc chi tiết: `.claude/rules/pipeline-constraints.md` (code video), `.claude/rules/preflight-and-sources.md` (cổng chặn, nguồn số liệu).
 
 ## Nguồn dữ liệu (đọc trước khi viết nội dung)
@@ -62,6 +62,7 @@
 
 ## Quy ước làm việc
 - Làm việc trên nhánh `main`. Không tạo PR nếu anh chưa yêu cầu.
+- Tài liệu: mục lục và trạng thái ở `docs/README.md`. Xong/đổi một kế hoạch thì sửa dòng **Trạng thái** đầu file và mục lục cùng lúc với code; đổi tên/xóa file thì sửa chỗ nhắc tới nó (`npm test` có test docs chặn lệch).
 - Nội dung dự án viết Markdown trong `du-an/<mã>/` (bài đăng ở `content/`, kịch bản ở `video/<tên>/`); `docs/` chỉ chứa tài liệu chung (quy trình, thiết kế, kế hoạch, hướng dẫn).
 - Lịch mở bán: xem `du-an/bcons-central-park/thong-tin.md` (đợt 2 giới thiệu 29/11/2026, đợt 3 ngày 27/12/2026).
 

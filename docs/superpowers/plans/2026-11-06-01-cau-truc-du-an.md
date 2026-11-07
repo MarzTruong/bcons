@@ -1,3 +1,5 @@
+> **Trạng thái:** Đã xong 06/11/2026 (lịch sử). Bỏ không làm: tách `NOTES.md` theo dự án (NOTES gốc vẫn dùng chung).
+
 # Kế hoạch 01: Cấu trúc thư mục theo dự án
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

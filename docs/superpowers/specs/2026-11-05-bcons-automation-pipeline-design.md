@@ -1,3 +1,5 @@
+> **Trạng thái:** Thiết kế tổng, lịch sử về đường dẫn. Đã làm: kế hoạch 01, 02, 02b, 03. Đang làm: 05. Chưa làm: 04 (báo cáo tuần qua Metricool), giai đoạn 2–3 của lộ trình (quảng cáo Meta, quét tin hằng sáng, phân loại khách trong CRM).
+
 > **Bản lịch sử.** Đường dẫn trong file này (`remotion-video/`, `config/project.json`...) là trước kế hoạch 01. Cấu trúc hiện tại: `CLAUDE.md` và `du-an/<mã>/`.
 
 # Thiết kế: Hệ thống tự động hóa kênh Facebook/TikTok và phễu khách (05/11/2026)

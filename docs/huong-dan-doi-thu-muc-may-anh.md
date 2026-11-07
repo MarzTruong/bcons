@@ -1,3 +1,5 @@
+> **Trạng thái:** Lịch sử (đã làm xong trên laptop 06/11/2026).
+
 > **Đã làm xong trên laptop 06/11/2026.** Máy cài mới (như PC ổ E) chỉ cần `git clone`, không cần dời thư mục.
 
 # Dời thư mục trên máy anh (laptop, sau đó máy bàn)

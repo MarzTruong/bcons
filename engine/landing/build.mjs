@@ -43,6 +43,7 @@ export function checkStillForSale(data, csvPath) {
 function findPriceCsv(projDir, ma) {
   const cands = [
     path.join(projDir, "..", "..", "data", ma, "bang-gia.csv"),
+    path.join(sharedDir("data"), ma, "gia", "bang-gia.csv"),
     path.join(sharedDir("data"), ma, "bang-gia.csv"),
     path.join(sharedDir("data"), "bang-gia.csv"),
   ];

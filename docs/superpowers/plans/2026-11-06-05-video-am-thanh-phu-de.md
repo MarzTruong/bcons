@@ -1,3 +1,5 @@
+> **Trạng thái:** Đang làm. Xong: D (nhạc nền, hiệu ứng), E (tên + QR, landing Gọi/Zalo). Chưa: A (storyboard có hình), B (phụ đề), C (viền bản đồ), F (test Master File theo PDF PTTT của CĐT), G (lệnh `/gemini`).
+
 # Kế hoạch 05: Video có nhạc nền, hiệu ứng, phụ đề chuẩn, storyboard có hình, watermark
 
 > Anh yêu cầu 06/11/2026 tối ("OK, làm cả hai luôn đi" + các ý bổ sung). Chờ anh duyệt kế hoạch này rồi làm. Viết test trước (skill `test-driven-development`), mỗi phần một commit.
@@ -33,6 +35,9 @@ Tên **Tuấn Trương** (font Playfair Display nghiêng, khác font nội dung)
 
 ## F. Kiểm Master File bằng tài liệu CĐT (TDD)
 Test hiện tại so công cụ tính với Master File (cả hai cùng do AI làm). Thêm test lấy **tài liệu CĐT làm chuẩn**: lịch thanh toán từng PTTT cộng đủ 100%, chiết khấu 8,5% (PTTT 01), 2,45% (PTTT 04/05), VAT 10%, bảo trì 2%, trần 6,9% chỉ PTTT 03/04; đối chiếu khoảng 20 căn mẫu giữa bảng giá CĐT 17/10/2026 và sheet GiaTongHop. Anh đã để file trong Drive `Bcons - Dong bo thiet bi\data` (06/11/2026); dữ liệu chỉ để trên máy, test đọc từ `data/` (không lên git).
+
+## G. Lệnh `/gemini <chủ đề>` (nghiên cứu tự động, anh chọn gói trả phí 07/11/2026)
+Bot trên máy anh gửi `docs/prompt-gemini-nghien-cuu.md` + chủ đề cho Gemini (có tìm Google), lưu `du-an/<mã>/nguon/gemini/<ngày>-<chủ-đề>.md` kèm link nguồn, gửi tóm tắt về Telegram, lưu lên GitHub. Key `GEMINI_API_KEY` trong `.env` (không lên git). Em vẫn mở từng link kiểm số ở cổng 1.
 
 ## Thứ tự và kiểm tra
 B1 → A → B2/B3 → C → D → E → F. Mỗi bước: test trước, `npm test`, `npm run lint`, chụp khung trước/sau. Video cũ sẽ đổi hình có chủ đích (phụ đề, viền, watermark), nên băm khung hình cập nhật theo.
