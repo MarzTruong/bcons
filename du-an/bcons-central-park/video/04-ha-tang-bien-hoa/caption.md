@@ -1,25 +1,20 @@
 ---
 status: approved
-duyetLuc: "2026-11-06T14:54:38+07:00"
-noiDungSha256: "53a89eecc1e098857f907e55b0bd261c156ef0aa234b0923de5221f050510b1a"
-videoSha256: "e6af027d575e1861f914a4283ed5fe9e4570ff7b7ef950e3b3daf8c2a1034479"
+duyetLuc: "2026-11-08T00:53:18+07:00"
+noiDungSha256: "223db0b99d93d74da3f8ef40fbb9ce5f2ed051a3054970d130bbdac30e223d60"
+videoSha256: ""
 kenh: [facebook, tiktok]
 ---
 ## Facebook
-Hạ tầng Biên Hòa 2026: cái nào đã chạy, cái nào còn trên giấy? Em tách ra hai nhóm cho dễ nhìn.
+Đi Biên Hòa xuống Vũng Tàu giờ đã có cao tốc chạy được hai đoạn, từ cuối tháng 4. Còn Bến Lức – Long Thành thì thông xe cả tuyến gần 58 km từ đầu tháng 10.
 
-Đã đi được:
-✅ Cao tốc Biên Hòa – Vũng Tàu: dự án thành phần 2 và 3 khai thác từ 29/4/2026 (VnExpress, 18/5/2026).
-✅ Cao tốc Bến Lức – Long Thành thông xe toàn tuyến từ 0h ngày 1/10/2026, dài gần 58 km (VnExpress, 1/10/2026).
+Hai cái đó là thật, xe chạy được rồi. Phần còn lại vẫn đang làm: Vành đai 3 đoạn qua Đồng Nai mới hơn 80%, sân bay Long Thành dự kiến khai thác từ 24/12 năm nay, còn metro kéo dài về Đồng Nai vẫn ở bước nghiên cứu.
 
-Chưa xong:
-⏳ Vành đai 3 đoạn qua Đồng Nai đạt hơn 80% (cuối tháng 8/2026, VnExpress 9/9/2026).
-⏳ Sân bay Long Thành dự kiến khai thác từ 0h ngày 24/12/2026 (VnExpress dẫn ACV, 30/10/2026).
-⏳ Metro kéo dài về Đồng Nai mới ở mức nghiên cứu (Cổng TTĐT Đồng Nai, 7/1/2026).
+Em tách ra vậy vì nghe nói về hạ tầng nhiều, dễ lẫn cái đã xong với cái còn trên giấy. Mua nhà để ở thì cứ tính theo đường đã chạy, phần còn lại về đúng hẹn thì tốt, chưa về thì cũng không bị hụt kế hoạch.
 
-Nói thẳng: Bcons Central Park ở 236 Phan Trung dự kiến bàn giao Quý II/2029. Vốn sẽ nằm im vài năm, hạ tầng chỉ là bối cảnh để cân nhắc, không phải lời hứa về giá.
+Bcons Central Park ở 236 Phan Trung, Tam Hiệp, dự kiến bàn giao Quý II/2029. Anh chị muốn bảng mốc hạ tầng có link nguồn từng dòng thì comment "mốc hạ tầng", em gửi. Gọi hoặc Zalo: 0938.32.31.39 (Tuấn Trương).
 
-Muốn bảng mốc hạ tầng có link nguồn từng dòng, comment "mốc hạ tầng", em gửi.
+Nguồn: VnExpress (18/5, 1/10, 9/9 và 30/10/2026, sân bay dẫn ACV), Cổng TTĐT Đồng Nai (7/1/2026). Tiến độ theo cơ quan quản lý từng dự án, không phải lời hứa về giá.
 
 ## TikTok
 Biên Hòa 2026: Bến Lức – Long Thành thông toàn tuyến, Biên Hòa – Vũng Tàu khai thác 2 đoạn, vành đai 3 hơn 80%, sân bay Long Thành dự kiến 24/12, metro còn nghiên cứu. Comment "mốc hạ tầng" để nhận bảng nguồn từng dòng. #BiênHòa #HạTầng #CaoTốc #SânBayLongThành #BconsCentralPark
