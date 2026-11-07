@@ -343,3 +343,20 @@ test("menu tick chọn: bấm để tick/bỏ tick từng video, Chọn tất c�
   await s.bot.handleUpdate(pressOn(ok2.callback_data));
   for (const n of ["03-x", "04-y", "05-z"]) assert.ok(s.execs.filter((e) => e.includes(`render:drive`) && e.includes(n)).length >= 1, n);
 });
+
+test("/gemini xong có nút 🎬 Làm video từ kết quả này → giao Claude làm cổng 1 (kiểm link) rồi dừng chờ anh chọn góc", async () => {
+  const prompts = [];
+  const s = setup({ claude: async (text) => (prompts.push(text), { text: "Xong cổng 1.", sessionId: "s1", isError: false }) });
+  await s.bot.handleUpdate(msg("/gemini lãi suất tháng 12"));
+  await new Promise((r) => setTimeout(r, 30));
+  const last = s.said.at(-1);
+  const btn = last.extra.reply_markup.inline_keyboard[0][0];
+  assert.match(btn.text, /Làm video từ kết quả này/);
+  await s.bot.handleUpdate(press(btn.callback_data));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.equal(prompts.length, 1);
+  assert.match(prompts[0], /bcons-video/);
+  assert.match(prompts[0], /lãi suất tháng 12/);
+  assert.match(prompts[0], /cổng 1/i);
+  assert.match(prompts[0], /DỪNG/);
+});

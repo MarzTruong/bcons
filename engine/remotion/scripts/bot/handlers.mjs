@@ -106,7 +106,9 @@ export function createBot(deps) {
     const labels =
       kind === "claude"
         ? [["💾 Lưu lên GitHub", `ok:${kind}:${id}`], ["↩️ Bỏ thay đổi", `huy:${kind}:${id}`]]
-        : [["✅ Đồng ý", `ok:${kind}:${id}`], ["✖️ Hủy", `huy:${kind}:${id}`]];
+        : kind === "gemvid"
+          ? [["🎬 Làm video từ kết quả này", `ok:${kind}:${id}`], ["Để sau", `huy:${kind}:${id}`]]
+          : [["✅ Đồng ý", `ok:${kind}:${id}`], ["✖️ Hủy", `huy:${kind}:${id}`]];
     return say(text, buttons(labels));
   }
 
@@ -220,7 +222,14 @@ export function createBot(deps) {
         await say(`Đang nhờ Gemini tìm số liệu: "${topic}" (1–3 phút)...`);
         const out = await run("npm", ["run", "gemini", "--", ...words], remotionDir, "Nghiên cứu Gemini", 10 * 60e3);
         const saved = await gitSave([path.relative(repoRoot, path.join(projDir, "nguon", "gemini"))], `Gemini ${topic}`).catch((e) => `Chưa lưu lên GitHub: ${e.message}`);
-        await say(`${tail(out, 40)}\n\n${saved}\nSố liệu CHƯA KIỂM: nhắn Claude "/bcons-video ${topic}" để kiểm từng link và đề xuất góc làm video.`);
+        await say(`${tail(out, 40)}\n\n${saved}`);
+        // Nối cổng 1 → 2: một nút giao Claude kiểm link + đề xuất góc từ chính báo cáo này (anh muốn 07/11/2026).
+        const file = out.match(/Đã lưu (\S+\.md)/)?.[1] ?? `du-an/<mã>/nguon/gemini/ (báo cáo mới nhất về "${topic}")`;
+        return ask(`Số liệu CHƯA KIỂM. Làm video từ kết quả này? (Claude kiểm từng link, đề xuất góc, rồi dừng chờ anh chọn)`, "gemvid", () =>
+          claudeTask(
+            `/bcons-video Làm video từ báo cáo Gemini "${topic}" (file ${file}). Làm CỔNG 1 theo skill bcons-video: mở từng link gốc đối chiếu từng con số, loại số sai/bịa, ghi file -KIEM.md cạnh báo cáo; đề xuất 2-3 góc làm video và tên <số>-<tên>. Sau đó DỪNG, chờ anh chọn góc; chưa viết kịch bản, chưa tạo giọng.`,
+          ),
+        );
       });
     },
     sfx() {

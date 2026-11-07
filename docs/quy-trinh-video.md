@@ -21,7 +21,7 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
 
 **Lệnh tắt:** `/bcons-video [chủ đề]` (`.claude/skills/bcons-video/SKILL.md`) chạy cả quy trình trên, dừng chờ anh ở 4 cổng: (1) chọn góc sau khi kiểm số liệu, (2) duyệt chữ + số liệu + caption + storyboard có hình, (3) đồng ý tốn credit giọng, (4) duyệt video trước khi đăng.
-**Bước 1 với Gemini:** nhắn bot `/gemini <chủ đề>` (tự gửi `docs/prompt-gemini-nghien-cuu.md` cho Gemini có tìm Google, lưu `du-an/<mã>/nguon/gemini/`), hoặc dán prompt vào app Gemini Deep Research. Sau đó Claude kiểm lại từng link.
+**Bước 1 với Gemini:** nhắn bot `/gemini <chủ đề>` (xong bấm nút **🎬 Làm video từ kết quả này** để Claude kiểm link và đề xuất góc ngay, nối thẳng cổng 1 → cổng 2) (tự gửi `docs/prompt-gemini-nghien-cuu.md` cho Gemini có tìm Google, lưu `du-an/<mã>/nguon/gemini/`), hoặc dán prompt vào app Gemini Deep Research. Sau đó Claude kiểm lại từng link.
 **Mẫu cảnh:** `stat-hero`, `route-map`, `data-cards`, `compare-bars`, `geo-map` (bản đồ Mapbox thật; dữ liệu địa lý trong `du-an/bcons-central-park/assets/geo/`, nguồn ở `du-an/bcons-central-park/assets/geo/NGUON.md`; lớp chưa có dữ liệu chính thức phải là "minh họa"), `project-close` (schema `engine/remotion/src/spec.ts`). Mỗi số trong spec có `sourceId` trỏ tới bảng nguồn; `npm run lint` kiểm tra.
 
 ## 3. Danh sách kiểm tra nội dung (bắt buộc trước bước 2 → anh duyệt)
