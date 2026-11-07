@@ -36,3 +36,15 @@ test("kiemMasterFile: căn đúng tỷ lệ CĐT thì qua; căn sai thì liệt 
   assert.deepEqual(loi.sort(), ["A1-02 01", "A1-02 03", "A1-02 05"]);
   assert.ok(!JSON.stringify(r).includes("Tên khách"));
 });
+
+test("findPriceColumns: tiêu đề thật của Master File gộp cột PTTT 02 / 03 và 04 / 05, bỏ cột đơn giá, có VAT, phí bảo trì, chênh lệch", () => {
+  const header = [
+    "Mã căn", "Block", "Tầng", "Vị trí", "Loại căn", "PN", "WC", "DT tim tường (m²)", "DT thông thủy (m²)",
+    "Giá chưa VAT\nPTTT 01 (sau CK 8,5%)", "Đơn giá tim tường\nPTTT 01", "Giá có VAT\nPTTT 01",
+    "Giá chưa VAT\nPTTT 02 / 03", "Đơn giá tim tường\nPTTT 02 / 03", "Giá có VAT\nPTTT 02 / 03",
+    "Phí bảo trì 2%\nPTTT 01", "Phí bảo trì 2%\nPTTT 02 / 03", "Chênh lệch giá chưa VAT\n(PTTT 02/03 − 01)",
+    "Rổ giá tốt", "Số KH đang giữ/mua", "Tình trạng trong Master",
+    "Giá chưa VAT\nPTTT 04 / 05 (CK 2,45%)", "Đơn giá tim tường\nPTTT 04 / 05", "Giá có VAT\nPTTT 04 / 05", "Phí bảo trì 2%\nPTTT 04 / 05",
+  ];
+  assert.deepEqual(findPriceColumns(header), { ma: 0, "01": 9, "02": 12, "03": 12, "04": 21, "05": 21 });
+});

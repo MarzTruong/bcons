@@ -18,10 +18,13 @@ export function findPriceColumns(header) {
   header.forEach((h, i) => {
     const t = fold(h);
     if (out.ma === undefined && /ma can|ma\s*$|^ma\b/.test(t)) out.ma = i;
-    const m = t.match(/pttt\s*0?([1-5])\b/);
-    if (m && /gia|vat/.test(t) || (m && !/tien|dot|vay|so tien/.test(t))) {
-      const k = `0${m[1]}`;
-      if (out[k] === undefined) out[k] = i;
+    // "PTTT 02 / 03" = một cột giá dùng chung cho cả hai PTTT. Bỏ cột đơn giá, giá có VAT, phí bảo trì, chênh lệch, tiền từng đợt.
+    const m = t.match(/pttt\s*(0?[1-5](?:\s*\/\s*0?[1-5])*)\b/);
+    if (m && !/don gia|co vat|phi|chenh|tien|dot|vay/.test(t)) {
+      for (const n of m[1].split("/")) {
+        const k = `0${n.trim().replace(/^0/, "")}`;
+        if (out[k] === undefined) out[k] = i;
+      }
     }
   });
   return ["01", "02", "03", "04", "05"].every((k) => out[k] !== undefined) && out.ma !== undefined ? out : null;
