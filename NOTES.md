@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 07/11/2026 tối (phiên Off; bot tự cập nhật, laptop xong, PC còn làm tay lần cuối)
+Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lên lịch 8–12/11, bộ phong cách mới, giọng chặt)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -60,6 +60,18 @@ Cập nhật lần cuối: 07/11/2026 tối (phiên Off; bot tự cập nhật, 
 
 - [x] 07/11/2026 tối: bot **tự cập nhật** khi mở và khi nhận việc lúc chuyển máy; `/capnhat` tắt bot để `Bcons-Bot.cmd` + `scripts/bot/capnhat.cmd` cập nhật (tự cất file sửa dở vào git stash, tự ghép bản lưu chưa lên GitHub), báo "đã cập nhật"/"đã là bản mới nhất". Laptop đã lên bản mới (`3cbb800`), đã đẩy báo cáo `/gemini` lãi suất tháng 11 (`nguon/gemini/2026-11-07-...`, chưa kiểm link; Gemini không trả danh sách trang Google, đã thêm cảnh báo). 202 test qua.
 
+- [x] 07–08/11/2026 (phiên dài trên cloud):
+  - Bot: menu lệnh Telegram; menu tick chọn 1/nhiều/tất cả video; `/giong <số> canh<n>` tạo lại riêng một cảnh; `/gemini` có nút 🎬 "Làm video từ kết quả này" (Claude làm cổng 1 rồi dừng); `/duyet` chỉ gửi chữ caption (không gửi lại video, hết lỗi >50 MB). PC đã khai báo git (user Marz), tự cập nhật OK.
+  - Gemini: chạy được trên cloud (key trong Network secrets, `NODE_USE_ENV_PROXY=1`, gọi stream + tóm tắt suy nghĩ để proxy không cắt sau 30 giây), tự hỏi lại khi không tìm Google, đổi link chuyển hướng Google về link gốc, thay link Gemini tự bịa trong bảng bằng link thật. Prompt mới: bắt tìm Google, trích nguyên văn, ghi kỳ số liệu. Báo cáo lãi suất tháng 11 đã kiểm (`nguon/gemini/2026-11-07-...-KIEM.md`): bản đầu bịa 9/10 link.
+  - Video 7 `07-lai-vay-ha-nhiet` (lãi vay tháng 10: Vietcap 9–10,7%, thả nổi 12–15%, NHNN giảm lãi; trần 6,9% PTTT 03/04): đủ 4 cổng, đã render, duyệt.
+  - Giọng: cài đặt cố định stability 0.85 / similarity 0.9 / style 0.2 (hết trôi giọng Bắc), test `giong-doc.test.mjs` chặn đổi lại.
+  - Phụ đề: số 1–9 cũng hiện chữ số khi đếm; hết dính chữ ở từ đang đọc.
+  - Thiết kế: bộ phong cách mặc định `moi` (A ảnh dự án / B bản tin sáng / C khối màu, xoay theo số video), video 1–7 đã chuyển sang; các kiểu thử `banve`, `tapchi`, `bangls` giữ làm lựa chọn. Góc video chỉ còn QR, tên + QR ở cảnh cuối. Nhạc to hơn lúc đọc (0,16). Kho hiệu ứng 11 file (cần `/sfx` để tạo 8 file mới). `DESIGN.md`, `PRODUCT.md`.
+  - Thư mục video đổi tên `<số>-<tên>` (01–07), Sheet cập nhật theo. Drive: Newsky dời vào `data/bcons-newsky/`, video test vào `_luu-tru/video-test/`, `DOC-TRUOC.md` viết lại; 30 bài nhạc nền.
+  - Storyboard bản đồ chụp được trên cloud (`REMOTION_GL=swangle`).
+  - Quy tắc mới trong `CLAUDE.md`: bị chặn mạng thì dừng báo host; nguyên tắc "No AI Slop"; thiết kế mới phải đưa ảnh mẫu trước.
+  - Metricool: 10 bài đã lên lịch (FB Reel + TikTok): CN 8/11 video 7 (10:00), T2 9/11 video 4 (FB 12:00, TikTok 18:00; caption FB viết lại kiểu kể chuyện, anh duyệt), T3 10/11 video 5, T4 11/11 video 3, T5 12/11 video 6. Giờ theo số liệu giờ cao điểm Metricool. 2 bản nháp video 4 cũ còn trong Metricool (không đăng). 228 test qua.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -75,10 +87,11 @@ Cập nhật lần cuối: 07/11/2026 tối (phiên Off; bot tự cập nhật, 
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
-- [ ] **Anh chạy thử trên laptop:** `/sfx` (chép hiệu ứng sang Drive, không tốn credit) → `/render 3` (nghe nhạc, hiệu ứng, xem tên + QR, chụp màn hình quét QR) → `/duyet 3` → báo em giờ đăng để hẹn Metricool. `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay` khi mở bot cả PC và laptop. Đặt `TEN_MAY=PC` / `TEN_MAY=Laptop` trong `.env` từng máy.
-- [ ] **PC (làm tay lần cuối):** đóng bot → `cd E:\\Claude\\bcons; git stash` → `git fetch origin main` → `git reset --hard origin/main` → `cd engine\\remotion; npm install` → thêm `TEN_MAY=PC` vào `.env` → mở `Bcons-Bot.cmd`. Nếu báo "would be overwritten" thì xóa các file liệt kê (đều có trên GitHub) rồi làm lại. Sau lần này PC tự cập nhật. Laptop: thêm `TEN_MAY=Laptop`.
-- [ ] Kiểm báo cáo Gemini lãi suất tháng 11 (mở từng link) khi làm video số 7; FDI Đồng Nai 10 tháng có 2 số mâu thuẫn (2,5 và 1,9 tỷ USD).
-- [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng bài 4 (hạ tầng) lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần).
+- [ ] `/sfx` trên bot để tạo 8 hiệu ứng mới (kho 11 file); render sau đó mới có đủ. `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
+- [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).
+- [ ] Từ 13/11 chưa có bài: làm video 8 (`/gemini <chủ đề>` → 🎬, hoặc nhắn chủ đề). Video đợt 2 (29/11) từ `video/dot-2/kich-ban.md`.
+- [ ] Các cảnh bản đồ / route-map / compare-bars vẫn mẫu cũ, chỉ đổi màu theo bộ `moi`; anh thấy lệch phong cách thì làm lại riêng cảnh đó (đưa ảnh mẫu trước).
+- [ ] Xóa 2 bản nháp video 4 cũ trong Metricool Planner (tùy anh). Video 1, 2 chưa render/duyệt bản mới, chưa lên lịch.
 - [ ] Cloud: biến môi trường giữ `REMOTION_MAPBOX_TOKEN`, nên xóa `ELEVENLABS_API_KEY`, `GEMINI_API_KEY`, `TELEGRAM_*` (khóa tiêu tiền không cần trên cloud). Phiên mới mới có Mapbox để em chụp storyboard bản đồ.
 - [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
 - [ ] Anh duyệt caption bài 5 (cho thuê) và 6 (tái thiết). Bài cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu.
