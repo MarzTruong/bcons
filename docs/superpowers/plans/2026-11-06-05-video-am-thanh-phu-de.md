@@ -1,4 +1,4 @@
-> **Trạng thái:** Đang làm. Xong: D (nhạc nền, hiệu ứng), E (tên + QR, landing Gọi/Zalo). G (`/gemini`, 07/11), B (phụ đề: ký hiệu %, cỡ chữ vừa 2 dòng, nhấn số/chữ `nhan`, `npm run phu-de`, 07/11). A (storyboard có hình: `npm run storyboard`, bot `/storyboard`, thời lượng ước tính, cổng 2 gồm hình, 07/11). C (viền vẽ dần + vệt sáng chạy quanh ranh `vienChay`, chưa xem trên video thật vì cloud không có Mapbox, 07/11). Chưa: F (test Master File theo PDF PTTT của CĐT).
+> **Trạng thái:** Đã xong 07/11/2026: A storyboard có hình, B phụ đề, C viền bản đồ chạy (`vienChay`), D nhạc + hiệu ứng, E tên + QR, F test theo PDF PTTT của CĐT (`pttt-cdt.json`, `/kiemgia`), G `/gemini`. Còn chờ anh chạy thử trên máy: `/sfx`, render có nhạc, `/kiemgia`, bản đồ có `vienChay`.
 
 # Kế hoạch 05: Video có nhạc nền, hiệu ứng, phụ đề chuẩn, storyboard có hình, watermark
 

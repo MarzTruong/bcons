@@ -191,6 +191,13 @@ export function createBot(deps) {
         await say(`Xem xong: ưng thì nhắn Claude "duyệt storyboard ${name}" (rồi mới /giong ${name}); cần sửa cảnh nào thì nói cảnh đó.`);
       });
     },
+    kiemgia() {
+      return enqueue("kiểm Master File", async () => {
+        await say("Đang kiểm Master File theo 5 thông báo PTTT của CĐT...");
+        const out = await run("npm", ["run", "kiem-gia"], remotionDir, "Kiểm Master File", 10 * 60e3);
+        await say(tail(out, 40));
+      });
+    },
     gemini(words) {
       const topic = (words ?? []).join(" ").trim();
       if (!topic) return say("Nhắn kèm chủ đề, ví dụ: /gemini lãi suất vay mua nhà tháng 11");

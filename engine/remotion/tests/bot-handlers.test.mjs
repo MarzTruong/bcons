@@ -248,3 +248,11 @@ test("/storyboard <tên> → chụp khung (không tốn credit), gửi mỗi c�
   assert.ok(s.said.some((m) => /Cần Mapbox/.test(m.text)));
   assert.ok(s.said.some((m) => /ước tính/.test(m.text)));
 });
+
+test("/kiemgia → kiểm Master File theo CĐT, gửi kết quả (không lưu gì lên GitHub)", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/kiemgia"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.execs.some((e) => e === "npm run kiem-gia"), s.execs.join("|"));
+  assert.ok(!s.execs.some((e) => e.startsWith("git commit")));
+});

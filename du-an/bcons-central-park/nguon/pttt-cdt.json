@@ -1,0 +1,26 @@
+{
+  "_nguon": "Chép tay từ 5 thông báo PTTT của CĐT (Công ty CP Phát triển Đô thị Tam Hiệp), Drive: Bcons - Dong bo thiet bi/data/bcons-central-park/tai-lieu-cdt/7. PTTT/BPTH - PTTT 0x.pdf. Em đọc 07/11/2026. Đây là 'đáp án' để test công cụ tính và Master File, không suy ra thêm.",
+  "chung": {
+    "vat": 0.1,
+    "phiBaoTri": 0.02,
+    "denBanGiao": "Lũy tiến 95% giá trị căn hộ + 100% thuế GTGT + 100% phí bảo trì tại thông báo bàn giao căn hộ",
+    "dotSo": "5%, không bao gồm thuế GTGT"
+  },
+  "pttt": {
+    "01": { "so": "05/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0.085, "tranLai": null,
+      "dot": [5, 15, 5, 5, 5, 10, 5, 5, 5, 10, 25, 5],
+      "ghiChu": "Chiết khấu 8,5% trên giá chưa VAT, chưa phí bảo trì, theo giá PTTT 02." },
+    "02": { "so": "06/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0, "tranLai": null,
+      "dot": [5, 15, 50, 25, 5], "vay": [3],
+      "ghiChu": "Đợt 3 ngân hàng giải ngân 50%; CĐT hỗ trợ lãi và ân hạn gốc từ ngày giải ngân đến thông báo bàn giao, tối đa 24 tháng." },
+    "03": { "so": "07/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0, "tranLai": 6.9,
+      "dot": [5, 5, 50, 5, 5, 25, 5], "vay": [3],
+      "ghiChu": "Lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; gói cố định tối đa 30 tháng tại MB." },
+    "04": { "so": "09/TB-DTTH", "ngay": "26/10/2026", "chietKhau": 0.0245, "tranLai": 6.9,
+      "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
+      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; trần 6,9% như PTTT 03; MB, gói cố định tối đa 30 tháng." },
+    "05": { "so": "10/TB-ĐTTH", "ngay": "26/10/2026", "chietKhau": 0.0245, "tranLai": null,
+      "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
+      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng, KHÔNG có trần 6,9%. Lưu ý: PDF ghi bàn giao 'Dự kiến Quý I/2029' (các PTTT khác ghi Quý II/2029), cần hỏi CĐT." }
+  }
+}
