@@ -1,6 +1,6 @@
 # Video 7 "Lãi vay hạ nhiệt, mua nhà tính sao" (07/11/2026)
 
-Spec: `du-an/bcons-central-park/video/07-lai-vay-ha-nhiet/spec.json` (status `draft`, chờ anh duyệt). Nguồn số liệu thị trường: báo cáo Gemini chạy lại 07/11/2026, đã mở link gốc đối chiếu từng câu: `du-an/bcons-central-park/nguon/gemini/2026-11-07-lai-suat-vay-mua-nha-thang-11-KIEM.md`. Số về dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
+Spec: `du-an/bcons-central-park/video/07-lai-vay-ha-nhiet/spec.json` (status `approved`: anh duyệt chữ, số liệu, caption và storyboard ngày 07/11/2026). Nguồn số liệu thị trường: báo cáo Gemini chạy lại 07/11/2026, đã mở link gốc đối chiếu từng câu: `du-an/bcons-central-park/nguon/gemini/2026-11-07-lai-suat-vay-mua-nha-thang-11-KIEM.md`. Số về dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
 
 Khác video 3 (số quý II, tháng 8): video này dùng số **tháng 10/2026** và tin Ngân hàng Nhà nước yêu cầu giảm lãi, góc "lãi đã hạ, nhưng đoạn sau ưu đãi mới quan trọng".
 
@@ -36,4 +36,4 @@ Ghi chú nội dung:
 - [x] Không quảng cáo căn "CĐT LOCK", không nói "sắp hết".
 - [x] Không so sánh dự án khác.
 - [x] Cảnh cuối không đọc/không hiện SĐT dạng chữ; tên + QR tự thêm khi render.
-- [ ] Anh duyệt toàn bộ (chờ).
+- [x] Anh duyệt toàn bộ ngày 07/11/2026.
