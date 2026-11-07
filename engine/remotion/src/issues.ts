@@ -6,17 +6,17 @@ export type TapChiIssue = {
   /** Nền bìa. */ ground: string;
   /** Chữ trên bìa. */ ink: string;
   /** Màu nhấn cho số. */ hi: string;
-  /** Nền trang ruột và chữ trên đó. */ page: string;
+  /** Nền trang ruột và chữ trên đó: cùng nền bìa (anh 07/11/2026: trang tối khó đọc). */ page: string;
   pageInk: string;
   /** Viền chữ phụ đề. */ stroke: string;
 };
 
 export const TAPCHI: TapChiIssue[] = [
-  { name: "son", ground: "#b5291f", ink: "#fff4e6", hi: "#ffc94d", page: "#5e120c", pageInk: "#fff4e6", stroke: "#3d0b07" },
-  { name: "coban", ground: "#1c3faa", ink: "#fff4e6", hi: "#ffb59e", page: "#0f2463", pageInk: "#fff4e6", stroke: "#091640" },
-  { name: "nghe", ground: "#e3a21a", ink: "#1a120b", hi: "#8f1d14", page: "#1a120b", pageInk: "#f3c14b", stroke: "#1a120b" },
-  { name: "man", ground: "#5b2346", ink: "#fff4e6", hi: "#f6b26b", page: "#33122a", pageInk: "#fff4e6", stroke: "#22091b" },
-  { name: "ngoc", ground: "#0c6a6c", ink: "#fff4e6", hi: "#ffd19a", page: "#063f41", pageInk: "#fff4e6", stroke: "#032829" },
+  { name: "son", ground: "#b5291f", ink: "#fff4e6", hi: "#ffc94d", page: "#b5291f", pageInk: "#fff4e6", stroke: "#3d0b07" },
+  { name: "coban", ground: "#1c3faa", ink: "#fff4e6", hi: "#ffb59e", page: "#1c3faa", pageInk: "#fff4e6", stroke: "#091640" },
+  { name: "nghe", ground: "#e3a21a", ink: "#1a120b", hi: "#8f1d14", page: "#e3a21a", pageInk: "#1a120b", stroke: "#e3a21a" },
+  { name: "man", ground: "#5b2346", ink: "#fff4e6", hi: "#f6b26b", page: "#5b2346", pageInk: "#fff4e6", stroke: "#22091b" },
+  { name: "ngoc", ground: "#0c6a6c", ink: "#fff4e6", hi: "#ffd19a", page: "#0c6a6c", pageInk: "#fff4e6", stroke: "#032829" },
 ];
 
 export type BangIssue = {

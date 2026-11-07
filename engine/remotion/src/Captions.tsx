@@ -48,7 +48,8 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
           color: C.text,
           opacity: pop,
           transform: `translateY(${(1 - pop) * 20}px)`,
-          textShadow: `0 4px 0 ${C.stroke}, 0 0 12px ${C.stroke}, 3px 3px 0 ${C.stroke}, -3px 3px 0 ${C.stroke}, 3px -3px 0 ${C.stroke}, -3px -3px 0 ${C.stroke}`,
+          // Bìa tạp chí: nền phẳng, chữ đã đủ tương phản; viền tối trên chữ tối làm chữ lem (anh 07/11/2026).
+          textShadow: C.look === "tapchi" ? "none" : `0 4px 0 ${C.stroke}, 0 0 12px ${C.stroke}, 3px 3px 0 ${C.stroke}, -3px 3px 0 ${C.stroke}, 3px -3px 0 ${C.stroke}, -3px -3px 0 ${C.stroke}`,
         }}
       >
         {chunk.words.map((w, i) => {
@@ -72,7 +73,7 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
                 color: s && said ? accent : active ? C.gold : C.text,
                 transform: `scale(${bump})`,
                 backgroundImage: s ? `linear-gradient(90deg, ${accent}40 ${sweep}%, transparent ${sweep}%)` : undefined,
-                textShadow: s && active ? `0 0 18px ${accent}aa, 0 4px 0 ${C.stroke}` : undefined,
+                textShadow: s && active && C.look !== "tapchi" ? `0 0 18px ${accent}aa, 0 4px 0 ${C.stroke}` : undefined,
               }}
             >
               {w.text}

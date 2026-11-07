@@ -131,3 +131,8 @@ test("findSfxDir: ưu tiên thư mục Drive có file; Drive trống thì dùng 
   fs.writeFileSync(path.join(drive, "vut.mp3"), "x");
   assert.equal(findSfxDir([drive, cu]), drive);
 });
+
+test("nhạc nền lúc đang đọc đủ nghe (anh 07/11: nhỏ quá), vẫn nhỏ hơn khoảng lặng", () => {
+  assert.ok(MUSIC.duoiGiong >= 0.15);
+  assert.ok(MUSIC.duoiGiong < MUSIC.khoangLang);
+});

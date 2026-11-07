@@ -3,8 +3,8 @@ import type { SceneTiming } from "./timing";
 
 /** Mức nhạc nền (0..1). Nhạc luôn nằm dưới giọng đọc. */
 export const MUSIC = {
-  duoiGiong: 0.1,
-  khoangLang: 0.22,
+  duoiGiong: 0.16,
+  khoangLang: 0.26,
   /** Khung chuyển mượt giữa hai mức. */
   ramp: 10,
   moDau: 20,

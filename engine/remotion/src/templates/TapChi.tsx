@@ -35,7 +35,7 @@ export const TapChiGround: React.FC = () => {
 };
 
 /** Đầu báo: số báo bên trái, tên kênh bên phải, gạch đôi bên dưới. */
-const Masthead: React.FC<{ color: string; right: string }> = ({ color, right }) => {
+const Masthead: React.FC<{ color: string }> = ({ color }) => {
   const C = useTheme();
   const frame = useCurrentFrame();
   const o = interpolate(frame, [0, 10], [0, 1], clamp);
@@ -44,7 +44,6 @@ const Masthead: React.FC<{ color: string; right: string }> = ({ color, right }) 
     <div style={{ position: "absolute", top: 64, left: SIDE, right: SIDE, color, opacity: o }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
         <span style={{ fontFamily: display, fontWeight: 800, fontSize: 58, letterSpacing: -1 }}>{so ? `Số ${so}` : ""}</span>
-        <span style={{ fontSize: 32, fontWeight: 600 }}>{right}</span>
       </div>
       <div style={{ marginTop: 14, borderTop: `5px solid ${color}`, borderBottom: `2px solid ${color}`, height: 6 }} />
     </div>
@@ -63,7 +62,7 @@ export const TapChiStatHero: React.FC<TemplateProps<"stat-hero">> = ({ props, cu
   const titleSize = Math.min(168, Math.floor(940 / (longest * 0.6)));
   return (
     <AbsoluteFill style={{ color: I.ink }}>
-      <Masthead color={I.ink} right="Tuấn Trương · Biên Hòa" />
+      <Masthead color={I.ink} />
       <div style={{ position: "absolute", top: 210, left: SIDE - 6, right: SIDE, display: "flex", flexDirection: "column" }}>
         {props.titleLines.map((t, i) => {
           const p = interpolate(frame, [8 + 6 * i, 26 + 6 * i], [0, 1], { ...clamp, easing: out });
@@ -99,11 +98,11 @@ export const TapChiDataCards: React.FC<TemplateProps<"data-cards">> = ({ props, 
   const head = interpolate(frame, [4, 22], [0, 1], { ...clamp, easing: out });
   return (
     <AbsoluteFill style={{ background: I.page, color: I.pageInk }}>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 22, background: I.ground }} />
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 22, background: I.ink }} />
       <div style={{ position: "absolute", top: 92, left: SIDE, right: SIDE, display: "flex", flexDirection: "column" }}>
       <div style={{ fontSize: 32, fontWeight: 600, opacity: 0.8 }}>{props.kicker}</div>
       <div style={{ overflow: "hidden", paddingTop: 16, marginLeft: -4 }}>
-        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 112, lineHeight: 0.95, letterSpacing: -3, transform: `translateY(${(1 - head) * 100}%)` }}>
+        <div style={{ fontFamily: display, fontWeight: 800, fontSize: 104, lineHeight: 1.12, letterSpacing: -3, transform: `translateY(${(1 - head) * 100}%)` }}>
           {props.title}
         </div>
       </div>
@@ -111,12 +110,12 @@ export const TapChiDataCards: React.FC<TemplateProps<"data-cards">> = ({ props, 
         {props.cards.map((c, i) => {
           const p = interpolate(frame, [starts[i], starts[i] + 14], [0, 1], { ...clamp, easing: out });
           const next = starts[i + 1];
-          const dim = next == null ? 1 : interpolate(frame, [next, next + 12], [1, 0.55], clamp);
+          const dim = next == null ? 1 : interpolate(frame, [next, next + 12], [1, 0.6], clamp);
           const hasNum = /\d/.test(c.big);
           return (
-            <div key={c.cueKey} style={{ borderTop: `3px solid ${I.pageInk}`, padding: "22px 0 30px", opacity: p * dim, transform: `translateY(${(1 - p) * 30}px)` }}>
+            <div key={c.cueKey} style={{ borderTop: `3px solid ${I.pageInk}`, padding: "26px 0 34px", opacity: p * dim, transform: `translateY(${(1 - p) * 30}px)` }}>
               <div style={{ fontSize: 34, fontWeight: 600 }}>{c.tag}</div>
-              <div style={{ fontFamily: display, fontWeight: 800, fontSize: hasNum ? 128 : 96, lineHeight: 0.95, letterSpacing: -3, color: hasNum ? I.hi : I.pageInk, marginTop: 8 }}>
+              <div style={{ fontFamily: display, fontWeight: 800, fontSize: hasNum ? 120 : 92, lineHeight: 1.15, letterSpacing: -3, color: hasNum ? I.hi : I.pageInk, marginTop: 14 }}>
                 {c.big}
               </div>
               <div style={{ fontSize: 38, fontWeight: 500, marginTop: 10, opacity: 0.9 }}>{c.sub}</div>

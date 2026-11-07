@@ -29,3 +29,10 @@ test("flapChar: chữ số lật qua vài số rồi dừng đúng; ký tự kh�
   assert.equal(flapChar("5", 12, 10, 3), " ", "ô sau lật trễ hơn ô trước");
   assert.equal(flapChar("5", 60, 10, 3), "5");
 });
+
+test("tapchi: trang ruột cùng nền bìa, chữ cùng màu chữ bìa (anh 07/11: trang tối khó đọc, phụ đề mất)", () => {
+  for (const t of TAPCHI) {
+    assert.equal(t.page, t.ground, t.name);
+    assert.equal(t.pageInk, t.ink, t.name);
+  }
+});
