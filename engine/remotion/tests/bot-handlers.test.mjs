@@ -98,6 +98,7 @@ test("/render rồi /duyet: gửi bản đăng đã duyệt và lưu GitHub", as
   await s.bot.handleUpdate(msg("/duyet a"));
   assert.equal(s.sent.length, 1);
   assert.equal(s.sent[0].mp4Path, path.join(s.outDir, "a.mp4"));
+  assert.equal(s.sent[0].guiVideo, false, "/duyet chỉ gửi chữ caption, video đã xem ở bước render");
   const cap = parseCaption(fs.readFileSync(path.join(s.projDir, "video", "a", "caption.md"), "utf8"));
   assert.ok(cap.meta.videoSha256);
   assert.match(s.said.at(-1).text, /Đã duyệt a/);

@@ -9,7 +9,7 @@ export const HELP = [
   "Lệnh bot Bcons:",
   "/danhsach – trạng thái các video",
   "/xem <tên> – gửi caption + bản xem thử",
-  "/duyet <tên> – duyệt caption + video, gửi bản đăng, lưu lên GitHub",
+  "/duyet <tên> – duyệt caption + video vừa render, gửi chữ caption để đăng, lưu lên GitHub",
   "/render <số> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
   "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để tick chọn 1, nhiều hoặc tất cả video.)",
   "/sfx – tạo hiệu ứng âm thanh còn thiếu trong kho 11 kiểu (tốn ít credit, hỏi trước)",

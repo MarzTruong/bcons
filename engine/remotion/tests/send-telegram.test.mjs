@@ -98,3 +98,16 @@ test("rà soát: caption đã duyệt nhưng vi phạm quy tắc hiện hành th
   await assert.rejects(sendApproved({ captionPath: c, mp4Path: mp4, env: ENV, fetchFn: f.fn }), /số điện thoại/);
   assert.equal(f.calls.length, 0);
 });
+
+test("guiVideo: false (bước /duyet): vẫn kiểm duyệt theo đúng file video, chỉ gửi chữ caption, video > 50 MB vẫn được", async () => {
+  const { c, mp4 } = setup();
+  duyetCaption(c);
+  duyetVideo(c, mp4);
+  fs.truncateSync(mp4, 120 * 1024 * 1024);
+  const f = fakeFetch();
+  // file đổi sau khi duyệt → vẫn bị chặn (dấu vân tay video)
+  await assert.rejects(sendApproved({ captionPath: c, mp4Path: mp4, env: ENV, fetchFn: f.fn, guiVideo: false }), /render lại|video/);
+  duyetVideo(c, mp4);
+  await sendApproved({ captionPath: c, mp4Path: mp4, env: ENV, fetchFn: f.fn, guiVideo: false });
+  assert.ok(f.calls.length >= 2 && f.calls.every((u) => /sendMessage$/.test(u)), f.calls.join("|"));
+});

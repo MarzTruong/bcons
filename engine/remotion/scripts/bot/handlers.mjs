@@ -168,9 +168,10 @@ export function createBot(deps) {
           return say(`Đã duyệt caption ${name}. ${saved}\nChưa có video: nhắn /render ${name}, xem xong nhắn lại /duyet ${name}.`);
         }
         if (!approvalState(fs.readFileSync(cap, "utf8"), mp4).ok) duyetVideo(cap, mp4);
-        await sendApproved({ captionPath: cap, mp4Path: mp4, label: name });
+        // Chỉ gửi chữ caption để sao chép (anh 08/11/2026): video đã xem ở bước render, gửi lại dễ vượt 50 MB.
+        await sendApproved({ captionPath: cap, mp4Path: mp4, label: name, guiVideo: false });
         const saved = await gitSave([rel], `Duyet ${name}`);
-        await say(`✅ Đã duyệt ${name}, bản đăng ở các tin phía trên. ${saved}\nViệc còn lại: hẹn giờ trên Metricool (TikTok) và Business Suite (Facebook).`);
+        await say(`✅ Đã duyệt ${name} (caption + video bản render hiện tại). Caption FB/TikTok ở các tin phía trên. ${saved}\nViệc còn lại: nhắn Claude ngày giờ đăng để lên lịch.`);
       });
     },
     render([name, opt]) {
