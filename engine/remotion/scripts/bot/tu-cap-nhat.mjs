@@ -11,6 +11,7 @@ export async function canCapNhat(run) {
 
 /** Nội dung capnhat.log → { ok, tomTat } để báo Telegram. */
 export function docLogCapNhat(log) {
-  const tomTat = String(log).trim().split(/\r?\n/).slice(-12).join("\n");
-  return { ok: !/\bLOI\b|error|fatal|lỗi/i.test(tomTat), tomTat };
+  const tomTat = String(log).trim().split(/\r?\n/).filter((l) => !/KHONG CO BAN MOI/.test(l)).slice(-12).join("\n");
+  const ban = (String(log).match(/Ban hien tai: (\w+)/) ?? [])[1];
+  return { ok: !/\bLOI\b|error|fatal|lỗi/i.test(tomTat), tomTat, khongMoi: /KHONG CO BAN MOI/.test(log), ban };
 }

@@ -33,8 +33,8 @@ for /f %%h in ('git rev-parse --short HEAD') do set "SAU=%%h"
 git log -1 --format="Ban hien tai: %%h %%s" >> "%LOG%" 2>&1
 cd engine\remotion
 call npm install --no-audit --no-fund >> "%LOG%" 2>&1
-REM khong co gi moi thi khong bao Telegram
-if "!TRUOC!"=="!SAU!" del "%LOG%"
+REM khong co gi moi: van bao Telegram la da moi nhat (anh bam /capnhat thi biet ket qua)
+if "!TRUOC!"=="!SAU!" echo KHONG CO BAN MOI >> "%LOG%"
 exit /b 0
 :loi
 echo LOI: khong lay duoc ban moi, bot chay tiep ban dang co. Chup tin nay gui Claude. >> "%LOG%"

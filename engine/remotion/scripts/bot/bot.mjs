@@ -105,10 +105,11 @@ async function main() {
   const logFile = path.join(REMOTION_DIR, "out", "tam", "capnhat.log");
   let vuaCapNhatLoi = false;
   if (fs.existsSync(logFile)) {
-    const { ok, tomTat } = docLogCapNhat(fs.readFileSync(logFile, "utf8"));
+    const { ok, tomTat, khongMoi, ban } = docLogCapNhat(fs.readFileSync(logFile, "utf8"));
     fs.rmSync(logFile, { force: true });
     vuaCapNhatLoi = !ok;
-    await tg.sendMessage(chatId, `${ok ? "✅ Đã tự cập nhật bản mới." : "⚠️ Tự cập nhật có lỗi, chụp gửi Claude:"}\n${tomTat}`).catch(() => {});
+    const text = !ok ? `⚠️ Tự cập nhật có lỗi, chụp gửi Claude:\n${tomTat}` : khongMoi ? `✅ Đã là bản mới nhất${ban ? ` (${ban})` : ""}, không có gì để cập nhật.` : `✅ Đã cập nhật bản mới${ban ? ` (${ban})` : ""}.`;
+    await tg.sendMessage(chatId, text).catch(() => {});
   }
   // Tự cập nhật: GitHub có bản mới thì thoát mã 4, Bcons-Bot.cmd lấy bản mới rồi bật lại (anh không phải gõ lệnh).
   const gitRun = (args) => exec("git", args, { cwd: REPO_ROOT, timeoutMs: 60e3 });
