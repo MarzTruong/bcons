@@ -1,0 +1,125 @@
+{
+  "name": "07-lai-vay-ha-nhiet",
+  "so": 7,
+  "tieuDe": "Lãi vay hạ nhiệt, mua nhà tính sao",
+  "status": "draft",
+  "style": "classic",
+  "motion": "truot",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Lãi vay mua nhà đã hạ nhiệt chưa? Khảo sát tháng 10{mười} của Vietcap{Viết Cáp}: gói cố định 1{một} đến 2{hai} năm đầu còn 9{chín} đến 10,7%/năm,{mười phẩy bảy phần trăm một năm,} thấp hơn mức 9,5{chín phẩy năm} đến 11,5%{mười một phẩy năm phần trăm} của quý III.{ba.}",
+      "cues": {
+        "value": "9"
+      },
+      "nhan": [
+        "hạ",
+        "nhiệt"
+      ],
+      "props": {
+        "badge": "Nguồn: Vietcap, Vietstock 06/11/2026",
+        "titleLines": [
+          "LÃI VAY",
+          "MUA NHÀ",
+          "THÁNG 10/2026"
+        ],
+        "cardLabel": "Cố định 1–2 năm đầu (Vietcap)",
+        "prefix": "Từ",
+        "value": 9,
+        "decimals": 0,
+        "unit": "–10,7%/năm",
+        "sourceId": "vietcap-t10"
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "data-cards",
+      "markup": "Lý do: tháng 10,{mười,} Ngân hàng Nhà nước yêu cầu các ngân hàng giảm lãi. Nhiều nơi hạ lãi tiết kiệm khoảng 0,5{không phẩy năm} điểm %,{phần trăm,} có gói vay mua nhà thấp hơn 1{một} đến 1,5{một phẩy năm} điểm.",
+      "cues": {
+        "c1": "Ngân",
+        "c2": "0,5",
+        "c3": "gói"
+      },
+      "props": {
+        "kicker": "THÁNG 10/2026",
+        "title": "Vì sao lãi vay hạ?",
+        "cards": [
+          {
+            "tag": "NGÂN HÀNG NHÀ NƯỚC",
+            "big": "Yêu cầu giảm lãi",
+            "sub": "huy động và cho vay",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "nhnn-t10"
+          },
+          {
+            "tag": "LÃI TIẾT KIỆM GIẢM",
+            "big": "0,5 điểm %",
+            "sub": "nhiều ngân hàng, ít nhất 1 kỳ hạn",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "nhnn-t10"
+          },
+          {
+            "tag": "GÓI VAY MUA NHÀ THẤP HƠN",
+            "big": "1–1,5 điểm %",
+            "sub": "một số gói ưu đãi, so với trước",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "nhnn-t10"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "data-cards",
+      "markup": "Nhưng đó là giá năm đầu. Hết ưu đãi, lãi thả nổi có thể lên 12{mười hai} đến 15%/năm.{mười lăm phần trăm một năm.} Còn Vietcap{Viết Cáp} dự báo lãi ổn định quanh mức hiện tại đến năm 2027,{hai ngàn không trăm hai mươi bảy,} chưa giảm sâu.",
+      "cues": {
+        "c1": "12",
+        "c2": "dự"
+      },
+      "nhan": [
+        "năm",
+        "đầu."
+      ],
+      "props": {
+        "kicker": "SAU THỜI GIAN ƯU ĐÃI",
+        "title": "Đoạn dễ bị bỏ quên",
+        "cards": [
+          {
+            "tag": "THẢ NỔI SAU ƯU ĐÃI",
+            "big": "12–15%/năm",
+            "sub": "có thể lên tới (TheLEADER 03/11/2026)",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "leader-tha-noi"
+          },
+          {
+            "tag": "DỰ BÁO VIETCAP",
+            "big": "Ổn định",
+            "sub": "quanh mức hiện tại đến năm 2027",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "vietcap-t10"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Vì vậy, khi xem Bcons{Bee Cons} Central{Central} Park,{Park,} anh chị để ý phương thức thanh toán số 3{ba} và số 4:{bốn:} lãi suất vay trần 6,9%/năm,{sáu phẩy chín phần trăm một năm,} theo điều kiện cụ thể của từng phương thức.",
+      "cues": {},
+      "props": {
+        "message": "PTTT 03 và 04: lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Hình ảnh phối cảnh mang tính minh họa",
+          "sourceId": "phoi-canh"
+        }
+      }
+    }
+  ]
+}

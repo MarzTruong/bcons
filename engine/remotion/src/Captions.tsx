@@ -58,13 +58,15 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
           const accent = isNumber(w.text) ? C.teal : C.gold;
           // nhấn: nền quét 0→100% trong 6 khung khi bắt đầu đọc
           const sweep = s ? interpolate(frame, [LEAD + w.start * FPS, LEAD + w.start * FPS + 6], [0, 100], clamp) : 0;
-          const bump = s && active ? interpolate(frame, [LEAD + w.start * FPS, LEAD + w.start * FPS + 5], [1, 1.16], clamp) : active ? 1.08 : 1;
+          // Chỉ chữ nhấn phóng nhẹ (có lề riêng); chữ thường đang đọc chỉ đổi màu, phóng to sẽ lấn khoảng trống làm dính chữ.
+          const bump = s && active ? interpolate(frame, [LEAD + w.start * FPS, LEAD + w.start * FPS + 5], [1, 1.06], clamp) : 1;
           return (
             <span
               key={i}
               style={{
                 display: "inline-block",
-                marginRight: 16,
+                marginRight: s ? 22 : 16,
+                marginLeft: s ? 6 : 0,
                 padding: s ? "0 10px" : 0,
                 borderRadius: 12,
                 color: s && said ? accent : active ? C.gold : C.text,
