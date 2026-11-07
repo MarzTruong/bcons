@@ -191,7 +191,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     frames: d.frames,
                   })}
                   {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
-                    <Captions words={d.words} />
+                    <Captions words={d.words} nhan={scene.nhan} />
                   )}
                 </SceneTransition>
                 <Sequence from={LEAD} durationInFrames={d.audioFrames}>

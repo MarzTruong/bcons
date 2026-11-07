@@ -143,6 +143,69 @@ export function parseMarkup(markup) {
   return out;
 }
 
+const speechOf = (tokens) => tokens.filter((t) => t.say).map((t) => t.say).join(" ");
+
+/** Khoảng ký tự [a, b] trong lời đọc của từng token có đọc (token chỉ hiển thị: null). */
+const sayRanges = (tokens) => {
+  let cursor = 0;
+  return tokens.map((t) => {
+    if (!t.say) return null;
+    const r = [cursor, cursor + t.say.length - 1];
+    cursor = r[1] + 2;
+    return r;
+  });
+};
+
+/**
+ * Đổi chữ hiển thị trong timestamps (vd. "90 phần trăm" → "90%") khi LỜI ĐỌC KHÔNG ĐỔI: dùng lại mốc giọng cũ,
+ * không gọi ElevenLabs. Trả { ok, words } hoặc { ok: false, reason }.
+ */
+export function relabelWords(newMarkup, oldMarkup, oldWords) {
+  const oldT = parseMarkup(oldMarkup);
+  const newT = parseMarkup(newMarkup);
+  if (speechOf(oldT) !== speechOf(newT)) return { ok: false, reason: "Lời đọc đã đổi: phải tạo giọng lại (tốn credit)." };
+  if (oldT.length !== oldWords.length) return { ok: false, reason: "timestamps không khớp lời bình cũ." };
+  const oldR = sayRanges(oldT);
+  const at = (ch, edge) => {
+    const k = oldR.findIndex((r) => r && ch >= r[0] && ch <= r[1]);
+    return oldWords[k][edge];
+  };
+  const words = newT.map((t, k) => {
+    const r = sayRanges(newT)[k];
+    return r ? { text: t.show, start: at(r[0], "start"), end: at(r[1], "end") } : { text: t.show, start: null, end: null };
+  });
+  words.forEach((w, k) => {
+    if (w.start === null) {
+      const next = words.slice(k + 1).find((x) => x.start !== null);
+      w.start = w.end = next ? next.start : words[k - 1].end;
+    }
+  });
+  return { ok: true, words };
+}
+
+/** Chữ HIỆN trên màn hình phải dùng ký hiệu, không viết chữ đọc (anh yêu cầu 06/11/2026). */
+const SPELLED = [
+  [/^phần$/i, "phần trăm", "%"],
+  [/^đô$/i, "đô la", "USD"],
+  [/^héc-?ta/i, "héc-ta", "ha"],
+  [/^mét$/i, "mét vuông", "m²"],
+  [/^ki-?lô-?mét/i, "ki-lô-mét", "km"],
+];
+export function checkShownSymbols(spec) {
+  const errs = [];
+  for (const scene of spec.scenes) {
+    const shown = parseMarkup(scene.markup).map((t) => t.show);
+    shown.forEach((w, i) => {
+      for (const [re, word, sym] of SPELLED) {
+        const next = (shown[i + 1] ?? "").toLowerCase();
+        const hit = word === "phần trăm" ? re.test(w) && next.startsWith("trăm") : word === "đô la" ? re.test(w) && next.startsWith("la") : word === "mét vuông" ? re.test(w) && next.startsWith("vuông") : re.test(w);
+        if (hit) errs.push(`Cảnh ${scene.id}: chữ hiện "${word}" → viết "${sym}" và để chữ đọc trong {…}, vd. 90%{chín mươi phần trăm}`);
+      }
+    });
+  }
+  return errs;
+}
+
 /**
  * Cổng chặn dùng trước khi tạo giọng hoặc render: spec phải hợp lệ, `approved`,
  * và mọi sourceId có trong bảng nguồn. Chạy TRƯỚC khi đọc API key hay gọi mạng.

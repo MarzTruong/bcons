@@ -25,5 +25,5 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | `superpowers/plans/2026-11-06-02-lich-dang-bai.md` | Đã xong |
 | `superpowers/plans/2026-11-06-02b-bot-telegram.md` | Đã xong |
 | `superpowers/plans/2026-11-06-03-landing-crm.md` | Đã xong |
-| `superpowers/plans/2026-11-06-05-video-am-thanh-phu-de.md` | **Đang làm**: còn A, B, C, F |
+| `superpowers/plans/2026-11-06-05-video-am-thanh-phu-de.md` | **Đang làm**: còn A, C, F |
 | Kế hoạch 04 (báo cáo tuần) | Chưa viết, làm sau bài đăng đầu 09/11/2026 |

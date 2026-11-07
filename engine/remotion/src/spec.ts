@@ -220,6 +220,8 @@ const sceneBase = {
   id: z.string().min(1),
   markup: z.string().min(1),
   cues: z.record(z.string(), z.string()),
+  /** Chữ hiển thị cần nhấn mạnh trong phụ đề (số đã tự nhấn). */
+  nhan: z.array(z.string()).optional(),
 };
 
 export const SceneSchema = z.discriminatedUnion("template", [

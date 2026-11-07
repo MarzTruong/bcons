@@ -5,7 +5,7 @@
     {
       "id": "scene1",
       "template": "stat-hero",
-      "markup": "Sau khi trở thành thành phố trực thuộc Trung ương, Đồng Nai ghi nhận sức hút đầu tư mạnh mẽ với gần 2,4{hai phẩy bốn} tỷ đô la Mỹ vốn FDI{F D I} trong 9{chín} tháng đầu năm.",
+      "markup": "Sau khi trở thành thành phố trực thuộc Trung ương, Đồng Nai ghi nhận sức hút đầu tư mạnh mẽ với gần 2,4{hai phẩy bốn} tỷ USD{đô la} Mỹ vốn FDI{F D I} trong 9{chín} tháng đầu năm.",
       "cues": {
         "value": "2,4"
       },
@@ -112,7 +112,7 @@
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "Khu thương mại tự do Long Thành quy mô hơn 8.200{tám nghìn hai trăm} ha{héc ta} với tổng vốn 16{mười sáu} tỷ đô la Mỹ, dự kiến thu hút 150.000{một trăm năm mươi nghìn} lao động chất lượng cao và đào tạo 50.000{năm mươi nghìn} kỹ sư, chuyên gia công nghệ.",
+      "markup": "Khu thương mại tự do Long Thành quy mô hơn 8.200{tám nghìn hai trăm} ha{héc ta} với tổng vốn 16{mười sáu} tỷ USD{đô la} Mỹ, dự kiến thu hút 150.000{một trăm năm mươi nghìn} lao động chất lượng cao và đào tạo 50.000{năm mươi nghìn} kỹ sư, chuyên gia công nghệ.",
       "cues": {
         "c1": "quy",
         "c2": "thu",

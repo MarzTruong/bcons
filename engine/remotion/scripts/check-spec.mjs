@@ -8,8 +8,11 @@ import { captionOptsFor, checkCaption, parseCaption } from "./caption.mjs";
 import {
   checkCues,
   checkGeoFiles,
+  checkShownSymbols,
+  checkTimestamps,
   checkSourceLinks,
   checkSources,
+  parseMarkup,
   resolveSpecPath,
 } from "./spec-tools.mjs";
 
@@ -26,8 +29,21 @@ for (const name of names) {
     const { ok, missing } = checkSources(spec, md);
     if (!ok) throw new Error(`sourceId không có trong bảng nguồn ${mdPath}: ${missing.join(", ")}`);
     if (spec.name !== name) throw new Error(`spec.name "${spec.name}" khác tên file "${name}"`);
-    const cueErrors = checkCues(spec);
+    const cueErrors = [...checkCues(spec), ...checkShownSymbols(spec)];
     if (cueErrors.length) throw new Error(cueErrors.join("; "));
+    // Có giọng rồi: timestamps phải khớp lời đọc (sửa chữ hiển thị thì chạy npm run phu-de, không cần tạo giọng lại)
+    const tsPath = videoPaths(name, projDir).timestamps;
+    if (fs.existsSync(tsPath)) {
+      const tsErr = checkTimestamps(spec, JSON.parse(fs.readFileSync(tsPath, "utf8")));
+      if (tsErr.length) throw new Error(tsErr.join("; "));
+      const ts = JSON.parse(fs.readFileSync(tsPath, "utf8"));
+      spec.scenes.forEach((s, i) => {
+        const shows = parseMarkup(s.markup).map((t) => t.show).join(" ");
+        if (ts.scenes[i] && ts.scenes[i].words.map((w) => w.text).join(" ") !== shows) {
+          throw new Error(`Cảnh ${s.id}: phụ đề trong timestamps khác chữ hiển thị trong spec. Chạy npm run phu-de -- ${name}`);
+        }
+      });
+    }
     const geoErrors = checkGeoFiles(spec, projDir);
     if (geoErrors.length) throw new Error(geoErrors.join("; "));
     const links = checkSourceLinks(spec, md);
