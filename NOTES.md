@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 07/11/2026 (phiên Off; kế hoạch 05 xong code, PC cài xong, bot chuyển máy, chuẩn hóa số phụ đề)
+Cập nhật lần cuối: 07/11/2026 tối (phiên Off; bot tự cập nhật, laptop xong, PC còn làm tay lần cuối)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -58,6 +58,8 @@ Cập nhật lần cuối: 07/11/2026 (phiên Off; kế hoạch 05 xong code, PC
 - [x] 07/11/2026: PC cài xong ở `E:\Claude\bcons`. Drive sắp xếp lại (`data/<mã>/gia`, `data/<mã>/tai-lieu-cdt`, `am-thanh/`, `video/`, `bot/`, `_luu-tru/`, `DOC-TRUOC.md`); code đọc dữ liệu dùng chung từ Drive (`findDriveRoot`, `sharedDir`). Bot: máy mở sau chờ, `/chuyenmay`, máy chờ tự nhận việc; `/capnhat` tắt bot rồi `Bcons-Bot.cmd` cập nhật (tránh khóa file Windows). Laptop đã lên bản `97ad9e7`.
 - [x] 07/11/2026: docs có dòng Trạng thái + mục lục `docs/README.md` + test docs tự động; cài skill find-skills, frontend-design, impeccable, test-driven-development. 198 test qua.
 
+- [x] 07/11/2026 tối: bot **tự cập nhật** khi mở và khi nhận việc lúc chuyển máy; `/capnhat` tắt bot để `Bcons-Bot.cmd` + `scripts/bot/capnhat.cmd` cập nhật (tự cất file sửa dở vào git stash, tự ghép bản lưu chưa lên GitHub), báo "đã cập nhật"/"đã là bản mới nhất". Laptop đã lên bản mới (`3cbb800`), đã đẩy báo cáo `/gemini` lãi suất tháng 11 (`nguon/gemini/2026-11-07-...`, chưa kiểm link; Gemini không trả danh sách trang Google, đã thêm cảnh báo). 202 test qua.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -74,7 +76,8 @@ Cập nhật lần cuối: 07/11/2026 (phiên Off; kế hoạch 05 xong code, PC
 
 ## Chưa làm
 - [ ] **Anh chạy thử trên laptop:** `/sfx` (chép hiệu ứng sang Drive, không tốn credit) → `/render 3` (nghe nhạc, hiệu ứng, xem tên + QR, chụp màn hình quét QR) → `/duyet 3` → báo em giờ đăng để hẹn Metricool. `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay` khi mở bot cả PC và laptop. Đặt `TEN_MAY=PC` / `TEN_MAY=Laptop` trong `.env` từng máy.
-- [ ] PC: lần tới đóng bot, chạy `git stash`, `git fetch origin main`, `git reset --hard origin/main`, `npm install` (một lần), sau đó dùng `/capnhat`.
+- [ ] **PC (làm tay lần cuối):** đóng bot → `cd E:\\Claude\\bcons; git stash` → `git fetch origin main` → `git reset --hard origin/main` → `cd engine\\remotion; npm install` → thêm `TEN_MAY=PC` vào `.env` → mở `Bcons-Bot.cmd`. Nếu báo "would be overwritten" thì xóa các file liệt kê (đều có trên GitHub) rồi làm lại. Sau lần này PC tự cập nhật. Laptop: thêm `TEN_MAY=Laptop`.
+- [ ] Kiểm báo cáo Gemini lãi suất tháng 11 (mở từng link) khi làm video số 7; FDI Đồng Nai 10 tháng có 2 số mâu thuẫn (2,5 và 1,9 tỷ USD).
 - [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng bài 4 (hạ tầng) lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần).
 - [ ] Cloud: biến môi trường giữ `REMOTION_MAPBOX_TOKEN`, nên xóa `ELEVENLABS_API_KEY`, `GEMINI_API_KEY`, `TELEGRAM_*` (khóa tiêu tiền không cần trên cloud). Phiên mới mới có Mapbox để em chụp storyboard bản đồ.
 - [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
