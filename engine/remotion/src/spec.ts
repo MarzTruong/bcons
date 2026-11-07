@@ -145,6 +145,8 @@ export const GeoArea = z
     fillOpacity: z.number().min(0).max(1).optional(),
     /** Nếu có: đường ranh tự vẽ dần trong ngần này frame (không thì hiện ngay). */
     drawFrames: z.number().int().min(1).optional(),
+    /** Vùng official: sau khi vẽ xong viền, một vệt sáng chạy vòng quanh ranh (video làm từ 07/11/2026). */
+    vienChay: z.boolean().optional(),
     /** Nhấp sáng một nhịp tại các mốc này. */
     pulses: z.array(z.object({ cueKey, offset: z.number().optional() })).optional(),
     /** Sau mốc này, vùng mờ xuống độ đậm `to` (0-1). */

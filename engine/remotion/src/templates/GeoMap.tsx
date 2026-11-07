@@ -18,6 +18,7 @@ import { useTheme } from "../theme";
 import { useEnter } from "../motion";
 import { useSpring, type TemplateProps } from "./common";
 import { fitCam, projectLngLat, shiftCenter, type Cam } from "../geoCamera";
+import { cometPhase, cometRanges } from "../vienChay";
 
 const clamp01 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -189,6 +190,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
     const areaFeats: Feature[] = [];
     const areaLines: Feature[] = [];
     const areaLabels: Feature[] = [];
+    const comets: Feature[] = [];
     for (const ar of props.areas) {
       const geom = d.areas[ar.key];
       const start = cue(ar.cueKey) + (ar.offset ?? 0);
@@ -210,6 +212,15 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
         const part = turf.lineSliceAlong(line, 0, Math.max(0.0005, len * draw));
         part.properties = { ...base, p: draw > 0 ? dimTo : 0 };
         areaLines.push(part);
+        // Vệt sáng chạy vòng quanh ranh sau khi vẽ xong (chỉ vùng official có vienChay)
+        const phase = ar.vienChay && ar.kind === "official" ? cometPhase(f, start, ar.drawFrames ?? 0) : null;
+        if (phase !== null) {
+          for (const [a, b] of cometRanges(phase, len)) {
+            const seg = turf.lineSliceAlong(line, a, Math.max(a + 0.0005, b));
+            seg.properties = { color, p: dimTo };
+            comets.push(seg);
+          }
+        }
       }
       const c = turf.centerOfMass(geom).geometry.coordinates;
       areaLabels.push(
@@ -225,6 +236,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       areas: turf.featureCollection(areaFeats),
       areaLines: turf.featureCollection(areaLines),
       areaLabels: turf.featureCollection(areaLabels),
+      comets: turf.featureCollection(comets),
       dim: turf.featureCollection(dimFeat),
     };
   };
@@ -279,6 +291,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
           m.addSource("dim", { type: "geojson", data: s0.dim });
           m.addSource("areas", { type: "geojson", data: s0.areas });
           m.addSource("area-lines", { type: "geojson", data: s0.areaLines });
+          m.addSource("area-comets", { type: "geojson", data: s0.comets });
           m.addSource("lines", { type: "geojson", data: s0.lines });
           m.addSource("line-labels", { type: "geojson", data: s0.lineLabels });
           m.addSource("points", { type: "geojson", data: s0.points });
@@ -304,6 +317,20 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
             filter: ["==", ["get", "kind"], "official"],
             layout: { "line-join": "round", "line-cap": "round" },
             paint: { "line-color": ["get", "color"], "line-width": ["+", 5, ["*", ["get", "flash"], 5]], "line-opacity": ["get", "p"] },
+          });
+          m.addLayer({
+            id: "area-comet-glow",
+            type: "line",
+            source: "area-comets",
+            layout: { "line-join": "round", "line-cap": "round" },
+            paint: { "line-color": "#ffffff", "line-width": 18, "line-opacity": ["*", ["get", "p"], 0.35], "line-blur": 10 },
+          });
+          m.addLayer({
+            id: "area-comet",
+            type: "line",
+            source: "area-comets",
+            layout: { "line-join": "round", "line-cap": "round" },
+            paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": ["get", "p"] },
           });
           m.addLayer({
             id: "area-outline-dashed",
@@ -396,6 +423,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
     set("dim", s.dim);
     set("areas", s.areas);
     set("area-lines", s.areaLines);
+    set("area-comets", s.comets);
     set("lines", s.lines);
     set("line-labels", s.lineLabels);
     set("points", s.points);
