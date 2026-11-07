@@ -1,14 +1,23 @@
 // Nhạc nền + hiệu ứng âm thanh cho video.
 // - Nhạc: anh để trong Drive "Bcons - Dong bo thiet bi\\am-thanh\\nhac" (máy nào cũng có); máy không có Drive thì <repo>/am-thanh/nhac/. Không lên git (giấy phép không cho phát tán file nhạc).
-// - Hiệu ứng: tạo một lần bằng ElevenLabs (`npm run sfx -- --dong-y`, tốn ít credit), lưu engine/remotion/am-thanh/sfx/ (lên git).
+// - Hiệu ứng: tạo một lần bằng ElevenLabs (`npm run sfx -- --dong-y`, tốn ít credit), lưu Drive am-thanh/sfx/ (máy không có Drive: engine/remotion/am-thanh/sfx/).
 // Trước khi render, chép vào <du-an>/.am-thanh/ (public dir của Remotion, không lên git).
 import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { sharedDir } from "./project.mjs";
+import { findDriveRoot, sharedDir } from "./project.mjs";
 
-export const SFX_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "am-thanh", "sfx");
+/** Chỗ cũ (trong repo, chỉ máy đã tạo mới có). Từ 07/11/2026 hiệu ứng để trên Drive am-thanh/sfx (máy nào cũng có). */
+export const LEGACY_SFX_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "am-thanh", "sfx");
+export const SFX_DIR = LEGACY_SFX_DIR;
+/** Thư mục lưu hiệu ứng: Drive nếu máy có Drive, không thì trong repo. */
+export const sfxSaveDir = () => (findDriveRoot() ? sharedDir("am-thanh/sfx") : LEGACY_SFX_DIR);
+const hasMp3 = (d) => fs.existsSync(d) && fs.readdirSync(d).some((f) => /\.mp3$/i.test(f));
+/** Thư mục đầu tiên có file hiệu ứng (Drive trước, rồi chỗ cũ). */
+export function findSfxDir(cands = [sfxSaveDir(), LEGACY_SFX_DIR]) {
+  return cands.find(hasMp3) ?? cands[0];
+}
 
 /** Mô tả cho ElevenLabs Sound Effects (giay = thời lượng). Tên khớp src/amThanh.ts. */
 export const SFX_PROMPTS = {
@@ -29,7 +38,7 @@ export function pickMusic(name, files, preferred) {
 }
 
 /** Chép nhạc + hiệu ứng vào <projDir>/.am-thanh/, trả phần props `amThanh` cho Remotion. */
-export function prepareAudio({ name, projDir, preferred, khongNhac = false, nhacDir = sharedDir("am-thanh/nhac"), sfxDir = SFX_DIR }) {
+export function prepareAudio({ name, projDir, preferred, khongNhac = false, nhacDir = sharedDir("am-thanh/nhac"), sfxDir = findSfxDir() }) {
   const dest = path.join(projDir, ".am-thanh");
   fs.rmSync(dest, { recursive: true, force: true });
   fs.mkdirSync(path.join(dest, "sfx"), { recursive: true });

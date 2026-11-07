@@ -109,3 +109,25 @@ test("taoSfx: không --dong-y thì từ chối, không gọi mạng; có thì t�
   assert.ok(calls.every((c) => c.url.endsWith("/v1/sound-generation") && c.key === "k" && c.body.duration_seconds > 0));
   assert.equal(fs.readFileSync(path.join(dir, "vut.mp3"), "utf8"), "co-roi");
 });
+
+test("taoSfx: hiệu ứng đã tạo ở chỗ cũ (trong repo) thì chép sang Drive, không gọi ElevenLabs lại", async () => {
+  const { taoSfx } = await import("../scripts/tao-sfx.mjs");
+  const drive = fs.mkdtempSync(path.join(os.tmpdir(), "sfxd-"));
+  const cu = fs.mkdtempSync(path.join(os.tmpdir(), "sfxc-"));
+  for (const n of ["vut", "tach", "don"]) fs.writeFileSync(path.join(cu, `${n}.mp3`), n);
+  let calls = 0;
+  const made = await taoSfx({ dongY: true, key: "k", dir: drive, legacyDir: cu, fetchFn: async () => (calls++, { ok: true, arrayBuffer: async () => new ArrayBuffer(1) }) });
+  assert.equal(calls, 0);
+  assert.deepEqual(made, []);
+  assert.equal(fs.readFileSync(path.join(drive, "tach.mp3"), "utf8"), "tach");
+});
+
+test("findSfxDir: ưu tiên thư mục Drive có file; Drive trống thì dùng thư mục cũ trong repo", async () => {
+  const { findSfxDir } = await import("../scripts/am-thanh.mjs");
+  const drive = fs.mkdtempSync(path.join(os.tmpdir(), "sfxd-"));
+  const cu = fs.mkdtempSync(path.join(os.tmpdir(), "sfxc-"));
+  fs.writeFileSync(path.join(cu, "vut.mp3"), "x");
+  assert.equal(findSfxDir([drive, cu]), cu);
+  fs.writeFileSync(path.join(drive, "vut.mp3"), "x");
+  assert.equal(findSfxDir([drive, cu]), drive);
+});
