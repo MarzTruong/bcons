@@ -32,7 +32,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 
 | Anh nhắn | Bot làm |
 |---|---|
-| `/huongdan` | Danh sách lệnh |
+| `/huongdan` | Danh sách lệnh (gõ dấu `/` trong Telegram cũng hiện menu lệnh, bot tự đăng ký mỗi lần mở) |
 | `/danhsach` | Trạng thái từng video: caption nháp/đã duyệt, có video chưa, video đã duyệt chưa |
 | `/xem <tên>` | Gửi caption Facebook + TikTok và bản xem thử video |
 | `/duyet <tên>` | Duyệt caption + video, gửi bản đăng về Telegram, tự lưu lên GitHub |
@@ -40,7 +40,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 | `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy |
 | `/storyboard <tên>` | Chụp 3 khung mỗi cảnh, gửi album từng cảnh để duyệt hình **trước** khi tạo giọng. Không tốn credit |
 | `/kiemgia` | Kiểm giá từng căn trong Master File (Drive `data/<mã>/gia/`) theo 5 thông báo PTTT của CĐT. Chỉ đọc, không gửi đi đâu |
-| `/gemini <chủ đề>` | Nhờ Gemini (có tìm Google) gom số liệu kèm link, lưu `du-an/<mã>/nguon/gemini/`, gửi tóm tắt. Cần `GEMINI_API_KEY` trong `.env`. Số liệu chưa kiểm: nhắn Claude `/bcons-video <chủ đề>` để kiểm |
+| `/gemini <chủ đề>` | Nhờ Gemini (có tìm Google) gom số liệu kèm link, lưu `du-an/<mã>/nguon/gemini/`, gửi tóm tắt. Cần `GEMINI_API_KEY` trong `.env`. Lần đầu Gemini không tìm Google thì tự hỏi lại 1 lần. Số liệu chưa kiểm: nhắn bot câu thường "kiểm link file gemini <tên file>" (Claude trên máy mở được báo) hoặc `/bcons-video <chủ đề>` |
 | `/sfx` | Tạo 3 hiệu ứng âm thanh (vút, tách, dồn) bằng ElevenLabs, **làm 1 lần**, tốn ít credit, bấm Đồng ý mới chạy |
 | `/render <tên> khongnhac` | Bản không nhạc nền (giữ giọng + hiệu ứng), để tự chọn nhạc xu hướng trên TikTok. `/render <tên>` thường thì có nhạc |
 | `/capnhat` | Lấy bản mới nhất từ GitHub (những gì em làm trên cloud), tự cài thư viện nếu cần |

@@ -25,6 +25,22 @@ export const HELP = [
   "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên laptop.",
 ].join("\n");
 
+/** Menu lệnh hiện khi anh gõ "/" trong Telegram: lấy từ HELP để hai chỗ không lệch nhau. */
+export const MENU = HELP.split("\n")
+  .map((l) => l.match(/^\/([a-z0-9_]+)\b[^–]*–\s*(.+)$/))
+  .filter(Boolean)
+  .map(([, command, description]) => ({ command, description: description.trim().slice(0, 256) }));
+
+/** Đăng ký menu với Telegram (setMyCommands). Lỗi mạng thì bỏ qua: gõ tay lệnh vẫn chạy. */
+export async function setMenu(tg) {
+  try {
+    await tg.call("setMyCommands", { commands: MENU });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /** Hai máy cùng mở bot (Telegram báo 409): máy MỚI mở thì thoát, máy ĐANG chạy lâu thì giữ và chờ máy kia thoát.
  *  Tránh chuyện mở laptop làm tắt luôn bot trên PC ở nhà. */
 export const NEW_BOT_MS = 2 * 60_000;

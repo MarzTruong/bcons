@@ -54,7 +54,7 @@ test("nghienCuu: model đầu không còn (404) thì tự thử model kế tiế
   const fetchFn = async (url) => {
     urls.push(url);
     if (urls.length === 1) return { ok: false, status: 404, text: async () => "model not found" };
-    return { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: "ok" }] } }] }) };
+    return { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: "ok" }] }, groundingMetadata: { groundingChunks: [{ web: { uri: "https://x.vn" } }] } }] }) };
   };
   const { MODELS } = await import("../scripts/gemini.mjs");
   const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn, models: MODELS });
@@ -62,4 +62,44 @@ test("nghienCuu: model đầu không còn (404) thì tự thử model kế tiế
   assert.ok(urls[1].includes(MODELS[1]));
   assert.equal(r.model, MODELS[1]);
   assert.ok(fs.readFileSync(r.file, "utf8").includes(MODELS[1]));
+});
+
+test("nghienCuu: lần đầu Gemini không tìm Google (không có nguồn) thì hỏi lại 1 lần, nhắc bắt buộc tìm Google", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  const bodies = [];
+  const fetchFn = async (_url, opt) => {
+    bodies.push(JSON.parse(opt.body));
+    const grounded = bodies.length === 2;
+    return {
+      ok: true,
+      json: async () => ({
+        candidates: [{
+          content: { parts: [{ text: grounded ? "có nguồn" : "trí nhớ" }] },
+          ...(grounded ? { groundingMetadata: { groundingChunks: [{ web: { uri: "https://x.vn/a", title: "x.vn" } }] } } : {}),
+        }],
+      }),
+    };
+  };
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn });
+  assert.equal(bodies.length, 2);
+  assert.match(bodies[1].contents[0].parts[0].text, /Google Search/);
+  assert.equal(r.text, "có nguồn");
+  assert.equal(r.sources.length, 1);
+});
+
+test("nghienCuu: hỏi lại vẫn không có nguồn thì giữ kết quả, ghi cảnh báo; không hỏi quá 2 lần", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  let n = 0;
+  const fetchFn = async () => (n++, { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: "trí nhớ" }] } }] }) });
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn });
+  assert.equal(n, 2);
+  assert.equal(r.sources.length, 0);
+  assert.match(fs.readFileSync(r.file, "utf8"), /KHÔNG trả danh sách trang/);
+});
+
+test("khung prompt thật: bắt tìm Google, trích nguyên văn, ghi kỳ số liệu", () => {
+  const p = buildPrompt(fs.readFileSync(new URL("../../../docs/prompt-gemini-nghien-cuu.md", import.meta.url), "utf8"), "lãi suất");
+  assert.match(p, /Google Search/);
+  assert.match(p, /nguyên văn/i);
+  assert.match(p, /Kỳ số liệu/);
 });

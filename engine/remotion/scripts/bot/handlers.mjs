@@ -364,6 +364,7 @@ export function createBot(deps) {
 
   return {
     handleUpdate,
+    commandNames: Object.keys(commands),
     setSwitcher: (s) => (switcher = s),
     setExitForUpdate: (f) => (exitForUpdate = f),
     _state: () => ({ busy, queue: queue.length, pending: pending.size, session }),

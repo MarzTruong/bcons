@@ -11,7 +11,7 @@ import { REPO_ROOT, projectDir, readActiveProject } from "../project.mjs";
 import { killTree, runClaude } from "./claude-bridge.mjs";
 import { createBot } from "./handlers.mjs";
 import { createTg } from "./tg.mjs";
-import { onConflict } from "./core.mjs";
+import { onConflict, setMenu } from "./core.mjs";
 import { canCapNhat, docLogCapNhat } from "./tu-cap-nhat.mjs";
 import { MAY, requestSwitch, standbyDecision, standbysOf, startRole, stateDir, writeBeat } from "./may.mjs";
 
@@ -82,6 +82,8 @@ async function main() {
   }
   process.on("unhandledRejection", (e) => console.error("Lỗi không xử lý:", e?.message ?? e));
   const tg = createTg(token);
+  // Menu lệnh khi gõ "/" trong Telegram (đăng ký lại mỗi lần mở bot, lệnh mới tự có).
+  await setMenu(tg);
   const bot = createBot({
     tg,
     chatId,

@@ -63,3 +63,27 @@ test("xung đột 409: bot vừa mở (dưới 2 phút) thì thoát; bot đã ch
   assert.equal(onConflict(t0, t0 + 30_000), "thoat");
   assert.equal(onConflict(t0, t0 + 3 * 60_000), "cho");
 });
+
+test("MENU: menu lệnh Telegram lấy từ HELP, đúng định dạng Telegram, lệnh nào cũng có xử lý", async () => {
+  const { MENU, HELP } = await import("../scripts/bot/core.mjs");
+  const { createBot } = await import("../scripts/bot/handlers.mjs");
+  const names = MENU.map((m) => m.command);
+  for (const c of ["danhsach", "render", "gemini", "kiemgia", "capnhat", "chuyenmay", "huy"]) assert.ok(names.includes(c), c);
+  assert.equal(new Set(names).size, names.length, "không trùng");
+  assert.ok(MENU.length <= 100);
+  for (const m of MENU) {
+    assert.match(m.command, /^[a-z0-9_]{1,32}$/);
+    assert.ok(m.description.length >= 3 && m.description.length <= 256, m.command);
+    assert.ok(HELP.includes(`/${m.command}`));
+  }
+  const bot = createBot({ tg: {}, chatId: "1", projDir: os.tmpdir(), outDir: os.tmpdir(), repoRoot: os.tmpdir(), remotionDir: os.tmpdir(), exec: async () => ({ code: 0, out: "" }) });
+  for (const c of names) assert.ok(bot.commandNames.includes(c), `thiếu xử lý /${c}`);
+});
+
+test("setMenu: gửi setMyCommands một lần với MENU; Telegram lỗi thì bỏ qua, không làm sập bot", async () => {
+  const { MENU, setMenu } = await import("../scripts/bot/core.mjs");
+  const calls = [];
+  await setMenu({ call: async (m, p) => calls.push([m, p]) });
+  assert.deepEqual(calls, [["setMyCommands", { commands: MENU }]]);
+  assert.equal(await setMenu({ call: async () => { throw new Error("net"); } }), false);
+});

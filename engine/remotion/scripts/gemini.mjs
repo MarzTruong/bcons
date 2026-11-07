@@ -14,6 +14,8 @@ import { REPO_ROOT, takeProjectFlag } from "./project.mjs";
  */
 export const MODELS = ["gemini-3.1-pro-preview", "gemini-3-pro-preview", "gemini-2.5-pro"];
 export const DEFAULT_MODEL = MODELS[0];
+/** Câu nhắc thêm khi lần đầu Gemini không tìm Google. */
+export const NHAC_TIM = "BẮT BUỘC dùng công cụ Google Search cho từng số liệu trước khi trả lời. Không viết từ trí nhớ. Chỉ đưa link của trang bạn vừa tìm thấy và đọc được.";
 export const TEMPLATE_PATH = path.join(REPO_ROOT, "docs", "prompt-gemini-nghien-cuu.md");
 
 /** Lấy khung prompt trong khối ``` của docs/prompt-gemini-nghien-cuu.md, điền chủ đề và khoảng thời gian. */
@@ -39,31 +41,40 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
   if (!key) throw new Error("Thiếu GEMINI_API_KEY trong engine/remotion/.env");
   if (!topic?.trim()) throw new Error('Thiếu chủ đề. Ví dụ: /gemini lãi suất vay mua nhà tháng 11');
   const prompt = buildPrompt(template, topic.trim(), khoang);
-  let res;
-  let used;
-  for (const m of models) {
-    res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
-      method: "POST",
-      headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: [{ google_search: {} }] }),
-    });
-    used = m;
-    if (res.ok || res.status !== 404) break; // 404 = model không còn: thử model kế
-  }
-  if (!res.ok) throw new Error(`Gemini lỗi ${res.status} (${used}): ${(await res.text?.())?.slice(0, 300) ?? ""}`);
-  const data = await res.json();
-  const cand = data.candidates?.[0];
-  const text = (cand?.content?.parts ?? []).map((p) => p.text ?? "").join("").trim();
-  if (!text) throw new Error("Gemini không trả nội dung (có thể bị chặn hoặc hết hạn mức).");
-  const seen = new Set();
-  const sources = [];
-  for (const c of cand?.groundingMetadata?.groundingChunks ?? []) {
-    const uri = c.web?.uri;
-    if (uri && !seen.has(uri)) {
-      seen.add(uri);
-      sources.push({ uri, title: c.web.title ?? uri });
+  // Gọi Gemini; model bị Google ngừng (404) thì thử model kế. Giữ model đã chạy được cho lần hỏi lại.
+  let chain = models;
+  async function ask(text) {
+    let res;
+    let used;
+    for (const m of chain) {
+      res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
+        method: "POST",
+        headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text }] }], tools: [{ google_search: {} }] }),
+      });
+      used = m;
+      if (res.ok || res.status !== 404) break; // 404 = model không còn: thử model kế
     }
+    if (!res.ok) throw new Error(`Gemini lỗi ${res.status} (${used}): ${(await res.text?.())?.slice(0, 300) ?? ""}`);
+    chain = [used];
+    const cand = (await res.json()).candidates?.[0];
+    const out = (cand?.content?.parts ?? []).map((p) => p.text ?? "").join("").trim();
+    if (!out) throw new Error("Gemini không trả nội dung (có thể bị chặn hoặc hết hạn mức).");
+    const seen = new Set();
+    const sources = [];
+    for (const c of cand?.groundingMetadata?.groundingChunks ?? []) {
+      const uri = c.web?.uri;
+      if (uri && !seen.has(uri)) {
+        seen.add(uri);
+        sources.push({ uri, title: c.web.title ?? uri });
+      }
+    }
+    return { text: out, sources, used };
   }
+  let r = await ask(prompt);
+  // Không có trang Google nào = Gemini viết từ trí nhớ (link dễ sai/cũ): hỏi lại 1 lần, nhắc bắt buộc tìm.
+  if (!r.sources.length) r = await ask(`${prompt}\n\n${NHAC_TIM}`);
+  const { text, sources, used } = r;
   fs.mkdirSync(outDir, { recursive: true });
   const file = path.join(outDir, `${today}-${slugify(topic)}.md`);
   const md = [
