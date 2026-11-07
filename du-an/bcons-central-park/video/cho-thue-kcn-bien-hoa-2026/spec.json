@@ -239,7 +239,7 @@
     {
       "id": "scene3",
       "template": "geo-map",
-      "markup": "Vốn đầu tư cũng đổ vào. Tám tháng đầu năm 2026,{hai ngàn không trăm hai mươi sáu,} Đồng Nai thu hút gần 1,88{một phẩy tám mươi tám} tỷ USD{đô la Mỹ} vốn FDI và hơn 860{tám trăm sáu mươi} ngàn tỷ đồng vốn trong nước. Theo CafeLand nhiều chuyên gia muốn ở ngay khu vực làm việc.",
+      "markup": "Vốn đầu tư cũng đổ vào. 8{Tám} tháng đầu năm 2026,{hai ngàn không trăm hai mươi sáu,} Đồng Nai thu hút gần 1,88{một phẩy tám mươi tám} tỷ USD{đô la Mỹ} vốn FDI và hơn 860{tám trăm sáu mươi} ngàn tỷ đồng vốn trong nước. Theo CafeLand nhiều chuyên gia muốn ở ngay khu vực làm việc.",
       "cues": {
         "c1": "FDI",
         "c2": "860",

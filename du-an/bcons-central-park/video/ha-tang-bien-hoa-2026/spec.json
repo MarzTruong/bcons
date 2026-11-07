@@ -9,7 +9,7 @@
     {
       "id": "scene1",
       "template": "geo-map",
-      "markup": "Biên Hòa năm 2026,{hai nghìn không trăm hai mươi sáu,} cái nào đã chạy được, cái nào còn trên giấy? Mình tách hai nhóm cho dễ nhìn. Nhóm một, đã đi được.",
+      "markup": "Biên Hòa năm 2026,{hai nghìn không trăm hai mươi sáu,} cái nào đã chạy được, cái nào còn trên giấy? Mình tách 2{hai} nhóm cho dễ nhìn. Nhóm 1,{một,} đã đi được.",
       "cues": {
         "m": "Biên",
         "n": "Nhóm"
@@ -86,7 +86,7 @@
     {
       "id": "scene2",
       "template": "data-cards",
-      "markup": "Cao tốc Biên Hòa, Vũng Tàu: hai dự án thành phần đã khai thác từ ngày 29{hai mươi chín} tháng 4.{tư.} Cao tốc Bến Lức, Long Thành thông xe toàn tuyến từ 0{không} giờ ngày 1{mùng một} tháng 10,{mười,} dài gần 58{năm mươi tám} km.{ki-lô-mét.}",
+      "markup": "Cao tốc Biên Hòa, Vũng Tàu: 2{hai} dự án thành phần đã khai thác từ ngày 29{hai mươi chín} tháng 4.{tư.} Cao tốc Bến Lức, Long Thành thông xe toàn tuyến từ 0{không} giờ ngày 1{mùng một} tháng 10,{mười,} dài gần 58{năm mươi tám} km.{ki-lô-mét.}",
       "cues": {
         "c1": "Cao",
         "c2": "Bến"
@@ -117,7 +117,7 @@
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "Nhóm hai, chưa xong. Vành đai 3{ba} đoạn qua Đồng Nai mới đạt hơn 80%.{tám mươi phần trăm.} Sân bay Long Thành dự kiến khai thác từ 0{không} giờ ngày 24{hai mươi bốn} tháng 12.{mười hai.} Còn metro kéo dài về Đồng Nai mới ở mức nghiên cứu.",
+      "markup": "Nhóm 2,{hai,} chưa xong. Vành đai 3{ba} đoạn qua Đồng Nai mới đạt hơn 80%.{tám mươi phần trăm.} Sân bay Long Thành dự kiến khai thác từ 0{không} giờ ngày 24{hai mươi bốn} tháng 12.{mười hai.} Còn metro kéo dài về Đồng Nai mới ở mức nghiên cứu.",
       "cues": {
         "c1": "Vành",
         "c2": "Sân",

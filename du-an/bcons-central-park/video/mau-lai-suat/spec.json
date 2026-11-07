@@ -27,7 +27,7 @@
     {
       "id": "scene2",
       "template": "compare-bars",
-      "markup": "So sánh hai mức giả định: gửi tiết kiệm 5%{năm phần trăm} và vay mua nhà 8%.{tám phần trăm.}",
+      "markup": "So sánh 2{hai} mức giả định: gửi tiết kiệm 5%{năm phần trăm} và vay mua nhà 8%.{tám phần trăm.}",
       "cues": {
         "a": "5%",
         "b": "8%."
@@ -55,7 +55,7 @@
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "Ba thẻ số liệu mẫu: một, hai và ba.",
+      "markup": "3{Ba} thẻ số liệu mẫu: một, hai và ba.",
       "cues": {
         "c1": "một,",
         "c2": "hai",

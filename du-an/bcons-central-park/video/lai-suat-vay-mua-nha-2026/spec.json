@@ -29,7 +29,7 @@
     {
       "id": "scene2",
       "template": "compare-bars",
-      "markup": "Nhóm bốn ngân hàng lớn, gói cố định 12{mười hai} tháng: Agribank 8,2%,{tám phẩy hai phần trăm,} Vietcombank 9,8{chín phẩy tám}, VietinBank 10,5{mười phẩy năm} và BIDV{bee eye dee vee} 10,8%/năm.{mười phẩy tám phần trăm một năm.}",
+      "markup": "Nhóm 4{bốn} ngân hàng lớn, gói cố định 12{mười hai} tháng: Agribank 8,2%,{tám phẩy hai phần trăm,} Vietcombank 9,8{chín phẩy tám}, VietinBank 10,5{mười phẩy năm} và BIDV{bee eye dee vee} 10,8%/năm.{mười phẩy tám phần trăm một năm.}",
       "cues": {
         "a": "Agribank",
         "b": "Vietcombank",

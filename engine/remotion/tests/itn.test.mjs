@@ -31,7 +31,7 @@ test("checkSpelledNumbers: báo số viết chữ trên màn hình (≥ 10), '% 
   assert.ok(checkSpelledNumbers(spec("Gói cố định mười hai tháng.")).some((e) => /12/.test(e)));
   assert.ok(checkSpelledNumbers(spec("Từ 8,5{tám phẩy năm} đến 11%{mười một phần trăm} một năm.")).some((e) => /\/năm/.test(e)));
   assert.ok(checkSpelledNumbers(spec("Theo khảo sát quý 2{hai} năm nay")).some((e) => /quý II/.test(e)));
-  assert.deepEqual(checkSpelledNumbers(spec("Hơn 860{tám trăm sáu mươi} ngàn tỷ đồng và ba con số.")), []);
+  assert.deepEqual(checkSpelledNumbers(spec("Hơn 860{tám trăm sáu mươi} ngàn tỷ đồng.")), []);
 });
 
 test("fixMarkup: tự sửa nhưng GIỮ NGUYÊN lời đọc (không phải tạo giọng lại)", () => {
@@ -44,5 +44,36 @@ test("fixMarkup: tự sửa nhưng GIỮ NGUYÊN lời đọc (không phải t�
   for (const [a, b] of cases) {
     assert.equal(fixMarkup(a), b);
     assert.equal(say(fixMarkup(a)), say(a), `lời đọc giữ nguyên: ${a}`);
+  }
+});
+
+test("số 1–9 cũng hiện chữ số (anh đổi quy tắc 07/11/2026): 'hai nhóm' → '2 nhóm', 'Nhóm một' → 'Nhóm 1'; giữ chữ khi không phải đếm", () => {
+  const spec = (markup) => ({ scenes: [{ id: "s1", markup }] });
+  const cases = [
+    ["Mình tách hai nhóm cho dễ nhìn.", "Mình tách 2{hai} nhóm cho dễ nhìn."],
+    ["Tám tháng đầu năm 2026{hai ngàn không trăm hai mươi sáu}", "8{Tám} tháng đầu năm 2026{hai ngàn không trăm hai mươi sáu}"],
+    ["Nhóm một, đã đi vào", "Nhóm 1,{một,} đã đi vào"],
+    ["Nhóm bốn ngân hàng", "Nhóm 4{bốn} ngân hàng"],
+    ["vay trong một năm đầu", "vay trong 1{một} năm đầu"],
+    ["sau năm năm, lãi", "sau 5{năm} năm, lãi"],
+    ["hai dự án lớn", "2{hai} dự án lớn"],
+  ];
+  for (const [a, b] of cases) {
+    assert.equal(fixMarkup(a), b, a);
+    assert.equal(say(fixMarkup(a)), say(a));
+    assert.ok(checkSpelledNumbers(spec(a)).length > 0, `lint báo: ${a}`);
+  }
+  // không phải số đếm: giữ nguyên chữ
+  for (const keep of [
+    "là một lựa chọn đáng cân nhắc.",
+    "Một khu đất rộng",
+    "một số ngân hàng",
+    "Vốn đầu tư cũng đổ vào",
+    "năm 2029{hai ngàn không trăm hai mươi chín} bàn giao",
+    "không có gì",
+    "ngày thứ ba",
+  ]) {
+    assert.equal(fixMarkup(keep), keep, keep);
+    assert.deepEqual(checkSpelledNumbers(spec(keep)), [], keep);
   }
 });

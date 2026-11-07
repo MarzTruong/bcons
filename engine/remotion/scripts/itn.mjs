@@ -59,6 +59,26 @@ export function formatViNumber(n, { nam = false } = {}) {
 
 const ROMAN = { 1: "I", 2: "II", 3: "III", 4: "IV" };
 const isPlain = (t) => t.show === t.say;
+// Số 1 chữ (1–9) chỉ đổi sang chữ số khi đang ĐẾM: đứng trước danh từ đếm/đơn vị, hoặc sau nhãn ("Nhóm một").
+// "một" hay là mạo từ ("một lựa chọn", "một số") nên chỉ đổi trước đơn vị đo/thời gian.
+// Không đổi: "tư" (đầu tư, tư vấn), "không" (phủ định), "thứ ba" (thứ tự/ngày trong tuần).
+const DO_DEM = new Set(["tháng", "năm", "ngày", "tuần", "quý", "giờ", "phút", "giây", "km", "ha", "m²", "m2", "lần", "đợt", "căn", "tầng", "tòa", "block", "phòng", "tỷ", "triệu", "ngàn", "nghìn", "%"]);
+const DEM = new Set([...DO_DEM, "nhóm", "dự", "ngân", "giai", "tuyến", "cao", "khu", "kcn", "pttt", "phương", "mức", "con", "thẻ", "bước", "điểm", "người", "cảnh", "làn", "cầu", "nút", "sân", "trường", "bệnh", "loại", "kiểu", "gói", "lựa", "ý", "lý", "điều", "yếu", "dòng", "chiếc", "cái", "triệu", "đường", "ga", "trạm"]);
+const NHAN = new Set(["nhóm", "đợt", "giai", "đoạn", "pttt", "phương", "án", "block", "tòa", "cảnh", "bước", "số", "tuyến", "gói", "mục"]);
+const MOT_DIGIT = new Set(["một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"]);
+function demDuoc(tokens, i, w) {
+  if (!MOT_DIGIT.has(w)) return false;
+  const next = tokens[i + 1] ? strip(tokens[i + 1].show).split("/")[0] : "";
+  const prev = tokens[i - 1] ? strip(tokens[i - 1].show) : "";
+  if (prev === "thứ") return false;
+  // "11% một năm" = mỗi năm, không phải số đếm
+  if (w === "một" && tokens[i - 1] && hasDigit(tokens[i - 1].show)) return false;
+  // nhãn đứng trước: "Nhóm một", "đợt hai" (chữ trước không có dấu câu)
+  if (tokens[i - 1] && !PUNCT.test(tokens[i - 1].show) && NHAN.has(prev)) return true;
+  if (PUNCT.test(tokens[i].show)) return false;
+  if (w === "một") return DO_DEM.has(next);
+  return DEM.has(next);
+}
 const hasDigit = (s) => /\d/.test(s);
 
 /** Các đoạn số viết chữ liên tiếp trong token thường: [start, end) chỉ số token. Bỏ "năm" đứng đầu (dễ là "năm" = year). */
@@ -68,7 +88,7 @@ function numberRuns(tokens) {
   while (i < tokens.length) {
     const t = tokens[i];
     const w = strip(t.show);
-    const startsOk = isPlain(t) && NUMWORD.has(w) && w !== "năm" && w !== "phẩy" && !(w in SCALE) && w !== "linh" && w !== "lẻ";
+    const startsOk = isPlain(t) && NUMWORD.has(w) && (w !== "năm" || demDuoc(tokens, i, w)) && w !== "phẩy" && !(w in SCALE) && w !== "linh" && w !== "lẻ";
     if (!startsOk) {
       i++;
       continue;
@@ -87,7 +107,7 @@ function numberRuns(tokens) {
     while (j - 1 > i && strip(tokens[j - 1].show) in SCALE) j--;
     const words = tokens.slice(i, j).map((x) => x.show);
     const v = viToNumber(words.join(" "));
-    const big = v != null && (v >= 10 || words.length >= 2);
+    const big = v != null && (v >= 10 || words.length >= 2 || (j === i + 1 && demDuoc(tokens, i, strip(words[0]))));
     if (big) runs.push([i, j, v]);
     i = Math.max(j, i + 1);
   }

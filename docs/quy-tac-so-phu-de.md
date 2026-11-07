@@ -6,7 +6,7 @@ Anh yêu cầu 07/11/2026. **Chữ đọc** (giọng ElevenLabs) và **chữ hi�
 
 | Loại | Hiện trên màn hình | Đọc (trong `{}`) | Ghi chú |
 |---|---|---|---|
-| Số từ 10 trở lên | `10`, `12`, `236` | mười, mười hai… | Số 1–9 đếm trong câu ("ba con số") để chữ được |
+| Mọi số đếm, kể cả 1–9 | `2 nhóm`, `8 tháng`, `Nhóm 1`, `10`, `236` | hai, tám, một, mười… | Anh đổi 07/11/2026: cứ là số thì hiện chữ số. Giữ chữ khi không phải số đếm: "một lựa chọn", "một số", "đầu tư", "thứ ba", "không có", "11% một năm" (đã thành `11%/năm`) |
 | Hàng nghìn | `9.363` | chín ngàn ba trăm sáu mươi ba | Dấu **chấm** ngăn hàng nghìn |
 | Thập phân | `4,4`, `99,26` | bốn phẩy bốn | Dấu **phẩy** thập phân |
 | Phần trăm | `11%` | mười một phần trăm | Không hiện chữ "phần trăm" |
