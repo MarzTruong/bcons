@@ -10,7 +10,11 @@ test("canCapNhat: GitHub có bản mới hơn máy này thì true; lỗi mạng 
 });
 
 test("docLogCapNhat: đọc kết quả lần cập nhật trước để báo Telegram; có chữ LOI thì báo lỗi và không tự cập nhật lại vòng lặp", () => {
-  assert.deepEqual(docLogCapNhat("Cap nhat luc ...\nBan hien tai: abc123 Fix\n"), { ok: true, tomTat: "Cap nhat luc ...\nBan hien tai: abc123 Fix" });
+  const r = docLogCapNhat("Cap nhat luc ...\nBan hien tai: abc123 Fix\n");
+  assert.equal(r.ok, true);
+  assert.equal(r.tomTat, "Cap nhat luc ...\nBan hien tai: abc123 Fix");
+  assert.equal(r.ban, "abc123");
+  assert.equal(r.khongMoi, false);
   assert.equal(docLogCapNhat("...\nLOI: khong lay duoc ban moi\n").ok, false);
   assert.equal(docLogCapNhat("fatal: unable to access").ok, false);
 });
