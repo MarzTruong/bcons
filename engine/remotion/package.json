@@ -39,7 +39,7 @@
     "render:drive": "node scripts/render-drive.mjs",
     "voice": "node --env-file=.env scripts/generate-voice.mjs",
     "sfx": "node --env-file=.env scripts/tao-sfx.mjs",
-    "gemini": "node --env-file=.env scripts/gemini.mjs",
+    "gemini": "node --env-file-if-exists=.env scripts/gemini.mjs",
     "phu-de": "node scripts/phu-de.mjs",
     "storyboard": "node scripts/storyboard.mjs",
     "kiem-gia": "node scripts/kiem-masterfile.mjs",

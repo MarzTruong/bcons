@@ -25,6 +25,59 @@ export function buildPrompt(template, topic, khoang = "30 ngày qua") {
   return body.replace(/\[KHOẢNG THỜI GIAN[^\]]*\]/g, khoang).replace(/\[CHỦ ĐỀ[^\]]*\]/g, topic);
 }
 
+/** Đọc thân trả về dạng SSE ("data: {...}" mỗi mẩu); thân JSON thường cũng nhận. */
+export function parseSse(body) {
+  const t = body.trim();
+  if (t.startsWith("[")) return JSON.parse(t);
+  if (t.startsWith("{")) return [JSON.parse(t)];
+  return t
+    .split(/\r?\n/)
+    .filter((l) => l.startsWith("data:"))
+    .map((l) => {
+      try {
+        return JSON.parse(l.slice(5).trim());
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean);
+}
+
+/** Tên báo từ link: "www.baoxaydung.com.vn" → "baoxaydung" (bỏ www và đuôi .com/.vn). */
+const tenBao = (u) => {
+  try {
+    const h = new URL(u).hostname.replace(/^www\./, "").split(".");
+    return h.find((x) => !["com", "vn", "net", "org", "gov", "edu"].includes(x) && x.length > 2) ?? h[0];
+  } catch {
+    return "";
+  }
+};
+const slugOf = (u) => {
+  try {
+    return new URL(u).pathname.toLowerCase().replace(/[^a-z]+/g, " ").trim().split(" ").filter((w) => w.length > 1);
+  } catch {
+    return [];
+  }
+};
+
+/** Link Gemini tự viết trong bài hay sai mã bài (404). Thay bằng link THẬT trong danh sách trang đã đọc,
+ *  cùng báo và giống tên bài nhất; không có thì gắn ⚠️ để Claude biết phải tự tìm. */
+export function doiLinkBang(text, sources) {
+  const real = new Set(sources.map((s) => s.uri));
+  return text.replace(/\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g, (all, label, url) => {
+    if (real.has(url)) return all;
+    const words = new Set(slugOf(url));
+    let best = null;
+    let bestScore = 0;
+    for (const s of sources) {
+      if (tenBao(s.uri) !== tenBao(url)) continue;
+      const score = slugOf(s.uri).filter((w) => words.has(w)).length;
+      if (score > bestScore) [best, bestScore] = [s.uri, score];
+    }
+    return best ? `[${label}](${best})` : `[${label} ⚠️ link Gemini tự viết, không có trong trang đã đọc](${url})`;
+  });
+}
+
 export function slugify(s) {
   return s
     .normalize("NFD")
@@ -41,28 +94,31 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
   if (!key) throw new Error("Thiếu GEMINI_API_KEY trong engine/remotion/.env");
   if (!topic?.trim()) throw new Error('Thiếu chủ đề. Ví dụ: /gemini lãi suất vay mua nhà tháng 11');
   const prompt = buildPrompt(template, topic.trim(), khoang);
-  // Gọi Gemini; model bị Google ngừng (404) thì thử model kế. Giữ model đã chạy được cho lần hỏi lại.
+  // Gọi bản stream + bật tóm tắt suy nghĩ: dữ liệu về đều mỗi vài giây, proxy cloud (cắt sau 30 giây im lặng) không cắt.
+  // Phần suy nghĩ (thought) không ghi vào báo cáo. Model bị Google ngừng (404) thì thử model kế. Giữ model đã chạy được cho lần hỏi lại.
   let chain = models;
   async function ask(text) {
     let res;
     let used;
     for (const m of chain) {
-      res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
+      res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${m}:streamGenerateContent?alt=sse`, {
         method: "POST",
         headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text }] }], tools: [{ google_search: {} }] }),
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text }] }], tools: [{ google_search: {} }], generationConfig: { thinkingConfig: { includeThoughts: true } } }),
       });
       used = m;
       if (res.ok || res.status !== 404) break; // 404 = model không còn: thử model kế
     }
     if (!res.ok) throw new Error(`Gemini lỗi ${res.status} (${used}): ${(await res.text?.())?.slice(0, 300) ?? ""}`);
     chain = [used];
-    const cand = (await res.json()).candidates?.[0];
-    const out = (cand?.content?.parts ?? []).map((p) => p.text ?? "").join("").trim();
+    // Bản stream trả nhiều mẩu "data: {...}"; ghép chữ và nguồn của mọi mẩu.
+    const events = res.text ? parseSse(await res.text()) : [await res.json()];
+    const cands = events.map((e) => e.candidates?.[0]).filter(Boolean);
+    const out = cands.flatMap((c) => (c.content?.parts ?? []).filter((p) => !p.thought).map((p) => p.text ?? "")).join("").trim();
     if (!out) throw new Error("Gemini không trả nội dung (có thể bị chặn hoặc hết hạn mức).");
     const seen = new Set();
     const sources = [];
-    for (const c of cand?.groundingMetadata?.groundingChunks ?? []) {
+    for (const c of cands.flatMap((x) => x.groundingMetadata?.groundingChunks ?? [])) {
       const uri = c.web?.uri;
       if (uri && !seen.has(uri)) {
         seen.add(uri);
@@ -74,7 +130,22 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
   let r = await ask(prompt);
   // Không có trang Google nào = Gemini viết từ trí nhớ (link dễ sai/cũ): hỏi lại 1 lần, nhắc bắt buộc tìm.
   if (!r.sources.length) r = await ask(`${prompt}\n\n${NHAC_TIM}`);
-  const { text, sources, used } = r;
+  // Link Gemini đưa là link chuyển hướng của Google (vertexaisearch…): đổi về link báo gốc để mở kiểm được.
+  let { text, sources, used } = r;
+  const goc = new Map();
+  for (const s of sources) {
+    if (!/vertexaisearch\.cloud\.google\.com/.test(s.uri)) continue;
+    try {
+      const h = await fetchFn(s.uri, { method: "HEAD", redirect: "manual" });
+      const loc = h.headers?.get?.("location");
+      if (loc && /^https?:\/\//.test(loc)) goc.set(s.uri, loc);
+    } catch {
+      // mạng chặn: giữ link chuyển hướng
+    }
+  }
+  for (const [a, b] of goc) text = text.split(a).join(b);
+  sources = sources.map((s) => ({ ...s, uri: goc.get(s.uri) ?? s.uri }));
+  if (sources.length) text = doiLinkBang(text, sources);
   fs.mkdirSync(outDir, { recursive: true });
   const file = path.join(outDir, `${today}-${slugify(topic)}.md`);
   const md = [

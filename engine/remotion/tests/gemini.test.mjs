@@ -37,7 +37,7 @@ test("nghienCuu: gọi Gemini có tìm Google, lưu báo cáo + danh sách link 
   assert.equal(calls.length, 0);
   const r = await nghienCuu({ topic: "Lãi suất", key: "k", outDir: dir, template: TEMPLATE, fetchFn, today: "2026-11-07" });
   assert.equal(calls.length, 1);
-  assert.ok(calls[0].url.includes(`/models/${DEFAULT_MODEL}:generateContent`));
+  assert.ok(calls[0].url.includes(`/models/${DEFAULT_MODEL}:streamGenerateContent`));
   assert.equal(calls[0].key, "k");
   assert.deepEqual(calls[0].body.tools, [{ google_search: {} }]);
   assert.equal(path.basename(r.file), "2026-11-07-lai-suat.md");
@@ -102,4 +102,67 @@ test("khung prompt thật: bắt tìm Google, trích nguyên văn, ghi kỳ số
   assert.match(p, /Google Search/);
   assert.match(p, /nguyên văn/i);
   assert.match(p, /Kỳ số liệu/);
+});
+
+test("nghienCuu: gọi bản stream (SSE) để proxy không cắt khi Gemini tìm lâu; ghép chữ + nguồn từ nhiều mẩu; đổi link chuyển hướng Google về link gốc", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  const R = "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AAA";
+  const ev = (o) => `data: ${JSON.stringify(o)}\r\n\r\n`;
+  const sse =
+    ev({ candidates: [{ content: { parts: [{ text: "Lãi 9–12% " }] } }] }) +
+    ev({ candidates: [{ content: { parts: [{ text: `([VnExpress](${R}))` }] }, groundingMetadata: { groundingChunks: [{ web: { uri: R, title: "vnexpress.net" } }] } }] });
+  const urls = [];
+  const fetchFn = async (url, opt = {}) => {
+    urls.push(url);
+    if (url === R) return { status: 302, headers: { get: (h) => (h.toLowerCase() === "location" ? "https://vnexpress.net/bai-that-123.html" : null) } };
+    return { ok: true, text: async () => sse };
+  };
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn });
+  assert.match(urls[0], /:streamGenerateContent\?alt=sse$/);
+  assert.equal(r.text, "Lãi 9–12% ([VnExpress](https://vnexpress.net/bai-that-123.html))");
+  assert.deepEqual(r.sources, [{ uri: "https://vnexpress.net/bai-that-123.html", title: "vnexpress.net" }]);
+  assert.ok(!fs.readFileSync(r.file, "utf8").includes("vertexaisearch"));
+});
+
+test("nghienCuu: không đổi được link chuyển hướng (mạng chặn) thì giữ link cũ, không lỗi", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  const R = "https://vertexaisearch.cloud.google.com/grounding-api-redirect/BBB";
+  const sse = `data: ${JSON.stringify({ candidates: [{ content: { parts: [{ text: "x" }] }, groundingMetadata: { groundingChunks: [{ web: { uri: R, title: "t" } }] } }] })}\n\n`;
+  const fetchFn = async (url) => {
+    if (url === R) throw new Error("blocked");
+    return { ok: true, text: async () => sse };
+  };
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn });
+  assert.equal(r.sources[0].uri, R);
+});
+
+test("nghienCuu: bật gửi tóm tắt suy nghĩ (giữ kết nối qua proxy) nhưng KHÔNG ghi phần suy nghĩ vào báo cáo", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  let body;
+  const ev = (o) => `data: ${JSON.stringify(o)}\n\n`;
+  const sse = ev({ candidates: [{ content: { parts: [{ text: "Đang nghĩ...", thought: true }] } }] }) + ev({ candidates: [{ content: { parts: [{ text: "Kết quả" }] }, groundingMetadata: { groundingChunks: [{ web: { uri: "https://a.vn/x", title: "a" } }] } }] });
+  const fetchFn = async (_u, opt) => ((body = JSON.parse(opt.body)), { ok: true, text: async () => sse });
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn });
+  assert.equal(body.generationConfig.thinkingConfig.includeThoughts, true);
+  assert.equal(r.text, "Kết quả");
+});
+
+test("doiLinkBang: link Gemini tự viết trong bảng → thay bằng link nguồn thật cùng báo (giống tên bài nhất); không có thì gắn ⚠️", async () => {
+  const { doiLinkBang } = await import("../scripts/gemini.mjs");
+  const sources = [
+    { uri: "https://cafef.vn/noi-room-tin-dung-bat-dong-san-them-du-dia-phat-trien-188261014121508775.chn" },
+    { uri: "https://cafef.vn/can-canh-vanh-dai-3-tphcm-doan-qua-dong-nai-188261029.chn" },
+    { uri: "https://baoxaydung.vn/nut-giao-tan-hiep-noi-hai-cao-toc-192261031.htm" },
+  ];
+  const t = [
+    "[Link](https://cafef.vn/noi-room-tin-dung-bat-dong-san-them-du-dia-phat-trien-20261014123800.chn)",
+    "[Link](https://www.baoxaydung.com.vn/nut-giao-tan-hiep-noi-hai-cao-toc-385077.html)",
+    "[Link](https://vnexpress.net/bai-bia-123.html)",
+    "[ok](https://cafef.vn/can-canh-vanh-dai-3-tphcm-doan-qua-dong-nai-188261029.chn)",
+  ].join("\n");
+  const out = doiLinkBang(t, sources).split("\n");
+  assert.equal(out[0], `[Link](${sources[0].uri})`);
+  assert.equal(out[1], `[Link](${sources[2].uri})`);
+  assert.equal(out[2], "[Link ⚠️ link Gemini tự viết, không có trong trang đã đọc](https://vnexpress.net/bai-bia-123.html)");
+  assert.equal(out[3], `[ok](${sources[1].uri})`);
 });
