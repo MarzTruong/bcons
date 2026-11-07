@@ -33,6 +33,9 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
   if (!chunk) return null;
   const pop = interpolate(frame, [chunk.from, chunk.from + 6], [0, 1], clamp);
   const t = (frame - LEAD) / FPS;
+  // Bộ "moi": bong = chữ trắng đổ bóng mềm (trên ảnh), phang = không viền, nhan = nhãn dán nền vàng chữ đen.
+  const cap = C.look === "moi" ? (C.issue as { cap?: string } | undefined)?.cap : undefined;
+  const nhanBg = cap === "nhan" ? (C.issue as { block?: string; onBlock?: string }) : undefined;
   const strong = (w: Word) => isNumber(w.text) || nhan.some((n) => w.text.replace(/[,.!?;:]$/, "") === n.replace(/[,.!?;:]$/, ""));
   return (
     <AbsoluteFill
@@ -45,11 +48,14 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
           fontSize: chunk.size,
           lineHeight: 1.25,
           textAlign: "center",
-          color: C.text,
+          color: nhanBg ? nhanBg.onBlock : C.text,
+          background: nhanBg ? nhanBg.block : undefined,
+          padding: nhanBg ? "6px 26px 10px" : undefined,
+          borderRadius: nhanBg ? 18 : undefined,
           opacity: pop,
           transform: `translateY(${(1 - pop) * 20}px)`,
           // Bìa tạp chí: nền phẳng, chữ đã đủ tương phản; viền tối trên chữ tối làm chữ lem (anh 07/11/2026).
-          textShadow: C.look === "tapchi" ? "none" : `0 4px 0 ${C.stroke}, 0 0 12px ${C.stroke}, 3px 3px 0 ${C.stroke}, -3px 3px 0 ${C.stroke}, 3px -3px 0 ${C.stroke}, -3px -3px 0 ${C.stroke}`,
+          textShadow: C.look === "tapchi" || cap === "phang" || cap === "nhan" ? "none" : cap === "bong" ? "0 3px 14px #000c, 0 2px 0 #000" : `0 4px 0 ${C.stroke}, 0 0 12px ${C.stroke}, 3px 3px 0 ${C.stroke}, -3px 3px 0 ${C.stroke}, 3px -3px 0 ${C.stroke}, -3px -3px 0 ${C.stroke}`,
         }}
       >
         {chunk.words.map((w, i) => {
@@ -70,10 +76,10 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
                 marginLeft: s ? 6 : 0,
                 padding: s ? "0 10px" : 0,
                 borderRadius: 12,
-                color: s && said ? accent : active ? C.gold : C.text,
+                color: nhanBg ? (s && said ? "#c81e1e" : nhanBg.onBlock) : s && said ? accent : active ? C.gold : C.text,
                 transform: `scale(${bump})`,
                 backgroundImage: s ? `linear-gradient(90deg, ${accent}40 ${sweep}%, transparent ${sweep}%)` : undefined,
-                textShadow: s && active && C.look !== "tapchi" ? `0 0 18px ${accent}aa, 0 4px 0 ${C.stroke}` : undefined,
+                textShadow: s && active && C.look !== "tapchi" && C.look !== "moi" ? `0 0 18px ${accent}aa, 0 4px 0 ${C.stroke}` : undefined,
               }}
             >
               {w.text}

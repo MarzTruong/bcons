@@ -14,6 +14,8 @@ export const StatHeroProps = z.object({
   decimals: z.number().int().min(0).max(3),
   unit: z.string(),
   sourceId,
+  /** Ảnh nền (phong cách "moi" kiểu A). Không có thì nền phẳng. */
+  image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
 });
 
 export const RouteNode = z.object({
@@ -236,7 +238,7 @@ export const SceneSchema = z.discriminatedUnion("template", [
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */
-export const STYLE_NAMES = ["classic", "sang", "navy", "xanh", "banve", "tapchi", "bangls"] as const;
+export const STYLE_NAMES = ["classic", "sang", "navy", "xanh", "banve", "tapchi", "bangls", "moi", "anh", "bantin", "khoimau"] as const;
 export type StyleName = (typeof STYLE_NAMES)[number];
 
 /** Phong cách chuyển động: classic = bản gốc (hiện mờ, lưới nền chạy). */

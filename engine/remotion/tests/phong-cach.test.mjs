@@ -36,3 +36,14 @@ test("tapchi: trang ruột cùng nền bìa, chữ cùng màu chữ bìa (anh 07
     assert.equal(t.pageInk, t.ink, t.name);
   }
 });
+
+test("style moi: xoay 3 kiểu A (ảnh) / B (bản tin) / C (khối màu) theo số video; chọn thẳng được từng kiểu", async () => {
+  const { MOI, moiOf } = await import("../src/issues.ts");
+  assert.ok(STYLE_NAMES.includes("moi"));
+  for (const k of ["anh", "bantin", "khoimau"]) assert.ok(STYLE_NAMES.includes(k), k);
+  assert.deepEqual(Object.keys(MOI).sort(), ["anh", "bantin", "khoimau"]);
+  const kinds = [7, 8, 9].map((so) => moiOf("moi", so).kind);
+  assert.equal(new Set(kinds).size, 3, "3 video liền nhau 3 kiểu khác nhau");
+  assert.equal(moiOf("bantin", 7).kind, "bantin");
+  assert.equal(moiOf("moi", 7).kind, "anh", "video 7 = kiểu A (anh chọn hướng A trước)");
+});

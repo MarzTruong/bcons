@@ -49,3 +49,32 @@ export function flapChar(target: string, frame: number, start: number, i: number
   if (frame >= t0 + 8) return target;
   return String((Number(target) + 3 + (frame - t0) * 7 + i) % 10);
 }
+
+// Bộ "moi" (anh chọn 07/11/2026, ưng cả 3 mẫu): A ảnh dự án, B bản tin sáng, C khối màu đậm.
+export type MoiKind = "anh" | "bantin" | "khoimau";
+export type MoiLook = {
+  kind: MoiKind;
+  /** Nền. */ bg: string;
+  /** Chữ chính. */ text: string;
+  /** Chữ phụ. */ muted: string;
+  /** Màu nhấn cho số. */ accent: string;
+  /** Nền thẻ (B: thẻ trắng; C: khối tối; A: không dùng). */ card: string;
+  /** Khối màu lớn (C: vàng; A/B: = bg). */ block: string;
+  /** Chữ trên khối màu. */ onBlock: string;
+  /** Phụ đề: bong = chữ trắng đổ bóng (trên ảnh), phang = chữ đậm không viền, nhan = nhãn dán có nền. */
+  cap: "bong" | "phang" | "nhan";
+};
+
+export const MOI: Record<MoiKind, MoiLook> = {
+  anh: { kind: "anh", bg: "#06121f", text: "#ffffff", muted: "#d7e2ee", accent: "#7ee0c3", card: "#0d2238", block: "#06121f", onBlock: "#ffffff", cap: "bong" },
+  bantin: { kind: "bantin", bg: "#f3f5f8", text: "#0b1f3a", muted: "#53627a", accent: "#e8562a", card: "#ffffff", block: "#f3f5f8", onBlock: "#0b1f3a", cap: "phang" },
+  khoimau: { kind: "khoimau", bg: "#111111", text: "#ffffff", muted: "#d9d9d9", accent: "#ffe14d", card: "#222222", block: "#ffe14d", onBlock: "#111111", cap: "nhan" },
+};
+
+const MOI_XOAY: MoiKind[] = ["khoimau", "anh", "bantin"];
+
+/** style "moi" xoay theo số video (video liền nhau khác kiểu); "anh"/"bantin"/"khoimau" chọn thẳng. */
+export function moiOf(style: string, so: number | undefined): MoiLook {
+  if (style in MOI) return MOI[style as MoiKind];
+  return MOI[MOI_XOAY[(so ?? 0) % 3]];
+}

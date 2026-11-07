@@ -3,6 +3,16 @@
 Hệ thống video **nhiều phong cách**: mỗi video một kiểu/màu, video liền nhau không trùng (anh dặn 07/11/2026: cả kênh một màu sẽ đơn điệu). Spec chọn bằng `"style"` (và `"motion"`). Phong cách cũ (`classic`, `sang`, `navy`, `xanh`) giữ cho video đã làm.
 
 ## Chọn phong cách
+**Mặc định cho video mới: `"style": "moi"`** (anh ưng 3 mẫu A/B/C ngày 07/11/2026): tự xoay A ảnh dự án → B bản tin sáng → C khối màu theo số video (`moiOf` trong `src/issues.ts`), video liền nhau khác kiểu. Chọn thẳng một kiểu: `"anh"`, `"bantin"`, `"khoimau"`. Kiểu A cần ảnh: thêm `image` (file, label "Phối cảnh minh họa", sourceId) vào props của stat-hero và project-close. Mẫu: `templates/Moi.tsx`; font Montserrat 900 cho tiêu đề và số, Be Vietnam Pro cho chữ thường.
+
+| Kiểu | Nền | Số | Phụ đề |
+|---|---|---|---|
+| A `anh` | ảnh phối cảnh tràn khung, tối dần xuống dưới, xanh than `#06121f` | xanh ngọc `#7ee0c3` | chữ trắng bóng mềm |
+| B `bantin` | xám sáng `#f3f5f8`, thẻ trắng, vạch cam trên | xanh than, nhấn cam `#e8562a` | chữ đậm không viền |
+| C `khoimau` | đen `#111` + khối vàng `#ffe14d`, mục đang đọc tô vàng | đen trên vàng | nhãn dán nền vàng, số đỏ |
+
+Các phong cách khác (giữ để dùng khi hợp chủ đề):
+
 | Nội dung video | Phong cách | Ghi chú |
 |---|---|---|
 | Lãi suất, tài chính, dòng tiền | `bangls` (bảng lãi suất) | 3 màu bảng xoay theo số video |

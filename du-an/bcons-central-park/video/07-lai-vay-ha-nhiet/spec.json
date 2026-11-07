@@ -3,7 +3,7 @@
   "so": 7,
   "tieuDe": "Lãi vay hạ nhiệt, mua nhà tính sao",
   "status": "approved",
-  "style": "tapchi",
+  "style": "moi",
   "motion": "classic",
   "scenes": [
     {
@@ -29,7 +29,12 @@
         "value": 9,
         "decimals": 0,
         "unit": "–10,7%/năm",
-        "sourceId": "vietcap-t10"
+        "sourceId": "vietcap-t10",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
       }
     },
     {

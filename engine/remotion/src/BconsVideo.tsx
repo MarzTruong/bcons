@@ -10,6 +10,7 @@ import {
   type TransitionKind,
 } from "./motion";
 import { Captions } from "./Captions";
+import { MoiDataCards, MoiGround, MoiProjectClose, MoiStatHero } from "./templates/Moi";
 import { TapChiDataCards, TapChiGround, TapChiProjectClose, TapChiStatHero } from "./templates/TapChi";
 import { BangDataCards, BangProjectClose, BangStatHero, BoardGround } from "./templates/BangLs";
 import { BanVeDataCards, BanVeProjectClose, BanVeStatHero, BlueprintSheet } from "./templates/BanVe";
@@ -46,6 +47,7 @@ const Background: React.FC = () => {
   if (background === "blueprint" || C.look === "banve") return <BlueprintSheet />;
   if (C.look === "tapchi") return <TapChiGround />;
   if (C.look === "bangls") return <BoardGround />;
+  if (C.look === "moi") return <MoiGround />;
   return (
     <AbsoluteFill
       style={{
@@ -126,6 +128,10 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: s
   const banve = look === "banve";
   const tc = look === "tapchi";
   const bl = look === "bangls";
+  const moi = look === "moi";
+  if (moi && scene.template === "stat-hero") return <MoiStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
+  if (moi && scene.template === "data-cards") return <MoiDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
+  if (moi && scene.template === "project-close") return <MoiProjectClose {...(t as TemplateProps<"project-close">)} props={scene.props} />;
   if (tc && scene.template === "stat-hero") return <TapChiStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
   if (tc && scene.template === "data-cards") return <TapChiDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
   if (tc && scene.template === "project-close") return <TapChiProjectClose {...(t as TemplateProps<"project-close">)} props={scene.props} />;

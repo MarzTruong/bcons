@@ -1,7 +1,7 @@
 import React from "react";
 import { loadFont } from "@remotion/google-fonts/BeVietnamPro";
 import type { StyleName } from "./spec";
-import { issueOf } from "./issues";
+import { issueOf, moiOf } from "./issues";
 
 export const { fontFamily } = loadFont("normal", {
   weights: ["400", "600", "700", "800"],
@@ -26,14 +26,14 @@ export type Palette = {
   scrim: string;
   bars: [string, string, string, string];
   /** Phong cách có mẫu cảnh riêng: banve (templates/BanVe.tsx), tapchi (TapChi.tsx), bangls (BangLs.tsx). */
-  look?: "banve" | "tapchi" | "bangls";
+  look?: "banve" | "tapchi" | "bangls" | "moi";
   /** Số video (spec.so), hiện trên bìa tạp chí. */
   so?: number;
   /** Màu riêng của số báo (tapchi/bangls). */
   issue?: Record<string, string>;
 };
 
-export const PALETTES: Record<Exclude<StyleName, "tapchi" | "bangls">, Palette> = {
+export const PALETTES: Record<Exclude<StyleName, "tapchi" | "bangls" | "moi" | "anh" | "bantin" | "khoimau">, Palette> = {
   // Bản gốc: giữ y hệt các video đã làm.
   classic: {
     bg: "#0d0d0d",
@@ -129,6 +129,7 @@ export const PALETTES: Record<Exclude<StyleName, "tapchi" | "bangls">, Palette> 
 
 /** Bảng màu cho video: tapchi/bangls đổi màu theo số video (src/issues.ts), kiểu khác cố định. */
 export function paletteFor(style: StyleName | undefined, so: number | undefined): Palette {
+  if (!style) return PALETTES.classic;
   if (style === "tapchi") {
     const t = issueOf("tapchi", so);
     return { ...PALETTES.classic, bg: t.ground, bg2: t.ground, teal: t.hi, gold: t.hi, red: t.hi, text: t.ink, neutral: t.ink, muted: `${t.ink}d9`, faint: `${t.ink}99`, dim: `${t.ink}b3`, onAccent: t.ground, grid: "transparent", stroke: t.stroke, scrim: t.ground, bars: [t.hi, t.ink, t.page, t.pageInk], look: "tapchi", so, issue: t };
@@ -137,7 +138,11 @@ export function paletteFor(style: StyleName | undefined, so: number | undefined)
     const b = issueOf("bangls", so);
     return { ...PALETTES.classic, bg: b.board, bg2: b.board, teal: b.digit, gold: b.digit, red: b.digit, text: b.label, neutral: b.label, muted: `${b.label}cc`, faint: `${b.label}88`, dim: `${b.label}aa`, onAccent: b.tile, grid: "transparent", stroke: b.tile, scrim: b.board, bars: [b.digit, b.label, b.digit, b.label], look: "bangls", so, issue: b };
   }
-  return PALETTES[style ?? "classic"];
+  if (style === "moi" || style === "anh" || style === "bantin" || style === "khoimau") {
+    const m = moiOf(style, so);
+    return { ...PALETTES.classic, bg: m.bg, bg2: m.bg, teal: m.accent, gold: m.accent, red: m.accent, text: m.text, neutral: m.text, muted: m.muted, faint: `${m.muted}aa`, dim: m.muted, onAccent: m.bg, grid: "transparent", stroke: "#000000", scrim: m.bg, bars: [m.accent, m.text, m.muted, m.accent], look: "moi", so, issue: m as unknown as Record<string, string> };
+  }
+  return PALETTES[style as keyof typeof PALETTES];
 }
 
 export const ThemeContext = React.createContext<Palette>(PALETTES.classic);
