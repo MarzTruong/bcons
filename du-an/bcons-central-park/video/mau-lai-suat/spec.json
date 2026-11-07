@@ -5,9 +5,9 @@
     {
       "id": "scene1",
       "template": "stat-hero",
-      "markup": "Đây là số mẫu để xem bố cục: lãi suất giả định 7,5%{bảy phẩy năm phần trăm} một năm.",
+      "markup": "Đây là số mẫu để xem bố cục: lãi suất giả định 7,5%/năm.{bảy phẩy năm phần trăm một năm.}",
       "cues": {
-        "value": "7,5%"
+        "value": "7,5%/năm."
       },
       "props": {
         "badge": "SỐ MẪU - KHÔNG ĐĂNG",

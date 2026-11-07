@@ -157,7 +157,7 @@
     {
       "id": "scene4",
       "template": "project-close",
-      "markup": "Nói thẳng: dự án mình nhắc tới, Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, dự kiến bàn giao quý 2{hai} năm 2029.{hai nghìn không trăm hai mươi chín.} Vốn sẽ nằm im vài năm, hạ tầng chỉ là bối cảnh. Muốn bảng mốc hạ tầng có nguồn từng dòng, comment mốc hạ tầng, em gửi.",
+      "markup": "Nói thẳng: dự án mình nhắc tới, Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, dự kiến bàn giao quý II{hai} năm 2029.{hai nghìn không trăm hai mươi chín.} Vốn sẽ nằm im vài năm, hạ tầng chỉ là bối cảnh. Muốn bảng mốc hạ tầng có nguồn từng dòng, comment mốc hạ tầng, em gửi.",
       "cues": {},
       "props": {
         "message": "Dự kiến bàn giao Quý II/2029. Comment “mốc hạ tầng” để nhận bảng mốc có nguồn"

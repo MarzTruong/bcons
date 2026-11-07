@@ -11,6 +11,7 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | `huong-dan-mcp.md` | MCP (không bắt buộc), hook chặn commit |
 | `quy-trinh-video.md` | Các cổng làm video |
 | `quy-tac-caption.md` | Cách viết caption tự nhiên |
+| `quy-tac-so-phu-de.md` | Quy tắc viết số trên màn hình (ITN): 11%/năm, 9.363, quý II/2029 |
 | `prompt-gemini-nghien-cuu.md` | Khung prompt nghiên cứu số liệu |
 | `huong-dan-doi-thu-muc-may-anh.md` | Lịch sử: dời thư mục laptop (đã xong) |
 

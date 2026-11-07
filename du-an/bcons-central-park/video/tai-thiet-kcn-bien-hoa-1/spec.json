@@ -363,7 +363,7 @@
     {
       "id": "scene4",
       "template": "geo-map",
-      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý 2{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} giữa lúc Biên Hòa đang thay đổi diện mạo. Muốn bảng nguồn từng dòng, comment tái thiết.",
+      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý II{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} giữa lúc Biên Hòa đang thay đổi diện mạo. Muốn bảng nguồn từng dòng, comment tái thiết.",
       "cues": {
         "d1": "236",
         "d2": "giữa",

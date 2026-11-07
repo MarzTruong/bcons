@@ -9,7 +9,7 @@
     {
       "id": "scene1",
       "template": "compare-bars",
-      "markup": "Cho thuê căn hộ, khu nào lợi suất cao? Theo số liệu batdongsan.com dẫn trên CafeF, Biên Hòa 4,4%{bốn phẩy bốn phần trăm} một năm, Thủ Đức 3,3{ba phẩy ba} Quận 9{chín} 2,7{hai phẩy bảy} Quận 2{hai} 2,1{hai phẩy một}.",
+      "markup": "Cho thuê căn hộ, khu nào lợi suất cao? Theo số liệu batdongsan.com dẫn trên CafeF, Biên Hòa 4,4%/năm,{bốn phẩy bốn phần trăm một năm,} Thủ Đức 3,3{ba phẩy ba} Quận 9{chín} 2,7{hai phẩy bảy} Quận 2{hai} 2,1{hai phẩy một}.",
       "cues": {
         "a": "Biên",
         "b": "Thủ",
@@ -440,7 +440,7 @@
     {
       "id": "scene4",
       "template": "project-close",
-      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý 2{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} là một lựa chọn để mình cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment bài toán thuê.",
+      "markup": "Bcons{Bee Cons} Central{Central} Park{Park} ở 236{hai trăm ba mươi sáu} Phan Trung, Tam Hiệp, dự kiến bàn giao quý II{hai} năm 2029,{hai ngàn không trăm hai mươi chín,} là một lựa chọn để mình cân nhắc cho nhu cầu ở và cho thuê trong khu vực. Muốn bảng nguồn từng dòng, comment bài toán thuê.",
       "cues": {},
       "props": {
         "message": "Dự kiến bàn giao Quý II/2029. Comment “bài toán thuê” để nhận bảng nguồn từng dòng",

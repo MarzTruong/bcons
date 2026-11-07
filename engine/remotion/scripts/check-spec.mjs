@@ -15,6 +15,7 @@ import {
   parseMarkup,
   resolveSpecPath,
 } from "./spec-tools.mjs";
+import { checkSpelledNumbers } from "./itn.mjs";
 
 const { projDir, rest } = takeProjectFlag(process.argv.slice(2));
 const arg = rest[0];
@@ -29,7 +30,7 @@ for (const name of names) {
     const { ok, missing } = checkSources(spec, md);
     if (!ok) throw new Error(`sourceId không có trong bảng nguồn ${mdPath}: ${missing.join(", ")}`);
     if (spec.name !== name) throw new Error(`spec.name "${spec.name}" khác tên file "${name}"`);
-    const cueErrors = [...checkCues(spec), ...checkShownSymbols(spec)];
+    const cueErrors = [...checkCues(spec), ...checkShownSymbols(spec), ...checkSpelledNumbers(spec)];
     if (cueErrors.length) throw new Error(cueErrors.join("; "));
     // Có giọng rồi: timestamps phải khớp lời đọc (sửa chữ hiển thị thì chạy npm run phu-de, không cần tạo giọng lại)
     const tsPath = videoPaths(name, projDir).timestamps;

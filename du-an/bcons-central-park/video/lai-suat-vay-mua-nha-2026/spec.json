@@ -7,7 +7,7 @@
     {
       "id": "scene1",
       "template": "stat-hero",
-      "markup": "Lãi suất vay mua nhà năm nay đang ở mức nào? Theo khảo sát quý 2{hai} tại mười ngân hàng, lãi suất ưu đãi phổ biến từ 8,5{tám phẩy năm} đến 11%{mười một phần trăm} một năm.",
+      "markup": "Lãi suất vay mua nhà năm nay đang ở mức nào? Theo khảo sát quý II{hai} tại 10{mười} ngân hàng, lãi suất ưu đãi phổ biến từ 8,5{tám phẩy năm} đến 11%/năm.{mười một phần trăm một năm.}",
       "cues": {
         "value": "8,5"
       },
@@ -29,7 +29,7 @@
     {
       "id": "scene2",
       "template": "compare-bars",
-      "markup": "Nhóm bốn ngân hàng lớn, gói cố định mười hai tháng: Agribank 8,2%,{tám phẩy hai phần trăm,} Vietcombank 9,8{chín phẩy tám}, VietinBank 10,5{mười phẩy năm} và BIDV{bee eye dee vee} 10,8%{mười phẩy tám phần trăm} một năm.",
+      "markup": "Nhóm bốn ngân hàng lớn, gói cố định 12{mười hai} tháng: Agribank 8,2%,{tám phẩy hai phần trăm,} Vietcombank 9,8{chín phẩy tám}, VietinBank 10,5{mười phẩy năm} và BIDV{bee eye dee vee} 10,8%/năm.{mười phẩy tám phần trăm một năm.}",
       "cues": {
         "a": "Agribank",
         "b": "Vietcombank",
@@ -71,7 +71,7 @@
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "Nhưng hết thời gian ưu đãi, lãi suất người vay thực trả phổ biến từ 13{mười ba} đến 15%{mười lăm phần trăm} một năm. Theo Dat{Đất} Xanh{Xanh} Services, tỷ lệ hấp thụ nguồn cung mới giảm từ 45{bốn mươi lăm} đến 50{năm mươi} xuống còn 20{hai mươi} đến 30%.{ba mươi phần trăm.} Còn theo PropertyGuru hơn 80%{tám mươi phần trăm} người mua chỉ vay khi lãi suất dưới 9%.{chín phần trăm.}",
+      "markup": "Nhưng hết thời gian ưu đãi, lãi suất người vay thực trả phổ biến từ 13{mười ba} đến 15%/năm.{mười lăm phần trăm một năm.} Theo Dat{Đất} Xanh{Xanh} Services, tỷ lệ hấp thụ nguồn cung mới giảm từ 45{bốn mươi lăm} đến 50{năm mươi} xuống còn 20{hai mươi} đến 30%.{ba mươi phần trăm.} Còn theo PropertyGuru hơn 80%{tám mươi phần trăm} người mua chỉ vay khi lãi suất dưới 9%.{chín phần trăm.}",
       "cues": {
         "c1": "13",
         "c2": "Dat",
@@ -111,7 +111,7 @@
     {
       "id": "scene4",
       "template": "project-close",
-      "markup": "Tại Bcons{Bee Cons} Central{Central} Park{Park}, phương thức thanh toán số 3{ba} và số 4{bốn} áp dụng lãi suất vay trần 6,9%{sáu phẩy chín phần trăm} một năm, theo điều kiện cụ thể của từng phương thức.",
+      "markup": "Tại Bcons{Bee Cons} Central{Central} Park{Park}, phương thức thanh toán số 3{ba} và số 4{bốn} áp dụng lãi suất vay trần 6,9%/năm,{sáu phẩy chín phần trăm một năm,} theo điều kiện cụ thể của từng phương thức.",
       "cues": {},
       "props": {
         "message": "PTTT 03 và 04: lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức"
