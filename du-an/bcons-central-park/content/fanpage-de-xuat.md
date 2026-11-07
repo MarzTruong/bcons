@@ -20,8 +20,8 @@ Mọi bài trên fanpage và TikTok chỉ có một việc: **đưa người xem
 | Hộp thư | Cài tin chào, trả lời nhanh, tin ngoài giờ | Theo `messenger-kich-ban.md` |
 
 ## 3. Bốn nhóm nội dung (xoay vòng)
-1. **Vị trí và hạ tầng Biên Hòa:** tái dùng video `ha-tang-bien-hoa-2026`, có bảng nguồn số liệu.
-2. **Tài chính:** vay, lãi suất, so sánh PTTT. Tái dùng video `lai-suat-vay-mua-nha-2026`. Luôn nói rõ chưa VAT và phí bảo trì 2%.
+1. **Vị trí và hạ tầng Biên Hòa:** tái dùng video `04-ha-tang-bien-hoa`, có bảng nguồn số liệu.
+2. **Tài chính:** vay, lãi suất, so sánh PTTT. Tái dùng video `03-lai-suat-vay-mua-nha`. Luôn nói rõ chưa VAT và phí bảo trì 2%.
 3. **Sản phẩm:** loại căn, diện tích, 60 tiện ích, nhà mẫu (chỉ khi có ảnh thật anh đã duyệt).
 4. **Lịch mở bán:** đợt 2 ngày 29/11/2026, đợt 3 ngày 27/12/2026. Không nói số căn còn lại khi chưa kiểm tra.
 

@@ -1,6 +1,6 @@
-# Storyboard video `tai-thiet-kcn-bien-hoa-1` (05/11/2026)
+# Storyboard video `06-tai-thiet-kcn-bien-hoa-1` (05/11/2026)
 
-Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mốc giây lấy từ `du-an/bcons-central-park/video/tai-thiet-kcn-bien-hoa-1/timestamps.json` (tính từ đầu từng cảnh). Kiểu: màu `navy`, chuyển động `nay`. Nền bản đồ đề xuất: ảnh vệ tinh có đường (`satellite-streets-v12`) để thấy khu đất thật; nếu anh muốn sáng hoặc tối hơn thì đổi.
+Trạng thái: **chờ anh duyệt storyboard trước khi làm code và render.** Lời bình, giọng đọc và số liệu giữ nguyên (đã duyệt), nên không tốn thêm credit ElevenLabs. Mốc giây lấy từ `du-an/bcons-central-park/video/06-tai-thiet-kcn-bien-hoa-1/timestamps.json` (tính từ đầu từng cảnh). Kiểu: màu `navy`, chuyển động `nay`. Nền bản đồ đề xuất: ảnh vệ tinh có đường (`satellite-streets-v12`) để thấy khu đất thật; nếu anh muốn sáng hoặc tối hơn thì đổi.
 
 > **Cập nhật 05/11/2026 (sau khi anh duyệt storyboard):** đã code xong cảnh bản đồ. Khác với bản storyboard ban đầu: (1) ranh KCN là **đa giác thật của OpenStreetMap** (không còn vòng tròn minh họa); (2) nền ảnh vệ tinh Mapbox `satellite-streets-v12`; (3) thẻ số liệu nằm **phía trên** bản đồ (vùng y 1500-1650 dành cho phụ đề); (4) không vẽ ranh phân vùng 44/286 ha và lô 21,5/51,6 ha vì chưa có dữ liệu, chỉ hiện thẻ số; (5) **ảnh phối cảnh đang là ảnh giữ chỗ** và **Aeon đang là điểm tạm**: cổng kiểm tra chặn render đủ cho tới khi có file thật.
 

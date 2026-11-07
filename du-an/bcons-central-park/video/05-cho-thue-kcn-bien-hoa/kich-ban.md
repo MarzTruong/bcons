@@ -1,6 +1,6 @@
 # Video "Cầu thuê từ khu công nghiệp Biên Hòa" (05/11/2026)
 
-Spec: `du-an/bcons-central-park/video/cho-thue-kcn-bien-hoa-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `sang` = nền kem kiểu báo chí, chuyển động `truot`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 2), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
+Spec: `du-an/bcons-central-park/video/05-cho-thue-kcn-bien-hoa/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `sang` = nền kem kiểu báo chí, chuyển động `truot`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 2), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 

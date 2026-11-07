@@ -98,6 +98,6 @@ test("SĐT: số của tư vấn viên (project.json → lienHe) được ghi tr
 
 test("captionOptsFor: caption trong du-an/<mã>/ lấy SĐT được phép từ project.json của dự án", async () => {
   const { captionOptsFor } = await import("../scripts/caption.mjs");
-  const p = new URL("../../../du-an/bcons-central-park/video/ha-tang-bien-hoa-2026/caption.md", import.meta.url).pathname;
+  const p = new URL("../../../du-an/bcons-central-park/video/04-ha-tang-bien-hoa/caption.md", import.meta.url).pathname;
   assert.deepEqual(captionOptsFor(p).allowPhones, ["0938323139"]);
 });

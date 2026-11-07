@@ -1,7 +1,7 @@
 {
-  "name": "dong-nai-ha-tang-map",
-  "so": 2,
-  "tieuDe": "Đồng Nai hạ tầng (bản đồ)",
+  "name": "01-dong-nai-ha-tang",
+  "so": 1,
+  "tieuDe": "Đồng Nai: FDI, cao tốc, khu thương mại tự do",
   "status": "approved",
   "scenes": [
     {
@@ -28,94 +28,87 @@
     },
     {
       "id": "scene2",
-      "template": "geo-map",
+      "template": "route-map",
       "markup": "Mạng lưới giao thông liên vùng được mở rộng khi cao tốc Bến Lức -{} Long Thành chính thức khai thác toàn tuyến từ ngày 1{mùng một} tháng 10{mười} năm 2026,{hai nghìn không trăm hai mươi sáu,} kết nối sân bay Long Thành và cảng Phước An.",
       "cues": {
-        "cao": "cao",
-        "ngay": "ngày",
-        "ket": "kết"
+        "highway": "cao",
+        "info": "ngày",
+        "triangle": "kết"
       },
       "props": {
         "kicker": "KẾT NỐI HẠ TẦNG",
         "title": "Tam giác kết nối Đồng Nai",
-        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
-        "camera": {
-          "center": [
-            106.76,
-            10.79
-          ],
-          "zoom": 10
-        },
-        "points": [
+        "nodes": [
           {
             "key": "ben-luc",
             "label": "Bến Lức",
-            "file": "assets/geo/diem-moc.geojson",
-            "featureKey": "ben-luc",
+            "x": 90,
+            "y": 1400,
             "color": "white",
-            "cueKey": "cao",
-            "offset": 5,
-            "sourceId": "geo-ben-luc"
+            "labelDy": -45,
+            "anchor": "start",
+            "delay": 5
           },
           {
             "key": "phuoc-an",
             "label": "Cảng Phước An",
-            "file": "assets/geo/diem-moc.geojson",
-            "featureKey": "phuoc-an",
+            "x": 470,
+            "y": 1230,
             "color": "gold",
-            "cueKey": "cao",
-            "offset": 50,
-            "sourceId": "geo-phuoc-an"
+            "labelDy": 85,
+            "delay": 50
           },
           {
             "key": "long-thanh",
             "label": "Sân bay QT Long Thành",
-            "file": "assets/geo/diem-moc.geojson",
-            "featureKey": "long-thanh",
+            "x": 860,
+            "y": 1000,
             "color": "gold",
-            "cueKey": "cao",
-            "offset": 80,
-            "sourceId": "geo-long-thanh"
+            "labelDx": -20,
+            "labelDy": -55,
+            "anchor": "end",
+            "delay": 80
           },
           {
             "key": "central-park",
             "label": "BCONS CENTRAL PARK",
-            "file": "assets/geo/diem-moc.geojson",
-            "featureKey": "central-park",
+            "x": 640,
+            "y": 560,
             "color": "red",
             "big": true,
-            "cueKey": "cao",
-            "offset": 110,
-            "sourceId": "geo-central-park"
+            "labelDy": -65,
+            "delay": 110
           }
         ],
-        "lines": [
-          {
-            "key": "cao-toc",
-            "file": "assets/geo/tuyen-minh-hoa-ben-luc-long-thanh.geojson",
-            "kind": "illustrative",
-            "color": "teal",
-            "width": 9,
-            "cueKey": "cao",
-            "drawFrames": 100
-          }
-        ],
-        "areas": [
-          {
-            "key": "tam-giac",
-            "file": "assets/geo/tam-giac-ket-noi.geojson",
-            "kind": "illustrative",
-            "label": "Vùng minh họa",
-            "cueKey": "ket"
-          }
-        ],
-        "info": {
-          "title": "Cao tốc Bến Lức - Long Thành",
-          "text": "Khai thác toàn tuyến từ 01/10/2026",
-          "cueKey": "ngay",
-          "sourceId": "cao-toc-ben-luc"
+        "highway": {
+          "fromKey": "ben-luc",
+          "viaKey": "phuoc-an",
+          "toKey": "long-thanh",
+          "c1": [
+            300,
+            1380
+          ],
+          "c2": [
+            380,
+            1250
+          ],
+          "s2": [
+            760,
+            1120
+          ]
         },
-        "note": "Điểm theo tọa độ thật; tuyến và tam giác là sơ đồ minh họa, không phải hình tuyến hay ranh giới chính thức"
+        "triangle": [
+          "central-park",
+          "long-thanh",
+          "phuoc-an"
+        ],
+        "highwayCueKey": "highway",
+        "triangleCueKey": "triangle",
+        "infoCueKey": "info",
+        "infoTitle": "Cao tốc Bến Lức - Long Thành",
+        "infoText": "Khai thác toàn tuyến từ 01/10/2026",
+        "note": "Sơ đồ minh họa, không đúng tỷ lệ",
+        "sourceId": "cao-toc-ben-luc"
       }
     },
     {

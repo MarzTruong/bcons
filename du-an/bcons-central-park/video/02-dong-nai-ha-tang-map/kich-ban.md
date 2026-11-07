@@ -1,6 +1,6 @@
 # Video "Đồng Nai - hạ tầng" bản có bản đồ Mapbox (04/11/2026)
 
-Spec: `du-an/bcons-central-park/video/dong-nai-ha-tang-map/spec.json` (cảnh 2 dùng bản đồ Mapbox; lời bình và giọng đọc y hệt bản `dong-nai-ha-tang`). Nguồn địa lý: `du-an/bcons-central-park/assets/geo/NGUON.md`. Tuyến và tam giác trên bản đồ là **minh họa**.
+Spec: `du-an/bcons-central-park/video/02-dong-nai-ha-tang-map/spec.json` (cảnh 2 dùng bản đồ Mapbox; lời bình và giọng đọc y hệt bản `01-dong-nai-ha-tang`). Nguồn địa lý: `du-an/bcons-central-park/assets/geo/NGUON.md`. Tuyến và tam giác trên bản đồ là **minh họa**.
 
 **Nguồn do anh cung cấp (04/11/2026):** bài đăng của trang Facebook "Thông tin Chính phủ", đăng "2 tháng 11 lúc 19:48" (ảnh chụp không hiện năm), kèm bình luận của chính trang đó. Link bài bắt đăng nhập nên em đối chiếu từng số với **ảnh chụp bài + bình luận anh gửi**.
 

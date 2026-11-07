@@ -29,7 +29,7 @@ test("resolveSpecPath từ chối tên có ..", () => {
   assert.throws(() => resolveSpecPath("A b"));
 });
 test("resolveSpecPath trả đường dẫn du-an/<mã>/video/<name>/spec.json", () => {
-  assert.match(resolveSpecPath("dong-nai-ha-tang").replaceAll("\\", "/"), /du-an\/bcons-central-park\/video\/dong-nai-ha-tang\/spec\.json$/);
+  assert.match(resolveSpecPath("01-dong-nai-ha-tang").replaceAll("\\", "/"), /du-an\/bcons-central-park\/video\/01-dong-nai-ha-tang\/spec\.json$/);
 });
 test("readSourceIds chỉ đọc bảng dưới '## Bảng nguồn'", () => {
   assert.deepEqual(readSourceIds(md), ["s1", "s2"]);

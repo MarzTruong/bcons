@@ -1,6 +1,6 @@
 # Video "Tái thiết KCN Biên Hòa 1" (05/11/2026)
 
-Spec: `du-an/bcons-central-park/video/tai-thiet-kcn-bien-hoa-1/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `navy` = navy và vàng, chuyển động `nay`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 4), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
+Spec: `du-an/bcons-central-park/video/06-tai-thiet-kcn-bien-hoa-1/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 05/11/2026; phong cách `navy` = navy và vàng, chuyển động `nay`). Kịch bản gốc từ báo cáo Gemini (`du-an/bcons-central-park/nguon/gemini/kich_ban_video_bds_bcons_central_park.md`, kịch bản 4), đã sửa theo kiểm nguồn. Em đã mở từng link gốc ngày 05/11/2026.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 

@@ -1,6 +1,6 @@
 # Video "Hạ tầng Biên Hòa 2026: đã chạy hay còn trên giấy" (04/11/2026)
 
-Spec: `du-an/bcons-central-park/video/ha-tang-bien-hoa-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026; phong cách màu Xanh di sản `xanh`, chuyển động Mờ điện ảnh `mo`). Kịch bản gốc anh đã duyệt: `du-an/bcons-central-park/content/2026-11-04-ha-tang-bien-hoa-da-chay-vs-tren-giay.md`. Số liệu thị trường từ báo cáo Gemini, em đã mở link gốc đối chiếu 04/11/2026. Nguồn địa lý: `du-an/bcons-central-park/assets/geo/NGUON.md`.
+Spec: `du-an/bcons-central-park/video/04-ha-tang-bien-hoa/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026; phong cách màu Xanh di sản `xanh`, chuyển động Mờ điện ảnh `mo`). Kịch bản gốc anh đã duyệt: `du-an/bcons-central-park/content/2026-11-04-ha-tang-bien-hoa-da-chay-vs-tren-giay.md`. Số liệu thị trường từ báo cáo Gemini, em đã mở link gốc đối chiếu 04/11/2026. Nguồn địa lý: `du-an/bcons-central-park/assets/geo/NGUON.md`.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây)
 1. **Bản đồ (geo-map)** — hook, tách hai nhóm; 4 điểm thật hiện dần; đường nối minh họa Bến Lức - Long Thành.

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import { assertApproved, parseMarkup, resolveSpecPath } from "./spec-tools.mjs";
 import { parseSpec } from "../src/spec.ts";
-const spec = parseSpec(JSON.parse(fs.readFileSync(resolveSpecPath("dong-nai-ha-tang"), "utf8")));
+const spec = parseSpec(JSON.parse(fs.readFileSync(resolveSpecPath("01-dong-nai-ha-tang"), "utf8")));
 assertApproved(spec); // cổng chặn trước khi gọi ElevenLabs (tốn credit)
 const SCENES = spec.scenes;
 const KEY = process.env.ELEVENLABS_API_KEY;

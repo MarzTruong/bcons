@@ -1,6 +1,6 @@
 # Video "Lãi suất vay mua nhà 2026" (góc C, 04/11/2026)
 
-Spec: `du-an/bcons-central-park/video/lai-suat-vay-mua-nha-2026/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026, chưa tạo giọng). Nguồn số liệu thị trường: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, đã mở link gốc đối chiếu 04/11/2026. Số về dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
+Spec: `du-an/bcons-central-park/video/03-lai-suat-vay-mua-nha/spec.json` (status `approved`: anh đã duyệt chữ và số liệu ngày 04/11/2026, chưa tạo giọng). Nguồn số liệu thị trường: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`, đã mở link gốc đối chiếu 04/11/2026. Số về dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
 
 ## Kịch bản (4 cảnh, khoảng 50 giây khi đọc)
 

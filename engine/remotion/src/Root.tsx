@@ -4,8 +4,8 @@ import { parseSpec } from "./spec";
 import { FPS, buildTiming, type Timestamps } from "./timing";
 import { BconsTuanReview } from "./tuan/BconsTuanReview";
 import { TOTAL_FRAMES as TUAN_FRAMES } from "./tuan/data";
-import defaultSpec from "../../../du-an/bcons-central-park/video/dong-nai-ha-tang/spec.json";
-import defaultTimestamps from "../../../du-an/bcons-central-park/video/dong-nai-ha-tang/timestamps.json";
+import defaultSpec from "../../../du-an/bcons-central-park/video/01-dong-nai-ha-tang/spec.json";
+import defaultTimestamps from "../../../du-an/bcons-central-park/video/01-dong-nai-ha-tang/timestamps.json";
 
 const defaultProps: BconsVideoProps = {
   spec: parseSpec(defaultSpec),
