@@ -82,3 +82,10 @@ Quy ước đặt tên (07/11/2026): mỗi video có **số cố định** và t
 - Đang render/tạo giọng thì không chuyển (bot báo đợi xong hoặc `/huy`).
 - Đặt tên máy cho dễ đọc: thêm dòng `TEN_MAY=PC` (hoặc `TEN_MAY=Laptop`) vào `engine\remotion\.env` trên từng máy. Không đặt thì dùng tên Windows.
 - Cần Drive for desktop trên cả hai máy (thư mục `Bcons - Dong bo thiet bi\bot\` do bot tự tạo). Máy không có Drive thì bot chạy như cũ, không chuyển được.
+
+## Tự cập nhật (từ 07/11/2026): không cần gõ lệnh
+- **Mở bot là tự lấy bản mới**: bot xem GitHub, có bản mới thì tự tắt, cửa sổ `Bcons-Bot.cmd` cập nhật (cả thư viện) rồi bật lại, Telegram báo "✅ Đã tự cập nhật bản mới".
+- **Chuyển máy** (`/chuyenmay`): máy nhận việc cũng tự cập nhật trước khi chạy.
+- **Đang chạy mà muốn lấy bản mới ngay**: nhắn `/capnhat`.
+- Tự xử lý: lần cập nhật trước bị dừng giữa chừng / có file sửa trên máy (cất vào `git stash`, không mất), bản lưu chưa lên GitHub (ghép rồi đẩy lên). Lỗi không tự xử lý được thì Telegram báo "⚠️ Tự cập nhật có lỗi" và bot chạy tiếp bản đang có.
+- Máy cũ (chưa có bản 07/11 tối) cần làm tay **một lần cuối** các lệnh trong mục cập nhật PC; sau đó không bao giờ phải gõ lệnh nữa.

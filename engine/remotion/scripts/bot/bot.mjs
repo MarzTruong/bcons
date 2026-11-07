@@ -12,6 +12,7 @@ import { killTree, runClaude } from "./claude-bridge.mjs";
 import { createBot } from "./handlers.mjs";
 import { createTg } from "./tg.mjs";
 import { onConflict } from "./core.mjs";
+import { canCapNhat, docLogCapNhat } from "./tu-cap-nhat.mjs";
 import { MAY, requestSwitch, standbyDecision, standbysOf, startRole, stateDir, writeBeat } from "./may.mjs";
 
 const REMOTION_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -102,12 +103,21 @@ async function main() {
   bot.setExitForUpdate(() => setTimeout(() => process.exit(EXIT_UPDATE), 1500));
   // Kết quả lần cập nhật trước (Bcons-Bot.cmd ghi), báo lại cho anh.
   const logFile = path.join(REMOTION_DIR, "out", "tam", "capnhat.log");
+  let vuaCapNhatLoi = false;
   if (fs.existsSync(logFile)) {
-    const log = fs.readFileSync(logFile, "utf8").trim().split(/\r?\n/).slice(-12).join("\n");
+    const { ok, tomTat } = docLogCapNhat(fs.readFileSync(logFile, "utf8"));
     fs.rmSync(logFile, { force: true });
-    const ok = !/error|fatal|lỗi|loi/i.test(log);
-    await tg.sendMessage(chatId, `${ok ? "✅ Đã cập nhật bản mới." : "⚠️ Cập nhật có lỗi, gửi em ảnh này:"}\n${log}`).catch(() => {});
+    vuaCapNhatLoi = !ok;
+    await tg.sendMessage(chatId, `${ok ? "✅ Đã tự cập nhật bản mới." : "⚠️ Tự cập nhật có lỗi, chụp gửi Claude:"}\n${tomTat}`).catch(() => {});
   }
+  // Tự cập nhật: GitHub có bản mới thì thoát mã 4, Bcons-Bot.cmd lấy bản mới rồi bật lại (anh không phải gõ lệnh).
+  const gitRun = (args) => exec("git", args, { cwd: REPO_ROOT, timeoutMs: 60e3 });
+  const tuCapNhat = async (why) => {
+    if (vuaCapNhatLoi || !(await canCapNhat(gitRun))) return false;
+    console.log(`Có bản mới trên GitHub (${why}): tắt bot để cập nhật...`);
+    process.exit(EXIT_UPDATE);
+  };
+  await tuCapNhat("mở bot");
   const host = (process.env.TEN_MAY ?? "").trim() || os.hostname();
   const dir = (() => {
     try {
@@ -155,6 +165,7 @@ async function main() {
         await sleep(5000);
         const d = standbyDecision(dir, host);
         if (d === "cho") continue;
+        await tuCapNhat("nhận việc từ máy khác"); // có bản mới thì cập nhật trước, bật lại sẽ chạy luôn
         role = "chay";
         beat();
         startedAt = Date.now();
