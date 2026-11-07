@@ -19,6 +19,7 @@
 - `du-an/<mã>/`: mọi thứ của một dự án: `project.json`, `thong-tin.md`, `video/<tên>/` (spec.json, kich-ban.md, storyboard.md, caption.md, audio/), `assets/` (images, geo), `nguon/`, `content/`, `landing/`, `bao-cao/`. Dự án mới: skill `bcons-project-init` (chép `du-an/_mau/`).
 - `config.json`: dự án đang bán (`duAnDangBan`). Lệnh nhận thêm `--du-an <mã>` để chạy cho dự án khác.
 - Không lên git, cũng chia theo dự án: `data/<mã>/` (bảng giá), `anh/<mã>/` (ảnh gốc).
+- Dùng chung giữa các máy qua Drive "Bcons - Dong bo thiet bi" (code tự dò ổ, `findDriveRoot`/`sharedDir`): `video/` (render), `am-thanh/nhac/` (nhạc nền), `data/` (bảng giá). Thêm dữ liệu dùng chung thì để trên Drive, không để riêng một máy.
 - Quy tắc chi tiết: `.claude/rules/pipeline-constraints.md` (code video), `.claude/rules/preflight-and-sources.md` (cổng chặn, nguồn số liệu).
 
 ## Nguồn dữ liệu (đọc trước khi viết nội dung)

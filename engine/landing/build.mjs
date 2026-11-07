@@ -5,7 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { readProjectConfig, takeProjectFlag } from "../remotion/scripts/project.mjs";
+import { readProjectConfig, sharedDir, takeProjectFlag } from "../remotion/scripts/project.mjs";
 import { renderPage, renderPolicy } from "./page.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -39,10 +39,20 @@ export function checkStillForSale(data, csvPath) {
   return data.canMau.filter((u) => status.has(u.ma) && status.get(u.ma) !== "CÒN BÁN").map((u) => `Căn mẫu ${u.ma} không còn bán (${status.get(u.ma)}), chọn căn khác`);
 }
 
+/** Bảng giá: trong repo (data/<mã>/) nếu có, không thì trên Drive dùng chung (data/<mã>/ hoặc data/). Cloudflare không có cả hai: bỏ qua. */
+function findPriceCsv(projDir, ma) {
+  const cands = [
+    path.join(projDir, "..", "..", "data", ma, "bang-gia.csv"),
+    path.join(sharedDir("data"), ma, "bang-gia.csv"),
+    path.join(sharedDir("data"), "bang-gia.csv"),
+  ];
+  return cands.find((p) => fs.existsSync(p)) ?? cands[0];
+}
+
 export function buildLanding(projDir, outRoot, { draft = false } = {}) {
   const project = readProjectConfig(projDir);
   const data = JSON.parse(fs.readFileSync(path.join(projDir, "landing", "landing.json"), "utf8"));
-  const errs = [...checkLanding(data, { draft }), ...checkStillForSale(data, path.join(projDir, "..", "..", "data", project.ma, "bang-gia.csv"))];
+  const errs = [...checkLanding(data, { draft }), ...checkStillForSale(data, findPriceCsv(projDir, project.ma))];
   if (errs.length) throw new Error(`Chưa đăng được landing:\n- ${errs.join("\n- ")}`);
   const out = path.join(outRoot, project.ma);
   fs.rmSync(out, { recursive: true, force: true });

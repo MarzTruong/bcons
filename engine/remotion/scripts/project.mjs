@@ -18,6 +18,28 @@ function findRepoRoot(start) {
 
 export const REPO_ROOT = findRepoRoot(path.dirname(fileURLToPath(import.meta.url)));
 
+const DRIVE_SUB = "My Drive\\Bcons - Dong bo thiet bi";
+
+/**
+ * Thư mục Drive dùng chung giữa các máy ("Bcons - Dong bo thiet bi"): video render, nhạc, bảng giá.
+ * DRIVE_DIR trong .env nếu đặt; không thì dò các ổ (Drive for desktop thường là G:). Không có thì null.
+ */
+export function findDriveRoot({ env = process.env, exists = fs.existsSync } = {}) {
+  if (env.DRIVE_DIR) return env.DRIVE_DIR;
+  for (const letter of "GHIJKLMNOPQRSTUVWXYZDEF") {
+    const dir = `${letter}:\\${DRIVE_SUB}`;
+    if (exists(dir)) return dir;
+  }
+  return null;
+}
+
+/** Thư mục dùng chung `rel` (vd. "am-thanh/nhac", "data"): trên Drive nếu có, không thì trong repo. */
+export function sharedDir(rel, opts = {}) {
+  const root = findDriveRoot(opts);
+  const parts = rel.split("/");
+  return root ? path.join(root, ...parts) : path.join(REPO_ROOT, ...parts);
+}
+
 /** Kiểm tên video/mã dự án: chỉ a-z, 0-9, gạch ngang. */
 export function assertName(value, what = "Tên video") {
   if (!NAME_RE.test(value ?? "")) {

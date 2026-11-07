@@ -8,7 +8,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { applyWatermark, checkTimestamps, prepareRun } from "./spec-tools.mjs";
 import { loadMapboxEnv } from "./env.mjs";
-import { readProjectConfig, takeProjectFlag } from "./project.mjs";
+import { findDriveRoot, readProjectConfig, takeProjectFlag } from "./project.mjs";
 import { prepareAudio } from "./am-thanh.mjs";
 
 try {
@@ -54,11 +54,8 @@ fs.writeFileSync(
 
 function findDriveDir() {
   if (process.env.DRIVE_VIDEO_DIR) return process.env.DRIVE_VIDEO_DIR;
-  for (const letter of "GHIJKLMNOPQRSTUVWXYZDEF") {
-    const dir = `${letter}:\\My Drive\\Bcons - Dong bo thiet bi\\video`;
-    if (fs.existsSync(dir)) return dir;
-  }
-  return null;
+  const root = findDriveRoot();
+  return root ? path.join(root, "video") : null;
 }
 
 const target = findDriveDir();
