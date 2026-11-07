@@ -1,3 +1,4 @@
+import os from "node:os";
 // Bot Telegram Bcons: chạy trên laptop, nhận lệnh của anh và chạy thay anh.
 // Chạy: npm run bot (trong engine/remotion), hoặc bấm đúp Bcons-Bot.cmd ở gốc repo.
 // Cần trong engine/remotion/.env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID. Xem docs/huong-dan-bot-telegram.md
@@ -92,7 +93,7 @@ async function main() {
     runClaude: (prompt, o) => runClaude(prompt, { ...o, onChild: (c) => (currentChild = c) }),
     sendApproved: (o) => sendApproved({ ...o, env: process.env }),
   });
-  await tg.sendMessage(chatId, "🤖 Bot Bcons đã chạy trên laptop. Nhắn /huongdan để xem lệnh.").catch((e) => console.error(e.message));
+  await tg.sendMessage(chatId, `🤖 Bot Bcons đã chạy trên máy ${os.hostname()}. Nhắn /huongdan để xem lệnh.`).catch((e) => console.error(e.message));
   console.log("Bot đang chạy. Đóng cửa sổ này để tắt bot.");
   let offset = 0;
   for (;;) {
