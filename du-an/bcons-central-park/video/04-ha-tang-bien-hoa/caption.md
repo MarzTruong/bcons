@@ -2,7 +2,7 @@
 status: approved
 duyetLuc: "2026-11-06T14:54:38+07:00"
 noiDungSha256: "53a89eecc1e098857f907e55b0bd261c156ef0aa234b0923de5221f050510b1a"
-videoSha256: "19b1d29af33ecda0f2818a0da3638b1f8c9793463a791fe1c1f59825912771c1"
+videoSha256: "e6af027d575e1861f914a4283ed5fe9e4570ff7b7ef950e3b3daf8c2a1034479"
 kenh: [facebook, tiktok]
 ---
 ## Facebook
