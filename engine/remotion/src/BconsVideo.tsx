@@ -112,6 +112,8 @@ export type BconsVideoProps = {
   spec: VideoSpec;
   timestamps: Timestamps;
   amThanh?: { nhac: string | null; sfx: string[] };
+  /** Storyboard trước khi có giọng: không phát mp3 giọng (chưa có file). */
+  khongGiong?: boolean;
 };
 
 const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>) => {
@@ -152,7 +154,7 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>) => {
   }
 };
 
-export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThanh }) => {
+export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThanh, khongGiong }) => {
   const timing = buildTiming(timestamps);
   const { SCENE_DATA, SCENE_STARTS } = timing;
   const sfx = amThanh?.sfx ?? [];
@@ -194,9 +196,11 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     <Captions words={d.words} nhan={scene.nhan} />
                   )}
                 </SceneTransition>
-                <Sequence from={LEAD} durationInFrames={d.audioFrames}>
-                  <Audio src={staticFile(`video/${spec.name}/audio/${d.id}.mp3`)} />
-                </Sequence>
+                {khongGiong ? null : (
+                  <Sequence from={LEAD} durationInFrames={d.audioFrames}>
+                    <Audio src={staticFile(`video/${spec.name}/audio/${d.id}.mp3`)} />
+                  </Sequence>
+                )}
               </Sequence>
             );
           })}

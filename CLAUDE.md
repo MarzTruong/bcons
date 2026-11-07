@@ -12,7 +12,7 @@
 ## Máy đang chạy (tự nhận diện)
 - **Cloud** (biến môi trường `CLAUDE_CODE_REMOTE=true`, anh dùng từ laptop/điện thoại): nghiên cứu, viết `kich-ban.md`, `storyboard.md`, `caption.md`, `spec.json`, lập trình `engine/`, viết test, `npm test`, `npm run lint`, commit/push. **Không** chạy `npm run voice` hay `npm run render:drive` (không có `.env`, không có Drive).
 - **Máy của anh** (laptop/máy bàn, có `engine/remotion/.env`): `git pull`, cổng chặn, `npm run voice` (sau khi anh đồng ý tốn credit), `npm run render:drive`.
-- **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/render`, `/giong`, `/duyet`, `/xem`, `/danhsach`. Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
+- **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/storyboard`, `/giong`, `/render`, `/duyet`, `/xem`, `/danhsach`, `/gemini`, `/sfx`. Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
 
 ## Cấu trúc thư mục
 - `engine/`: code dùng chung (`engine/remotion/` dựng video, `engine/automation/` script tiện ích). Không chứa số liệu dự án.
@@ -57,7 +57,7 @@
 - Chỉ nhắn khách đã đồng ý nhận tin; có danh sách từ chối; không gửi trùng; cá nhân hóa theo tên và nhu cầu. Chưa chọn kênh gửi (xem `NOTES.md`).
 
 ## Video
-- Làm video bằng skill/lệnh `/bcons-video [chủ đề]`: 4 cổng chờ anh duyệt (số liệu → chữ + số → tốn credit giọng → storyboard/render). Không "one-click" từ cào tin đến render. Chi tiết: `docs/quy-trinh-video.md`.
+- Làm video bằng skill/lệnh `/bcons-video [chủ đề]`: 4 cổng chờ anh duyệt (số liệu → chữ + số + storyboard có hình → tốn credit giọng → render). Không "one-click" từ cào tin đến render. Chi tiết: `docs/quy-trinh-video.md`.
 - Có Superpowers thì dùng brainstorming/plan/verification cho việc phức tạp; việc nhỏ làm thẳng.
 
 ## Quy ước làm việc

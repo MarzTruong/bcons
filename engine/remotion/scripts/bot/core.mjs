@@ -13,6 +13,7 @@ export const HELP = [
   "/render <tên> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
   "/sfx – tạo hiệu ứng âm thanh 1 lần (tốn ít credit, hỏi trước)",
   "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",
+  "/storyboard <tên> – chụp hình từng cảnh để duyệt TRƯỚC khi tạo giọng (không tốn credit)",
   "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước)",
   "/capnhat – lấy bản mới nhất từ GitHub",
   "/moi – bắt đầu trò chuyện Claude mới",

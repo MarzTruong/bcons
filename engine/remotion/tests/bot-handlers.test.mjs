@@ -31,6 +31,7 @@ function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
   const tg = {
     sendMessage: async (_c, text, extra) => said.push({ text, extra }),
     sendVideo: async (_c, file, caption) => videos.push({ file, caption }),
+    sendPhotos: async (_c, files, caption) => videos.push({ files, caption }),
     answerCallback: async () => {},
   };
   const exec = async (cmd, args) => {
@@ -52,7 +53,7 @@ function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
     startedAt: T0,
     cancel: () => true,
   });
-  return { bot, said, videos, execs, sent, projDir, outDir };
+  return { bot, said, videos, execs, sent, projDir, outDir, repoRoot };
 }
 
 test("người lạ nhắn thì bỏ qua, không trả lời", async () => {
@@ -228,4 +229,22 @@ test("/gemini <chủ đề> → chạy nghiên cứu với cả câu chủ đề
   await s.bot.handleUpdate(msg("/gemini lãi suất vay tháng 11"));
   await new Promise((r) => setTimeout(r, 20));
   assert.ok(s.execs.some((e) => e === "npm run gemini -- lãi suất vay tháng 11"), s.execs.join("|"));
+});
+
+test("/storyboard <tên> → chụp khung (không tốn credit), gửi mỗi cảnh một album kèm lời đọc", async () => {
+  const s = setup();
+  const dir = path.join(s.repoRoot, "out", "tam", "storyboard", "a");
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify({ name: "a", uocTinh: true, canh: [
+    { canh: 1, template: "stat-hero", giay: "6.0", loi: "Lãi suất 8%", anh: ["x1.png", "x2.png", "x3.png"] },
+    { canh: 2, template: "geo-map", giay: "9.0", loi: "Bản đồ", anh: null, ghiChu: "Cần Mapbox" },
+  ] }));
+  await s.bot.handleUpdate(msg("/storyboard a"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.execs.some((e) => e === "npm run storyboard -- a"), s.execs.join("|"));
+  const album = s.videos.find((v) => v.files);
+  assert.equal(album.files.length, 3);
+  assert.match(album.caption, /Cảnh 1.*Lãi suất 8%/s);
+  assert.ok(s.said.some((m) => /Cần Mapbox/.test(m.text)));
+  assert.ok(s.said.some((m) => /ước tính/.test(m.text)));
 });

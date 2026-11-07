@@ -4,7 +4,7 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 
 ## 1. Nguyên tắc
 - Một CLAUDE.md duy nhất (gốc repo). Không tạo CLAUDE.md thứ hai trong `engine/remotion/`.
-- Tách 3 giai đoạn, **có cổng duyệt của anh giữa các giai đoạn**: Nghiên cứu → Kịch bản → (Storyboard, với video có bản đồ/camera/ảnh chèn) → Dựng/Render.
+- Tách giai đoạn, **có cổng duyệt của anh giữa các giai đoạn**: Nghiên cứu → Kịch bản + storyboard có hình (duyệt hình trước khi tốn credit giọng, anh đổi 06/11/2026) → Giọng → Render.
 - Mọi số liệu phải có: ngày công bố, tên nguồn, link. Số liệu dự án lấy từ `du-an/bcons-central-park/thong-tin.md`.
 
 ## 2. Các bước
@@ -12,14 +12,15 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 |---|-----------|--------|--------|-----------|
 | 1 | Nghiên cứu (1 lần/tuần) | Chạy Bản 1 (Master Prompt) trên Claude/Gemini có web search. Chỉ lấy nguồn chính thống. | Bảng số liệu có ngày + link | Anh chọn góc |
 | 2 | Kịch bản + spec | Claude viết kịch bản 45–60 giây vào `du-an/<mã>/video/<tên>/kich-ban.md`, **kèm bảng nguồn từng con số** và danh sách kiểm tra mục 3, cùng `du-an/<mã>/video/<tên>/spec.json` (`status: draft`) | Kịch bản + spec | **Anh duyệt chữ + số liệu** (rồi spec mới được đổi sang `approved`) |
-| 3 | Lời bình | Lời bình nằm trong `markup` của spec (cú pháp `hiển-thị{đọc}`), đã duyệt ở bước 2 | spec `approved` | Anh đồng ý tốn credit |
+| 2c | Storyboard có hình | `storyboard.md` + bot `/storyboard <tên>` (hoặc Claude chụp trên cloud nếu không có bản đồ): 3 khung mỗi cảnh, thời lượng ước tính | Ảnh từng cảnh | **Anh duyệt hình** cùng lúc với bước 2 |
+| 3 | Lời bình | Lời bình nằm trong `markup` của spec (cú pháp `hiển-thị{đọc}`, chữ hiện dùng ký hiệu: `90%{chín mươi phần trăm}`), đã duyệt ở bước 2 | spec `approved` | Anh đồng ý tốn credit |
 | 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs <tên>` (ElevenLabs, tốn credit; từ chối nếu spec chưa `approved`) | mp3 + timestamp | Anh nghe thử |
 | 2b | Caption | `du-an/<mã>/video/<tên>/caption.md` (FB + TikTok), `npm run check:caption -- <tên>`; duyệt cùng lúc với bước 2 (`npm run duyet:caption`) | caption `approved` | Anh duyệt chữ + caption |
-| 5 | Render | (video có bản đồ/camera/ảnh chèn: viết `du-an/<mã>/video/<tên>/storyboard.md`, anh duyệt storyboard trước) `npm run lint` rồi `npm run render:drive -- <tên>` | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
+| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` (bot `/render <tên>`): nhạc nền, hiệu ứng, tên + QR tự thêm | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
 
 Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
 
-**Lệnh tắt:** `/bcons-video [chủ đề]` (`.claude/skills/bcons-video/SKILL.md`) chạy cả quy trình trên, dừng chờ anh ở 4 cổng: (1) chọn góc sau khi kiểm số liệu, (2) duyệt chữ + số liệu, (3) đồng ý tốn credit, (4) duyệt video trước khi đăng.
+**Lệnh tắt:** `/bcons-video [chủ đề]` (`.claude/skills/bcons-video/SKILL.md`) chạy cả quy trình trên, dừng chờ anh ở 4 cổng: (1) chọn góc sau khi kiểm số liệu, (2) duyệt chữ + số liệu + caption + storyboard có hình, (3) đồng ý tốn credit giọng, (4) duyệt video trước khi đăng.
 **Bước 1 với Gemini:** nhắn bot `/gemini <chủ đề>` (tự gửi `docs/prompt-gemini-nghien-cuu.md` cho Gemini có tìm Google, lưu `du-an/<mã>/nguon/gemini/`), hoặc dán prompt vào app Gemini Deep Research. Sau đó Claude kiểm lại từng link.
 **Mẫu cảnh:** `stat-hero`, `route-map`, `data-cards`, `compare-bars`, `geo-map` (bản đồ Mapbox thật; dữ liệu địa lý trong `du-an/bcons-central-park/assets/geo/`, nguồn ở `du-an/bcons-central-park/assets/geo/NGUON.md`; lớp chưa có dữ liệu chính thức phải là "minh họa"), `project-close` (schema `engine/remotion/src/spec.ts`). Mỗi số trong spec có `sourceId` trỏ tới bảng nguồn; `npm run lint` kiểm tra.
 

@@ -175,6 +175,22 @@ export function createBot(deps) {
         await sendPreview(path.join(outDir, file), khongNhac ? `Bản không nhạc ${name} (để chọn nhạc trên TikTok).` : `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
       });
     },
+    storyboard([name]) {
+      if (!checkName(name)) return;
+      return enqueue(`storyboard ${name}`, async () => {
+        await say(`Đang chụp storyboard ${name} (không tốn credit, vài phút)...`);
+        await run("npm", ["run", "storyboard", "--", name], remotionDir, `Storyboard ${name}`, 30 * 60e3);
+        const dir = path.join(remotionDir, "out", "tam", "storyboard", name);
+        const m = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8"));
+        if (m.uocTinh) await say("Thời lượng từng cảnh đang là ước tính (chưa có giọng). Có giọng thật thì hình giữ nguyên, chỉ khớp lại thời gian.");
+        for (const c of m.canh) {
+          const cap = `Cảnh ${c.canh} (${c.template}, ~${c.giay} giây)\n${c.loi}`;
+          if (c.anh?.length) await tg.sendPhotos(chatId, c.anh.map((f) => path.resolve(remotionDir, f)), cap);
+          else await say(`${cap}\n⚠️ ${c.ghiChu}`);
+        }
+        await say(`Xem xong: ưng thì nhắn Claude "duyệt storyboard ${name}" (rồi mới /giong ${name}); cần sửa cảnh nào thì nói cảnh đó.`);
+      });
+    },
     gemini(words) {
       const topic = (words ?? []).join(" ").trim();
       if (!topic) return say("Nhắn kèm chủ đề, ví dụ: /gemini lãi suất vay mua nhà tháng 11");

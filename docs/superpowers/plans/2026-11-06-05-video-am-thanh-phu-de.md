@@ -1,4 +1,4 @@
-> **Trạng thái:** Đang làm. Xong: D (nhạc nền, hiệu ứng), E (tên + QR, landing Gọi/Zalo). G (`/gemini`, 07/11), B (phụ đề: ký hiệu %, cỡ chữ vừa 2 dòng, nhấn số/chữ `nhan`, `npm run phu-de`, 07/11). Chưa: A (storyboard có hình), C (viền bản đồ), F (test Master File theo PDF PTTT của CĐT).
+> **Trạng thái:** Đang làm. Xong: D (nhạc nền, hiệu ứng), E (tên + QR, landing Gọi/Zalo). G (`/gemini`, 07/11), B (phụ đề: ký hiệu %, cỡ chữ vừa 2 dòng, nhấn số/chữ `nhan`, `npm run phu-de`, 07/11). A (storyboard có hình: `npm run storyboard`, bot `/storyboard`, thời lượng ước tính, cổng 2 gồm hình, 07/11). Chưa: C (viền bản đồ), F (test Master File theo PDF PTTT của CĐT).
 
 # Kế hoạch 05: Video có nhạc nền, hiệu ứng, phụ đề chuẩn, storyboard có hình, watermark
 

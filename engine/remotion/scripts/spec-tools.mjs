@@ -183,6 +183,33 @@ export function relabelWords(newMarkup, oldMarkup, oldWords) {
   return { ok: true, words };
 }
 
+/**
+ * Mốc thời gian ƯỚC TÍNH khi chưa tạo giọng (để dựng storyboard có hình trước khi tốn credit).
+ * Mỗi âm tiết ~0,23 giây, nghỉ 0,25 giây sau dấu phẩy và 0,45 giây sau dấu chấm. Có giọng thật thì thay bằng timestamps thật.
+ */
+export function estimateTimestamps(spec) {
+  const SYL = 0.23;
+  const scenes = spec.scenes.map((scene) => {
+    const tokens = parseMarkup(scene.markup);
+    let t = 0.1;
+    const words = tokens.map((tok) => {
+      if (!tok.say) return { text: tok.show, start: null, end: null };
+      const start = t;
+      const end = start + tok.say.split(/\s+/).filter(Boolean).length * SYL;
+      t = end + 0.04 + (/[.!?]$/.test(tok.say) ? 0.45 : /[,;:]$/.test(tok.say) ? 0.25 : 0);
+      return { text: tok.show, start: +start.toFixed(2), end: +end.toFixed(2) };
+    });
+    words.forEach((w, k) => {
+      if (w.start === null) {
+        const next = words.slice(k + 1).find((x) => x.start !== null);
+        w.start = w.end = next ? next.start : words[k - 1]?.end ?? 0;
+      }
+    });
+    return { id: scene.id, durationSec: +(t + 0.2).toFixed(2), speech: speechOf(tokens), words };
+  });
+  return { uocTinh: true, scenes };
+}
+
 /** Chữ HIỆN trên màn hình phải dùng ký hiệu, không viết chữ đọc (anh yêu cầu 06/11/2026). */
 const SPELLED = [
   [/^phần$/i, "phần trăm", "%"],

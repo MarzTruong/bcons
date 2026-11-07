@@ -32,6 +32,15 @@ export function createTg(token, fetchFn = fetch) {
       form.set("video", new Blob([fs.readFileSync(file)], { type: "video/mp4" }), path.basename(file));
       return call("sendVideo", form);
     },
+    /** Gửi 2–10 ảnh thành một album (storyboard), chú thích ở ảnh đầu. */
+    async sendPhotos(chatId, files, caption = "") {
+      const form = new FormData();
+      form.set("chat_id", String(chatId));
+      const media = files.map((f, i) => ({ type: "photo", media: `attach://p${i}`, ...(i === 0 && caption ? { caption: caption.slice(0, 1000) } : {}) }));
+      form.set("media", JSON.stringify(media));
+      files.forEach((f, i) => form.set(`p${i}`, new Blob([fs.readFileSync(f)], { type: "image/png" }), path.basename(f)));
+      return call("sendMediaGroup", form);
+    },
     answerCallback(id, text = "") {
       return call("answerCallbackQuery", { callback_query_id: id, text });
     },
