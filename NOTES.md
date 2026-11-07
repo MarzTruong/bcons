@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 xong, landing đã lên mạng)
+Cập nhật lần cuối: 07/11/2026 (phiên Off; kế hoạch 05 xong code, PC cài xong, bot chuyển máy, chuẩn hóa số phụ đề)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -53,6 +53,11 @@ Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 
 - [x] 06/11/2026: bot laptop lưu 3 caption viết lại (bỏ khuôn ✅) + `docs/quy-tac-caption.md` + dòng CLAUDE.md (commit 0e34f86); em soát, `check:caption` OK, đã chép 3 caption mới vào Sheet Lịch nội dung (vẫn "Chờ duyệt").
 - [x] 06/11/2026: nghiên cứu nhạc nền/hiệu ứng: đề xuất ghép nhạc (Pixabay, giấy phép thương mại; nhỏ dưới giọng, tự giảm khi có lời) + hiệu ứng (tạo bằng ElevenLabs Sound Effects) ngay trong Remotion, xuất thêm bản không nhạc. Không khuyên tải clip TikTok có nhạc đăng Facebook (logo TikTok bị giảm hiển thị, nhạc TikTok chỉ cấp phép trên TikTok). Metricool chỉ thêm nhạc Top 100 TikTok khi tài khoản Business + tự đăng.
 
+- [x] 06–07/11/2026 kế hoạch 05 (`docs/superpowers/plans/2026-11-06-05-video-am-thanh-phu-de.md`): A storyboard có hình trước khi tạo giọng (`npm run storyboard`, bot `/storyboard`, cổng 2 gồm hình); B phụ đề (ký hiệu %, vừa 2 dòng, nhấn số, `npm run phu-de`); C vệt sáng quanh ranh bản đồ (`vienChay`); D nhạc nền (Drive `am-thanh/nhac`) + hiệu ứng ElevenLabs (`/sfx`, Drive `am-thanh/sfx`), `/render <số> khongnhac`; E tên Tuấn Trương + QR (mở landing `/QR`), cảnh cuối tự cân; F đáp án PTTT từ 5 PDF CĐT (`nguon/pttt-cdt.json`, test landing khớp 100%, `/kiemgia`); G `/gemini` (Gemini 3.1 Pro + tìm Google). Anh đổi quy tắc 7: video có tên + QR, landing nút Gọi/Zalo, caption được ghi SĐT của anh.
+- [x] 07/11/2026: chuẩn hóa số trên màn hình (ITN, `docs/quy-tac-so-phu-de.md`, `scripts/itn.mjs`, lint chặn), đã sửa 6 video cũ không tạo lại giọng. Video có số cố định 1–6 + tiêu đề; bot chọn video bằng số hoặc nút (`/render` trơn hiện danh sách). Tên video mới: `<số>-<vài chữ>`.
+- [x] 07/11/2026: PC cài xong ở `E:\Claude\bcons`. Drive sắp xếp lại (`data/<mã>/gia`, `data/<mã>/tai-lieu-cdt`, `am-thanh/`, `video/`, `bot/`, `_luu-tru/`, `DOC-TRUOC.md`); code đọc dữ liệu dùng chung từ Drive (`findDriveRoot`, `sharedDir`). Bot: máy mở sau chờ, `/chuyenmay`, máy chờ tự nhận việc; `/capnhat` tắt bot rồi `Bcons-Bot.cmd` cập nhật (tránh khóa file Windows). Laptop đã lên bản `97ad9e7`.
+- [x] 07/11/2026: docs có dòng Trạng thái + mục lục `docs/README.md` + test docs tự động; cài skill find-skills, frontend-design, impeccable, test-driven-development. 198 test qua.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -68,13 +73,14 @@ Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
-- [ ] **Chờ anh "OK"**: làm nhạc nền + hiệu ứng âm thanh cho video (hướng A, xem Đã làm 06/11). Anh chọn 3–5 bản nhạc; tạo hiệu ứng ElevenLabs tốn credit, hỏi trước.
-- [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng `ha-tang-bien-hoa-2026` lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó làm kế hoạch 04 (báo cáo tuần, skill `social-analytics`).
+- [ ] **Anh chạy thử trên laptop:** `/sfx` (chép hiệu ứng sang Drive, không tốn credit) → `/render 3` (nghe nhạc, hiệu ứng, xem tên + QR, chụp màn hình quét QR) → `/duyet 3` → báo em giờ đăng để hẹn Metricool. `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay` khi mở bot cả PC và laptop. Đặt `TEN_MAY=PC` / `TEN_MAY=Laptop` trong `.env` từng máy.
+- [ ] PC: lần tới đóng bot, chạy `git stash`, `git fetch origin main`, `git reset --hard origin/main`, `npm install` (một lần), sau đó dùng `/capnhat`.
+- [ ] Thứ Hai 09/11/2026 sau 18:00: kiểm Metricool có tự đăng bài 4 (hạ tầng) lên TikTok (gói Free) và Facebook Reel không; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần).
+- [ ] Cloud: biến môi trường giữ `REMOTION_MAPBOX_TOKEN`, nên xóa `ELEVENLABS_API_KEY`, `GEMINI_API_KEY`, `TELEGRAM_*` (khóa tiêu tiền không cần trên cloud). Phiên mới mới có Mapbox để em chụp storyboard bản đồ.
 - [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
-- [ ] Nếu đã lỡ tạo project Cloudflare **Workers** thì xóa (giữ Pages). `wrangler.jsonc` đã bỏ.
-- [ ] Anh duyệt 3 caption đã viết lại 06/11/2026 (anh nói sẽ xem sau): `cho-thue-kcn-bien-hoa-2026`, `lai-suat-vay-mua-nha-2026`, `tai-thiet-kcn-bien-hoa-1` (Sheet đã có bản mới). Video cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu, anh cân nhắc có đăng không. `dong-nai-ha-tang`, `dong-nai-ha-tang-map`: anh bỏ khỏi việc cần duyệt (06/11/2026, là nháp hoặc đã đăng).
+- [ ] Anh duyệt caption bài 5 (cho thuê) và 6 (tái thiết). Bài cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu.
+- [ ] Video đợt 2 (29/11/2026): kịch bản nháp `video/dot-2/kich-ban.md`, làm theo quy trình mới, sẽ là video số 7.
 
-- [ ] Anh xem và duyệt 2 video `lai-suat-vay-mua-nha-2026` và `ha-tang-bien-hoa-2026` trước khi đăng (em không đăng). Nguồn: báo cáo Gemini `du-an/bcons-central-park/nguon/gemini/ket_qua_nghien_cuu_bds_dong_nai_bien_hoa.md`.
 - [ ] Xác nhận cao tốc Biên Hòa - Vũng Tàu giai đoạn 1 đã thông xe 18/05/2026 chưa; khoảng cách từ 236 Phan Trung tới các tuyến chưa đo; Dat Xanh/PropertyGuru chỉ dựa một bài VnExpress.
 - [ ] Việc nhỏ hoãn lại: tên file xuất của render-drive chưa kiểm tra (shell:true), CompareBars lỗi NaN khi mọi giá trị bằng 0, key React có thể trùng, chưa có watermark DRAFT, chưa có kiểm tra số điện thoại bằng regex, `.env` nạp trước cổng trong render-drive. `package.json` engines `^20.19` nhưng cần Node >= 22.18 (type stripping khi test).
 - [ ] Hình tuyến cao tốc Bến Lức - Long Thành thật và ranh giới Biên Hòa / khu thương mại tự do Long Thành: máy chủ OpenStreetMap không trả dữ liệu ngày 04/11, Mapbox Directions không đi qua cao tốc này. Hiện bản đồ dùng tuyến thẳng và tam giác **minh họa**. Cần dữ liệu chính thức (GeoJSON) hoặc thử lại OSM sau.
@@ -107,13 +113,15 @@ Cập nhật lần cuối: 06/11/2026 (phiên Off; kế hoạch 01, 02, 02b, 03 
 2. **Kênh nhắn hàng loạt**: Zalo OA/ZNS, SMS brandname hay email? Ngân sách?
 3. **Danh sách khách** sẽ nhắn: nhóm nào, ai đã đồng ý nhận tin? (Sheet KhachHang có khoảng 300 dòng, đa số "không quan tâm" hoặc đã có sale khác chăm.)
 4. ~~PTTT 03 chiết khấu~~: anh xác nhận 04/11/2026 là không có chiết khấu (đã sửa docs).
-5. **PTTT 01**: em đọc bản trên Drive, chưa đối chiếu với bản anh gửi lại từng chữ. (PTTT 03: anh xác nhận 04/11/2026 là bản mới nhất.)
+5. ~~PTTT 01~~: đã đối chiếu đủ 5 PDF PTTT của CĐT 07/11/2026 (khớp công cụ tính). PTTT 05 ghi "Quý I/2029" là CĐT ghi nhầm, anh xác nhận Quý II/2029. (PTTT 03: anh xác nhận 04/11/2026 là bản mới nhất.)
 6. Đợt 2 mở những căn nào (236 căn đang CĐT lock có phải là căn mở ở đợt 2 không)? Ảnh hưởng đến việc nhắn "còn bao nhiêu căn".
 7. Phối cảnh, ảnh nhà mẫu: anh nói cứ dùng cho fanpage; TVC (`TVC Bcons Central Park.mp4`, 570MB) có được dùng để cắt video ngắn không thì chưa hỏi.
 8. Tên và số liên hệ trên trang: có dùng hotline công ty không? Giờ làm việc tư vấn viên?
 9. VAT 10% trên giá căn hộ có đúng với cách CĐT thu không (xem mục Chưa làm)?
 
 ## Ghi chú kỹ thuật
+- Windows: bot đang chạy giữ file code của nó nên `git pull` lỗi "unable to unlink". Từ `97ad9e7`, `/capnhat` thoát mã 4 để `Bcons-Bot.cmd` cập nhật lúc bot tắt (`scripts/bot/capnhat.cmd`, log `out/tam/capnhat.log`).
+- Khóa ElevenLabs cần quyền Sound Effects cho `/sfx` (anh đã bật 07/11). Cloud không vào được ai.google.dev dù đã mở mạng (có thể cần phiên mới).
 - Bot laptop: nút "Lưu lên GitHub" chạy `git pull --rebase`; nếu GitHub có bản mới của chính file bot thì Windows có thể không cho thay file (06/11 lỗi "unable to unlink ... Invalid argument", để lại file chép dở làm lần sau báo "untracked files would be overwritten"). Cách xử lý: đóng cửa sổ bot, xóa các file chép dở trong danh sách báo lỗi, `git pull --rebase --autostash`, `git push`, mở lại bot. Laptop có thể còn thay đổi cục bộ từ autostash, kiểm `git status` khi tiện.
 - MCP `context7`/`playwright` (`docs/huong-dan-mcp.md`): không bắt buộc, chưa cài trên laptop; skill `tdd-financial-calc` bỏ (calc.mjs đã có test đối chiếu TraGia).
 - Cloud không gọi được script.google.com và help.metricool.com (proxy chặn).
