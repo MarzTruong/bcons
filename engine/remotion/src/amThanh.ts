@@ -39,6 +39,17 @@ export type SfxName = "vut" | "tach" | "don";
 export type SfxEvent = { name: SfxName; frame: number };
 export const SFX_VOLUME: Record<SfxName, number> = { vut: 0.35, tach: 0.3, don: 0.3 };
 
+/** Chọn file hiệu ứng cho vai trò `role` (vut/tach/don): kho có nhiều biến thể (vut, vut2, vut3...).
+ *  Thứ tự biến thể xáo theo tên video, rồi xoay theo lần xuất hiện `i`: trong 1 video đổi qua lại, video khác nghe khác,
+ *  render lại vẫn y như cũ. Không có file nào của vai trò đó thì null. */
+export const pickSfx = (role: SfxName, available: string[], seed: string, i: number): string | null => {
+  const list = available.filter((n) => n === role || new RegExp(`^${role}\\d+$`).test(n)).sort();
+  if (!list.length) return null;
+  let h = 2166136261;
+  for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619) >>> 0;
+  return list[(h + i) % list.length];
+};
+
 type SpecLike = { scenes: { cues: Record<string, string> }[] };
 
 /** Thời điểm hiệu ứng: "vút" khi sang cảnh mới, "tách" khi số/ý hiện (mỗi cue), "dồn" ~1 giây trước cảnh cuối. */

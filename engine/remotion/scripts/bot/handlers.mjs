@@ -224,7 +224,7 @@ export function createBot(deps) {
       });
     },
     sfx() {
-      return ask("Tạo 3 hiệu ứng âm thanh (vút, tách, dồn) bằng ElevenLabs? Việc này TỐN CREDIT (ít, chỉ làm 1 lần).", "sfx", () =>
+      return ask("Tạo hiệu ứng âm thanh còn thiếu trong kho (11 kiểu vút/tách/dồn) bằng ElevenLabs? Việc này TỐN CREDIT (file đã có thì bỏ qua).", "sfx", () =>
         enqueue("tạo hiệu ứng", async () => {
           await say("Đang tạo hiệu ứng âm thanh...");
           const out = await run("npm", ["run", "sfx", "--", "--dong-y"], remotionDir, "Tạo hiệu ứng", 10 * 60e3);

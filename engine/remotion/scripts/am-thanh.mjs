@@ -1,6 +1,6 @@
 // Nhạc nền + hiệu ứng âm thanh cho video.
 // - Nhạc: anh để trong Drive "Bcons - Dong bo thiet bi\\am-thanh\\nhac" (máy nào cũng có); máy không có Drive thì <repo>/am-thanh/nhac/. Không lên git (giấy phép không cho phát tán file nhạc).
-// - Hiệu ứng: tạo một lần bằng ElevenLabs (`npm run sfx -- --dong-y`, tốn ít credit), lưu Drive am-thanh/sfx/ (máy không có Drive: engine/remotion/am-thanh/sfx/).
+// - Hiệu ứng: tạo một lần bằng ElevenLabs (`npm run sfx -- --dong-y`, tốn ít credit; chỉ tạo file còn thiếu), 11 biến thể vut/tach/don, lưu Drive am-thanh/sfx/ (máy không có Drive: engine/remotion/am-thanh/sfx/).
 // Trước khi render, chép vào <du-an>/.am-thanh/ (public dir của Remotion, không lên git).
 import fs from "node:fs";
 import path from "node:path";
@@ -24,6 +24,15 @@ export const SFX_PROMPTS = {
   vut: { text: "Soft cinematic swoosh transition, clean, short, no music", giay: 1 },
   tach: { text: "Subtle soft UI pop click for a number appearing on screen, clean", giay: 0.6 },
   don: { text: "Short gentle rising swell riser before a reveal, cinematic, subtle", giay: 1.5 },
+  // Thêm biến thể (anh 07/11/2026: kho ít nhất 10 file để video khác nhau). Đặt tên <vai trò><số>: src/amThanh.ts pickSfx.
+  vut2: { text: "Quick airy whoosh transition, modern, light and subtle, no music", giay: 1 },
+  vut3: { text: "Soft paper page turn swish transition, clean, short", giay: 1 },
+  vut4: { text: "Smooth low swoosh transition with a short soft reverb tail, cinematic, no music", giay: 1.2 },
+  tach2: { text: "Soft warm wooden tick click, very short, clean", giay: 0.5 },
+  tach3: { text: "Gentle tiny glass ding notification, very short, subtle", giay: 0.7 },
+  tach4: { text: "Light soft bubble pop, short, subtle, clean", giay: 0.5 },
+  don2: { text: "Soft cinematic riser with gentle shimmer, short build up before a reveal, no drums", giay: 1.5 },
+  don3: { text: "Warm soft piano chord swell, gentle reveal, short, calm", giay: 2 },
 };
 
 const isAudio = (f) => /\.(mp3|m4a|wav|ogg)$/i.test(f);

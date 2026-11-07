@@ -15,7 +15,7 @@ import { TapChiDataCards, TapChiGround, TapChiProjectClose, TapChiStatHero } fro
 import { BangDataCards, BangProjectClose, BangStatHero, BoardGround } from "./templates/BangLs";
 import { BanVeDataCards, BanVeProjectClose, BanVeStatHero, BlueprintSheet } from "./templates/BanVe";
 import { Watermark, WatermarkContext } from "./Watermark";
-import { SFX_VOLUME, musicVolume, sfxEvents } from "./amThanh";
+import { SFX_VOLUME, musicVolume, pickSfx, sfxEvents } from "./amThanh";
 import { LEAD, buildTiming, cueFrame, type Timestamps } from "./timing";
 import type { Scene, VideoSpec } from "./spec";
 import { type TemplateProps } from "./templates/common";
@@ -232,13 +232,18 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
           {amThanh?.nhac ? (
             <Audio src={staticFile(amThanh.nhac)} loop volume={(f: number) => musicVolume(f, timing)} />
           ) : null}
-          {sfxEvents(spec, timing)
-            .filter((e) => sfx.includes(e.name))
-            .map((e) => (
-              <Sequence key={`${e.name}-${e.frame}`} from={e.frame} durationInFrames={60}>
-                <Audio src={staticFile(`.am-thanh/sfx/${e.name}.mp3`)} volume={SFX_VOLUME[e.name]} />
-              </Sequence>
-            ))}
+          {(() => {
+            // Kho nhiều biến thể (vut, vut2...): mỗi lần xuất hiện chọn một file, đổi theo video (pickSfx).
+            const lan: Record<string, number> = {};
+            return sfxEvents(spec, timing).map((e) => {
+              const file = pickSfx(e.name, sfx, spec.name, (lan[e.name] = (lan[e.name] ?? -1) + 1));
+              return file ? (
+                <Sequence key={`${e.name}-${e.frame}`} from={e.frame} durationInFrames={60}>
+                  <Audio src={staticFile(`.am-thanh/sfx/${file}.mp3`)} volume={SFX_VOLUME[e.name]} />
+                </Sequence>
+              ) : null;
+            });
+          })()}
           <Watermark
             hideFrom={
               spec.scenes[spec.scenes.length - 1]?.template === "project-close" ? SCENE_STARTS[SCENE_STARTS.length - 1] : undefined

@@ -80,8 +80,11 @@ test("prepareAudio: chép nhạc + hiệu ứng vào thư mục tạm của dự
   assert.equal(prepareAudio({ name: "v", projDir, nhacDir: path.join(root, "khong"), sfxDir }).nhac, null);
 });
 
-test("SFX_PROMPTS: đủ 3 hiệu ứng dùng trong video, mỗi cái ngắn", () => {
-  assert.deepEqual(Object.keys(SFX_PROMPTS).sort(), ["don", "tach", "vut"]);
+test("SFX_PROMPTS: kho ít nhất 10 hiệu ứng (anh 07/11/2026), đủ 3 vai trò, mỗi cái ngắn", () => {
+  const keys = Object.keys(SFX_PROMPTS);
+  assert.ok(keys.length >= 10, `có ${keys.length}`);
+  for (const k of keys) assert.match(k, /^(vut|tach|don)\d*$/);
+  for (const r of ["vut", "tach", "don"]) assert.ok(keys.filter((k) => k.startsWith(r)).length >= 3, r);
   for (const p of Object.values(SFX_PROMPTS)) assert.ok(p.giay > 0 && p.giay <= 3 && p.text.length > 10);
 });
 
@@ -104,8 +107,9 @@ test("taoSfx: không --dong-y thì từ chối, không gọi mạng; có thì t�
   assert.equal(calls.length, 0);
   await assert.rejects(taoSfx({ dongY: true, key: "", dir, fetchFn }), /ELEVENLABS_API_KEY/);
   const made = await taoSfx({ dongY: true, key: "k", dir, fetchFn });
-  assert.deepEqual(made.sort(), ["don", "tach"]);
-  assert.equal(calls.length, 2);
+  const all = Object.keys(SFX_PROMPTS);
+  assert.deepEqual(made.sort(), all.filter((k) => k !== "vut").sort(), "tạo mọi file còn thiếu, bỏ vut đã có");
+  assert.equal(calls.length, all.length - 1);
   assert.ok(calls.every((c) => c.url.endsWith("/v1/sound-generation") && c.key === "k" && c.body.duration_seconds > 0));
   assert.equal(fs.readFileSync(path.join(dir, "vut.mp3"), "utf8"), "co-roi");
 });
@@ -117,8 +121,8 @@ test("taoSfx: hiệu ứng đã tạo ở chỗ cũ (trong repo) thì chép sang
   for (const n of ["vut", "tach", "don"]) fs.writeFileSync(path.join(cu, `${n}.mp3`), n);
   let calls = 0;
   const made = await taoSfx({ dongY: true, key: "k", dir: drive, legacyDir: cu, fetchFn: async () => (calls++, { ok: true, arrayBuffer: async () => new ArrayBuffer(1) }) });
-  assert.equal(calls, 0);
-  assert.deepEqual(made, []);
+  assert.equal(calls, Object.keys(SFX_PROMPTS).length - 3, "3 file cũ chép sang, chỉ tạo biến thể mới");
+  assert.ok(!made.includes("vut") && !made.includes("tach") && !made.includes("don"));
   assert.equal(fs.readFileSync(path.join(drive, "tach.mp3"), "utf8"), "tach");
 });
 
@@ -135,4 +139,17 @@ test("findSfxDir: ưu tiên thư mục Drive có file; Drive trống thì dùng 
 test("nhạc nền lúc đang đọc đủ nghe (anh 07/11: nhỏ quá), vẫn nhỏ hơn khoảng lặng", () => {
   assert.ok(MUSIC.duoiGiong >= 0.15);
   assert.ok(MUSIC.duoiGiong < MUSIC.khoangLang);
+});
+
+test("pickSfx: chọn biến thể theo video + lần xuất hiện (đổi qua lại), cố định khi render lại, thiếu thì về file gốc", async () => {
+  const { pickSfx } = await import("../src/amThanh.ts");
+  const have = ["vut", "vut2", "vut3", "vut4", "tach", "tach2", "don"];
+  const a = [0, 1, 2, 3].map((i) => pickSfx("vut", have, "07-x", i));
+  assert.ok(new Set(a).size >= 2, "trong 1 video không lặp một kiểu");
+  assert.deepEqual(a, [0, 1, 2, 3].map((i) => pickSfx("vut", have, "07-x", i)), "cố định");
+  const b = [0, 1, 2, 3].map((i) => pickSfx("vut", have, "08-y", i));
+  assert.notDeepEqual(a, b, "video khác ra thứ tự khác");
+  assert.ok(a.every((n) => /^vut\d*$/.test(n)));
+  assert.equal(pickSfx("don", have, "x", 5), "don");
+  assert.equal(pickSfx("tach", ["vut"], "x", 0), null, "không có file nào của vai trò đó");
 });
