@@ -175,6 +175,16 @@ export function createBot(deps) {
         await sendPreview(path.join(outDir, file), khongNhac ? `Bản không nhạc ${name} (để chọn nhạc trên TikTok).` : `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
       });
     },
+    gemini(words) {
+      const topic = (words ?? []).join(" ").trim();
+      if (!topic) return say("Nhắn kèm chủ đề, ví dụ: /gemini lãi suất vay mua nhà tháng 11");
+      return enqueue(`nghiên cứu ${topic}`, async () => {
+        await say(`Đang nhờ Gemini tìm số liệu: "${topic}" (1–3 phút)...`);
+        const out = await run("npm", ["run", "gemini", "--", ...words], remotionDir, "Nghiên cứu Gemini", 10 * 60e3);
+        const saved = await gitSave([path.relative(repoRoot, path.join(projDir, "nguon", "gemini"))], `Gemini ${topic}`).catch((e) => `Chưa lưu lên GitHub: ${e.message}`);
+        await say(`${tail(out, 40)}\n\n${saved}\nSố liệu CHƯA KIỂM: nhắn Claude "/bcons-video ${topic}" để kiểm từng link và đề xuất góc làm video.`);
+      });
+    },
     sfx() {
       return ask("Tạo 3 hiệu ứng âm thanh (vút, tách, dồn) bằng ElevenLabs? Việc này TỐN CREDIT (ít, chỉ làm 1 lần).", "sfx", () =>
         enqueue("tạo hiệu ứng", async () => {

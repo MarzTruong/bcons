@@ -220,3 +220,12 @@ test("/render <tên> khongnhac → render bản không nhạc", async () => {
   await new Promise((r) => setTimeout(r, 20));
   assert.ok(s.execs.some((e) => e === "npm run render:drive -- a --khong-nhac"), s.execs.join("|"));
 });
+
+test("/gemini <chủ đề> → chạy nghiên cứu với cả câu chủ đề; thiếu chủ đề thì hướng dẫn", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/gemini"));
+  assert.match(s.said.at(-1).text, /\/gemini lãi suất/);
+  await s.bot.handleUpdate(msg("/gemini lãi suất vay tháng 11"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.execs.some((e) => e === "npm run gemini -- lãi suất vay tháng 11"), s.execs.join("|"));
+});

@@ -38,6 +38,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 | `/duyet <tên>` | Duyệt caption + video, gửi bản đăng về Telegram, tự lưu lên GitHub |
 | `/render <tên>` | Render video (vài phút), xong gửi bản xem thử |
 | `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy |
+| `/gemini <chủ đề>` | Nhờ Gemini (có tìm Google) gom số liệu kèm link, lưu `du-an/<mã>/nguon/gemini/`, gửi tóm tắt. Cần `GEMINI_API_KEY` trong `.env`. Số liệu chưa kiểm: nhắn Claude `/bcons-video <chủ đề>` để kiểm |
 | `/sfx` | Tạo 3 hiệu ứng âm thanh (vút, tách, dồn) bằng ElevenLabs, **làm 1 lần**, tốn ít credit, bấm Đồng ý mới chạy |
 | `/render <tên> khongnhac` | Bản không nhạc nền (giữ giọng + hiệu ứng), để tự chọn nhạc xu hướng trên TikTok. `/render <tên>` thường thì có nhạc |
 | `/capnhat` | Lấy bản mới nhất từ GitHub (những gì em làm trên cloud), tự cài thư viện nếu cần |

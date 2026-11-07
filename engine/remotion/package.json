@@ -38,6 +38,7 @@
     "render:drive": "node scripts/render-drive.mjs",
     "voice": "node --env-file=.env scripts/generate-voice.mjs",
     "sfx": "node --env-file=.env scripts/tao-sfx.mjs",
+    "gemini": "node --env-file=.env scripts/gemini.mjs",
     "test": "node --test \"tests/*.test.mjs\" \"../automation/*.test.mjs\" \"../landing/*.test.mjs\"",
     "check:spec": "node scripts/check-spec.mjs",
     "check:mapbox": "node scripts/check-mapbox.mjs",
