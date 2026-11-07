@@ -236,7 +236,7 @@ export const SceneSchema = z.discriminatedUnion("template", [
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */
-export const STYLE_NAMES = ["classic", "sang", "navy", "xanh", "banve"] as const;
+export const STYLE_NAMES = ["classic", "sang", "navy", "xanh", "banve", "tapchi", "bangls"] as const;
 export type StyleName = (typeof STYLE_NAMES)[number];
 
 /** Phong cách chuyển động: classic = bản gốc (hiện mờ, lưới nền chạy). */

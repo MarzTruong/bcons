@@ -3,8 +3,8 @@
   "so": 7,
   "tieuDe": "Lãi vay hạ nhiệt, mua nhà tính sao",
   "status": "approved",
-  "style": "banve",
-  "motion": "ve",
+  "style": "bangls",
+  "motion": "classic",
   "scenes": [
     {
       "id": "scene1",
@@ -42,11 +42,11 @@
         "c3": "gói"
       },
       "props": {
-        "kicker": "THÁNG 10/2026",
+        "kicker": "Tháng 10/2026",
         "title": "Vì sao lãi vay hạ?",
         "cards": [
           {
-            "tag": "NGÂN HÀNG NHÀ NƯỚC",
+            "tag": "Ngân hàng Nhà nước",
             "big": "Yêu cầu giảm lãi",
             "sub": "huy động và cho vay",
             "cueKey": "c1",
@@ -54,7 +54,7 @@
             "sourceId": "nhnn-t10"
           },
           {
-            "tag": "LÃI TIẾT KIỆM GIẢM",
+            "tag": "Lãi tiết kiệm giảm",
             "big": "0,5 điểm %",
             "sub": "nhiều ngân hàng, ít nhất 1 kỳ hạn",
             "cueKey": "c2",
@@ -62,7 +62,7 @@
             "sourceId": "nhnn-t10"
           },
           {
-            "tag": "GÓI VAY MUA NHÀ THẤP HƠN",
+            "tag": "Gói vay mua nhà thấp hơn",
             "big": "1–1,5 điểm %",
             "sub": "một số gói ưu đãi, so với trước",
             "cueKey": "c3",
@@ -85,11 +85,11 @@
         "đầu."
       ],
       "props": {
-        "kicker": "SAU THỜI GIAN ƯU ĐÃI",
+        "kicker": "Sau thời gian ưu đãi",
         "title": "Đoạn dễ bị bỏ quên",
         "cards": [
           {
-            "tag": "THẢ NỔI SAU ƯU ĐÃI",
+            "tag": "Thả nổi sau ưu đãi",
             "big": "12–15%/năm",
             "sub": "có thể lên tới (TheLEADER 03/11/2026)",
             "cueKey": "c1",
@@ -97,7 +97,7 @@
             "sourceId": "leader-tha-noi"
           },
           {
-            "tag": "DỰ BÁO VIETCAP",
+            "tag": "Dự báo của Vietcap",
             "big": "Ổn định",
             "sub": "quanh mức hiện tại đến năm 2027",
             "cueKey": "c2",

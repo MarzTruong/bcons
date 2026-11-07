@@ -1,28 +1,30 @@
 # Design
 
-Một phong cách video: **bản vẽ kiến trúc** (`"style": "banve", "motion": "ve"` trong spec), anh thử ở video 7 ngày 07/11/2026; **không phải mặc định** (anh: cả hệ thống một màu sẽ đơn điệu, mỗi video nên khác nhau). Code: `engine/remotion/src/templates/BanVe.tsx`, bảng màu `PALETTES.banve` trong `engine/remotion/src/theme.ts`. Các phong cách cũ (`classic`, `sang`, `navy`, `xanh`) giữ cho video đã làm.
+Hệ thống video **nhiều phong cách**: mỗi video một kiểu/màu, video liền nhau không trùng (anh dặn 07/11/2026: cả kênh một màu sẽ đơn điệu). Spec chọn bằng `"style"` (và `"motion"`). Phong cách cũ (`classic`, `sang`, `navy`, `xanh`) giữ cho video đã làm.
 
-## Thế giới
-Cả khung hình 1080x1920 là một tờ bản vẽ: giấy cyanotype xanh Phổ, lưới phụ 30 px và lưới chính 150 px, khung viền đôi. Số liệu thị trường là "kích thước" ghi trên bản vẽ của ngôi nhà mình sẽ ở: tin cậy như bản tin tài chính, gợi cảm giác nhà.
+## Chọn phong cách
+| Nội dung video | Phong cách | Ghi chú |
+|---|---|---|
+| Lãi suất, tài chính, dòng tiền | `bangls` (bảng lãi suất) | 3 màu bảng xoay theo số video |
+| Hạ tầng, cuộc sống, dự án | `tapchi` (bìa tạp chí) | 5 màu bìa xoay theo số video |
+| Mặt bằng, căn hộ, kỹ thuật | `banve` (bản vẽ kiến trúc) + motion `ve` | 1 màu, dùng khi hợp chủ đề |
 
-## Màu
-- Giấy: `#16408f` → `#123679` (chuyển nhẹ từ giữa ra mép).
-- Mực trắng `#f5f8ff`; chữ phụ trắng 85%; đường kẻ phụ trắng 60%.
-- Bút đỏ `#ff8a6b`: chỉ cho con số chính và chữ có số trong ghi chú, số trong phụ đề. Không dùng màu khác.
+Màu theo số video: `engine/remotion/src/issues.ts` (`issueOf`). Mẫu cảnh riêng cho `stat-hero`, `data-cards`, `project-close`: `templates/TapChi.tsx`, `templates/BangLs.tsx`, `templates/BanVe.tsx`; mẫu khác dùng bản thường trên nền của phong cách.
 
-## Chữ
-- Barlow Condensed 600–800, chữ hoa: tiêu đề bản vẽ (118–150 px), con số (104–290 px), nhãn ô (34–36 px, giãn chữ 2).
-- Be Vietnam Pro 600–800: câu chữ thường, phụ đề.
-- Chữ hoa có dấu (Ã, Ạ, Ễ): line-height ≥ 1.04 và vùng cắt chừa 40 px trên/dưới.
+## Bìa tạp chí (`tapchi`)
+- Màu bìa: đỏ son `#b5291f`, xanh coban `#1c3faa`, vàng nghệ `#e3a21a`, tím mận `#5b2346`, xanh ngọc `#0c6a6c`; mỗi màu có màu nhấn số, nền trang ruột, chữ.
+- Chữ: Bricolage Grotesque 800 cho tiêu đề và số (chữ sát, -3 đến -8), Be Vietnam Pro cho câu chữ. Nhãn viết thường, không chữ hoa giãn.
+- stat-hero = bìa (đầu báo "Số 07", tiêu đề xếp chồng tự co theo dòng dài nhất, con số là dòng tít); data-cards = trang ruột nền tối của số báo, mục trước mờ 55% khi mục sau tới; project-close = bìa sau, ảnh tràn nửa trên.
+- Nền giấy có hạt rất nhẹ.
 
-## Thành phần
-- Dải tên bản vẽ (trên cùng): ô trái/phải, kẻ dưới; giữ nguồn, nhãn cảnh. Không dùng "eyebrow" trên tiêu đề.
-- Đường kích thước: đường ngang + 2 đường gióng + 2 vạch chéo, tự vẽ khi số được đọc.
-- Ghi chú: bong bóng số tròn tự vẽ, nhãn, chữ chính, chữ phụ, đường dẫn kẻ dưới. Không đóng hộp, không viền màu, không bóng phát sáng.
-- Khung nhìn ảnh: viền trắng 3 px, dấu cắt 4 góc, nhãn "minh họa" ở dải tên.
+## Bảng lãi suất (`bangls`)
+- Khung bảng: navy `#0f2d63`, đỏ đô `#7e1722`, xám chì `#3a4049`; chữ số đèn hổ phách/vàng/xanh lơ trong ô lật có đường xẻ giữa.
+- Chữ: Oswald cho số và tiêu đề bảng, Be Vietnam Pro cho nhãn.
+- Chữ số lật từng ô (`flapChar`), ô sau trễ 2 frame; dòng chữ (không số) in bằng chữ đèn.
+- project-close lấy số có % đầu tiên trong thông điệp (vd. 6,9%) lật thành ô.
 
-## Chuyển động
-Nét bút vẽ dần (dash offset, ease-out) và quét như lật tờ bản vẽ. Nền đứng yên. Một chuyển động chính mỗi cảnh.
+## Bản vẽ (`banve`)
+Giấy cyanotype xanh Phổ, mực trắng, bút đỏ cho số chính; đường kích thước tự vẽ; ghi chú đánh số; khung nhìn ảnh có dấu cắt. Chữ hoa có dấu cần line-height ≥ 1.04 và vùng cắt chừa 40 px.
 
-## Bố cục
-Lề 76 px. Vùng phụ đề y≈1400–1760 và khối tên + QR góc phải dưới luôn để trống.
+## Chung
+Lề 72 px. Vùng phụ đề y≈1400–1760 và khối tên + QR góc phải dưới luôn để trống. Một chuyển động chính mỗi cảnh. Ảnh phối cảnh luôn ghi "minh họa".

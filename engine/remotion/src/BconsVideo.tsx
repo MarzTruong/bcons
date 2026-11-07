@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { Audio } from "@remotion/media";
-import { PALETTES, ThemeContext, fontFamily, useTheme } from "./theme";
+import { ThemeContext, fontFamily, paletteFor, useTheme } from "./theme";
 import {
   MOTIONS,
   MotionContext,
@@ -10,6 +10,8 @@ import {
   type TransitionKind,
 } from "./motion";
 import { Captions } from "./Captions";
+import { TapChiDataCards, TapChiGround, TapChiProjectClose, TapChiStatHero } from "./templates/TapChi";
+import { BangDataCards, BangProjectClose, BangStatHero, BoardGround } from "./templates/BangLs";
 import { BanVeDataCards, BanVeProjectClose, BanVeStatHero, BlueprintSheet } from "./templates/BanVe";
 import { Watermark, WatermarkContext } from "./Watermark";
 import { SFX_VOLUME, musicVolume, sfxEvents } from "./amThanh";
@@ -41,7 +43,9 @@ const Background: React.FC = () => {
   const C = useTheme();
   const { background } = useMotion();
   const frame = useCurrentFrame();
-  if (background === "blueprint" || C.banve) return <BlueprintSheet />;
+  if (background === "blueprint" || C.look === "banve") return <BlueprintSheet />;
+  if (C.look === "tapchi") return <TapChiGround />;
+  if (C.look === "bangls") return <BoardGround />;
   return (
     <AbsoluteFill
       style={{
@@ -118,7 +122,16 @@ export type BconsVideoProps = {
   khongGiong?: boolean;
 };
 
-const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, banve = false) => {
+const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: string) => {
+  const banve = look === "banve";
+  const tc = look === "tapchi";
+  const bl = look === "bangls";
+  if (tc && scene.template === "stat-hero") return <TapChiStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
+  if (tc && scene.template === "data-cards") return <TapChiDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
+  if (tc && scene.template === "project-close") return <TapChiProjectClose {...(t as TemplateProps<"project-close">)} props={scene.props} />;
+  if (bl && scene.template === "stat-hero") return <BangStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
+  if (bl && scene.template === "data-cards") return <BangDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
+  if (bl && scene.template === "project-close") return <BangProjectClose {...(t as TemplateProps<"project-close">)} props={scene.props} />;
   // Phong cách bản vẽ có mẫu riêng cho stat-hero, data-cards, project-close; mẫu khác dùng bản thường trên nền bản vẽ.
   if (banve && scene.template === "stat-hero") return <BanVeStatHero {...(t as TemplateProps<"stat-hero">)} props={scene.props} />;
   if (banve && scene.template === "data-cards") return <BanVeDataCards {...(t as TemplateProps<"data-cards">)} props={scene.props} />;
@@ -164,7 +177,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
   const timing = buildTiming(timestamps);
   const { SCENE_DATA, SCENE_STARTS } = timing;
   const sfx = amThanh?.sfx ?? [];
-  const C = PALETTES[spec.style ?? "classic"];
+  const C = paletteFor(spec.style, spec.so);
   const motion = MOTIONS[spec.motion ?? "classic"];
   return (
     <ThemeContext.Provider value={C}>
@@ -197,7 +210,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     props: scene.props,
                     cue,
                     frames: d.frames,
-                  }, !!C.banve)}
+                  }, C.look)}
                   {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
                     <Captions words={d.words} nhan={scene.nhan} />
                   )}
