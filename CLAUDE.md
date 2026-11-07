@@ -46,6 +46,13 @@
 - Ảnh phối cảnh ghi "hình ảnh minh họa".
 - Caption là quảng cáo: viết tự nhiên như người thật kể chuyện, không khuôn sẵn, không danh sách ✅ liệt kê số, nguồn và lưu ý gom thành chữ nhỏ cuối bài. Chi tiết: `docs/quy-tac-caption.md` (được ưu tiên hơn skill `real-estate-content-creator` khi viết caption).
 
+## Nguyên tắc "No AI Slop" (anh dặn 07/11/2026, áp dụng cho mọi sản phẩm)
+Sản phẩm phải trông và nghe như người làm có chủ ý, không như máy rập khuôn. Trước khi đưa anh xem, tự soát:
+- **Hình (video, landing):** không hộp bo góc viền phát sáng, không nền tối kẻ sọc/lưới trang trí, không chữ dính/đè/lem, không thẻ giống hệt nhau xếp hàng, không nhãn CHỮ HOA giãn chữ trên mọi tiêu đề, không đánh số 01/02/03 khi nội dung không phải trình tự. Mỗi cảnh một điểm nhấn rõ, chữ đọc được trong 1 giây trên điện thoại. Chụp storyboard và tự xem trước khi gửi anh.
+- **Chữ (caption, kịch bản):** theo `docs/quy-tac-caption.md`: không mở bài kiểu nhãn dán, không câu sáo ("không chỉ A mà còn B", "đáng để cân nhắc"), không danh sách ✅, không bịa chuyện cá nhân.
+- **Âm thanh:** giọng đúng giọng gốc miền Nam, nhạc và hiệu ứng thay đổi giữa các video, không một tiếng lặp mãi.
+- **Thiết kế mới:** đưa anh ảnh mẫu để chọn trước khi dựng vào code (anh đã chê nhiều vòng khi dựng thẳng). Dùng skill `impeccable` + `frontend-design`.
+
 ## Skill dùng tự động (không cần anh gọi)
 - Viết/sửa code `engine/`: `test-driven-development` (test trước), xong việc `verification-before-completion`; lỗi khó: `systematic-debugging`.
 - Việc lớn: `brainstorming` → `writing-plans` → `executing-plans`.
