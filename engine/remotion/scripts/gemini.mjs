@@ -74,7 +74,9 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
     text,
     "",
     "## Trang Google mà Gemini đã đọc",
-    ...(sources.length ? sources.map((s) => `- [${s.title}](${s.uri})`) : ["- (Gemini không trả danh sách trang)"]),
+    ...(sources.length
+      ? sources.map((s) => `- [${s.title}](${s.uri})`)
+      : ["- ⚠️ Gemini KHÔNG trả danh sách trang đã tìm: có thể lần này không tìm Google mà viết từ trí nhớ, link trong bảng có thể sai/cũ. Bắt buộc mở từng link kiểm trước khi dùng."]),
     "",
   ].join("\n");
   fs.writeFileSync(file, md);
@@ -95,6 +97,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   })
     .then((r) => {
       console.log(`Đã lưu ${path.relative(REPO_ROOT, r.file)} (${r.model}, ${r.sources.length} trang nguồn).`);
+      if (!r.sources.length) console.log("⚠️ Gemini không báo đã tìm Google: link có thể sai hoặc cũ, phải kiểm từng link.");
       console.log(r.text.slice(0, 1500));
     })
     .catch((e) => {
