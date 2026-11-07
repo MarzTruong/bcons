@@ -66,7 +66,7 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lê
   - Video 7 `07-lai-vay-ha-nhiet` (lãi vay tháng 10: Vietcap 9–10,7%, thả nổi 12–15%, NHNN giảm lãi; trần 6,9% PTTT 03/04): đủ 4 cổng, đã render, duyệt.
   - Giọng: cài đặt cố định stability 0.85 / similarity 0.9 / style 0.2 (hết trôi giọng Bắc), test `giong-doc.test.mjs` chặn đổi lại.
   - Phụ đề: số 1–9 cũng hiện chữ số khi đếm; hết dính chữ ở từ đang đọc.
-  - Thiết kế: bộ phong cách mặc định `moi` (A ảnh dự án / B bản tin sáng / C khối màu, xoay theo số video), video 1–7 đã chuyển sang; các kiểu thử `banve`, `tapchi`, `bangls` giữ làm lựa chọn. Góc video chỉ còn QR, tên + QR ở cảnh cuối. Nhạc to hơn lúc đọc (0,16). Kho hiệu ứng 11 file (cần `/sfx` để tạo 8 file mới). `DESIGN.md`, `PRODUCT.md`.
+  - Thiết kế: bộ phong cách mặc định `moi` (A ảnh dự án / B bản tin sáng / C khối màu, xoay theo số video), video 1–7 đã chuyển sang; các kiểu thử `banve`, `tapchi`, `bangls` giữ làm lựa chọn. Góc video chỉ còn QR, tên + QR ở cảnh cuối. Nhạc to hơn lúc đọc (0,16). Kho hiệu ứng 11 file (đã tạo bằng `/sfx` 07/11, có trên Drive). `DESIGN.md`, `PRODUCT.md`.
   - Thư mục video đổi tên `<số>-<tên>` (01–07), Sheet cập nhật theo. Drive: Newsky dời vào `data/bcons-newsky/`, video test vào `_luu-tru/video-test/`, `DOC-TRUOC.md` viết lại; 30 bài nhạc nền.
   - Storyboard bản đồ chụp được trên cloud (`REMOTION_GL=swangle`).
   - Quy tắc mới trong `CLAUDE.md`: bị chặn mạng thì dừng báo host; nguyên tắc "No AI Slop"; thiết kế mới phải đưa ảnh mẫu trước.
@@ -87,7 +87,7 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lê
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
-- [ ] `/sfx` trên bot để tạo 8 hiệu ứng mới (kho 11 file); render sau đó mới có đủ. `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
+- [ ] `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
 - [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).
 - [ ] Từ 13/11 chưa có bài: làm video 8 (`/gemini <chủ đề>` → 🎬, hoặc nhắn chủ đề). Video đợt 2 (29/11) từ `video/dot-2/kich-ban.md`.
 - [ ] Các cảnh bản đồ / route-map / compare-bars vẫn mẫu cũ, chỉ đổi màu theo bộ `moi`; anh thấy lệch phong cách thì làm lại riêng cảnh đó (đưa ảnh mẫu trước).
