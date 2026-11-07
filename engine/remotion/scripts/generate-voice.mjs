@@ -17,10 +17,12 @@ const KEY = process.env.ELEVENLABS_API_KEY;
 if (!KEY) throw new Error("Thiếu ELEVENLABS_API_KEY trong .env");
 
 const VOICE_ID = "9CCqsrTCLkHgQlKSMchK";
+// Giọng nhân bản miền Nam: ổn định cao + bám sát giọng gốc + không "style", để không trôi sang giọng Bắc
+// (anh báo 05/11 và 07/11/2026; bản 0.55/0.8/0.2 bị trôi). Test: tests/giong-doc.test.mjs.
 const VOICE_SETTINGS = {
-  stability: 0.55,
-  similarity_boost: 0.8,
-  style: 0.2,
+  stability: 0.85,
+  similarity_boost: 0.9,
+  style: 0,
   use_speaker_boost: true,
 };
 // Ưu tiên model mới nhất hỗ trợ tiếng Việt; key không có quyền models_read nên thử lần lượt.
@@ -56,13 +58,13 @@ async function tts(model, text, settings) {
   return data;
 }
 
-/** Thử model (và stability gần nhất nếu bị từ chối). */
+/** Thử model; model chỉ nhận vài mức stability (0 / 0.5 / 1) thì dùng mức chặt nhất 1, không hạ xuống. */
 async function ttsWithFallback(model, text) {
   try {
     return { data: await tts(model, text, VOICE_SETTINGS), settings: VOICE_SETTINGS };
   } catch (e) {
     if (e.status === 400 || e.status === 422) {
-      const relaxed = { ...VOICE_SETTINGS, stability: 0.5 };
+      const relaxed = { ...VOICE_SETTINGS, stability: 1 };
       if (/stability/i.test(e.message)) {
         return { data: await tts(model, text, relaxed), settings: relaxed };
       }

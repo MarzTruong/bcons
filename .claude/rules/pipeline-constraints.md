@@ -17,6 +17,6 @@ paths:
   - `npm run voice -- <tên>`: tạo giọng ElevenLabs, **tốn credit**, chỉ chạy trên máy anh khi anh đồng ý.
   - `npm run render:drive -- <tên> [file.mp4]`: render ra `engine/remotion/out/video/`, chép lên Drive. File tạm (khung thử, log, props) để trong `out/tam/`.
   - `npm run geo:fetch`, `npm run geo:derive`: dữ liệu bản đồ vào `du-an/<mã>/assets/geo/`.
-- Không dùng `edge-tts`, `props/bcons-latest.json`, composition `RealEstateShortVideo` (của 2 file prompt cũ). Giọng: ElevenLabs, voice `9CCqsrTCLkHgQlKSMchK`.
+- Không dùng `edge-tts`, `props/bcons-latest.json`, composition `RealEstateShortVideo` (của 2 file prompt cũ). Giọng: ElevenLabs, voice `9CCqsrTCLkHgQlKSMchK`. Cài đặt giọng cố định: stability 0.85, similarity_boost 0.9, style 0, language_code vi (anh báo 2 lần giọng trôi sang giọng Bắc với 0.55/0.8/0.2; `tests/giong-doc.test.mjs` chặn đổi lại). Không hạ stability để "cho qua" khi model từ chối.
 - Mẫu cảnh: `stat-hero`, `route-map`, `data-cards`, `compare-bars`, `geo-map`, `project-close` (schema `engine/remotion/src/spec.ts`).
 - Sửa code dựng hình: chụp khung trước/sau (`npx remotion still` + `scripts/frame-hashes.mjs`) để chắc video cũ không đổi.
