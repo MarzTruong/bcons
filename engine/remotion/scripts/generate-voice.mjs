@@ -1,5 +1,6 @@
 // Tạo giọng đọc ElevenLabs (with-timestamps) + đo thời lượng thật.
-// Chạy: node --env-file=.env scripts/generate-voice.mjs <tên-video> [--model=<id>] [--du-an <mã>]
+// Chạy: node --env-file=.env scripts/generate-voice.mjs <tên-video> [--model=<id>] [--canh=scene1,scene3] [--du-an <mã>]
+// --canh: chỉ tạo lại các cảnh đó (giọng bị trôi), lượt đọc mới, gửi kèm lời cảnh trước/sau; cảnh khác giữ nguyên.
 // Chỉ chạy khi du-an/<mã>/video/<tên-video>/spec.json có status "approved" và mọi sourceId có trong bảng nguồn.
 import fs from "node:fs";
 import path from "node:path";
@@ -7,6 +8,7 @@ import { parseMedia } from "@remotion/media-parser";
 import { nodeReader } from "@remotion/media-parser/node";
 import { parseMarkup, prepareRun } from "./spec-tools.mjs";
 import { takeProjectFlag, videoPaths } from "./project.mjs";
+import { mergeScenes, neighborText, parseCanh } from "./voice-tools.mjs";
 
 const { projDir, rest } = takeProjectFlag(process.argv.slice(2));
 const name = rest.find((a) => !a.startsWith("--"));
@@ -17,12 +19,12 @@ const KEY = process.env.ELEVENLABS_API_KEY;
 if (!KEY) throw new Error("Thiếu ELEVENLABS_API_KEY trong .env");
 
 const VOICE_ID = "9CCqsrTCLkHgQlKSMchK";
-// Giọng nhân bản miền Nam: ổn định cao + bám sát giọng gốc + không "style", để không trôi sang giọng Bắc
-// (anh báo 05/11 và 07/11/2026; bản 0.55/0.8/0.2 bị trôi). Test: tests/giong-doc.test.mjs.
+// Giọng nhân bản miền Nam: ổn định cao + bám sát giọng gốc để không trôi sang giọng Bắc
+// (anh báo 05/11 và 07/11/2026; bản 0.55/0.8 bị trôi). Giữ cảm xúc style 0.2 (anh muốn 07/11). Test: tests/giong-doc.test.mjs.
 const VOICE_SETTINGS = {
   stability: 0.85,
   similarity_boost: 0.9,
-  style: 0,
+  style: 0.2,
   use_speaker_boost: true,
 };
 // Ưu tiên model mới nhất hỗ trợ tiếng Việt; key không có quyền models_read nên thử lần lượt.
@@ -33,11 +35,13 @@ const forced = process.argv.find((a) => a.startsWith("--model="))?.split("=")[1]
 const audioDir = videoPaths(spec.name, projDir).audioDir;
 fs.mkdirSync(audioDir, { recursive: true });
 
-const SEED = 20260;
+const only = parseCanh(process.argv.find((a) => a.startsWith("--canh="))?.split("=")[1]);
+// Tạo lại một cảnh phải đổi lượt đọc (seed), không thì ra y hệt bản cũ.
+const SEED = only ? 20260 + (Date.now() % 100000) : 20260;
 let prevRequestIds = []; // nối giọng giữa các cảnh để không bị đổi giọng/âm sắc
 
-async function tts(model, text, settings) {
-  const body = { text, model_id: model, voice_settings: settings, seed: SEED };
+async function tts(model, text, settings, ctx = {}) {
+  const body = { text, model_id: model, voice_settings: settings, seed: SEED, ...ctx };
   if (prevRequestIds.length) body.previous_request_ids = prevRequestIds.slice(-3);
   if (SUPPORTS_LANGUAGE_CODE(model)) body.language_code = "vi";
   const res = await fetch(
@@ -59,10 +63,14 @@ async function tts(model, text, settings) {
 }
 
 /** Thử model; model chỉ nhận vài mức stability (0 / 0.5 / 1) thì dùng mức chặt nhất 1, không hạ xuống. */
-async function ttsWithFallback(model, text) {
+async function ttsWithFallback(model, text, ctx) {
   try {
-    return { data: await tts(model, text, VOICE_SETTINGS), settings: VOICE_SETTINGS };
+    return { data: await tts(model, text, VOICE_SETTINGS, ctx), settings: VOICE_SETTINGS };
   } catch (e) {
+    // model không nhận lời cảnh trước/sau: bỏ ngữ cảnh, giữ cài đặt giọng
+    if ((e.status === 400 || e.status === 422) && ctx && /previous_text|next_text/i.test(e.message)) {
+      return { data: await tts(model, text, VOICE_SETTINGS), settings: VOICE_SETTINGS };
+    }
     if (e.status === 400 || e.status === 422) {
       const relaxed = { ...VOICE_SETTINGS, stability: 1 };
       if (/stability/i.test(e.message)) {
@@ -83,12 +91,20 @@ let model = null;
 let usedSettings = VOICE_SETTINGS;
 const results = [];
 
+const speeches = parsed.map((p) => p.speech);
+if (only) {
+  const bad = only.filter((id) => !parsed.some((p) => p.id === id));
+  if (bad.length) throw new Error(`Không có cảnh ${bad.join(", ")} trong spec`);
+  console.log(`Chỉ tạo lại: ${only.join(", ")} (lượt đọc mới, seed ${SEED})`);
+}
 for (const [i, scene] of parsed.entries()) {
+  if (only && !only.includes(scene.id)) continue;
+  const ctx = only ? Object.fromEntries(Object.entries(neighborText(speeches, i)).filter(([, v]) => v)) : undefined;
   let out;
   const candidates = model ? [model] : forced ? [forced] : MODEL_CHAIN;
   for (const m of candidates) {
     try {
-      out = { ...(await ttsWithFallback(m, scene.speech)), model: m };
+      out = { ...(await ttsWithFallback(m, scene.speech, ctx)), model: m };
       break;
     } catch (e) {
       console.log(`  model ${m}: không dùng được (${e.message.replace(KEY, "***")})`);
@@ -137,12 +153,15 @@ for (const [i, scene] of parsed.entries()) {
     fields: { durationInSeconds: true },
     acknowledgeRemotionLicense: true,
   });
-  results.push({ id: scene.id, durationSec: info.durationInSeconds, speech: scene.speech, words });
+  results.push({ id: scene.id, durationSec: info.durationInSeconds, speech: scene.speech, words, seed: SEED });
   console.log(`${scene.id}: ${info.durationInSeconds.toFixed(2)}s, ${words.length} từ`);
 }
 
+const scenes = only
+  ? mergeScenes(JSON.parse(fs.readFileSync(timestampsPath, "utf8")), results, parsed.map((p) => p.id))
+  : results;
 fs.writeFileSync(
   timestampsPath,
-  JSON.stringify({ model, voiceId: VOICE_ID, voiceSettings: usedSettings, scenes: results }, null, 2),
+  JSON.stringify({ model, voiceId: VOICE_ID, voiceSettings: usedSettings, scenes }, null, 2),
 );
 console.log(`Đã ghi ${timestampsPath}`);

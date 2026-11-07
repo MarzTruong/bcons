@@ -297,3 +297,12 @@ test("/capnhat: bot tắt để cập nhật (Bcons-Bot.cmd lấy bản mới kh
   assert.ok(!s.execs.some((e) => e.startsWith("git pull")), s.execs.join("|"));
   assert.match(s.said.at(-1).text, /tự bật lại/);
 });
+
+test("/giong <video> canh1: chỉ tạo lại cảnh đó (đỡ tốn credit), có hỏi trước", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/giong a canh1"));
+  assert.match(s.said.at(-1).text, /cảnh 1/);
+  const data = s.said.at(-1).extra.reply_markup.inline_keyboard[0][0].callback_data;
+  await s.bot.handleUpdate(press(data));
+  assert.ok(s.execs.some((e) => e === "npm run voice -- a --canh=scene1"), s.execs.join("|"));
+});

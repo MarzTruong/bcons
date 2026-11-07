@@ -37,7 +37,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 | `/xem <tên>` | Gửi caption Facebook + TikTok và bản xem thử video |
 | `/duyet <tên>` | Duyệt caption + video, gửi bản đăng về Telegram, tự lưu lên GitHub |
 | `/render <tên>` | Render video (vài phút), xong gửi bản xem thử |
-| `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy |
+| `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy. Cảnh nào bị trôi giọng (vd. giọng Bắc): `/giong <tên> canh1` chỉ tạo lại cảnh đó, lượt đọc mới |
 | `/storyboard <tên>` | Chụp 3 khung mỗi cảnh, gửi album từng cảnh để duyệt hình **trước** khi tạo giọng. Không tốn credit |
 | `/kiemgia` | Kiểm giá từng căn trong Master File (Drive `data/<mã>/gia/`) theo 5 thông báo PTTT của CĐT. Chỉ đọc, không gửi đi đâu |
 | `/gemini <chủ đề>` | Nhờ Gemini (có tìm Google) gom số liệu kèm link, lưu `du-an/<mã>/nguon/gemini/`, gửi tóm tắt. Cần `GEMINI_API_KEY` trong `.env`. Lần đầu Gemini không tìm Google thì tự hỏi lại 1 lần; link Gemini tự viết trong bảng được thay bằng link thật trong danh sách trang đã đọc (không có thì gắn ⚠️). Số liệu chưa kiểm: nhắn bot câu thường "kiểm link file gemini <tên file>" (Claude trên máy mở được báo) hoặc `/bcons-video <chủ đề>` |

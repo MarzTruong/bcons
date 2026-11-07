@@ -233,15 +233,20 @@ export function createBot(deps) {
         }),
       );
     },
-    giong([name]) {
+    giong([name, canh]) {
       if (!checkName(name)) return;
-      return ask(`Tạo giọng ElevenLabs cho ${name}? Việc này TỐN CREDIT.`, "giong", () =>
-        enqueue(`tạo giọng ${name}`, async () => {
-          await say(`Đang tạo giọng ${name}...`);
-          const out = await run("npm", ["run", "voice", "--", name], remotionDir, `Tạo giọng ${name}`, 20 * 60e3);
+      // "/giong 7 canh1": chỉ tạo lại cảnh 1 (vd. giọng bị trôi), đỡ tốn credit.
+      const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
+      const ids = n ? n.split(",").map((x) => `scene${Number(x)}`) : null;
+      const label = ids ? ` cảnh ${n}` : "";
+      return ask(`Tạo giọng ElevenLabs cho ${name}${label}? Việc này TỐN CREDIT.`, "giong", () =>
+        enqueue(`tạo giọng ${name}${label}`, async () => {
+          await say(`Đang tạo giọng ${name}${label}...`);
+          const args = ["run", "voice", "--", name, ...(ids ? [`--canh=${ids.join(",")}`] : [])];
+          const out = await run("npm", args, remotionDir, `Tạo giọng ${name}${label}`, 20 * 60e3);
           const audio = path.relative(repoRoot, videoPaths(name, projDir).audioDir);
-          const saved = await gitSave([audio, path.relative(repoRoot, videoPaths(name, projDir).timestamps)], `Giong ${name}`).catch((e) => `Chưa lưu được giọng lên GitHub: ${e.message}`);
-          await say(`Xong giọng ${name}.\n${tail(out, 6)}\n${saved}\nTiếp: /render ${name}`);
+          const saved = await gitSave([audio, path.relative(repoRoot, videoPaths(name, projDir).timestamps)], `Giong ${name}${label}`).catch((e) => `Chưa lưu được giọng lên GitHub: ${e.message}`);
+          await say(`Xong giọng ${name}${label}.\n${tail(out, 6)}\n${saved}\nCảnh nào còn lệch giọng: /giong ${name} canh<số>. Ổn rồi: /render ${name}`);
         }),
       );
     },

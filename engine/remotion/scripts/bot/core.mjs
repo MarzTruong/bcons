@@ -16,7 +16,7 @@ export const HELP = [
   "/kiemgia – kiểm giá từng căn trong Master File theo tài liệu PTTT của CĐT",
   "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",
   "/storyboard <tên> – chụp hình từng cảnh để duyệt TRƯỚC khi tạo giọng (không tốn credit)",
-  "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước)",
+  "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước); thêm canh1 để chỉ tạo lại cảnh 1",
   "/capnhat – lấy bản mới nhất từ GitHub",
   "/chuyenmay – chuyển bot sang máy khác đang mở bot (PC ⇄ laptop)",
   "/moi – bắt đầu trò chuyện Claude mới",
