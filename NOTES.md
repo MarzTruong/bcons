@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lên lịch 8–12/11, bộ phong cách mới, giọng chặt)
+Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off lần 2; kho SFX đủ 11 file, sửa `/kiemgia` đọc cột gộp PTTT)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -71,6 +71,8 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lê
   - Storyboard bản đồ chụp được trên cloud (`REMOTION_GL=swangle`).
   - Quy tắc mới trong `CLAUDE.md`: bị chặn mạng thì dừng báo host; nguyên tắc "No AI Slop"; thiết kế mới phải đưa ảnh mẫu trước.
   - Metricool: 10 bài đã lên lịch (FB Reel + TikTok): CN 8/11 video 7 (10:00), T2 9/11 video 4 (FB 12:00, TikTok 18:00; caption FB viết lại kiểu kể chuyện, anh duyệt), T3 10/11 video 5, T4 11/11 video 3, T5 12/11 video 6. Giờ theo số liệu giờ cao điểm Metricool. 2 bản nháp video 4 cũ còn trong Metricool (không đăng). 228 test qua.
+  - Kho hiệu ứng: anh chạy `/sfx`, Drive `am-thanh/sfx` đủ 11 file.
+  - `/kiemgia` báo "không thấy sheet": Master File gộp cột giá "PTTT 02 / 03" và "04 / 05"; sửa `kiem-masterfile.mjs` đọc cột gộp, chỉ lấy giá chưa VAT (bỏ đơn giá, có VAT, phí bảo trì, chênh lệch), thêm test theo tiêu đề thật. 229 test qua.
 
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
@@ -87,7 +89,7 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off; 5 video đã lê
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
 ## Chưa làm
-- [ ] `/kiemgia` rồi gửi kết quả. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
+- [ ] `/capnhat` rồi `/kiemgia` lại (đã sửa lỗi đọc cột), gửi kết quả cho em. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
 - [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).
 - [ ] Từ 13/11 chưa có bài: làm video 8 (`/gemini <chủ đề>` → 🎬, hoặc nhắn chủ đề). Video đợt 2 (29/11) từ `video/dot-2/kich-ban.md`.
 - [ ] Các cảnh bản đồ / route-map / compare-bars vẫn mẫu cũ, chỉ đổi màu theo bộ `moi`; anh thấy lệch phong cách thì làm lại riêng cảnh đó (đưa ảnh mẫu trước).
