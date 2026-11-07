@@ -55,7 +55,9 @@ async function main() {
   const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts"), publicDir: projDir });
   const inputProps = { spec: applyWatermark(spec, readProjectConfig(projDir)), timestamps: ts, khongGiong: true };
   const browserExecutable = process.env.REMOTION_BROWSER || null;
-  const composition = await selectComposition({ serveUrl, id: "BconsCentralPark", inputProps, browserExecutable });
+  // Token Mapbox phải truyền vào trang dựng hình (biến môi trường của Node không tự sang trình duyệt).
+  const envVariables = process.env.REMOTION_MAPBOX_TOKEN ? { REMOTION_MAPBOX_TOKEN: process.env.REMOTION_MAPBOX_TOKEN } : {};
+  const composition = await selectComposition({ serveUrl, id: "BconsCentralPark", inputProps, browserExecutable, envVariables });
   const plan = storyboardFrames(ts);
   const manifest = [];
   for (const [i, sc] of plan.entries()) {
@@ -69,7 +71,7 @@ async function main() {
     const pngs = [];
     for (const [k, frame] of sc.frames.entries()) {
       const out = path.join(outDir, `canh-${i + 1}-${k + 1}.png`);
-      await renderStill({ composition, serveUrl, output: out, frame, inputProps, browserExecutable, scale: 0.5, chromiumOptions: hasMap ? { gl: "angle" } : {} });
+      await renderStill({ composition, serveUrl, output: out, frame, inputProps, browserExecutable, envVariables, scale: 0.5, chromiumOptions: hasMap ? { gl: process.env.REMOTION_GL || "angle" } : {} });
       pngs.push(out);
     }
     manifest.push({ canh: i + 1, id: scene.id, template: scene.template, giay, loi, anh: pngs });

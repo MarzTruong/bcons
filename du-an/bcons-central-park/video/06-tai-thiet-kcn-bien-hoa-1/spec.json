@@ -3,8 +3,8 @@
   "so": 6,
   "tieuDe": "Tái thiết KCN Biên Hòa 1",
   "status": "approved",
-  "style": "navy",
-  "motion": "nay",
+  "style": "moi",
+  "motion": "classic",
   "scenes": [
     {
       "id": "scene1",

@@ -3,8 +3,8 @@
   "so": 5,
   "tieuDe": "Cho thuê căn hộ và KCN Biên Hòa",
   "status": "approved",
-  "style": "sang",
-  "motion": "truot",
+  "style": "moi",
+  "motion": "classic",
   "scenes": [
     {
       "id": "scene1",

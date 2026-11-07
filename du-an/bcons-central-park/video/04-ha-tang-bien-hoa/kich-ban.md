@@ -21,6 +21,7 @@ Spec: `du-an/bcons-central-park/video/04-ha-tang-bien-hoa/spec.json` (status `ap
 | geo-phuoc-an | Cảng Phước An: 10.616353354639697, 106.9942243322939 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.616353354639697,106.9942243322939 | Xem du-an/bcons-central-park/assets/geo/NGUON.md |
 | geo-long-thanh | Sân bay Long Thành: 10.773541785186673, 107.04195752766535 | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.773541785186673,107.04195752766535 | Xem du-an/bcons-central-park/assets/geo/NGUON.md |
 | geo-ben-luc | Bến Lức: 10.652265, 106.4715 (vĩ độ, kinh độ) | 04/11/2026 | Mapbox Geocoding API (truy vấn "Bến Lức, Long An") | https://docs.mapbox.com/api/search/geocoding/ | Điểm gần đúng khu vực Bến Lức (An Thanh), không phải mốc chính thức của tuyến cao tốc. |
+| phoi-canh | Hình ảnh phối cảnh dự án (file 202605_BPTH_ST27_OV_GREEN PARK 2.png) | 05/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ảnh phối cảnh, ghi "minh họa" trên màn hình (thêm 07/11/2026 khi đổi sang bộ phong cách mới). |
 
 **Số về dự án (cảnh 4):** dự kiến bàn giao Quý II/2029 và địa chỉ 236 Phan Trung lấy từ `du-an/bcons-central-park/thong-tin.md` (tài liệu chủ đầu tư).
 

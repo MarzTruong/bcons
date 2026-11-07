@@ -23,7 +23,12 @@
         "value": 8.5,
         "decimals": 1,
         "unit": "–11%/năm",
-        "sourceId": "ls-pho-bien"
+        "sourceId": "ls-pho-bien",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
       }
     },
     {
@@ -114,8 +119,15 @@
       "markup": "Tại Bcons{Bee Cons} Central{Central} Park{Park}, phương thức thanh toán số 3{ba} và số 4{bốn} áp dụng lãi suất vay trần 6,9%/năm,{sáu phẩy chín phần trăm một năm,} theo điều kiện cụ thể của từng phương thức.",
       "cues": {},
       "props": {
-        "message": "PTTT 03 và 04: lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức"
+        "message": "PTTT 03 và 04: lãi suất vay trần 6,9%/năm, theo điều kiện cụ thể của từng phương thức",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
       }
     }
-  ]
+  ],
+  "style": "moi",
+  "motion": "classic"
 }

@@ -23,7 +23,12 @@
         "value": 2.4,
         "decimals": 1,
         "unit": "Tỷ USD",
-        "sourceId": "fdi-9-thang"
+        "sourceId": "fdi-9-thang",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
       }
     },
     {
@@ -164,8 +169,15 @@
       "markup": "Việc triển khai đồng bộ các hạng mục theo quy hoạch tại Bcons{Bee Cons} Central{Central} Park{Park} sẽ góp phần đáp ứng nhu cầu an cư và đón đầu làn sóng đô thị hóa tại Đồng Nai.",
       "cues": {},
       "props": {
-        "message": "Phát triển đồng bộ theo quy hoạch - Đón đầu làn sóng đô thị hóa & nhu cầu an cư tại Đồng Nai"
+        "message": "Phát triển đồng bộ theo quy hoạch - Đón đầu làn sóng đô thị hóa & nhu cầu an cư tại Đồng Nai",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
       }
     }
-  ]
+  ],
+  "style": "moi",
+  "motion": "classic"
 }
