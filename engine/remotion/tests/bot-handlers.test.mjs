@@ -286,3 +286,14 @@ test("/chuyenmay: liệt kê máy đang chờ thành nút; bấm thì yêu cầu
   await s.bot.handleUpdate(msg("/chuyenmay"));
   assert.match(s.said.at(-1).text, /Không có máy nào đang chờ/);
 });
+
+test("/capnhat: bot tắt để cập nhật (Bcons-Bot.cmd lấy bản mới khi bot không chạy, rồi bật lại), không tự git pull khi đang chạy", async () => {
+  const s = setup();
+  let exited = 0;
+  s.bot.setExitForUpdate(() => exited++);
+  await s.bot.handleUpdate(msg("/capnhat"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(exited, 1);
+  assert.ok(!s.execs.some((e) => e.startsWith("git pull")), s.execs.join("|"));
+  assert.match(s.said.at(-1).text, /tự bật lại/);
+});

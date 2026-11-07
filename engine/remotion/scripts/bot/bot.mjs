@@ -3,6 +3,7 @@ import os from "node:os";
 // Chạy: npm run bot (trong engine/remotion), hoặc bấm đúp Bcons-Bot.cmd ở gốc repo.
 // Cần trong engine/remotion/.env: TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID. Xem docs/huong-dan-bot-telegram.md
 import { spawn } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sendApproved } from "../send-telegram.mjs";
@@ -19,6 +20,8 @@ const MAX_OUT = 200_000;
 // Mã thoát để Bcons-Bot.cmd biết: 2 = thiếu cấu hình, 3 = đã có bot khác đang chạy (cả hai: dừng hẳn, không chạy lại).
 const EXIT_CONFIG = 2;
 const EXIT_DUPLICATE = 3;
+/** 4 = anh nhắn /capnhat: Bcons-Bot.cmd lấy bản mới (bot đã tắt nên Windows cho thay file) rồi bật lại. */
+const EXIT_UPDATE = 4;
 let currentChild = null;
 
 /** Chạy lệnh, gom output. npm trên Windows phải qua shell (npm.cmd); tham số là hằng số hoặc tên video đã kiểm. */
@@ -96,6 +99,15 @@ async function main() {
     sendApproved: (o) => sendApproved({ ...o, env: process.env }),
   });
   // Tên máy hiện trên Telegram: TEN_MAY trong .env (vd. PC, Laptop), không có thì tên Windows.
+  bot.setExitForUpdate(() => setTimeout(() => process.exit(EXIT_UPDATE), 1500));
+  // Kết quả lần cập nhật trước (Bcons-Bot.cmd ghi), báo lại cho anh.
+  const logFile = path.join(REMOTION_DIR, "out", "tam", "capnhat.log");
+  if (fs.existsSync(logFile)) {
+    const log = fs.readFileSync(logFile, "utf8").trim().split(/\r?\n/).slice(-12).join("\n");
+    fs.rmSync(logFile, { force: true });
+    const ok = !/error|fatal|lỗi|loi/i.test(log);
+    await tg.sendMessage(chatId, `${ok ? "✅ Đã cập nhật bản mới." : "⚠️ Cập nhật có lỗi, gửi em ảnh này:"}\n${log}`).catch(() => {});
+  }
   const host = (process.env.TEN_MAY ?? "").trim() || os.hostname();
   const dir = (() => {
     try {

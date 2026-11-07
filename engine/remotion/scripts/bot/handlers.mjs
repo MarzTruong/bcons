@@ -125,6 +125,8 @@ export function createBot(deps) {
 
   /** Chuyển máy chạy bot (bot.mjs gắn vào): { self, standbys(), request(host) }. */
   let switcher = null;
+  /** bot.mjs gắn vào: thoát mã 4 để Bcons-Bot.cmd cập nhật khi bot không chạy. */
+  let exitForUpdate = null;
 
   const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard"]);
 
@@ -244,6 +246,13 @@ export function createBot(deps) {
       );
     },
     capnhat() {
+      // Windows không cho thay file code của bot khi bot đang chạy: bot tắt (mã 4), Bcons-Bot.cmd lấy bản mới rồi bật lại.
+      if (exitForUpdate) {
+        return enqueue("cập nhật", async () => {
+          await say("⏳ Bot tắt để lấy bản mới, khoảng 1–2 phút sau tự bật lại và báo kết quả.");
+          exitForUpdate();
+        });
+      }
       return enqueue("lấy bản mới", async () => {
         const lock = path.join(remotionDir, "package-lock.json");
         const h = (f) => (fs.existsSync(f) ? crypto.createHash("sha256").update(fs.readFileSync(f)).digest("hex") : "");
@@ -356,6 +365,7 @@ export function createBot(deps) {
   return {
     handleUpdate,
     setSwitcher: (s) => (switcher = s),
+    setExitForUpdate: (f) => (exitForUpdate = f),
     _state: () => ({ busy, queue: queue.length, pending: pending.size, session }),
   };
 }
