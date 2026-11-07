@@ -1,6 +1,6 @@
 # Design
 
-Phong cách video hiện hành: **bản vẽ kiến trúc** (`"style": "banve", "motion": "ve"` trong spec), anh chọn 07/11/2026. Code: `engine/remotion/src/templates/BanVe.tsx`, bảng màu `PALETTES.banve` trong `engine/remotion/src/theme.ts`. Các phong cách cũ (`classic`, `sang`, `navy`, `xanh`) giữ cho video đã làm.
+Một phong cách video: **bản vẽ kiến trúc** (`"style": "banve", "motion": "ve"` trong spec), anh thử ở video 7 ngày 07/11/2026; **không phải mặc định** (anh: cả hệ thống một màu sẽ đơn điệu, mỗi video nên khác nhau). Code: `engine/remotion/src/templates/BanVe.tsx`, bảng màu `PALETTES.banve` trong `engine/remotion/src/theme.ts`. Các phong cách cũ (`classic`, `sang`, `navy`, `xanh`) giữ cho video đã làm.
 
 ## Thế giới
 Cả khung hình 1080x1920 là một tờ bản vẽ: giấy cyanotype xanh Phổ, lưới phụ 30 px và lưới chính 150 px, khung viền đôi. Số liệu thị trường là "kích thước" ghi trên bản vẽ của ngôi nhà mình sẽ ở: tin cậy như bản tin tài chính, gợi cảm giác nhà.
