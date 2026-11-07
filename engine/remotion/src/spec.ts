@@ -247,6 +247,10 @@ export const VideoSpecSchema = z.object({
   style: z.enum(STYLE_NAMES).optional(),
   motion: z.enum(MOTION_NAMES).optional(),
   name: z.string().regex(/^[a-z0-9-]+$/),
+  /** Số thứ tự cố định để gọi lệnh bot (/render 3). Video mới: thư mục "<số 2 chữ số>-<vài chữ>". */
+  so: z.number().int().positive().optional(),
+  /** Tên dễ đọc hiện trong /danhsach và nút chọn. */
+  tieuDe: z.string().optional(),
   status: z.enum(["draft", "approved"]),
   /** Tên file nhạc trong <repo>/am-thanh/nhac/ (không ghi thì tự chọn theo tên video). */
   nhac: z.string().optional(),

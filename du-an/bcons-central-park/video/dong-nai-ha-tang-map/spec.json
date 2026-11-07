@@ -1,5 +1,7 @@
 {
   "name": "dong-nai-ha-tang-map",
+  "so": 2,
+  "tieuDe": "Đồng Nai hạ tầng (bản đồ)",
   "status": "approved",
   "scenes": [
     {

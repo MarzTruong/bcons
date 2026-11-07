@@ -6,7 +6,7 @@ import { approvalState, duyetCaption, duyetVideo } from "../caption-cli.mjs";
 import { parseCaption } from "../caption.mjs";
 import { videoPaths } from "../project.mjs";
 import { buttons } from "./tg.mjs";
-import { HELP, formatList, isAuthorized, parseCommand } from "./core.mjs";
+import { HELP, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
 const SESSION_TTL_MS = 3 * 3600e3;
@@ -122,6 +122,8 @@ export function createBot(deps) {
     if (fs.statSync(mp4).size > TG_MAX_BYTES) return say(`Video nặng hơn 50 MB, Telegram không nhận. Xem trên Drive: ${path.basename(mp4)}`);
     await tg.sendVideo(chatId, mp4, caption);
   }
+
+  const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard"]);
 
   const commands = {
     start: () => say(HELP),
@@ -278,7 +280,22 @@ export function createBot(deps) {
     });
   }
 
+  /** Nút chọn video (mỗi video một hàng): "<số> · <tiêu đề>". */
+  function pickVideo(cmd, extra = []) {
+    const idx = videoIndex(projDir);
+    if (!idx.length) return say("Chưa có video nào có số. Xem /danhsach.");
+    const rows = idx.map((v) => [{ text: `${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `chon:${cmd}:${v.so}${extra[0] ? `:${extra[0]}` : ""}` }]);
+    return say(`Chọn video cho /${cmd}:`, { reply_markup: { inline_keyboard: rows } });
+  }
+
   async function onCallback(cq) {
+    if (String(cq.data ?? "").startsWith("chon:")) {
+      const [, cmd, so, extra] = cq.data.split(":");
+      await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+      const name = resolveVideo(so, projDir);
+      if (!name || !VIDEO_CMDS.has(cmd)) return say("Không tìm thấy video này nữa. Xem /danhsach.");
+      return commands[cmd]([name, ...(extra ? [extra] : [])]);
+    }
     const [act, kind, id] = String(cq.data ?? "").split(":");
     await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
     const p = pending.get(id);
@@ -307,6 +324,12 @@ export function createBot(deps) {
     if (!c.cmd) return claudeTask(c.text);
     const fn = commands[c.cmd];
     if (!fn) return say(`Không có lệnh /${c.cmd}.\n\n${HELP}`);
+    if (VIDEO_CMDS.has(c.cmd)) {
+      // Lệnh cần video: nhận số (/render 3), tên, hoặc vài chữ đầu; không có/không khớp thì hiện nút chọn.
+      const name = resolveVideo(c.args[0], projDir);
+      if (!name) return pickVideo(c.cmd, c.args.slice(1));
+      return fn([name, ...c.args.slice(1)]);
+    }
     return fn(c.args);
   }
 

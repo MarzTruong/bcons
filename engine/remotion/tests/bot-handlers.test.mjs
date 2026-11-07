@@ -256,3 +256,18 @@ test("/kiemgia → kiểm Master File theo CĐT, gửi kết quả (không lưu 
   assert.ok(s.execs.some((e) => e === "npm run kiem-gia"), s.execs.join("|"));
   assert.ok(!s.execs.some((e) => e.startsWith("git commit")));
 });
+
+test("/render không kèm tên → hiện nút chọn video; bấm nút thì render đúng video", async () => {
+  const s = setup();
+  const spec = path.join(s.projDir, "video", "a", "spec.json");
+  fs.writeFileSync(spec, JSON.stringify({ name: "a", so: 1, tieuDe: "Video A" }));
+  await s.bot.handleUpdate(msg("/render"));
+  const kb = s.said.at(-1).extra.reply_markup.inline_keyboard;
+  assert.match(kb[0][0].text, /1 · Video A/);
+  await s.bot.handleUpdate(press(kb[0][0].callback_data));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.execs.some((e) => e === "npm run render:drive -- a"), s.execs.join("|"));
+  await s.bot.handleUpdate(msg("/render 1"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(s.execs.filter((e) => e === "npm run render:drive -- a").length, 2, "gõ số cũng được");
+});

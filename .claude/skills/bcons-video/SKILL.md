@@ -32,7 +32,7 @@ Nếu `$ARGUMENTS` trống hoặc trùng tên một video có sẵn, hỏi anh m
 ## Cổng 1 — Số liệu và góc làm
 1. Nguồn dữ liệu: nếu anh dán/đính kèm kết quả Gemini Deep Research (prompt ở `docs/prompt-gemini-nghien-cuu.md`) thì dùng nó; nếu không, tự tìm web theo chủ đề.
 2. **Mở từng link gốc và đối chiếu từng con số** (WebFetch). Loại số không có nguồn/ngày/link, hoặc link không chứa số đó. Ghi rõ số nào đã kiểm, số nào loại và vì sao.
-3. Xuất bảng: nhóm | số liệu | ngày công bố | nguồn | link. Đề xuất 2-3 góc làm video (45-60 giây) và một slug.
+3. Xuất bảng: nhóm | số liệu | ngày công bố | nguồn | link. Đề xuất 2-3 góc làm video (45-60 giây) và tên theo quy ước: số kế tiếp + vài chữ không dấu, vd. `07-gioi-thieu-dot-2` (hàm `slugMoi` trong `engine/remotion/scripts/bot/core.mjs`); spec ghi `so` (số đó) và `tieuDe` (tiêu đề tiếng Việt ngắn) để anh gọi bot bằng số (`/render 7`).
 4. **DỪNG. Hỏi anh chọn góc và slug.**
 
 ## Cổng 2 — Kịch bản và spec
