@@ -11,7 +11,7 @@ export const HELP = [
   "/xem <tên> – gửi caption + bản xem thử",
   "/duyet <tên> – duyệt caption + video, gửi bản đăng, lưu lên GitHub",
   "/render <số> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
-  "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để bấm chọn.)",
+  "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để tick chọn 1, nhiều hoặc tất cả video.)",
   "/sfx – tạo hiệu ứng âm thanh 1 lần (tốn ít credit, hỏi trước)",
   "/kiemgia – kiểm giá từng căn trong Master File theo tài liệu PTTT của CĐT",
   "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",

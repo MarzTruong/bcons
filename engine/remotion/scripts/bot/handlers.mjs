@@ -305,12 +305,48 @@ export function createBot(deps) {
     });
   }
 
-  /** Nút chọn video (mỗi video một hàng): "<số> · <tiêu đề>". */
+  /** Menu tick chọn video (anh muốn 07/11/2026): ☐/☑ mỗi video, "Chọn tất cả", "▶ Làm (n video)". */
+  const picks = new Map(); // cmd → { sel: Set<số>, extra }
+  function pickMarkup(cmd) {
+    const idx = videoIndex(projDir);
+    const p = picks.get(cmd) ?? { sel: new Set() };
+    const all = idx.length > 0 && idx.every((v) => p.sel.has(v.so));
+    const rows = idx.map((v) => [{ text: `${p.sel.has(v.so) ? "☑" : "☐"} ${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `tick:${cmd}:${v.so}` }]);
+    rows.push([{ text: all ? "☑ Bỏ chọn tất cả" : "☐ Chọn tất cả", callback_data: `tick:${cmd}:all` }]);
+    rows.push([{ text: p.sel.size ? `▶ Làm (${p.sel.size} video)` : "▶ Làm (chưa chọn)", callback_data: `tick:${cmd}:ok` }]);
+    return { inline_keyboard: rows };
+  }
   function pickVideo(cmd, extra = []) {
     const idx = videoIndex(projDir);
     if (!idx.length) return say("Chưa có video nào có số. Xem /danhsach.");
-    const rows = idx.map((v) => [{ text: `${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `chon:${cmd}:${v.so}${extra[0] ? `:${extra[0]}` : ""}` }]);
-    return say(`Chọn video cho /${cmd}:`, { reply_markup: { inline_keyboard: rows } });
+    picks.set(cmd, { sel: new Set(), extra: extra[0] });
+    return say(`/${cmd}: tick chọn 1 hoặc nhiều video (hoặc Chọn tất cả), rồi bấm ▶ Làm.`, { reply_markup: pickMarkup(cmd) });
+  }
+  async function onTick(cq) {
+    const [, cmd, what] = cq.data.split(":");
+    await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+    if (!VIDEO_CMDS.has(cmd)) return;
+    const p = picks.get(cmd) ?? { sel: new Set() };
+    picks.set(cmd, p);
+    const idx = videoIndex(projDir);
+    if (what === "ok") {
+      if (!p.sel.size) return say("Chưa tick video nào.");
+      const names = idx.filter((v) => p.sel.has(v.so)).map((v) => v.name);
+      picks.delete(cmd);
+      await Promise.resolve(tg.editMarkup?.(cq.message?.chat?.id ?? chatId, cq.message?.message_id, { inline_keyboard: [] })).catch(() => {});
+      await say(`/${cmd} ${names.length} video: ${idx.filter((v) => names.includes(v.name)).map((v) => v.so).join(", ")}`);
+      for (const n of names) await commands[cmd]([n, ...(p.extra ? [p.extra] : [])]);
+      return;
+    }
+    if (what === "all") {
+      const all = idx.every((v) => p.sel.has(v.so));
+      p.sel = all ? new Set() : new Set(idx.map((v) => v.so));
+    } else {
+      const so = Number(what);
+      if (p.sel.has(so)) p.sel.delete(so);
+      else p.sel.add(so);
+    }
+    await Promise.resolve(tg.editMarkup?.(cq.message?.chat?.id ?? chatId, cq.message?.message_id, pickMarkup(cmd))).catch(() => {});
   }
 
   async function onCallback(cq) {
@@ -323,6 +359,7 @@ export function createBot(deps) {
       switcher.request(host);
       return say(`Đang chuyển bot sang ${host} (khoảng 10–40 giây, chờ Drive đồng bộ)...`);
     }
+    if (String(cq.data ?? "").startsWith("tick:")) return onTick(cq);
     if (String(cq.data ?? "").startsWith("chon:")) {
       const [, cmd, so, extra] = cq.data.split(":");
       await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
@@ -369,6 +406,7 @@ export function createBot(deps) {
 
   return {
     handleUpdate,
+    _tg: tg,
     commandNames: Object.keys(commands),
     setSwitcher: (s) => (switcher = s),
     setExitForUpdate: (f) => (exitForUpdate = f),

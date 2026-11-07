@@ -48,7 +48,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 | `/huy` | Dừng việc đang chạy (render, tạo giọng, Claude) |
 | Câu bình thường | Giao việc cho Claude Code trên laptop (vd. "rút gọn caption video cho thuê", "viết thêm hashtag cho video lãi suất") |
 
-`<tên>` = **số video** trong `/danhsach` (vd. `/render 3`), hoặc tên đầy đủ, hoặc vài chữ đầu (`/render lai`). **Không nhớ thì gõ lệnh trơn** (`/render`), bot hiện danh sách video để bấm chọn.
+`<tên>` = **số video** trong `/danhsach` (vd. `/render 3`), hoặc tên đầy đủ, hoặc vài chữ đầu (`/render lai`). **Không nhớ thì gõ lệnh trơn** (`/render`), bot hiện danh sách video có ô tick: bấm để tick ☑ một hoặc nhiều video (bấm lại để bỏ), hoặc **Chọn tất cả**, rồi bấm **▶ Làm**. Bot chạy lần lượt từng video đã chọn (`/giong` vẫn hỏi Đồng ý cho từng video vì tốn credit).
 
 Quy ước đặt tên (07/11/2026): mỗi video có **số cố định** và tiêu đề tiếng Việt (`so`, `tieuDe` trong `spec.json`). Video mới đặt thư mục `<số 2 chữ số>-<vài chữ không dấu>`, vd. `07-gioi-thieu-dot-2`. Video cũ giữ tên thư mục (đã gắn với Sheet, Metricool, Drive), chỉ thêm số 1–6.
 

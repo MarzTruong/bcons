@@ -257,7 +257,7 @@ test("/kiemgia → kiểm Master File theo CĐT, gửi kết quả (không lưu 
   assert.ok(!s.execs.some((e) => e.startsWith("git commit")));
 });
 
-test("/render không kèm tên → hiện nút chọn video; bấm nút thì render đúng video", async () => {
+test("/render không kèm tên → hiện menu tick; tick rồi ▶ Làm thì render đúng video", async () => {
   const s = setup();
   const spec = path.join(s.projDir, "video", "a", "spec.json");
   fs.writeFileSync(spec, JSON.stringify({ name: "a", so: 1, tieuDe: "Video A" }));
@@ -265,6 +265,7 @@ test("/render không kèm tên → hiện nút chọn video; bấm nút thì ren
   const kb = s.said.at(-1).extra.reply_markup.inline_keyboard;
   assert.match(kb[0][0].text, /1 · Video A/);
   await s.bot.handleUpdate(press(kb[0][0].callback_data));
+  await s.bot.handleUpdate(press(kb.at(-1)[0].callback_data));
   await new Promise((r) => setTimeout(r, 20));
   assert.ok(s.execs.some((e) => e === "npm run render:drive -- a"), s.execs.join("|"));
   await s.bot.handleUpdate(msg("/render 1"));
@@ -305,4 +306,40 @@ test("/giong <video> canh1: chỉ tạo lại cảnh đó (đỡ tốn credit), 
   const data = s.said.at(-1).extra.reply_markup.inline_keyboard[0][0].callback_data;
   await s.bot.handleUpdate(press(data));
   assert.ok(s.execs.some((e) => e === "npm run voice -- a --canh=scene1"), s.execs.join("|"));
+});
+
+test("menu tick chọn: bấm để tick/bỏ tick từng video, Chọn tất cả, rồi ▶ Làm chạy đúng các video đã chọn", async () => {
+  const s = setup();
+  const vdir = path.join(s.projDir, "video");
+  for (const [n, so] of [["03-x", 3], ["04-y", 4], ["05-z", 5]]) {
+    fs.mkdirSync(path.join(vdir, n), { recursive: true });
+    fs.writeFileSync(path.join(vdir, n, "spec.json"), JSON.stringify({ name: n, so, tieuDe: `Video ${so}` }));
+  }
+  const edits = [];
+  s.bot._tg.editMarkup = async (_chat, _msg, markup) => edits.push(markup);
+  const kb = () => s.said.at(-1).extra.reply_markup.inline_keyboard.flat();
+  await s.bot.handleUpdate(msg("/render"));
+  const btns = kb();
+  assert.ok(btns.some((b) => b.text.startsWith("☐ 3")));
+  assert.ok(btns.some((b) => /Chọn tất cả/.test(b.text)));
+  const pressOn = (data) => ({ callback_query: { id: "q", data, from: { id: 42 }, message: { message_id: 9, chat: { id: 42, type: "private" }, date: T0 / 1000 } } });
+  const d = (re) => btns.find((b) => re.test(b.text)).callback_data;
+  await s.bot.handleUpdate(pressOn(d(/^☐ 3/)));
+  await s.bot.handleUpdate(pressOn(d(/^☐ 5/)));
+  assert.ok(edits.at(-1).inline_keyboard.flat().some((b) => b.text.startsWith("☑ 5")), "nút đổi thành ☑");
+  await s.bot.handleUpdate(pressOn(d(/^☐ 5/)));
+  assert.ok(edits.at(-1).inline_keyboard.flat().some((b) => b.text.startsWith("☐ 5")), "bấm lần nữa thì bỏ tick");
+  const ok = edits.at(-1).inline_keyboard.flat().find((b) => /▶/.test(b.text));
+  assert.match(ok.text, /1 video/);
+  await s.bot.handleUpdate(pressOn(ok.callback_data));
+  assert.ok(s.execs.some((e) => /render:drive.*03-x/.test(e)), s.execs.join("|"));
+  assert.ok(!s.execs.some((e) => /render:drive.*05-z/.test(e)));
+  // chọn tất cả
+  await s.bot.handleUpdate(msg("/render"));
+  const all = kb().find((b) => /Chọn tất cả/.test(b.text)).callback_data;
+  await s.bot.handleUpdate(pressOn(all));
+  const ok2 = edits.at(-1).inline_keyboard.flat().find((b) => /▶/.test(b.text));
+  assert.match(ok2.text, /3 video/);
+  await s.bot.handleUpdate(pressOn(ok2.callback_data));
+  for (const n of ["03-x", "04-y", "05-z"]) assert.ok(s.execs.filter((e) => e.includes(`render:drive`) && e.includes(n)).length >= 1, n);
 });

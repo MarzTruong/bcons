@@ -41,6 +41,10 @@ export function createTg(token, fetchFn = fetch) {
       files.forEach((f, i) => form.set(`p${i}`, new Blob([fs.readFileSync(f)], { type: "image/png" }), path.basename(f)));
       return call("sendMediaGroup", form);
     },
+    /** Đổi nút bấm của một tin đã gửi (menu tick chọn). */
+    editMarkup(chatId, messageId, replyMarkup) {
+      return call("editMessageReplyMarkup", { chat_id: chatId, message_id: messageId, reply_markup: replyMarkup });
+    },
     answerCallback(id, text = "") {
       return call("answerCallbackQuery", { callback_query_id: id, text });
     },
