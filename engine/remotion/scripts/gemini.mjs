@@ -6,8 +6,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { REPO_ROOT, takeProjectFlag } from "./project.mjs";
 
-/** Model mặc định (đổi bằng GEMINI_MODEL trong .env khi Google ra bản mới). */
-export const DEFAULT_MODEL = "gemini-3.1-pro-preview";
+/**
+ * Chọn model 07/11/2026 (anh: ưu tiên chất lượng thông tin, chi phí hợp lý): Gemini 3.1 Pro.
+ * Mỗi lần nghiên cứu khoảng 2K token vào + 4–6K token ra → vài cent; tìm Google: 5.000 lượt/tháng miễn phí rồi 14 USD/1.000.
+ * Flash rẻ hơn ~4 lần nhưng tổng hợp và lọc nguồn kém hơn; với vài lần/tuần thì Pro đáng tiền hơn.
+ * Model bị Google ngừng (404) thì tự thử model kế tiếp. Ghi đè bằng GEMINI_MODEL trong .env.
+ */
+export const MODELS = ["gemini-3.1-pro-preview", "gemini-3-pro-preview", "gemini-2.5-pro"];
+export const DEFAULT_MODEL = MODELS[0];
 export const TEMPLATE_PATH = path.join(REPO_ROOT, "docs", "prompt-gemini-nghien-cuu.md");
 
 /** Lấy khung prompt trong khối ``` của docs/prompt-gemini-nghien-cuu.md, điền chủ đề và khoảng thời gian. */
@@ -29,16 +35,22 @@ export function slugify(s) {
     .slice(0, 60);
 }
 
-export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync(TEMPLATE_PATH, "utf8"), khoang, model = DEFAULT_MODEL, fetchFn = fetch, today = new Date().toISOString().slice(0, 10) }) {
+export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync(TEMPLATE_PATH, "utf8"), khoang, model, models = model ? [model] : MODELS, fetchFn = fetch, today = new Date().toISOString().slice(0, 10) }) {
   if (!key) throw new Error("Thiếu GEMINI_API_KEY trong engine/remotion/.env");
   if (!topic?.trim()) throw new Error('Thiếu chủ đề. Ví dụ: /gemini lãi suất vay mua nhà tháng 11');
   const prompt = buildPrompt(template, topic.trim(), khoang);
-  const res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-    method: "POST",
-    headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
-    body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: [{ google_search: {} }] }),
-  });
-  if (!res.ok) throw new Error(`Gemini lỗi ${res.status}: ${(await res.text?.())?.slice(0, 300) ?? ""}`);
+  let res;
+  let used;
+  for (const m of models) {
+    res = await fetchFn(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
+      method: "POST",
+      headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: prompt }] }], tools: [{ google_search: {} }] }),
+    });
+    used = m;
+    if (res.ok || res.status !== 404) break; // 404 = model không còn: thử model kế
+  }
+  if (!res.ok) throw new Error(`Gemini lỗi ${res.status} (${used}): ${(await res.text?.())?.slice(0, 300) ?? ""}`);
   const data = await res.json();
   const cand = data.candidates?.[0];
   const text = (cand?.content?.parts ?? []).map((p) => p.text ?? "").join("").trim();
@@ -57,7 +69,7 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
   const md = [
     `# Gemini: ${topic.trim()} (${today})`,
     "",
-    `> Model ${model}, có tìm Google. **Số liệu CHƯA KIỂM**: Claude phải mở link gốc đối chiếu từng con số (cổng 1 của /bcons-video) trước khi dùng.`,
+    `> Model ${used}, có tìm Google. **Số liệu CHƯA KIỂM**: Claude phải mở link gốc đối chiếu từng con số (cổng 1 của /bcons-video) trước khi dùng.`,
     "",
     text,
     "",
@@ -66,7 +78,7 @@ export async function nghienCuu({ topic, key, outDir, template = fs.readFileSync
     "",
   ].join("\n");
   fs.writeFileSync(file, md);
-  return { file, text, sources };
+  return { file, text, sources, model: used };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
@@ -78,11 +90,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     topic,
     khoang,
     key: (process.env.GEMINI_API_KEY ?? "").trim(),
-    model: (process.env.GEMINI_MODEL ?? "").trim() || DEFAULT_MODEL,
+    model: (process.env.GEMINI_MODEL ?? "").trim() || undefined,
     outDir: path.join(projDir, "nguon", "gemini"),
   })
     .then((r) => {
-      console.log(`Đã lưu ${path.relative(REPO_ROOT, r.file)} (${r.sources.length} trang nguồn).`);
+      console.log(`Đã lưu ${path.relative(REPO_ROOT, r.file)} (${r.model}, ${r.sources.length} trang nguồn).`);
       console.log(r.text.slice(0, 1500));
     })
     .catch((e) => {

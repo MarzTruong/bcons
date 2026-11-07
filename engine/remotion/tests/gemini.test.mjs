@@ -47,3 +47,19 @@ test("nghienCuu: gọi Gemini có tìm Google, lưu báo cáo + danh sách link 
   assert.match(md, /chưa kiểm/i, "ghi rõ số liệu chưa được Claude kiểm");
   assert.equal(r.sources.length, 1);
 });
+
+test("nghienCuu: model đầu không còn (404) thì tự thử model kế tiếp, ghi model đã dùng", async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "gem-"));
+  const urls = [];
+  const fetchFn = async (url) => {
+    urls.push(url);
+    if (urls.length === 1) return { ok: false, status: 404, text: async () => "model not found" };
+    return { ok: true, json: async () => ({ candidates: [{ content: { parts: [{ text: "ok" }] } }] }) };
+  };
+  const { MODELS } = await import("../scripts/gemini.mjs");
+  const r = await nghienCuu({ topic: "a", key: "k", outDir: dir, template: TEMPLATE, fetchFn, models: MODELS });
+  assert.equal(urls.length, 2);
+  assert.ok(urls[1].includes(MODELS[1]));
+  assert.equal(r.model, MODELS[1]);
+  assert.ok(fs.readFileSync(r.file, "utf8").includes(MODELS[1]));
+});
