@@ -81,6 +81,7 @@ Quy ước đặt tên (07/11/2026): mỗi video có **số cố định** và t
 - Máy đang chạy bị tắt/ngủ/mất mạng hơn 3 phút: máy đang chờ **tự nhận việc** và báo Telegram.
 - Đang render/tạo giọng thì không chuyển (bot báo đợi xong hoặc `/huy`).
 - Đặt tên máy cho dễ đọc: thêm dòng `TEN_MAY=PC` (hoặc `TEN_MAY=Laptop`) vào `engine\remotion\.env` trên từng máy. Không đặt thì dùng tên Windows.
+- Máy mới phải khai báo người lưu cho git một lần (không thì bot báo "Author identity unknown" khi lưu lên GitHub): `git config --global user.name "Marz"` và `git config --global user.email "<email GitHub của anh>"`.
 - Cần Drive for desktop trên cả hai máy (thư mục `Bcons - Dong bo thiet bi\bot\` do bot tự tạo). Máy không có Drive thì bot chạy như cũ, không chuyển được.
 
 ## Tự cập nhật (từ 07/11/2026): không cần gõ lệnh
