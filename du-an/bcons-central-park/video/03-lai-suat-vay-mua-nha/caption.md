@@ -1,8 +1,8 @@
 ---
-status: draft
-duyetLuc: ""
-noiDungSha256: ""
-videoSha256: ""
+status: approved
+duyetLuc: "2026-11-08T00:18:21+07:00"
+noiDungSha256: "09f32be7c7894436163e9a81ceb46bd9cfdfd24e9c187e5f1a3f63598d6fc12b"
+videoSha256: "2bff55591ee06cd352b462c1c35d952f6a66493a161ae2fb0424ef067f5a5b63"
 kenh: [facebook, tiktok]
 ---
 ## Facebook
