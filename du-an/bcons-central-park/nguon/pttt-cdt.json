@@ -21,6 +21,6 @@
       "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; trần 6,9% như PTTT 03; MB, gói cố định tối đa 30 tháng." },
     "05": { "so": "10/TB-ĐTTH", "ngay": "26/10/2026", "chietKhau": 0.0245, "tranLai": null,
       "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
-      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng, KHÔNG có trần 6,9%. Lưu ý: PDF ghi bàn giao 'Dự kiến Quý I/2029' (các PTTT khác ghi Quý II/2029), cần hỏi CĐT." }
+      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng, KHÔNG có trần 6,9%. PDF ghi bàn giao 'Dự kiến Quý I/2029' là CĐT ghi nhầm: anh xác nhận 07/11/2026 bàn giao dự kiến Quý II/2029 như các PTTT khác." }
   }
 }
