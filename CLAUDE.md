@@ -10,7 +10,7 @@
 - Model cho agent phụ: `opus` để lập kế hoạch kiến trúc, tái cấu trúc lớn; `sonnet` để viết code, kịch bản, kiểm tài liệu nguồn; `haiku` để dò tìm file.
 
 ## Máy đang chạy (tự nhận diện)
-- **Cloud** (biến môi trường `CLAUDE_CODE_REMOTE=true`, anh dùng từ laptop/điện thoại): nghiên cứu, viết `kich-ban.md`, `storyboard.md`, `caption.md`, `spec.json`, lập trình `engine/`, viết test, `npm test`, `npm run lint`, commit/push. **Không** chạy `npm run voice` hay `npm run render:drive` (không có `.env`, không có Drive).
+- **Cloud** (biến môi trường `CLAUDE_CODE_REMOTE=true`, anh dùng từ laptop/điện thoại): nghiên cứu, viết `kich-ban.md`, `storyboard.md`, `caption.md`, `spec.json`, lập trình `engine/`, viết test, `npm test`, `npm run lint`, commit/push. Cloud có `REMOTION_MAPBOX_TOKEN` trong biến môi trường nên chụp được storyboard bản đồ (`npm run storyboard`). **Không** chạy `npm run voice` hay `npm run render:drive` (tốn credit/không có Drive): việc đó qua bot trên máy anh.
 - **Máy của anh** (laptop/máy bàn, có `engine/remotion/.env`): `git pull`, cổng chặn, `npm run voice` (sau khi anh đồng ý tốn credit), `npm run render:drive`.
 - **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/storyboard`, `/giong`, `/render`, `/duyet`, `/xem`, `/danhsach`, `/gemini`, `/sfx`, `/kiemgia`. Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
 

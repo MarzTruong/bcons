@@ -31,3 +31,9 @@ test("có token thì đặt REMOTION_MAPBOX_TOKEN (bỏ ngoặc kép, khoảng t
 test("token rỗng bị coi là thiếu", () => {
   assert.throws(() => loadMapboxEnv(envFile("MAPBOX_TOKEN_KEY=\n"), {}), /MAPBOX_TOKEN_KEY/);
 });
+
+test("cloud: biến môi trường REMOTION_MAPBOX_TOKEN có sẵn (cài trong môi trường cloud) thì dùng luôn", () => {
+  const env = { REMOTION_MAPBOX_TOKEN: "pk.cloud" };
+  assert.equal(loadMapboxEnv("/khong/co/.env", env), "pk.cloud");
+  assert.equal(env.REMOTION_MAPBOX_TOKEN, "pk.cloud");
+});
