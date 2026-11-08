@@ -44,6 +44,11 @@ ul,ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
 .risk div{display:flex;flex-direction:column;gap:2px;font-size:.92rem}
 .risk b{font-weight:600}
 .small{font-size:.82rem;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{color:var(--muted);font-weight:600;font-size:.82rem}
+tbody th{font-weight:500}
+.tablewrap{overflow-x:auto}
 code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
 </style>
 
@@ -54,12 +59,12 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius
 </header>
 
 <section class="verdict">
-  <p><strong>Đề xuất:</strong> chưa gọi ra hàng loạt. Thử trước một <b>trợ lý giọng nói trên landing</b> (ElevenLabs Agents, giọng miền Nam anh đã chọn): khách tự bấm nói chuyện, máy không gọi đi nên không vướng quy định gọi quảng cáo.</p>
-  <p>Sau đó, nếu công ty có tổng đài hoặc tên định danh, mới làm <b>gọi lại lead landing trong 5 phút</b> qua tổng đài trong nước (OmiCall hoặc Stringee).</p>
-  <p class="small">Chi phí thử ước tính: 100 cuộc × 3 phút × $0,08 ≈ $24 (khoảng 600 ngàn đồng), chưa gồm phí mô hình AI. Em tự tính, không phải báo giá.</p>
+  <p><strong>Gọi ra cho khách</strong> (data công ty và landing của anh): đi qua <b>tổng đài trong nước đứng tên công ty</b>. Ứng viên: OmiCall Contact Center AI, 280.000đ/user/tháng, có callbot giọng miền Nam. Còn phải xin giá phút callbot và cước.</p>
+  <p><strong>Trên landing:</strong> nút "Nói chuyện với trợ lý" bằng ElevenLabs Agents, khoảng $24 cho 300 phút/tháng, không cần số điện thoại, giọng anh đã duyệt.</p>
+  <p><strong>Không dùng</strong> số nước ngoài (Twilio) gọi khách: cước $0,1777/phút gọi di động Việt Nam, chiếm khoảng 70% chi phí, và sai Nghị định 91 vì không có tên định danh. Mã nguồn mở chỉ rẻ phần AI, không rẻ cước.</p>
 </section>
 
-<div class="note"><b>Giới hạn:</b> proxy cloud chặn các trang nhà cung cấp (elevenlabs.io, retellai.com, vapi.ai, vbee.ai, fpt.ai, stringee.com, viettelai.vn, omicall.com, thuvienphapluat.vn, twilio.com). Số liệu lấy từ kết quả tìm kiếm, chưa mở trang gốc. Anh chưa trả lời câu hỏi nên em giả định: mục tiêu là gọi lại lead landing và nhắc mở bán 29/11, 27/12; ngân sách thử 1–2 triệu/tháng.</div>
+<div class="note"><b>Nguồn:</b> giá mở từ trang gốc ngày 08/11/2026 sau khi anh duyệt mở host. Mã nguồn Audiocall, Lampline, Vocode, Pipecat đọc trực tiếp trên GitHub. Chi phí tháng là em tự tính, USD, chưa gồm thuế.</div>
 
 <section>
   <h2>AI Caller là gì</h2>
@@ -102,56 +107,43 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius
 </section>
 
 <section>
-  <h2>So sánh 8 sản phẩm</h2>
-  <p class="small">Giá là phí nền tảng AI, chưa gồm cước gọi. "Chưa công bố" = phải xin báo giá. Xem qua tìm kiếm ngày 08/11/2026.</p>
+  <h2>Chi phí mỗi tháng</h2>
+  <p class="small">Mỗi cuộc 3 phút. 300 phút ≈ 100 cuộc, 1.500 phút ≈ 500 cuộc. Chưa gồm LLM của ElevenLabs, máy chủ, công lập trình. OmiCall chưa gồm cước và phí phút callbot.</p>
+  <div class="tablewrap"><table><thead><tr><th scope="col">Cách làm</th><th scope="col">300 phút</th><th scope="col">1.500 phút</th></tr></thead><tbody><tr><th scope="row">ElevenLabs gọi trên web</th><td>~$24</td><td>~$120</td></tr><tr><th scope="row">LiveKit gọi trên web</th><td>~$11</td><td>~$57</td></tr><tr><th scope="row">ElevenLabs + Twilio</th><td>~$77</td><td>~$387</td></tr><tr><th scope="row">Retell + Twilio</th><td>~$86–106</td><td>~$432–529</td></tr><tr><th scope="row">Vapi + Twilio</th><td>~$78–92</td><td>~$390–460</td></tr><tr><th scope="row">LiveKit + Twilio</th><td>~$66</td><td>~$329</td></tr><tr><th scope="row">Pipecat + Twilio</th><td>~$59 + máy chủ</td><td>~$296 + máy chủ</td></tr><tr><th scope="row">Audiocall + Twilio</th><td>~$53 + Gemini</td><td>~$267 + Gemini</td></tr><tr><th scope="row">OmiCall AI (1 user)</th><td>280.000đ</td><td>280.000đ</td></tr></tbody></table></div>
+</section>
 
-  <div class="prod"><div class="prod-head"><h3>ElevenLabs Agents</h3><span class="fit hi">Hợp nhất để thử</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Có; dùng được giọng miền Nam anh đang dùng</dd>
-  <dt>Giá</dt><dd class="price">$0,08/phút (gọi dồn $0,16), phí AI tính thêm · <a href="https://elevenlabs.io/pricing/agents">elevenlabs.io</a></dd>
-  <dt>Tích hợp</dt><dd>Widget gọi trên web, Twilio, SIP, webhook</dd>
-  <dt>Lưu ý</dt><dd>Gọi số VN phải qua SIP nhà mạng VN; dữ liệu lưu nước ngoài</dd></dl></div>
+<section>
+  <h2>Nguồn số gọi</h2>
+  <ul>
+    <li><b>Data công ty:</b> công ty là chủ dữ liệu. Cần công ty đồng ý cho dùng, xác nhận khách đã đồng ý nhận cuộc gọi, gọi qua tổng đài của công ty. Không chép data lên Sheet cá nhân hay dịch vụ nước ngoài khi chưa được phép.</li>
+    <li><b>Landing của anh:</b> sửa ô đồng ý thành "nhận cuộc gọi tư vấn, có thể là trợ lý AI, có ghi âm"; lọc tab TuChoi trước mỗi lượt gọi.</li>
+  </ul>
+</section>
 
-  <div class="prod"><div class="prod-head"><h3>OmiCall (OmiBot)</h3><span class="fit hi">Hợp cho gọi lại lead</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Tổng đài Việt Nam, có API callbot, TTS/STT tiếng Việt</dd>
-  <dt>Giá</dt><dd>Chưa công bố · <a href="https://api.omicall.com/omicall-api/ai-api">api.omicall.com</a></dd>
-  <dt>Tích hợp</dt><dd>API, CRM</dd>
-  <dt>Lưu ý</dt><dd>Chưa rõ giọng miền Nam</dd></dl></div>
-
-  <div class="prod"><div class="prod-head"><h3>Stringee</h3><span class="fit hi">Làm cầu nối SIP</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Nền tảng API thoại Việt Nam</dd>
-  <dt>Giá</dt><dd>Chưa công bố · <a href="https://www.g2.com/products/stringee-call-apis/pricing">G2</a></dd>
-  <dt>Tích hợp</dt><dd>API gọi, SIP, webhook</dd>
-  <dt>Lưu ý</dt><dd>Phải tự ghép phần AI (vd. ElevenLabs)</dd></dl></div>
-
+<section>
+  <h2>Từng lựa chọn</h2>
+  <div class="prod"><div class="prod-head"><h3>OmiCall Contact Center AI</h3><span class="fit hi">Hợp cho gọi ra</span></div>
+  <dl><dt>Loại</dt><dd>Tổng đài Việt Nam</dd><dt>Giá</dt><dd><span class="price">280.000đ/user/tháng, block 6 tháng</span> · <a href="https://omicall.com/bang-gia/">omicall.com</a></dd><dt>Giọng</dt><dd>Nam/nữ 3 miền, chuyển máy telesale khi khách quan tâm</dd><dt>Thiếu</dt><dd>Cước gọi và phí phút callbot</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>ElevenLabs Agents</h3><span class="fit hi">Hợp cho landing</span></div>
+  <dl><dt>Loại</dt><dd>Dịch vụ</dd><dt>Giá</dt><dd><span class="price">$0,08/phút; Creator $22 có 275 phút</span> · <a href="https://elevenlabs.io/pricing/agents">elevenlabs.io</a></dd><dt>Giọng</dt><dd>Giọng miền Nam anh đã duyệt</dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Stringee Call API</h3><span class="fit mid">Cầu nối</span></div>
+  <dl><dt>Loại</dt><dd>Hạ tầng gọi Việt Nam</dd><dt>Giá</dt><dd><span class="price">Miễn phí 1.500 phút/tháng; Chuẩn 15tr/năm</span> · <a href="https://stringee.com/vi/pricing-call">stringee.com</a></dd><dt>Thiếu</dt><dd>Cước nhà mạng; không có AI sẵn</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>LiveKit Agents</h3><span class="fit mid">Cần lập trình</span></div>
+  <dl><dt>Loại</dt><dd>Mã nguồn mở + đám mây</dd><dt>Giá</dt><dd><span class="price">~$0,0479/phút (ví dụ trang); Build $0, Ship $50/tháng</span> · <a href="https://livekit.com/pricing">livekit.com</a></dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Pipecat</h3><span class="fit mid">Cần lập trình</span></div>
+  <dl><dt>Loại</dt><dd>Mã nguồn mở, cập nhật 07/11/2026</dd><dt>Giá</dt><dd><span class="price">Miễn phí; model ~$0,015–0,03/phút + máy chủ</span> · <a href="https://github.com/pipecat-ai/pipecat">github</a></dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút</dd></dl></div>
   <div class="prod"><div class="prod-head"><h3>Retell AI</h3><span class="fit mid">Trung bình</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Có, tùy engine giọng</dd>
-  <dt>Giá</dt><dd class="price">Từ $0,07/phút, cộng dồn nhiều phần · <a href="https://eesel.ai/blog/retell-ai-pricing">eesel.ai</a></dd>
-  <dt>Tích hợp</dt><dd>API, webhook, Twilio/SIP</dd>
-  <dt>Lưu ý</dt><dd>Số nước ngoài; tổng chi phí khó đoán</dd></dl></div>
-
-  <div class="prod"><div class="prod-head"><h3>Vbee AICall</h3><span class="fit mid">Trung bình</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Giọng Việt tự nhiên, công ty Hà Nội</dd>
-  <dt>Giá</dt><dd>Chưa công bố · <a href="https://pitchbook.com/profiles/company/592888-87">PitchBook</a></dd>
-  <dt>Tích hợp</dt><dd>API</dd>
-  <dt>Lưu ý</dt><dd>Phải hỏi giá và giọng miền Nam</dd></dl></div>
-
+  <dl><dt>Loại</dt><dd>Dịch vụ</dd><dt>Giá</dt><dd><span class="price">$0,07–0,31/phút</span> · <a href="https://www.retellai.com/pricing">retellai.com</a></dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút</dd></dl></div>
   <div class="prod"><div class="prod-head"><h3>Vapi</h3><span class="fit lo">Thấp</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Tùy engine giọng</dd>
-  <dt>Giá</dt><dd class="price">$0,05/phút + nhà cung cấp, thực tế ~$0,10–0,20 · <a href="https://www.happyrobot.ai/hub/vapi-ai-pricing">happyrobot.ai</a></dd>
-  <dt>Tích hợp</dt><dd>API cho lập trình viên</dd>
-  <dt>Lưu ý</dt><dd>Phải tự ghép nhiều thứ</dd></dl></div>
-
-  <div class="prod"><div class="prod-head"><h3>Viettel AI Callbot</h3><span class="fit lo">Thấp, trừ khi công ty làm</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Nhiều vùng miền (theo Viettel)</dd>
-  <dt>Giá</dt><dd>Chưa công bố; có dùng thử · <a href="https://viettelai.vn/en/tin-tuc/callbot-la-gi-giai-phap-tu-dong-hoa-cuoc-goi-tu-viettel-ai">viettelai.vn</a></dd>
-  <dt>Tích hợp</dt><dd>Hợp đồng doanh nghiệp</dd>
-  <dt>Lưu ý</dt><dd>Khó với cá nhân</dd></dl></div>
-
-  <div class="prod"><div class="prod-head"><h3>FPT AI Engage</h3><span class="fit lo">Thấp</span></div>
-  <dl><dt>Tiếng Việt</dt><dd>Có</dd>
-  <dt>Giá</dt><dd>Chưa công bố · <a href="https://www.g2.com/products/fpt-ai/pricing">G2</a></dd>
-  <dt>Tích hợp</dt><dd>Hợp đồng doanh nghiệp</dd>
-  <dt>Lưu ý</dt><dd>Hướng doanh nghiệp lớn</dd></dl></div>
+  <dl><dt>Loại</dt><dd>Dịch vụ cho lập trình viên</dd><dt>Giá</dt><dd><span class="price">$0,05/phút + model, ~$0,08–0,13</span> · <a href="https://vapi.ai/pricing">vapi.ai</a></dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Lampline</h3><span class="fit lo">Để chấm kịch bản</span></div>
+  <dl><dt>Loại</dt><dd>Mã nguồn mở, cập nhật 29/10/2026</dd><dt>Dùng</dt><dd>Chủ yếu là công cụ kiểm thử agent điện thoại, chạy trên Pipecat</dd><dt>Nguồn</dt><dd><a href="https://github.com/C4rohan/lampline">github.com/C4rohan/lampline</a></dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Iamsdt/audiocall</h3><span class="fit lo">Thấp</span></div>
+  <dl><dt>Loại</dt><dd>Mã nguồn mở, ~500 dòng, cập nhật 24/3/2026</dd><dt>Dùng</dt><dd>Mẫu demo Twilio + Gemini Live, kịch bản mặc định là tuyển dụng, chưa có giọng Nam</dd><dt>Gọi ra VN</dt><dd>+ Twilio $0,1777/phút + Gemini</dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Vocode</h3><span class="fit lo">Loại</span></div>
+  <dl><dt>Lý do</dt><dd>Ngừng cập nhật từ 15/11/2024</dd><dt>Nguồn</dt><dd><a href="https://github.com/vocodedev/vocode-core">github.com/vocodedev/vocode-core</a></dd></dl></div>
+  <div class="prod"><div class="prod-head"><h3>Viettel AI, Vbee, FPT AI</h3><span class="fit lo">Thấp</span></div>
+  <dl><dt>Giá</dt><dd>Không công bố; Viettel "cung cấp theo yêu cầu" · <a href="https://viettelai.vn/bang-gia">viettelai.vn</a></dd></dl></div>
 </section>
 
 <section>
@@ -160,7 +152,7 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius
     <li>Anh hỏi công ty: được dùng trợ lý AI nói về dự án không, có tổng đài hoặc tên định danh không.</li>
     <li>Sửa câu đồng ý trên landing: "đồng ý nhận cuộc gọi tư vấn, có thể là trợ lý AI, có ghi âm". Dùng tab TuChoi làm danh sách từ chối.</li>
     <li>Dựng agent ElevenLabs, kịch bản để anh duyệt. Thử nội bộ 20 cuộc.</li>
-    <li>Bật trên landing 2 tuần, trần chi phí ~$20. Đo số cuộc, số khách để lại số, than phiền, lần nói sai.</li>
+    <li>Bật trên landing 2 tuần, trần chi phí ~$25. Đo số cuộc, số khách để lại số, than phiền, lần nói sai.</li>
     <li>Anh xem kết quả rồi quyết định bước tổng đài. Không cam kết số khách hay doanh số.</li>
   </ol>
   <p class="small">Việc tốn tiền và sửa landing chỉ làm khi anh nói "OK".</p>
@@ -172,7 +164,7 @@ code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius
     <li>Mục tiêu đúng giả định chưa, hay nhận cuộc gọi đến là chính?</li>
     <li>Ngân sách thử tối đa mỗi tháng?</li>
     <li>Công ty có tổng đài, tên định danh, cho dùng giọng AI không?</li>
-    <li>Mở các host bị chặn để em kiểm giá trên trang gốc?</li>
+    <li>Công ty cho dùng data khách để gọi bằng trợ lý AI không, qua tổng đài nào?</li>
   </ol>
 </section>
 
