@@ -55,6 +55,7 @@ Sản phẩm phải trông và nghe như người làm có chủ ý, không như
 
 ## Skill dùng tự động (không cần anh gọi)
 - Viết/sửa code `engine/`: `test-driven-development` (test trước), xong việc `verification-before-completion`; lỗi khó: `systematic-debugging`.
+  - Test phải dùng **dữ liệu và tình huống thật**, không dữ liệu tự bịa cho dễ qua: tiêu đề cột thật của file anh dùng (Master File gộp cột "PTTT 02 / 03"), output thật của lệnh, bot khởi động lại giữa chừng (`/capnhat`), tin nhắn/nút cũ. Anh dặn 08/11/2026 sau 2 lỗi lọt test (`/kiemgia`, nút Gemini).
 - Việc lớn: `brainstorming` → `writing-plans` → `executing-plans`.
 - Sửa giao diện landing (`engine/landing/`): `frontend-design` (hướng thiết kế) và `impeccable` (soát, chỉnh, `audit`/`polish`); giữ quy tắc giá/VAT/ô đồng ý.
 - Video: `bcons-video`; caption: `docs/quy-tac-caption.md`; bài công ty: `bai-cong-ty`; dự án mới: `bcons-project-init`.
