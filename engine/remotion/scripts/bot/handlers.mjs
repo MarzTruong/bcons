@@ -9,6 +9,21 @@ import { buttons } from "./tg.mjs";
 import { HELP, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
+
+/** Báo cáo Gemini (bỏ file -KIEM), mới trước. Nút 🎬 trỏ tới báo cáo bằng mã băm tên file nên bot khởi động lại vẫn bấm được. */
+export function geminiReports(projDir) {
+  const dir = path.join(projDir, "nguon", "gemini");
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".md") && !/-KIEM\.md$/i.test(f))
+    .sort()
+    .reverse()
+    .map((f) => ({ file: f, rel: path.join(dir, f), key: crypto.createHash("sha1").update(f).digest("hex").slice(0, 12) }));
+}
+
+const gemvidPrompt = (file) =>
+  `/bcons-video Làm video từ báo cáo Gemini (file ${file}). Làm CỔNG 1 theo skill bcons-video: mở từng link gốc đối chiếu từng con số, loại số sai/bịa, ghi file -KIEM.md cạnh báo cáo; đề xuất 2-3 góc làm video và tên <số>-<tên>. Sau đó DỪNG, chờ anh chọn góc; chưa viết kịch bản, chưa tạo giọng.`;
 const SESSION_TTL_MS = 3 * 3600e3;
 const TG_MAX_BYTES = 50 * 1024 * 1024;
 const tail = (s, n = 15) => String(s).trim().split(/\r?\n/).slice(-n).join("\n");
@@ -225,13 +240,21 @@ export function createBot(deps) {
         const saved = await gitSave([path.relative(repoRoot, path.join(projDir, "nguon", "gemini"))], `Gemini ${topic}`).catch((e) => `Chưa lưu lên GitHub: ${e.message}`);
         await say(`${tail(out, 40)}\n\n${saved}`);
         // Nối cổng 1 → 2: một nút giao Claude kiểm link + đề xuất góc từ chính báo cáo này (anh muốn 07/11/2026).
-        const file = out.match(/Đã lưu (\S+\.md)/)?.[1] ?? `du-an/<mã>/nguon/gemini/ (báo cáo mới nhất về "${topic}")`;
-        return ask(`Số liệu CHƯA KIỂM. Làm video từ kết quả này? (Claude kiểm từng link, đề xuất góc, rồi dừng chờ anh chọn)`, "gemvid", () =>
-          claudeTask(
-            `/bcons-video Làm video từ báo cáo Gemini "${topic}" (file ${file}). Làm CỔNG 1 theo skill bcons-video: mở từng link gốc đối chiếu từng con số, loại số sai/bịa, ghi file -KIEM.md cạnh báo cáo; đề xuất 2-3 góc làm video và tên <số>-<tên>. Sau đó DỪNG, chờ anh chọn góc; chưa viết kịch bản, chưa tạo giọng.`,
-          ),
+        const savedName = out.match(/Đã lưu \S*?([^\\/\s]+\.md)/)?.[1];
+        const reports = geminiReports(projDir);
+        const r = reports.find((x) => x.file === savedName) ?? reports[0];
+        if (!r) return;
+        return say(
+          `Số liệu CHƯA KIỂM. Làm video từ kết quả này? (Claude kiểm từng link, đề xuất góc, rồi dừng chờ anh chọn)`,
+          buttons([["🎬 Làm video từ kết quả này", `gv:${r.key}`], ["Để sau", "gv:-"]]),
         );
       });
+    },
+    baocao() {
+      const list = geminiReports(projDir).slice(0, 8);
+      if (!list.length) return say("Chưa có báo cáo Gemini nào. Gõ /gemini <chủ đề> để tạo.");
+      const rows = list.map((r) => [{ text: `🎬 ${r.file.replace(/\.md$/, "")}`.slice(0, 60), callback_data: `gv:${r.key}` }]);
+      return say("Chọn báo cáo Gemini để làm video (Claude kiểm từng link, đề xuất góc, rồi dừng chờ anh chọn):", { reply_markup: { inline_keyboard: rows } });
     },
     sfx() {
       return ask("Tạo hiệu ứng âm thanh còn thiếu trong kho (11 kiểu vút/tách/dồn) bằng ElevenLabs? Việc này TỐN CREDIT (file đã có thì bỏ qua).", "sfx", () =>
@@ -370,6 +393,14 @@ export function createBot(deps) {
       return say(`Đang chuyển bot sang ${host} (khoảng 10–40 giây, chờ Drive đồng bộ)...`);
     }
     if (String(cq.data ?? "").startsWith("tick:")) return onTick(cq);
+    if (String(cq.data ?? "").startsWith("gv:")) {
+      await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+      const key = cq.data.slice(3);
+      if (key === "-") return say("Để sau. Lúc nào muốn làm thì gõ /baocao để chọn lại báo cáo.");
+      const r = geminiReports(projDir).find((x) => x.key === key);
+      if (!r) return say("Không thấy báo cáo này nữa. Gõ /baocao để xem danh sách.");
+      return claudeTask(gemvidPrompt(path.relative(repoRoot, r.rel).split(path.sep).join("/")));
+    }
     if (String(cq.data ?? "").startsWith("chon:")) {
       const [, cmd, so, extra] = cq.data.split(":");
       await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});

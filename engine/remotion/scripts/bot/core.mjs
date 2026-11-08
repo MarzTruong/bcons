@@ -15,6 +15,7 @@ export const HELP = [
   "/sfx – tạo hiệu ứng âm thanh còn thiếu trong kho 11 kiểu (tốn ít credit, hỏi trước)",
   "/kiemgia – kiểm giá từng căn trong Master File theo tài liệu PTTT của CĐT",
   "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",
+  "/baocao – chọn lại báo cáo Gemini cũ để làm video",
   "/storyboard <tên> – chụp hình từng cảnh để duyệt TRƯỚC khi tạo giọng (không tốn credit)",
   "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước); thêm canh1 để chỉ tạo lại cảnh 1",
   "/capnhat – lấy bản mới nhất từ GitHub",

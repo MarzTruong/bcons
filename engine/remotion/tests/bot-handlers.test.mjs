@@ -348,6 +348,9 @@ test("menu tick chọn: bấm để tick/bỏ tick từng video, Chọn tất c�
 test("/gemini xong có nút 🎬 Làm video từ kết quả này → giao Claude làm cổng 1 (kiểm link) rồi dừng chờ anh chọn góc", async () => {
   const prompts = [];
   const s = setup({ claude: async (text) => (prompts.push(text), { text: "Xong cổng 1.", sessionId: "s1", isError: false }) });
+  const gdir = path.join(s.projDir, "nguon", "gemini");
+  fs.mkdirSync(gdir, { recursive: true });
+  fs.writeFileSync(path.join(gdir, "2026-11-08-lai-suat-thang-12.md"), "# báo cáo");
   await s.bot.handleUpdate(msg("/gemini lãi suất tháng 12"));
   await new Promise((r) => setTimeout(r, 30));
   const last = s.said.at(-1);
@@ -357,7 +360,28 @@ test("/gemini xong có nút 🎬 Làm video từ kết quả này → giao Claud
   await new Promise((r) => setTimeout(r, 30));
   assert.equal(prompts.length, 1);
   assert.match(prompts[0], /bcons-video/);
-  assert.match(prompts[0], /lãi suất tháng 12/);
+  assert.match(prompts[0], /lai-suat-thang-12\.md/);
   assert.match(prompts[0], /cổng 1/i);
+  assert.match(prompts[0], /DỪNG/);
+});
+
+test("nút 🎬 của báo cáo Gemini vẫn bấm được sau khi bot khởi động lại (/capnhat); /baocao liệt kê báo cáo cũ để làm video", async () => {
+  const prompts = [];
+  const s = setup({ claude: async (text) => (prompts.push(text), { text: "Xong.", sessionId: "s1", isError: false }) });
+  const gdir = path.join(s.projDir, "nguon", "gemini");
+  fs.mkdirSync(gdir, { recursive: true });
+  fs.writeFileSync(path.join(gdir, "2026-11-07-thong-tin-quy-hoach-co-so-ha-tang-thanh-pho-dong-nai-dieu-gi.md"), "# a");
+  fs.writeFileSync(path.join(gdir, "2026-11-07-lai-suat-vay-mua-nha-thang-11.md"), "# b");
+  fs.writeFileSync(path.join(gdir, "2026-11-07-lai-suat-vay-mua-nha-thang-11-KIEM.md"), "# kiểm");
+  await s.bot.handleUpdate(msg("/baocao"));
+  const rows = s.said.at(-1).extra.reply_markup.inline_keyboard.flat();
+  assert.equal(rows.length, 2, "không liệt kê file -KIEM");
+  const btn = rows.find((b) => /quy-hoach/.test(b.text));
+  assert.ok(Buffer.byteLength(btn.callback_data) <= 64);
+  // bấm trên tin nhắn cũ (trước lúc bot khởi động) vẫn chạy
+  await s.bot.handleUpdate(press(btn.callback_data, T0 / 1000 - 3600));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.equal(prompts.length, 1);
+  assert.match(prompts[0], /2026-11-07-thong-tin-quy-hoach-co-so-ha-tang-thanh-pho-dong-nai-dieu-gi\.md/);
   assert.match(prompts[0], /DỪNG/);
 });
