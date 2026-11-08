@@ -32,7 +32,7 @@ Kiểm ngày 08/11/2026 trên cloud, mở link gốc bằng curl. Ba báo cáo t
 | Sân bay đạt 99,5% (VnEconomy); chấm dứt hợp đồng gói 26 Vành đai 3 (CafeF) | Chưa tìm bài gốc, không dùng | — |
 
 ## Lưu ý vị trí
-Nút giao Tân Hiệp nằm trên cao tốc Biên Hòa – Vũng Tàu, phía Long Thành, **không phải phường Tam Hiệp** của dự án (tên gần giống). Không nói "sát dự án".
+Nút giao Tân Hiệp nằm trên cao tốc Biên Hòa – Vũng Tàu, **không phải phường Tam Hiệp** của dự án (tên gần giống). Chưa đối chiếu tọa độ trên bản đồ: kiểm khoảng cách tới dự án trước khi viết kịch bản, không nói "sát dự án" khi chưa đo.
 
 ## Góc video 8 đề xuất (chờ anh chọn)
 1. `08-cuoi-nam-ve-dich` — "Từ giờ tới Noel, 3 công trình quanh Biên Hòa về đích": Vành đai 3 trên cao đến Tân Vạn (mục tiêu tháng 11), nút giao Tân Hiệp (dự kiến tháng 11), sân bay Long Thành (dự kiến 0 giờ 24/12). Tất cả là **dự kiến**, nói rõ.
