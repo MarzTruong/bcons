@@ -39,6 +39,17 @@
 6. Thu thông tin khách phải có ô đồng ý nhận tin (không tick sẵn). Nội dung chỉ vào lịch đăng tự động sau khi anh duyệt.
 7. Liên hệ cá nhân (anh đổi quy tắc 06/11/2026): video hiện **mã QR** (mở landing) ở góc suốt video, **tên + QR** ở cảnh cuối (anh đổi 07/11/2026: góc chỉ QR), cấu hình ở `project.json` → `watermark`; landing có nút **Gọi/Zalo** (`project.json` → `lienHe`). Caption được ghi SĐT của anh (chỉ số trong `lienHe`; số khác vẫn bị chặn). Lời đọc không đọc SĐT; chữ trên video không ghi SĐT dạng chữ (đã có QR).
 
+### Quy tắc nào được hiện cho khách xem (anh dặn 08/11/2026, áp dụng khi code landing, video, caption)
+Bảy quy tắc trên là **nguyên tắc làm việc của em**, không phải câu chữ để in lên sản phẩm. Khách chỉ thấy kết quả của quy tắc, không thấy lời nhắc. Câu kiểu "không cam kết lợi nhuận", "không bán cho người nước ngoài", "giá theo bảng giá chủ đầu tư ngày...", "nội dung mang tính tham khảo" đọc ra là máy viết, **không đưa lên trang/video**.
+- **Nội bộ, không bao giờ hiện:** (1) dữ liệu cá nhân/nội bộ; (2) nguồn và ngày của số liệu (nguồn ghi ở `nguon/`, bảng nguồn trong `kich-ban.md`, không in "theo bảng giá CĐT ngày..." lên landing); (3) không cam kết lợi nhuận/tăng giá (chỉ là việc **không viết** câu đó, không viết thêm câu phủ nhận); (4) lọc căn đã cọc/CĐT LOCK (chỉ là việc **chọn căn nào** để đưa lên); (5) không bán cho người nước ngoài (nội bộ, không ghi lên trang); phần "đã trừ bao nhiêu %" là dữ liệu PTTT, không phải lời nhắc.
+- **Hiện, mỗi thứ một chỗ cố định, không lặp:**
+  - Giá: đúng **một dòng** ngay dưới bảng giá, "chưa VAT" hay "có VAT" và phí bảo trì 2%. Công cụ tính ghi rõ dòng "có VAT" ở kết quả.
+  - Chiết khấu PTTT 01 (8,5%), PTTT 04/05 (2,45%), trần lãi 6,9%: chỉ hiện trong công cụ tính, **khi khách chọn đúng PTTT đó** (trần 6,9% chỉ PTTT 03 và 04, không có ở PTTT 05).
+  - "Hình ảnh minh họa": nhãn nhỏ gắn trên chính tấm phối cảnh, không ghi chung ở chân trang. Ảnh chụp nhà mẫu thật chỉ ghi tên căn.
+  - Ô đồng ý nhận tin: sát nút gửi của form, không tick sẵn (kèm bên giữ dữ liệu và cách rút lại, ngắn).
+  - Gọi/Zalo (quy tắc 7): theo `lienHe`.
+- Tự soát trước khi đưa anh xem: mỗi câu chữ có làm khách hiểu hoặc làm được gì không? Câu chỉ để "tự bảo vệ" hoặc "giới thiệu hay" thì bỏ. Ảnh mẫu thiết kế chỉ ghi chữ thật sẽ có trên trang. Test của `engine/landing` phải khớp: không kiểm sự có mặt của các câu nội bộ nói trên (hiện `page.test.mjs` và `page.mjs` còn kiểm/in chúng, sửa khi dựng lại landing).
+
 ## Gợi ý sáng tạo (linh hoạt, ưu tiên nội dung hay)
 - Hook, cách dẫn chuyện, cảm xúc, giọng quảng bá, so sánh hình ảnh: tự do sáng tạo, thử nhiều kiểu, đề xuất phương án táo bạo.
 - Số liệu thị trường (lãi suất, hạ tầng, giá khu vực) nên có nguồn; chú thích nguồn để ở bảng nguồn hoặc chữ nhỏ trên màn hình, không làm câu chữ cứng lại.
