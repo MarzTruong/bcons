@@ -6,8 +6,8 @@ Quyết định của anh (04/11/2026): tên trang như tiêu đề; kênh thôn
 ## A. Chuẩn bị sẵn (đã có trong repo)
 | Việc | File |
 |---|---|
-| Ảnh đại diện 1080×1080 (cắt từ phối cảnh tổng thể) | `du-an/bcons-central-park/content/fanpage/avatar.jpg` |
-| Ảnh bìa 1640×624 (phối cảnh tổng thể + tên trang) | `du-an/bcons-central-park/content/fanpage/cover.jpg` |
+| Ảnh đại diện 960×960 (phối cảnh + logo Central Park, chữ logo đổi sang trắng) | `du-an/bcons-central-park/content/fanpage/avatar.png` |
+| Ảnh bìa 1640×624 (khối vàng kính mờ + logo Central Park, phối cảnh xa; file nguồn HTML ở `fanpage/nguon/`) | `du-an/bcons-central-park/content/fanpage/cover.png` |
 | Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `du-an/bcons-central-park/content/fanpage/anh/` (11 ảnh) |
 | Ảnh bài ghim: so sánh 5 PTTT | `du-an/bcons-central-park/content/messenger-qua/so-sanh-5-pttt.png` |
 | Kịch bản Messenger tự trả lời | `du-an/bcons-central-park/content/messenger-kich-ban.md` |

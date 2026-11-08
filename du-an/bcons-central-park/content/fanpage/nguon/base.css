@@ -1,0 +1,5 @@
+@import url(fonts.css);
+*{box-sizing:border-box;margin:0;padding:0}
+body{overflow:hidden;position:relative;font-family:'Be Vietnam Pro',sans-serif}
+.mont{font-family:'Montserrat',sans-serif}
+.note{position:absolute;font-size:15px;font-weight:500;opacity:.75}
