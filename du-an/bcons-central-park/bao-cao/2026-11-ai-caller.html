@@ -1,0 +1,189 @@
+<title>AI Caller cho Bcons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: một cột đọc trên điện thoại, kết luận trước, chi tiết sau; sản phẩm là các khối xếp dọc thay bảng rộng */
+:root{
+  --bg:#f6f8f6; --surface:#ffffff; --fg:#1b2420; --muted:#5b6a63; --line:#d9e1dc;
+  --accent:#2f6b4f; --accent-soft:#e3efe8; --warn:#9a5b00; --warn-soft:#fbf0dc; --bad:#a3322a; --bad-soft:#f8e3e1;
+  --font:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121815; --surface:#1a221e; --fg:#e4ebe7; --muted:#9aa9a1; --line:#2c3732;
+  --accent:#7cc3a0; --accent-soft:#1f3329; --warn:#e3b05c; --warn-soft:#33281a; --bad:#ec8b83; --bad-soft:#3a1f1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121815; --surface:#1a221e; --fg:#e4ebe7; --muted:#9aa9a1; --line:#2c3732;
+  --accent:#7cc3a0; --accent-soft:#1f3329; --warn:#e3b05c; --warn-soft:#33281a; --bad:#ec8b83; --bad-soft:#3a1f1d; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1{font-size:1.65rem;line-height:1.25;margin:0;text-wrap:balance;font-weight:700}
+h2{font-size:1.2rem;margin:0 0 8px;text-wrap:balance;font-weight:700}
+h3{font-size:1rem;margin:0;font-weight:600}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:10px}
+.meta{color:var(--muted);font-size:.875rem}
+a{color:var(--accent)}
+ul,ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.verdict{background:var(--accent-soft);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.verdict strong{color:var(--accent)}
+.note{background:var(--warn-soft);border-radius:10px;padding:12px 14px;font-size:.9rem}
+.note b{color:var(--warn)}
+.prod{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:4px}
+.prod-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.fit{font-size:.78rem;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.fit.hi{background:var(--accent-soft);color:var(--accent)}
+.fit.mid{background:var(--warn-soft);color:var(--warn)}
+.fit.lo{background:var(--bad-soft);color:var(--bad)}
+.prod dl{margin:0;display:grid;grid-template-columns:5.5em 1fr;gap:2px 10px;font-size:.92rem}
+.prod dt{color:var(--muted)}
+.prod dd{margin:0;min-width:0}
+.price{font-variant-numeric:tabular-nums}
+.risk{display:grid;grid-template-columns:1fr;gap:8px}
+.risk div{display:flex;flex-direction:column;gap:2px;font-size:.92rem}
+.risk b{font-weight:600}
+.small{font-size:.82rem;color:var(--muted)}
+code{font-size:.85em;background:var(--accent-soft);padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
+</style>
+
+<main>
+<header style="display:flex;flex-direction:column;gap:6px">
+  <p class="meta">Bcons Central Park · nghiên cứu 08/11/2026 · nháp chờ anh duyệt</p>
+  <h1>Có nên dùng AI gọi điện cho khách?</h1>
+</header>
+
+<section class="verdict">
+  <p><strong>Đề xuất:</strong> chưa gọi ra hàng loạt. Thử trước một <b>trợ lý giọng nói trên landing</b> (ElevenLabs Agents, giọng miền Nam anh đã chọn): khách tự bấm nói chuyện, máy không gọi đi nên không vướng quy định gọi quảng cáo.</p>
+  <p>Sau đó, nếu công ty có tổng đài hoặc tên định danh, mới làm <b>gọi lại lead landing trong 5 phút</b> qua tổng đài trong nước (OmiCall hoặc Stringee).</p>
+  <p class="small">Chi phí thử ước tính: 100 cuộc × 3 phút × $0,08 ≈ $24 (khoảng 600 ngàn đồng), chưa gồm phí mô hình AI. Em tự tính, không phải báo giá.</p>
+</section>
+
+<div class="note"><b>Giới hạn:</b> proxy cloud chặn các trang nhà cung cấp (elevenlabs.io, retellai.com, vapi.ai, vbee.ai, fpt.ai, stringee.com, viettelai.vn, omicall.com, thuvienphapluat.vn, twilio.com). Số liệu lấy từ kết quả tìm kiếm, chưa mở trang gốc. Anh chưa trả lời câu hỏi nên em giả định: mục tiêu là gọi lại lead landing và nhắc mở bán 29/11, 27/12; ngân sách thử 1–2 triệu/tháng.</div>
+
+<section>
+  <h2>AI Caller là gì</h2>
+  <p>Phần mềm nói chuyện điện thoại bằng giọng máy: nghe khách, hiểu ý, trả lời, rồi ghi kết quả vào Sheet. Giống tổng đài viên trực 24/7 đọc kịch bản nhưng biết trả lời câu lạc đề.</p>
+  <ul>
+    <li><b>Gọi ra:</b> máy chủ động gọi danh sách. Rủi ro pháp lý và bị chặn số cao nhất.</li>
+    <li><b>Nhận gọi / gọi trên web:</b> khách tự bấm gọi. Ít rủi ro.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Dùng ở đâu trong phễu</h2>
+  <ul>
+    <li><b>Khách vừa để số trên landing:</b> gọi lại nhanh, hỏi nhu cầu, hẹn anh gọi. Hữu ích nhất.</li>
+    <li><b>Nhắc mở bán 29/11, 27/12:</b> hữu ích, nhưng là cuộc gọi quảng cáo nên cần tên định danh.</li>
+    <li><b>Hỏi đáp giá, PTTT:</b> chỉ cho đọc số từ tài liệu CĐT, nói rõ chưa/có VAT và bảo trì 2%, không tự tính.</li>
+    <li><b>Chốt cọc, thương lượng:</b> không dùng AI.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Pháp lý cần biết</h2>
+  <ul>
+    <li><b>Nghị định 91/2020</b> (đang áp dụng): gọi quảng cáo phải có <b>đồng ý trước</b> và <b>tên định danh</b>; không dùng số điện thoại thường; cấm gọi số trong danh sách không quảng cáo (DNC, nhắn gửi 5656). Năm 2024 đã thu hồi 6 tên định danh vì gọi số DNC và gọi khi chưa có đồng ý.</li>
+    <li><b>Dự thảo thay thế</b> (Bộ Công an, 9/2026, chưa ban hành, dự kiến hiệu lực 01/01/2027): tên định danh do Bộ Công an cấp, có phí, hạn 3 năm; phải giới thiệu họ tên, đơn vị ngay đầu cuộc gọi; nhà mạng được chặn cuộc gọi có dấu hiệu rác.</li>
+    <li><b>Luật Bảo vệ dữ liệu cá nhân 2025 + Nghị định 356/2025</b> (hiệu lực 01/01/2026, thay Nghị định 13/2023): đồng ý phải rõ ràng, kiểm chứng được. Ghi âm phải báo đầu cuộc; lưu ở máy chủ nước ngoài là chuyển dữ liệu ra nước ngoài, cần hỏi pháp chế công ty.</li>
+    <li><b>Nhận định:</b> cá nhân gọi quảng cáo bằng số riêng hoặc số ảo nước ngoài là sai Nghị định 91. Nên hỏi công ty và CĐT trước; đã có CĐT cấm sale telesale.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Rủi ro</h2>
+  <div class="risk">
+    <div><b>Bị chặn số, đánh dấu rác</b><span>Gọi ít, chỉ khách đồng ý, đầu số hợp lệ, có danh sách từ chối.</span></div>
+    <div><b>Số nước ngoài gọi về, khách không nghe</b><span>Dùng tổng đài trong nước hoặc chỉ gọi trên web.</span></div>
+    <div><b>Khách khó chịu khi biết là máy</b><span>Nói ngay "em là trợ lý AI của anh Tuấn", cho chuyển máy anh.</span></div>
+    <div><b>Giọng lệch miền Nam, đọc sai số tiền</b><span>Dùng giọng ElevenLabs anh đã duyệt, nghe thử 20 cuộc trước.</span></div>
+    <div><b>Nói sai giá, hứa lợi nhuận</b><span>Kịch bản khóa: chỉ số có trong tài liệu CĐT, câu khó hẹn anh gọi lại.</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>So sánh 8 sản phẩm</h2>
+  <p class="small">Giá là phí nền tảng AI, chưa gồm cước gọi. "Chưa công bố" = phải xin báo giá. Xem qua tìm kiếm ngày 08/11/2026.</p>
+
+  <div class="prod"><div class="prod-head"><h3>ElevenLabs Agents</h3><span class="fit hi">Hợp nhất để thử</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Có; dùng được giọng miền Nam anh đang dùng</dd>
+  <dt>Giá</dt><dd class="price">$0,08/phút (gọi dồn $0,16), phí AI tính thêm · <a href="https://elevenlabs.io/pricing/agents">elevenlabs.io</a></dd>
+  <dt>Tích hợp</dt><dd>Widget gọi trên web, Twilio, SIP, webhook</dd>
+  <dt>Lưu ý</dt><dd>Gọi số VN phải qua SIP nhà mạng VN; dữ liệu lưu nước ngoài</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>OmiCall (OmiBot)</h3><span class="fit hi">Hợp cho gọi lại lead</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Tổng đài Việt Nam, có API callbot, TTS/STT tiếng Việt</dd>
+  <dt>Giá</dt><dd>Chưa công bố · <a href="https://api.omicall.com/omicall-api/ai-api">api.omicall.com</a></dd>
+  <dt>Tích hợp</dt><dd>API, CRM</dd>
+  <dt>Lưu ý</dt><dd>Chưa rõ giọng miền Nam</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>Stringee</h3><span class="fit hi">Làm cầu nối SIP</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Nền tảng API thoại Việt Nam</dd>
+  <dt>Giá</dt><dd>Chưa công bố · <a href="https://www.g2.com/products/stringee-call-apis/pricing">G2</a></dd>
+  <dt>Tích hợp</dt><dd>API gọi, SIP, webhook</dd>
+  <dt>Lưu ý</dt><dd>Phải tự ghép phần AI (vd. ElevenLabs)</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>Retell AI</h3><span class="fit mid">Trung bình</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Có, tùy engine giọng</dd>
+  <dt>Giá</dt><dd class="price">Từ $0,07/phút, cộng dồn nhiều phần · <a href="https://eesel.ai/blog/retell-ai-pricing">eesel.ai</a></dd>
+  <dt>Tích hợp</dt><dd>API, webhook, Twilio/SIP</dd>
+  <dt>Lưu ý</dt><dd>Số nước ngoài; tổng chi phí khó đoán</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>Vbee AICall</h3><span class="fit mid">Trung bình</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Giọng Việt tự nhiên, công ty Hà Nội</dd>
+  <dt>Giá</dt><dd>Chưa công bố · <a href="https://pitchbook.com/profiles/company/592888-87">PitchBook</a></dd>
+  <dt>Tích hợp</dt><dd>API</dd>
+  <dt>Lưu ý</dt><dd>Phải hỏi giá và giọng miền Nam</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>Vapi</h3><span class="fit lo">Thấp</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Tùy engine giọng</dd>
+  <dt>Giá</dt><dd class="price">$0,05/phút + nhà cung cấp, thực tế ~$0,10–0,20 · <a href="https://www.happyrobot.ai/hub/vapi-ai-pricing">happyrobot.ai</a></dd>
+  <dt>Tích hợp</dt><dd>API cho lập trình viên</dd>
+  <dt>Lưu ý</dt><dd>Phải tự ghép nhiều thứ</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>Viettel AI Callbot</h3><span class="fit lo">Thấp, trừ khi công ty làm</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Nhiều vùng miền (theo Viettel)</dd>
+  <dt>Giá</dt><dd>Chưa công bố; có dùng thử · <a href="https://viettelai.vn/en/tin-tuc/callbot-la-gi-giai-phap-tu-dong-hoa-cuoc-goi-tu-viettel-ai">viettelai.vn</a></dd>
+  <dt>Tích hợp</dt><dd>Hợp đồng doanh nghiệp</dd>
+  <dt>Lưu ý</dt><dd>Khó với cá nhân</dd></dl></div>
+
+  <div class="prod"><div class="prod-head"><h3>FPT AI Engage</h3><span class="fit lo">Thấp</span></div>
+  <dl><dt>Tiếng Việt</dt><dd>Có</dd>
+  <dt>Giá</dt><dd>Chưa công bố · <a href="https://www.g2.com/products/fpt-ai/pricing">G2</a></dd>
+  <dt>Tích hợp</dt><dd>Hợp đồng doanh nghiệp</dd>
+  <dt>Lưu ý</dt><dd>Hướng doanh nghiệp lớn</dd></dl></div>
+</section>
+
+<section>
+  <h2>Thử nghiệm 2 tuần</h2>
+  <ol>
+    <li>Anh hỏi công ty: được dùng trợ lý AI nói về dự án không, có tổng đài hoặc tên định danh không.</li>
+    <li>Sửa câu đồng ý trên landing: "đồng ý nhận cuộc gọi tư vấn, có thể là trợ lý AI, có ghi âm". Dùng tab TuChoi làm danh sách từ chối.</li>
+    <li>Dựng agent ElevenLabs, kịch bản để anh duyệt. Thử nội bộ 20 cuộc.</li>
+    <li>Bật trên landing 2 tuần, trần chi phí ~$20. Đo số cuộc, số khách để lại số, than phiền, lần nói sai.</li>
+    <li>Anh xem kết quả rồi quyết định bước tổng đài. Không cam kết số khách hay doanh số.</li>
+  </ol>
+  <p class="small">Việc tốn tiền và sửa landing chỉ làm khi anh nói "OK".</p>
+</section>
+
+<section>
+  <h2>Anh trả lời giúp em</h2>
+  <ol>
+    <li>Mục tiêu đúng giả định chưa, hay nhận cuộc gọi đến là chính?</li>
+    <li>Ngân sách thử tối đa mỗi tháng?</li>
+    <li>Công ty có tổng đài, tên định danh, cho dùng giọng AI không?</li>
+    <li>Mở các host bị chặn để em kiểm giá trên trang gốc?</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Nguồn pháp lý</h2>
+  <ul class="small">
+    <li><a href="https://hethongphapluat.com/nghi-dinh-91-2020-nd-cp-ve-chong-tin-nhan-rac-thu-dien-tu-rac-cuoc-goi-rac/chuong-5">Nghị định 91/2020</a> · <a href="https://tuoitre.vn/6-brandname-cua-2-doanh-nghiep-bi-thu-hoi-vi-phat-tan-tin-nhan-rac-cuoc-goi-rac-20240909210604468.htm">Thu hồi 6 tên định danh (Tuổi Trẻ)</a></li>
+    <li><a href="https://vneconomy.vn/de-xuat-thay-nghi-dinh-91-siet-quan-ly-cuoc-goi-va-tin-nhan-rac.htm">Dự thảo thay Nghị định 91 (VnEconomy)</a> · <a href="https://thanhnien.vn/bo-cong-an-de-xuat-doanh-nghiep-khong-duoc-che-giau-nguon-goi-khi-quang-cao-185260915123149054.htm">Thanh Niên</a> · <a href="https://vnexpress.net/bo-cong-an-de-xuat-nhieu-co-che-moi-chong-tin-nhan-cuoc-goi-rac-5120449.html">VnExpress</a></li>
+    <li><a href="https://luatvietnam.vn/dan-su/nghi-dinh-huong-dan-luat-bao-ve-du-lieu-ca-nhan-2025-la-nghi-dinh-nao-568-103658-article.html">Nghị định 356/2025 (LuatVietnam)</a> · <a href="https://luatvietan.vn/diem-moi-cua-nghi-dinh-356-2025-so-voi-nghi-dinh-13-2023-ve-huong-dan-bao-ve-du-lieu-ca-nhan.html">So với Nghị định 13/2023</a></li>
+    <li><a href="https://www.tinnhanhchungkhoan.vn/ban-nha-bang-telesales-toi-ca-trieu-cuoc-goi-moi-ngay-da-co-chu-dau-tu-ra-lenh-cam-post159698.html">CĐT cấm telesale (Tin nhanh chứng khoán)</a></li>
+  </ul>
+  <p class="small">Bản đầy đủ: <code>du-an/bcons-central-park/bao-cao/2026-11-ai-caller.md</code> trong repo. Không phải tư vấn luật.</p>
+</section>
+</main>
