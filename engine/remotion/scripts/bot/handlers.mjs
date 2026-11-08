@@ -410,6 +410,8 @@ export function createBot(deps) {
     }
     const [act, kind, id] = String(cq.data ?? "").split(":");
     await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+    // Nút 🎬 kiểu cũ (trước bản 08/11) không mang tên báo cáo: hiện danh sách để anh chọn lại.
+    if (kind === "gemvid") return commands.baocao();
     const p = pending.get(id);
     if (!p || p.kind !== kind || (cq.message?.date ?? 0) * 1000 < startedAt - 5000) {
       return say("Nút này đã hết hiệu lực (bot đã khởi động lại hoặc đã bấm rồi).");

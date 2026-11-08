@@ -385,3 +385,15 @@ test("nút 🎬 của báo cáo Gemini vẫn bấm được sau khi bot khởi �
   assert.match(prompts[0], /2026-11-07-thong-tin-quy-hoach-co-so-ha-tang-thanh-pho-dong-nai-dieu-gi\.md/);
   assert.match(prompts[0], /DỪNG/);
 });
+
+test("nút 🎬 kiểu cũ (ok:gemvid:<id>, gửi trước bản sửa) bấm sau /capnhat → hiện danh sách báo cáo để chọn lại, không báo hết hiệu lực", async () => {
+  const s = setup();
+  const gdir = path.join(s.projDir, "nguon", "gemini");
+  fs.mkdirSync(gdir, { recursive: true });
+  fs.writeFileSync(path.join(gdir, "2026-11-07-tim-thong-tin-moi-nhat-hoac-bien-dong-dau-thang-11.md"), "# a");
+  await s.bot.handleUpdate(press("ok:gemvid:a1b2c3d4e5f6a7b8c9", T0 / 1000 - 9 * 3600));
+  const last = s.said.at(-1);
+  assert.doesNotMatch(last.text, /hết hiệu lực/);
+  const btns = last.extra.reply_markup.inline_keyboard.flat();
+  assert.ok(btns.some((b) => /tim-thong-tin-moi-nhat/.test(b.text) && b.callback_data.startsWith("gv:")));
+});
