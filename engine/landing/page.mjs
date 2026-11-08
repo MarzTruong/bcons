@@ -8,80 +8,85 @@ export const ty = (n) => `${(n / 1e9).toFixed(2).replace(".", ",")} tỷ`;
 const loaiNhan = (t) => (t === "Studio" ? "Studio" : t.replace("PN", " phòng ngủ").replace("-", ", ").replace("WC", " WC"));
 
 const CSS = `
-:root{--bg:#F3F5F1;--surface:#fff;--ink:#15262E;--muted:#47585F;--line:#D2D8D2;--accent:#0F5C45;--accent-ink:#fff;--soft:#E8EDE6;--warn:#7A4F00}
+:root{--y:#ffe14d;--ink:#18201b;--paper:#fffdf4;--mute:#5a5f57;--line:#d9d6c6;--soft:#f3efdc;--err:#b42318}
 *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:15px;line-height:1.5}
-.wrap{max-width:960px;margin:0 auto;padding:0 16px}
-header.hero{background:var(--surface)}
-.hero img{width:100%;max-height:420px;object-fit:cover;display:block}
-.cap{font-size:11px;color:var(--muted);padding:4px 16px 0;text-align:right}
-h1{font-size:24px;line-height:1.25;margin:16px 0 6px}h2{font-size:19px;margin:28px 0 10px}
-.sub{color:var(--muted);margin:0 0 12px}
-.cta{display:inline-block;background:var(--accent);color:var(--accent-ink);padding:12px 18px;border-radius:10px;font-weight:700;text-decoration:none;margin:8px 0 18px}
-ul.hl{padding-left:20px;margin:0}ul.hl li{margin:4px 0}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:10px}
-.card{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font:inherit;color:inherit}
-.card[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-.card b{font-size:17px}.card .m{color:var(--muted);font-size:13px}.card .p{font-size:20px;font-weight:700;margin-top:6px}
-.card .n{font-size:12px;color:var(--muted)}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.55}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+figure.hero{position:relative;margin:0;max-width:560px;margin-inline:auto}
+figure.hero img{width:100%;height:58vh;min-height:340px;max-height:520px;object-fit:cover;display:block}
+figure.hero figcaption{position:absolute;right:10px;top:12px;color:#fff;font-size:12px;text-shadow:0 1px 5px rgba(0,0,0,.7)}
+.block{background:var(--y);margin:-56px 16px 0;position:relative;padding:20px 18px 22px;max-width:528px;margin-inline:auto}
+@media (min-width:592px){.block{margin-inline:auto}}
+h1{font:900 44px/.95 Montserrat,'Be Vietnam Pro',sans-serif;letter-spacing:-.04em;margin:0}
+.block p{margin:12px 0 0;font-size:15px}
+.nums{display:grid;grid-template-columns:1fr 1fr;margin-top:28px;border-top:3px solid var(--ink)}
+.nums div{padding:14px 12px 14px 0;border-bottom:1px solid var(--line)}
+.nums b{display:block;font:900 30px/1 Montserrat,'Be Vietnam Pro',sans-serif;letter-spacing:-.03em}
+.nums span{font-size:14px;color:var(--mute)}
+h2{font:900 28px/1 Montserrat,'Be Vietnam Pro',sans-serif;letter-spacing:-.03em;margin:44px 0 14px}
+.mosaic{display:grid;grid-template-columns:1.3fr 1fr;grid-template-rows:170px 130px;gap:6px}
+.mosaic img{width:100%;height:100%;object-fit:cover;display:block}.mosaic img:first-child{grid-row:span 2}
+.mcap{font-size:13px;color:var(--mute);margin:8px 0 0}
+.units{display:block}
+.unit{display:flex;justify-content:space-between;align-items:center;width:100%;padding:12px 0;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.unit[aria-pressed=true]{background:var(--y);margin:0 -16px;width:calc(100% + 32px);padding:12px 16px}
+.unit .l small{display:block;color:var(--mute);font-size:13px}
+.unit .p{font:900 22px Montserrat,'Be Vietnam Pro',sans-serif;letter-spacing:-.02em}
+.note{font-size:13px;color:var(--mute)}
+.units+.note{margin:10px 0 0}
+.contact{display:grid;gap:8px;margin:28px 0 0}
+.contact a{text-align:center;padding:16px;font-weight:700;font-size:17px;text-decoration:none}
+.contact a.zalo{background:var(--y);color:var(--ink)}.contact a.call{background:var(--ink);color:#fff}
+.sel{font-weight:700;margin:0 0 8px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
-.chip{min-height:40px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);font:inherit;font-weight:600;cursor:pointer}
-.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip{min-height:42px;padding:6px 14px;border:1.5px solid var(--ink);background:var(--paper);font:inherit;font-weight:700;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:3px}
-input,select,textarea{width:100%;height:46px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink)}
+label{font-size:13px;font-weight:700;color:var(--mute);display:block;margin-bottom:3px}
+input,select{width:100%;height:48px;border:1.5px solid var(--ink);border-radius:0;padding:0 10px;font:inherit;font-size:16px;background:#fff;color:var(--ink)}
 .kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
-.kv div{background:var(--soft);border-radius:8px;padding:8px 10px;font-weight:700}
-.kv span{display:block;font-size:12px;font-weight:500;color:var(--muted)}
-.kv .wide{grid-column:1/-1}
+.kv div{background:var(--soft);padding:8px 10px;font-weight:700}
+.kv span{display:block;font-size:12.5px;font-weight:400;color:var(--mute)}
+.kv .wide{grid-column:1/-1;background:var(--y)}.kv .wide span{color:var(--ink)}
 .tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:13px}
-th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{font-size:11px;color:var(--muted);text-transform:uppercase}
-td.r,th.r{text-align:right}tr.bank td{color:var(--muted);background:var(--soft)}
-.note{font-size:12.5px;color:var(--muted)}
-.card span{display:block}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;font-weight:400;color:var(--ink);margin:12px 0;background:var(--soft);padding:10px;border-radius:8px}
-.consent input{width:22px;height:22px;flex:0 0 auto;margin-top:2px;accent-color:var(--accent)}
-button.send{width:100%;height:50px;border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{font-size:12px;color:var(--mute);font-weight:600}
+td.r,th.r{text-align:right}tr.bank td{color:var(--mute);background:var(--soft)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;font-weight:400;color:var(--ink);margin:12px 0;background:var(--soft);padding:10px}
+.consent input{width:22px;height:22px;flex:0 0 auto;margin-top:2px;accent-color:var(--ink)}
+button.send{width:100%;height:52px;border:0;background:var(--y);color:var(--ink);font:inherit;font-weight:700;font-size:17px;cursor:pointer}
 button.send:disabled{opacity:.45;cursor:not-allowed}
 .hp{position:absolute;left:-5000px;width:1px;height:1px;overflow:hidden}
-.ok{background:#E3F2E9;border:1px solid #1B7048;padding:12px;border-radius:10px;font-weight:600}
-.err{color:#9B2C1F;font-weight:600;font-size:13px}
-footer{margin:32px 0 24px;font-size:12px;color:var(--muted)}footer a{color:var(--muted)}
-.contact{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;gap:8px;align-items:center;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--panel,#fff);border-top:1px solid var(--line,#ddd);box-shadow:0 -4px 16px #0001}
-.contact .who{flex:1;min-width:0;font-size:13px;line-height:1.2}.contact .who b{display:block;font-size:15px}
-.contact a{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:10px;font-weight:700;text-decoration:none}
-.contact a.call{background:var(--accent);color:var(--accent-ink)}.contact a.zalo{background:#0068FF;color:#fff}
-body.has-contact{padding-bottom:76px}
-.draft{background:#7A4F00;color:#fff;text-align:center;padding:6px;font-weight:700}
-@media (max-width:520px){.row{grid-template-columns:1fr}h1{font-size:21px}}
+.ok{background:var(--y);padding:14px;font-weight:700}
+.err{color:var(--err);font-weight:600;font-size:13px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+footer{margin:36px 0 28px;font-size:12px;color:var(--mute)}footer a{color:var(--mute)}
+.draft{background:var(--ink);color:#fff;text-align:center;padding:6px;font-weight:700}
+@media (max-width:520px){.row{grid-template-columns:1fr}h1{font-size:40px}}
 `;
 
 function consentText(dongY, projectName) {
   return `Tôi đồng ý để ${esc(dongY.vaiTro)} lưu họ tên, số điện thoại và lựa chọn của tôi trên trang này (căn hộ, phương thức thanh toán, nhu cầu) để liên hệ tư vấn về dự án ${esc(projectName)} qua điện thoại hoặc Zalo. Thông tin chỉ dùng cho mục đích này, không bán hay chia sẻ cho bên khác. Tôi có thể yêu cầu ngừng liên hệ và xóa thông tin bất cứ lúc nào bằng cách ${esc(dongY.kenhNgung)}. <a href="chinh-sach.html">Xem chính sách dữ liệu</a>.`;
 }
 
-/** Trang chủ landing. data = landing.json, project = project.json. draft = true thì hiện dải "BẢN NHÁP". */
-/** Thanh liên hệ cố định cuối màn hình (anh đổi quy tắc 06/11/2026: landing có nút gọi/Zalo). */
-function contactBar(lh, tenDuAn) {
+/** Nút Gọi và Zalo của tư vấn viên (anh đổi quy tắc 06/11/2026; bỏ tên khỏi trang 08/11/2026). */
+function contactButtons(lh) {
   if (!lh?.sdt) return "";
   const tel = String(lh.sdt).replace(/\D/g, "");
   return `<nav class="contact" aria-label="Liên hệ tư vấn viên">
-<div class="who"><b>${esc(lh.ten)}</b>Tư vấn ${esc(tenDuAn)}</div>
+${lh.zalo ? `<a class="zalo" href="${esc(lh.zalo)}" target="_blank" rel="noopener">Nhắn Zalo</a>` : ""}
 <a class="call" href="tel:${tel}">Gọi ${esc(lh.sdtHienThi ?? tel)}</a>
-${lh.zalo ? `<a class="zalo" href="${esc(lh.zalo)}" target="_blank" rel="noopener">Zalo</a>` : ""}
 </nav>`;
 }
 
+const base = (f) => String(f).split("/").pop();
+
+/** Trang chủ landing. data = landing.json, project = project.json. draft = true thì hiện dải "BẢN NHÁP". */
 export function renderPage(data, project, { draft = false } = {}) {
   const units = data.canMau
     .map(
-      (u, i) => `<button class="card" type="button" data-i="${i}" aria-pressed="${i === 0}">
-  <b>${esc(loaiNhan(u.loai))}</b>
-  <span class="m">${esc(String(u.dtTimTuong).replace(".", ","))} m² tim tường · ${esc(String(u.dtThongThuy).replace(".", ","))} m² thông thủy · tháp ${esc(u.thap)}, tầng ${esc(u.tang)}</span>
+      (u, i) => `<button class="unit" type="button" data-i="${i}" aria-pressed="${i === 0}">
+  <span class="l"><b>${esc(loaiNhan(u.loai))}</b><small>${esc(String(u.dtThongThuy).replace(".", ","))} m²</small></span>
   <span class="p">${ty(u.giaChuaVat["02"])}</span>
-  <span class="n">Giá PTTT 02/03 chưa VAT · có VAT ${ty(u.giaChuaVat["02"] * 1.1)} · phí bảo trì 2% tính riêng</span>
-  <span class="n">PTTT 01 (thanh toán giãn, đã trừ 8,5%): ${ty(u.giaChuaVat["01"])} chưa VAT</span>
 </button>`,
     )
     .join("\n");
@@ -91,44 +96,47 @@ export function renderPage(data, project, { draft = false } = {}) {
     nam: data.namGiaDinh,
     formUrl: data.formUrl,
   }).replace(/</g, "\\u003c");
+  const mau = data.anhNhaMau ?? [];
   return `<!doctype html>
 <html lang="vi"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(project.ten)} – Tính dòng tiền căn hộ</title>
 <meta name="description" content="${esc(data.moTa)}">
 <meta property="og:title" content="${esc(data.tieuDe)}"><meta property="og:description" content="${esc(data.moTa)}">
-<meta property="og:image" content="${esc((data.siteUrl ? data.siteUrl.replace(/\/$/, "") + "/" : "") + data.anhChinh.split("/").pop())}">${data.siteUrl ? `<meta property="og:url" content="${esc(data.siteUrl)}">` : ""}
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
+<meta property="og:image" content="${esc((data.siteUrl ? data.siteUrl.replace(/\/$/, "") + "/" : "") + base(data.anhChinh))}">${data.siteUrl ? `<meta property="og:url" content="${esc(data.siteUrl)}">` : ""}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Be+Vietnam+Pro:wght@400;500;700&display=swap">
 <style>${CSS}</style></head>
-<body${project.lienHe?.sdt ? ' class="has-contact"' : ""}>
+<body>
 ${draft ? '<div class="draft">BẢN NHÁP – chưa đăng chính thức</div>' : ""}
-<header class="hero"><img src="${esc(data.anhChinh.split("/").pop())}" alt="Phối cảnh ${esc(project.ten)}"><div class="cap">Hình ảnh phối cảnh mang tính minh họa</div>
-<div class="wrap"><h1>${esc(data.tieuDe)}</h1><p class="sub">${esc(data.moTa)}</p><a class="cta" href="#tinh">Tính thử dòng tiền</a></div></header>
+<figure class="hero"><img src="${esc(base(data.anhChinh))}" alt="Phối cảnh ${esc(project.ten)}"><figcaption>Hình ảnh minh họa</figcaption></figure>
+<div class="block"><h1>${esc(project.ten)}</h1><p>${esc(project.diaChi)}</p></div>
 <main class="wrap">
-<h2>Thông tin dự án</h2>
-<ul class="hl">${data.diemNoiBat.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+<div class="nums">${data.soLieu.map((x) => `<div><b>${esc(x.so)}</b><span>${esc(x.nhan)}</span></div>`).join("")}</div>
+${mau.length ? `<h2>Nhà mẫu</h2>
+<div class="mosaic">${mau.slice(0, 3).map((a) => `<img src="${esc(base(a.file))}" alt="${esc(a.nhan)}" loading="lazy">`).join("")}</div>
+<p class="mcap">${esc(mau[0].nhan)}</p>` : ""}
 
-<h2 id="tinh">Chọn căn mẫu</h2>
-<p class="note">5 căn mẫu, mỗi loại một căn, giá theo ${esc(data.nguonGia)}. Giá và tình trạng từng căn có thể thay đổi; tư vấn viên xác nhận căn còn bán trước khi báo giá chính thức.</p>
-<div class="cards" id="cards">
+<h2 id="gia">Giá căn mẫu</h2>
+<div class="units" id="cards">
 ${units}
 </div>
+<p class="note">Giá theo PTTT 02, chưa VAT, chưa phí bảo trì 2%.</p>
+${contactButtons(project.lienHe)}
 
-<div class="panel">
-<p class="note" style="font-weight:700;margin:0">Phương thức thanh toán</p>
-<div class="chips" id="plans">${Object.entries(PLANS).map(([k, p], i) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k === "03"}">${p.name}</button>`).join("")}</div>
+<h2 id="tinh">Trả từng đợt</h2>
+<p class="sel" id="sel"></p>
+<div class="chips" id="plans">${Object.entries(PLANS).map(([k, p]) => `<button type="button" class="chip" data-k="${k}" aria-pressed="${k === "03"}">${p.name}</button>`).join("")}</div>
 <p class="note" id="tag"></p>
 <div class="row">
-<div><label for="lai">Lãi vay giả định sau ưu đãi (%/năm)</label><input id="lai" inputmode="decimal" value="${String(data.laiGiaDinh).replace(".", ",")}"></div>
+<div><label for="lai">Lãi vay giả định (%/năm)</label><input id="lai" inputmode="decimal" value="${String(data.laiGiaDinh).replace(".", ",")}"></div>
 <div><label for="nam">Kỳ hạn vay (năm)</label><input id="nam" inputmode="numeric" value="${data.namGiaDinh}"></div>
 </div>
 <div class="kv" id="kv"></div>
 <div class="tbl"><table><thead><tr><th>Đợt</th><th>Nội dung, thời điểm</th><th class="r">%</th><th class="r">Số tiền (đồng)</th></tr></thead><tbody id="rows"></tbody></table></div>
-<p class="note">Đợt 2 đã gồm VAT của đợt 1 và 2; các đợt sau đã gồm VAT; đợt sổ hồng không VAT; phí bảo trì 2% đóng cùng đợt nhận nhà. Lãi vay, kỳ hạn là <b>giả định</b> để tham khảo, lãi thực tế theo ngân hàng tại thời điểm vay. Đây là ước tính, không phải cam kết của chủ đầu tư hay ngân hàng.</p>
-</div>
+<p class="note">Lãi vay và kỳ hạn là giả định, lãi thực tế theo ngân hàng lúc vay.</p>
 
-<h2 id="dangky">Nhận bảng tính chi tiết theo căn anh/chị quan tâm</h2>
-<form class="panel" id="form" novalidate>
+<h2 id="dangky">Nhận bảng tính theo căn anh/chị chọn</h2>
+<form id="form" novalidate>
 <div class="row">
 <div><label for="ten">Họ tên</label><input id="ten" name="ten" autocomplete="name" required maxlength="80"></div>
 <div><label for="sdt">Số điện thoại / Zalo</label><input id="sdt" name="sdt" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20"></div>
@@ -136,15 +144,13 @@ ${units}
 <div style="margin-top:10px"><label for="nhuCau">Nhu cầu</label><select id="nhuCau" name="nhuCau"><option>Mua để ở</option><option>Mua cho thuê</option><option>Tìm hiểu thêm</option></select></div>
 <div class="hp" aria-hidden="true"><label for="hp_x7">Để trống ô này</label><input id="hp_x7" name="hp_x7" tabindex="-1" autocomplete="off"></div>
 <label class="consent"><input type="checkbox" id="dongY" name="dongY"><span>${consentText(data.dongY, project.ten)}</span></label>
-<button class="send" id="send" type="submit">Gửi, nhận bảng tính chi tiết</button>
+<button class="send" id="send" type="submit">Gửi, nhận bảng tính</button>
 <p class="err" id="err" role="alert"></p>
 </form>
 <div class="ok" id="ok" hidden>Đã nhận thông tin. Tư vấn viên sẽ liên hệ anh/chị qua điện thoại hoặc Zalo sớm nhất.</div>
 </main>
-${contactBar(project.lienHe, project.ten)}
 <footer class="wrap">
-<p>Giá tham khảo theo ${esc(data.nguonGia)}, chưa gồm VAT 10% và phí bảo trì 2% trừ khi ghi rõ. PTTT 01 đã trừ chiết khấu 8,5%, PTTT 04/05 trừ 2,45% so với giá PTTT 02; PTTT 03 không chiết khấu. Lãi suất trần 6,9%/năm chỉ áp dụng cho PTTT 03 và 04 theo điều kiện của chủ đầu tư. Dự án không bán cho người nước ngoài. Nội dung mang tính tham khảo, không cam kết lợi nhuận hay giá trị tăng thêm.</p>
-<p>${esc(project.ten)} · ${esc(project.diaChi)} · Chủ đầu tư: ${esc(project.chuDauTu)} · Phân phối: ${esc(project.donViPhanPhoi)}. <a href="chinh-sach.html">Chính sách dữ liệu</a></p>
+<p>${esc(project.ten)}, ${esc(project.diaChi)}. Chủ đầu tư: ${esc(project.chuDauTu)}. Phân phối: ${esc(project.donViPhanPhoi)}. <a href="chinh-sach.html">Chính sách dữ liệu</a></p>
 </footer>
 <script id="data" type="application/json">${json}</script>
 <script type="module" src="client.js"></script>

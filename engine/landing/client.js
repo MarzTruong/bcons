@@ -27,6 +27,7 @@ function render() {
   const { c, lai, nam, monthly } = result();
   const p = PLANS[S.k];
   $("tag").textContent = p.tag;
+  $("sel").textContent = `Đang xem: ${$("cards").querySelector(".unit[aria-pressed=true] b").textContent}`;
   const capLine = p.cap && c.loan
     ? `<div class="wide">Lãi trần ${String(CAP).replace(".", ",")}%/năm theo điều kiện của chủ đầu tư<span>Áp dụng tối đa 48 tháng và không quá 24 tháng kể từ thông báo bàn giao; chủ đầu tư trả phần lãi vượt trần. Trong thời gian đó trả góp khoảng ${trieu(pmt(c.loan, CAP, nam))}/tháng; sau đó theo lãi ngân hàng (giả định ở trên).</span></div>`
     : "";
@@ -48,10 +49,10 @@ ${capLine}${supLine}`;
 }
 
 $("cards").addEventListener("click", (e) => {
-  const b = e.target.closest(".card");
+  const b = e.target.closest(".unit");
   if (!b) return;
   S.i = Number(b.dataset.i);
-  for (const x of $("cards").querySelectorAll(".card")) x.setAttribute("aria-pressed", String(x === b));
+  for (const x of $("cards").querySelectorAll(".unit")) x.setAttribute("aria-pressed", String(x === b));
   render();
 });
 $("plans").addEventListener("click", (e) => {

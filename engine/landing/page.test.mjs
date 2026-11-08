@@ -4,7 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderPage, renderPolicy } from "./page.mjs";
+import { renderPage, renderPolicy, esc } from "./page.mjs";
 import { buildLanding, checkLanding, checkStillForSale } from "./build.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -14,25 +14,44 @@ const project = JSON.parse(fs.readFileSync(path.join(PROJ, "project.json"), "utf
 const full = { ...data, formUrl: "https://script.google.com/macros/s/x/exec" };
 const noUrl = { ...data, formUrl: "" };
 
-test("trang: ô đồng ý không tick sẵn, nút gửi tắt, có đủ quy tắc giá và pháp lý", () => {
+test("trang: ô đồng ý không tick sẵn, có đủ lưu ý giá đúng chỗ, không in câu nội bộ", () => {
   const html = renderPage(full, project);
   const box = html.match(/<input type="checkbox" id="dongY"[^>]*>/)[0];
   assert.ok(!/checked/.test(box));
   assert.match(html, /id="send" type="submit">/); // nút luôn bật, client.js báo nếu chưa tick
-  for (const s of ["chưa VAT", "có VAT", "phí bảo trì 2%", "minh họa", "không bán cho người nước ngoài", "6,9%/năm chỉ áp dụng cho PTTT 03 và 04", "không cam kết lợi nhuận", "Tôi đồng ý để chuyên viên tư vấn của Bcons PS Land", "chinh-sach.html"]) {
-    assert.ok(html.toLowerCase().includes(s.toLowerCase()), s);
+  assert.ok(html.includes("Tôi đồng ý để chuyên viên tư vấn của Bcons PS Land") && html.includes("chinh-sach.html"));
+  // Lưu ý giá: đúng một dòng ngay dưới bảng giá (anh dặn 08/11/2026), không lặp ở chỗ khác.
+  assert.equal((html.match(/chưa VAT, chưa phí bảo trì 2%/g) ?? []).length, 1);
+  assert.ok(html.indexOf("chưa VAT, chưa phí bảo trì 2%") > html.indexOf('id="cards"'));
+  // Chiết khấu và trần lãi chỉ hiện trong công cụ tính khi khách chọn PTTT (calc.mjs), không in tĩnh trên trang.
+  for (const s of ["8,5%", "2,45%", "6,9%"]) assert.ok(!html.includes(s), `không in tĩnh ${s}`);
+  // Câu nội bộ/"tự bảo vệ" không được lên trang khách (CLAUDE.md, mục "Quy tắc nào được hiện cho khách xem").
+  for (const s of ["người nước ngoài", "cam kết lợi nhuận", "giá trị tăng thêm", "theo bảng giá chủ đầu tư", "bảng giá chủ đầu tư ngày", "mang tính tham khảo", "17/10/2026"]) {
+    assert.ok(!html.toLowerCase().includes(s.toLowerCase()), `không in "${s}"`);
   }
-  assert.equal((html.match(/class="card"/g) ?? []).length, 5);
+  // Hình ảnh minh họa: nhãn nhỏ gắn trên chính tấm phối cảnh, một lần.
+  assert.equal((html.match(/minh họa/gi) ?? []).length, 1);
+  assert.match(html, /<figure class="hero">[\s\S]*?minh họa[\s\S]*?<\/figure>/i);
+  assert.equal((html.match(/class="unit"/g) ?? []).length, 5);
   assert.ok(!/A21-26|A15-12|E6-09|A18-09|A15-07/.test(html), "không có mã căn trong trang, kể cả dữ liệu ẩn");
   assert.match(html, /id="hp_x7"/);
-  for (const b of html.match(/<button class="card"[\s\S]*?<\/button>/g)) assert.ok(!b.includes("<div"), "không đặt div trong button");
+  for (const b of html.match(/<button class="unit"[\s\S]*?<\/button>/g)) assert.ok(!b.includes("<div"), "không đặt div trong button");
 });
 
-test("trang: có nút Gọi và Zalo của tư vấn viên khi project.json có lienHe; không có thì không hiện", () => {
+test("trang: số liệu và ảnh nhà mẫu lấy từ landing.json, không viết cứng", () => {
+  const html = renderPage(full, project);
+  for (const x of data.soLieu) assert.ok(html.includes(esc(x.so)) && html.includes(esc(x.nhan)), x.so);
+  assert.ok(data.anhNhaMau.length >= 3);
+  for (const a of data.anhNhaMau) assert.ok(html.includes(path.basename(a.file)), a.file);
+  const altered = renderPage({ ...full, soLieu: [{ so: "9 tháp", nhan: "thử" }] }, project);
+  assert.ok(altered.includes("9 tháp") && !altered.includes("2.820"));
+});
+
+test("trang: có nút Gọi và Zalo của tư vấn viên (không hiện tên) khi project.json có lienHe; không có thì không hiện", () => {
   const html = renderPage(full, project);
   assert.match(html, /href="tel:0938323139"/);
   assert.match(html, /href="https:\/\/zalo\.me\/0938323139"/);
-  assert.ok(html.includes("Tuấn Trương"));
+  assert.ok(!html.includes("Tuấn Trương"), "anh bỏ chữ tên khỏi trang (08/11/2026)");
   const none = renderPage(full, { ...project, lienHe: undefined });
   assert.ok(!/tel:|zalo\.me/.test(none));
   assert.ok(!/tel:|zalo\.me|0938/.test(renderPolicy(full, project)), "trang chính sách không cần SĐT");
@@ -57,7 +76,7 @@ test("checkLanding: chặn khi thiếu tên/URL, thiếu loại căn, có SĐT; 
 test("buildLanding xuất đủ file; bản chính thức bị chặn khi chưa điền", () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), "land-"));
   const dir = buildLanding(PROJ, out, { draft: true });
-  for (const f of ["index.html", "chinh-sach.html", "calc.js", "client.js", "phoi-canh-tong-the-web.jpg", "_headers", "_redirects"]) {
+  for (const f of ["index.html", "chinh-sach.html", "calc.js", "client.js", path.basename(data.anhChinh), ...data.anhNhaMau.map((a) => path.basename(a.file)), "_headers", "_redirects"]) {
     assert.ok(fs.existsSync(path.join(dir, f)), f);
   }
   assert.match(fs.readFileSync(path.join(dir, "index.html"), "utf8"), /BẢN NHÁP/);

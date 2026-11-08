@@ -17,6 +17,7 @@ export function checkLanding(data, { draft = false } = {}) {
   const errs = [];
   if (!data.dongY?.vaiTro?.trim()) errs.push("Thiếu bên giữ dữ liệu trong ô đồng ý (dongY.vaiTro)");
   if (!draft && !/^https:\/\/script\.google\.com\//.test(data.formUrl ?? "")) errs.push("Chưa có link nhận form (formUrl, link Web App của Apps Script)");
+  if (!data.soLieu?.length) errs.push("Thiếu số liệu nổi bật (soLieu)");
   const types = (data.canMau ?? []).map((u) => u.loai);
   for (const t of TYPES) if (!types.includes(t)) errs.push(`Thiếu căn mẫu loại ${t}`);
   for (const u of data.canMau ?? []) {
@@ -63,7 +64,7 @@ export function buildLanding(projDir, outRoot, { draft = false } = {}) {
   // .js (không phải .mjs) để mọi máy chủ trả đúng loại file JavaScript
   fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
   fs.copyFileSync(path.join(HERE, "client.js"), path.join(out, "client.js"));
-  fs.copyFileSync(path.join(projDir, data.anhChinh), path.join(out, path.basename(data.anhChinh)));
+  for (const f of [data.anhChinh, ...(data.anhNhaMau ?? []).map((a) => a.file)]) fs.copyFileSync(path.join(projDir, f), path.join(out, path.basename(f)));
   // QR trong video in link viết hoa /QR (mã thưa, dễ quét); chuyển về trang chủ và ghi nguồn "qr".
   fs.writeFileSync(path.join(out, "_redirects"), "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n");
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");

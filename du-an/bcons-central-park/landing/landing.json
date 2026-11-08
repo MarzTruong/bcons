@@ -1,18 +1,41 @@
 {
   "tieuDe": "Bcons Central Park Biên Hòa: tự tính dòng tiền căn hộ theo 5 phương thức thanh toán",
   "moTa": "Căn hộ 236 Phan Trung, Tam Hiệp, TP. Đồng Nai. Chọn căn mẫu, chọn phương thức thanh toán, xem từng đợt tiền và trả góp ước tính.",
-  "anhChinh": "assets/images/phoi-canh-tong-the-web.jpg",
-  "nguonGia": "bảng giá chủ đầu tư ngày 17/10/2026",
+  "anhChinh": "assets/images/phoi-canh-ho-boi.jpg",
+  "anhNhaMau": [
+    {
+      "file": "assets/images/nha-mau-B4-phong-khach.jpg",
+      "nhan": "Nhà mẫu căn B4"
+    },
+    {
+      "file": "assets/images/nha-mau-B4-bep.jpg",
+      "nhan": "Nhà mẫu căn B4"
+    },
+    {
+      "file": "assets/images/nha-mau-B4-phong-ngu.jpg",
+      "nhan": "Nhà mẫu căn B4"
+    }
+  ],
+  "soLieu": [
+    {
+      "so": "5 tháp",
+      "nhan": "22 tầng mỗi tháp"
+    },
+    {
+      "so": "2.820",
+      "nhan": "căn hộ ở"
+    },
+    {
+      "so": "Q2/2029",
+      "nhan": "dự kiến bàn giao, hoàn thiện cơ bản"
+    },
+    {
+      "so": "60",
+      "nhan": "tiện ích nội khu"
+    }
+  ],
   "laiGiaDinh": 9.5,
   "namGiaDinh": 20,
-  "diemNoiBat": [
-    "236 Phan Trung, phường Tam Hiệp, TP. Đồng Nai (Biên Hòa)",
-    "5 tháp, mỗi tháp 22 tầng nổi và 2 tầng hầm",
-    "2.820 căn hộ ở và 113 căn thương mại dịch vụ",
-    "60 tiện ích: hồ bơi, quảng trường nhạc nước, khu thể thao, khu vui chơi trẻ em...",
-    "Dự kiến bàn giao Quý II/2029, bàn giao hoàn thiện cơ bản",
-    "Chủ đầu tư: Công ty CP Phát triển Đô thị Tam Hiệp (công ty con của Tập đoàn Bcons)"
-  ],
   "canMau": [
     {
       "ma": "A21-26",
