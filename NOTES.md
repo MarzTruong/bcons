@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off lần 2; kho SFX đủ 11 file, sửa `/kiemgia` đọc cột gộp PTTT)
+Cập nhật lần cuối: 09/11/2026 (tổng hợp 3 phiên con: AI Caller, landing, ảnh fanpage; kiểm gộp Gemini 07/11, góc video 8)
 
 ## Đã làm
 - [x] Đọc tài liệu Drive: training kick-off, Q&A, PTTT 01–05, danh sách thư mục.
@@ -74,6 +74,13 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off lần 2; kho SFX 
   - Kho hiệu ứng: anh chạy `/sfx`, Drive `am-thanh/sfx` đủ 11 file.
   - `/kiemgia` báo "không thấy sheet": Master File gộp cột giá "PTTT 02 / 03" và "04 / 05"; sửa `kiem-masterfile.mjs` đọc cột gộp, chỉ lấy giá chưa VAT (bỏ đơn giá, có VAT, phí bảo trì, chênh lệch), thêm test theo tiêu đề thật. 229 test qua.
 
+  - 08/11/2026, 3 phiên con chạy song song (cloud), đã gộp trên `main`, không xung đột (232 test qua, lint qua):
+    - **AI Caller:** `du-an/bcons-central-park/bao-cao/2026-11-ai-caller.{md,html}`. Gọi ra số di động VN qua công cụ nước ngoài: cước nhà mạng ~70% chi phí (Twilio ~$0,18/phút), số hiện ra là số nước ngoài (sai Nghị định 91). Đề xuất: landing dùng ElevenLabs (~$24/tháng, 100 cuộc 3 phút); gọi ra qua tổng đài công ty (OmiCall). Vocode loại (ngừng cập nhật 15/11/2024).
+    - **Ảnh fanpage:** `content/fanpage/avatar.png` (960×960), `cover.png` (1640×624), commit `686411d`.
+    - **Landing Central Park:** làm lại theo Mẫu 3 (khối vàng, nút Zalo/Gọi, bỏ câu nội bộ), commit `de5fdb1`; thêm mục "Quy tắc nào được hiện cho khách xem" trong `CLAUDE.md`.
+  - Kiểm gộp 3 báo cáo Gemini 07/11: `nguon/gemini/2026-11-07-gop-3-bao-cao-KIEM.md`. Dùng được: sân bay Long Thành dự kiến 0 giờ 24/12/2026, nút giao Tân Hiệp dự kiến tháng 11, Vành đai 3 trên cao gần 15 km mục tiêu tháng 11. Loại: FDI "2,4 tỷ USD" (link sang bài Grab), "22 dự án NOXH" (link 404), "KTM tự do 7.444 ha" (nguồn ghi 8.100–8.528 ha).
+  - Bot: nút 🎬 Gemini sống sót sau `/capnhat`; thêm `/baocao`; nút cũ mở danh sách báo cáo. Quy tắc test dùng dữ liệu thật trong `CLAUDE.md`.
+
 ## Đang làm
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
@@ -88,6 +95,9 @@ Cập nhật lần cuối: 08/11/2026 rạng sáng (phiên Off lần 2; kho SFX 
 - [ ] Cần tọa độ/ranh thật của Aeon Mall và, nếu có, ranh quy hoạch thật của các vùng 44/286/21,5/51,6 ha (GeoJSON/KMZ). Có thì sửa `scripts/build-geo.mjs` và bỏ `geo:derive` cho các vùng đó.
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
+- [ ] Video 8 `08-cuoi-nam-ve-dich` (anh chọn góc 09/11/2026): cổng 1 xong, đang ở cổng 2. **Chờ anh gửi tọa độ Google Maps của nút giao Tân Hiệp và nút giao Tân Vạn** (Overpass không trả, Mapbox chỉ ra tên khu vực). Chưa đo khoảng cách nút giao Tân Hiệp tới dự án, không nói "sát dự án".
+- [ ] Phiên "Landing Bcons" (landing nhiều dự án): chờ anh OK kế hoạch (Mapbox vệ tinh, bỏ file UQ, 5 tháp, OpenFreeMap) và tạo token Mapbox `pk.` mới cho web (giới hạn URL `https://bcons-central-park-dsj.pages.dev`) rồi gửi. Chưa có thay đổi nào chưa lưu trên GitHub.
+- [ ] Hạn mức Claude: lúc kiểm (09/11) phiên landing và phiên ảnh báo hạn mức 7 ngày đã vượt, đang dùng phần vượt mức. Hạn chế mở thêm phiên song song.
 ## Chưa làm
 - [ ] `/capnhat` rồi `/kiemgia` lại (đã sửa lỗi đọc cột), gửi kết quả cho em. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
 - [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).
