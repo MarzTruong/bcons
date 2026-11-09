@@ -38,3 +38,7 @@ Ranh OSM do cộng đồng vẽ, không phải ranh pháp lý. Điểm Aeon Mall
 Lớp suy ra (minh họa) tạo bằng `npm run geo:derive` vào `du-an/bcons-central-park/assets/geo/minh-hoa/`: phân vùng KCN Biên Hòa 1 (hình tròn cắt theo tỉ lệ diện tích tin báo, vị trí tùy ý) và đường chim bay từ dự án tới tâm các khu kèm km (Turf). Aeon Mall dùng điểm tạm anh chọn 05/11/2026: 10.927817077580567, 106.83520655583497.
 
 Chạy script từ thư mục `engine/remotion` (không chạy từ thư mục gốc `bcons`, vì `package.json` nằm trong `engine/remotion`).
+
+## Google Maps Platform (từ 09/11/2026)
+
+`npm run geo:google -- diem <key> "<từ khóa>"` (Places API New) và `npm run geo:google -- tuyen <key> <điểm đầu> <điểm cuối>` (Routes API, đường lái xe thật) lưu vào `du-an/bcons-central-park/assets/geo/google/`. Mỗi lần gọi tốn phí Google Cloud. Điểm lấy được thì thêm dòng vào bảng nguồn ở trên (id `geo-<key>`, nguồn "Google Places API", ngày lấy) trước khi dùng trong video. Tuyến Routes là đường xe chạy thật nên đặt `kind: "official"`; km và phút lái xe ghi trong thuộc tính của tuyến.

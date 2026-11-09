@@ -14,6 +14,7 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | `quy-tac-so-phu-de.md` | Quy tắc viết số trên màn hình (ITN): 11%/năm, 9.363, quý II/2029 |
 | `prompt-gemini-nghien-cuu.md` | Khung prompt nghiên cứu số liệu |
 | `huong-dan-doi-thu-muc-may-anh.md` | Lịch sử: dời thư mục laptop (đã xong) |
+| `phan-vai-claude-antigravity.md` | Phân vai Claude Code (Lead) và Antigravity (rà soát, chỉ đọc) trên cùng repo |
 | `nhat-ky.md` | Lịch sử: việc đã làm đến 09/11/2026 (dời từ `NOTES.md`) |
 
 ## Kế hoạch và thiết kế (`superpowers/`)
