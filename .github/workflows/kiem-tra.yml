@@ -13,6 +13,12 @@ jobs:
         working-directory: engine/remotion
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Antigravity chỉ đọc code: commit 'audit:' chỉ được đụng kiem-toan/
+      - if: github.event_name == 'push'
+        working-directory: .
+        run: node engine/automation/kiem-audit.mjs ${{ github.event.before }} ${{ github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22

@@ -10,8 +10,8 @@
 
 ## Luật để không xung đột
 1. **Một người ghi `main`:** chỉ Claude Code (và bot `/duyet`, `/gemini` trên máy anh) commit lên `main`.
-2. **Antigravity chỉ đọc**, hoặc nếu sửa thì trên nhánh riêng `antigravity/<việc>` và không push `main`. Claude review rồi gộp.
-3. **Kết quả rà soát** của Antigravity lưu thành file Markdown, anh gửi vào phiên Claude (như 2 file audit). Claude đối chiếu với code trước khi sửa: audit 09/11 có 2 phát hiện sai (phụ đề nhấn nhầm chữ, rò bộ đếm giờ).
+2. **Antigravity chỉ đọc code, tuyệt đối không sửa code** (anh chốt 09/11/2026). Việc của nó là xuất báo cáo.
+3. **Báo cáo đi qua git:** Antigravity ghi vào `kiem-toan/<ngày>-<chủ đề>/bao-cao.md` theo `kiem-toan/_mau-bao-cao.md`, commit tiêu đề `audit: ...` rồi push. Chỉ được đụng `kiem-toan/` (GitHub Actions chặn bằng `engine/automation/kiem-audit.mjs`). Claude đọc từ git, đối chiếu với code trước khi sửa (audit 09/11 có 2 phát hiện sai), ghi kết luận vào `phan-hoi.md` cùng thư mục. Quy ước chi tiết: `kiem-toan/README.md`.
 4. **Trước khi bắt đầu:** máy chạy Antigravity `git pull` để đọc bản mới nhất; không làm khi bot hoặc phiên Claude local đang sửa cùng thư mục.
 5. **Quy tắc chung đọc ở `CLAUDE.md`** (Antigravity đọc qua `AGENTS.md`): quy tắc cứng về dữ liệu, giá, SĐT, "No AI Slop" áp dụng cho cả hai.
 
@@ -21,5 +21,5 @@
 | Tìm số liệu thị trường | `/gemini` trên bot (Gemini) → Claude kiểm từng link (cổng 1) |
 | Kịch bản, spec, caption, storyboard | Claude |
 | Sửa `engine/`, test, commit | Claude (sub-agent Sonnet viết code, Haiku dò file, Opus lập kế hoạch/review) |
-| Rà soát định kỳ (bảo mật, số liệu, đồng bộ tài liệu) | Antigravity, chỉ đọc, xuất báo cáo |
+| Rà soát định kỳ (bảo mật, số liệu, đồng bộ tài liệu) | Antigravity, chỉ đọc, xuất báo cáo vào `kiem-toan/` |
 | Thiết kế mới | Claude đưa ảnh mẫu (`impeccable`, `frontend-design`); Antigravity có thể góp ý bản mẫu |
