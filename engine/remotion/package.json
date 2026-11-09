@@ -48,7 +48,7 @@
     "check:mapbox": "node scripts/check-mapbox.mjs",
     "geo:fetch": "node scripts/geo-fetch.mjs",
     "geo:derive": "node scripts/geo-derive.mjs",
-    "geo:google": "node --env-file-if-exists=.env scripts/geo-google.mjs",
+    "geo:osm": "node scripts/geo-osm.mjs",
     "still": "node scripts/with-env.mjs remotion still",
     "check:caption": "node scripts/caption-cli.mjs check",
     "duyet:caption": "node scripts/caption-cli.mjs duyet-caption",

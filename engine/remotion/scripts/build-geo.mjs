@@ -14,11 +14,13 @@ const POINTS = {
   "phuoc-an": { name: "Cảng Phước An", lngLat: [106.9942243322939, 10.616353354639697], sourceId: "geo-phuoc-an" },
   "long-thanh": { name: "Sân bay QT Long Thành", lngLat: [107.04195752766535, 10.773541785186673], sourceId: "geo-long-thanh" },
   "central-park": { name: "Bcons Central Park", lngLat: [106.84408654581377, 10.959874417285395], sourceId: "geo-central-park" },
+  // Anh cung cấp 09/11/2026 (Google Maps); OSM không có tên nút giao này.
+  "tan-hiep": { name: "Nút giao Tân Hiệp", lngLat: [107.0385183569583, 10.674713488386246], sourceId: "geo-tan-hiep", fetchedAt: "2026-11-09" },
 };
 
 const points = turf.featureCollection(
   Object.entries(POINTS).map(([key, p]) =>
-    turf.point(p.lngLat, { key, name: p.name, sourceId: p.sourceId, fetchedAt: FETCHED }),
+    turf.point(p.lngLat, { key, name: p.name, sourceId: p.sourceId, fetchedAt: p.fetchedAt ?? FETCHED }),
   ),
 );
 const line = turf.lineString([POINTS["ben-luc"].lngLat, POINTS["long-thanh"].lngLat], {

@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.8299365,
+          10.8982712
+        ]
+      },
+      "properties": {
+        "key": "tan-van",
+        "name": "Cầu vượt Nút giao Tân Vạn",
+        "diaChi": "Cầu vượt Nút giao Tân Vạn, Xa lộ Hà Nội, Ngãi Thắng, Phường Đông Hòa, Thành phố Hồ Chí Minh, 75308, Việt Nam",
+        "sourceId": "geo-tan-van",
+        "nguon": "OpenStreetMap (Nominatim)",
+        "link": "https://www.openstreetmap.org/way/563802782",
+        "fetchedAt": "2026-11-09"
+      }
+    }
+  ]
+}

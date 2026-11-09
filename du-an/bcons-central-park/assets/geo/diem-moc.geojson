@@ -64,6 +64,22 @@
           10.959874417285395
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "tan-hiep",
+        "name": "Nút giao Tân Hiệp",
+        "sourceId": "geo-tan-hiep",
+        "fetchedAt": "2026-11-09"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.0385183569583,
+          10.674713488386246
+        ]
+      }
     }
   ]
 }
