@@ -1,0 +1,23 @@
+# Mỗi lần push/PR lên main: GitHub tự chạy test + lint. Hỏng thì có dấu ❌ đỏ trên GitHub và GitHub Desktop, kèm email báo.
+name: Kiem tra
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: engine/remotion
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: engine/remotion/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npm test
+      - run: npm run lint

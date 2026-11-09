@@ -37,6 +37,11 @@ if (tsErrors.length) {
 // Cảnh bản đồ cần token Mapbox (đặt REMOTION_MAPBOX_TOKEN cho bundle).
 if (spec.scenes.some((s) => s.template === "geo-map")) loadMapboxEnv();
 const file = rest[1] ?? `${name}${khongNhac ? "-khong-nhac" : ""}.mp4`;
+// Tên file đi vào lệnh npx (shell: true): chỉ nhận chữ, số, chấm, gạch.
+if (!/^[A-Za-z0-9._-]+\.mp4$/.test(file)) {
+  console.error(`Tên file không hợp lệ: "${file}" (chỉ chữ, số, . _ -, đuôi .mp4).`);
+  process.exit(1);
+}
 // out/video = video thành phẩm; out/tam = file tạm (props, khung kiểm tra, log). Cả out/ đã gitignore.
 const out = path.join("out", "video", file);
 fs.mkdirSync(path.join("out", "video"), { recursive: true });

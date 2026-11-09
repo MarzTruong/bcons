@@ -12,6 +12,7 @@
 ## Máy đang chạy (tự nhận diện)
 - **Cloud** (biến môi trường `CLAUDE_CODE_REMOTE=true`, anh dùng từ laptop/điện thoại): nghiên cứu, viết `kich-ban.md`, `storyboard.md`, `caption.md`, `spec.json`, lập trình `engine/`, viết test, `npm test`, `npm run lint`, commit/push. Cloud có `REMOTION_MAPBOX_TOKEN` trong biến môi trường nên chụp được storyboard bản đồ: `REMOTION_GL=swangle REMOTION_BROWSER=/opt/pw-browsers/chromium npm run storyboard -- <tên>` (cloud không có card đồ họa, swangle dựng bằng phần mềm). Cloud chạy được Gemini (key lưu trong Network secrets của môi trường, proxy tự gắn): `NODE_USE_ENV_PROXY=1 GEMINI_API_KEY=dummy npm run gemini -- <chủ đề>`; mở link báo bằng `curl` (WebFetch không qua proxy). **Bị chặn kết nối** (trang/host bị proxy từ chối, ENOTFOUND, 403 CONNECT): dừng ngay, báo anh tên host cần mở trong Environment, không tự tìm đường vòng (anh dặn 07/11/2026, tránh tốn token). **Không** chạy `npm run voice` hay `npm run render:drive` (tốn credit/không có Drive): việc đó qua bot trên máy anh.
 - **Máy của anh** (laptop/máy bàn, có `engine/remotion/.env`): `git pull`, cổng chặn, `npm run voice` (sau khi anh đồng ý tốn credit), `npm run render:drive`.
+- **Lệnh tắt trong Claude Code:** `/kiem` (test + lint, báo 2 dòng), `/luu [ghi chú]` (kiểm file nhạy cảm, test, commit + push `main`). GitHub tự chạy test mỗi lần push (`.github/workflows/kiem-tra.yml`): dấu ❌ đỏ trên GitHub/GitHub Desktop là có lỗi.
 - **Anh không gõ lệnh:** trên laptop có bot Telegram (`Bcons-Bot.cmd`, `docs/huong-dan-bot-telegram.md`): `/capnhat`, `/storyboard`, `/giong`, `/render`, `/duyet`, `/xem`, `/danhsach`, `/gemini`, `/sfx`, `/kiemgia`, `/chuyenmay` (chuyển bot PC ⇄ laptop; mở bot cả hai máy thì máy sau chờ). Khi cần anh làm gì trên máy, hướng dẫn bằng lệnh bot, không đưa lệnh PowerShell (trừ khi bot chưa chạy được).
 
 ## Cấu trúc thư mục
@@ -88,7 +89,7 @@ Sản phẩm phải trông và nghe như người làm có chủ ý, không như
 
 ## Lệnh "Off" (kết thúc phiên làm việc)
 Khi anh gõ đúng "Off" (không phân biệt hoa thường), làm tự động theo thứ tự, không hỏi lại:
-1. Cập nhật `NOTES.md`: ghi ngày ở dòng "Cập nhật lần cuối"; chuyển việc đã xong sang "Đã làm", việc dở sang "Đang làm", việc mới phát sinh sang "Chưa làm"; thêm câu hỏi còn mở và ghi chú kỹ thuật mới. Chỉ ghi điều có thật trong phiên, không bịa.
+1. Cập nhật `NOTES.md`: ghi ngày ở dòng "Cập nhật lần cuối"; chuyển việc đã xong sang "Đã làm" (quá 15 dòng thì dời phần cũ xuống `docs/nhat-ky.md`, giữ `NOTES.md` ngắn), việc dở sang "Đang làm", việc mới phát sinh sang "Chưa làm"; thêm câu hỏi còn mở và ghi chú kỹ thuật mới. Chỉ ghi điều có thật trong phiên, không bịa.
 2. Kiểm tra `git status`: không được stage `.env`, `data/`, `anh/`, `*.xlsx`, `*.mp4`, `out/`, `node_modules`, hay bất kỳ API key/dữ liệu khách/hoa hồng. Nếu thấy, dừng lại và báo.
 3. Commit (message tiếng Anh ngắn, kèm dòng Co-Authored-By) rồi `git push` lên nhánh hiện tại. Không tạo PR.
 4. Báo lại bằng 2-3 dòng: commit nào, đã push chưa, việc dở còn lại. Nếu push lỗi thì nói rõ, không báo là đã xong.
