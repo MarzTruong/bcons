@@ -1,0 +1,752 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 6.2693877551020405,
+      "speech": "Từ giờ tới Noel, quanh Biên Hòa có ba công trình giao thông dự kiến về đích. Mình xem lần lượt từng cái.",
+      "words": [
+        {
+          "text": "Từ",
+          "start": 0,
+          "end": 0.12
+        },
+        {
+          "text": "giờ",
+          "start": 0.16,
+          "end": 0.36
+        },
+        {
+          "text": "tới",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "Noel,",
+          "start": 0.68,
+          "end": 1.28
+        },
+        {
+          "text": "quanh",
+          "start": 1.32,
+          "end": 1.44
+        },
+        {
+          "text": "Biên",
+          "start": 1.52,
+          "end": 1.6
+        },
+        {
+          "text": "Hòa",
+          "start": 1.68,
+          "end": 1.92
+        },
+        {
+          "text": "có",
+          "start": 2,
+          "end": 2.24
+        },
+        {
+          "text": "3",
+          "start": 2.32,
+          "end": 2.4
+        },
+        {
+          "text": "công",
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "text": "trình",
+          "start": 2.68,
+          "end": 2.8
+        },
+        {
+          "text": "giao",
+          "start": 2.88,
+          "end": 2.96
+        },
+        {
+          "text": "thông",
+          "start": 3.04,
+          "end": 3.28
+        },
+        {
+          "text": "dự",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "kiến",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "về",
+          "start": 3.84,
+          "end": 3.96
+        },
+        {
+          "text": "đích.",
+          "start": 4,
+          "end": 4.24
+        },
+        {
+          "text": "Mình",
+          "start": 4.56,
+          "end": 4.72
+        },
+        {
+          "text": "xem",
+          "start": 4.8,
+          "end": 5.04
+        },
+        {
+          "text": "lần",
+          "start": 5.12,
+          "end": 5.28
+        },
+        {
+          "text": "lượt",
+          "start": 5.32,
+          "end": 5.52
+        },
+        {
+          "text": "từng",
+          "start": 5.56,
+          "end": 5.68
+        },
+        {
+          "text": "cái.",
+          "start": 5.76,
+          "end": 6.32
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 10.448979591836734,
+      "speech": "Gần nhất là Vành đai ba đoạn trên cao, gần 15 mười lăm ki-lô-mét tới nút giao Tân Vạn, mục tiêu thông xe trong tháng mười một. Từ dự án ra Tân Vạn khoảng mười một phút lái xe.",
+      "words": [
+        {
+          "text": "Gần",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "nhất",
+          "start": 0.32,
+          "end": 0.48
+        },
+        {
+          "text": "là",
+          "start": 0.64,
+          "end": 0.72
+        },
+        {
+          "text": "Vành",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "đai",
+          "start": 1.04,
+          "end": 1.2
+        },
+        {
+          "text": "3",
+          "start": 1.28,
+          "end": 1.36
+        },
+        {
+          "text": "đoạn",
+          "start": 1.44,
+          "end": 1.6
+        },
+        {
+          "text": "trên",
+          "start": 1.68,
+          "end": 1.84
+        },
+        {
+          "text": "cao,",
+          "start": 1.92,
+          "end": 2.4
+        },
+        {
+          "text": "gần",
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "text": "15",
+          "start": 2.72,
+          "end": 3.04
+        },
+        {
+          "text": "km",
+          "start": 3.2,
+          "end": 4.08
+        },
+        {
+          "text": "tới",
+          "start": 4.12,
+          "end": 4.24
+        },
+        {
+          "text": "nút",
+          "start": 4.28,
+          "end": 4.48
+        },
+        {
+          "text": "giao",
+          "start": 4.533,
+          "end": 4.64
+        },
+        {
+          "text": "Tân",
+          "start": 4.8,
+          "end": 4.88
+        },
+        {
+          "text": "Vạn,",
+          "start": 5.04,
+          "end": 5.44
+        },
+        {
+          "text": "mục",
+          "start": 5.48,
+          "end": 5.6
+        },
+        {
+          "text": "tiêu",
+          "start": 5.68,
+          "end": 5.84
+        },
+        {
+          "text": "thông",
+          "start": 5.92,
+          "end": 6.08
+        },
+        {
+          "text": "xe",
+          "start": 6.16,
+          "end": 6.4
+        },
+        {
+          "text": "trong",
+          "start": 6.48,
+          "end": 6.64
+        },
+        {
+          "text": "tháng",
+          "start": 6.72,
+          "end": 6.8
+        },
+        {
+          "text": "11.",
+          "start": 6.88,
+          "end": 7.52
+        },
+        {
+          "text": "Từ",
+          "start": 7.56,
+          "end": 7.68
+        },
+        {
+          "text": "dự",
+          "start": 7.72,
+          "end": 7.84
+        },
+        {
+          "text": "án",
+          "start": 7.92,
+          "end": 8.08
+        },
+        {
+          "text": "ra",
+          "start": 8.16,
+          "end": 8.24
+        },
+        {
+          "text": "Tân",
+          "start": 8.32,
+          "end": 8.48
+        },
+        {
+          "text": "Vạn",
+          "start": 8.56,
+          "end": 8.8
+        },
+        {
+          "text": "khoảng",
+          "start": 8.88,
+          "end": 9.12
+        },
+        {
+          "text": "11",
+          "start": 9.2,
+          "end": 9.56
+        },
+        {
+          "text": "phút",
+          "start": 9.6,
+          "end": 9.76
+        },
+        {
+          "text": "lái",
+          "start": 9.8,
+          "end": 9.92
+        },
+        {
+          "text": "xe.",
+          "start": 10,
+          "end": 10.4
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 7.627755102040816,
+      "speech": "Xa hơn về phía Long Thành, nút giao Tân Hiệp nối cao tốc Biên Hòa Vũng Tàu với Bến Lức Long Thành, dự kiến khai thác trong tháng mười một.",
+      "words": [
+        {
+          "text": "Xa",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "hơn",
+          "start": 0.32,
+          "end": 0.56
+        },
+        {
+          "text": "về",
+          "start": 0.64,
+          "end": 0.72
+        },
+        {
+          "text": "phía",
+          "start": 0.76,
+          "end": 0.88
+        },
+        {
+          "text": "Long",
+          "start": 0.96,
+          "end": 1.04
+        },
+        {
+          "text": "Thành,",
+          "start": 1.12,
+          "end": 1.68
+        },
+        {
+          "text": "nút",
+          "start": 1.72,
+          "end": 1.84
+        },
+        {
+          "text": "giao",
+          "start": 1.92,
+          "end": 2.08
+        },
+        {
+          "text": "Tân",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "Hiệp",
+          "start": 2.4,
+          "end": 2.72
+        },
+        {
+          "text": "nối",
+          "start": 2.8,
+          "end": 2.96
+        },
+        {
+          "text": "cao",
+          "start": 3.04,
+          "end": 3.12
+        },
+        {
+          "text": "tốc",
+          "start": 3.16,
+          "end": 3.28
+        },
+        {
+          "text": "Biên",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "Hòa",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "-",
+          "start": 3.84,
+          "end": 3.84
+        },
+        {
+          "text": "Vũng",
+          "start": 3.84,
+          "end": 4
+        },
+        {
+          "text": "Tàu",
+          "start": 4.08,
+          "end": 4.32
+        },
+        {
+          "text": "với",
+          "start": 4.4,
+          "end": 4.56
+        },
+        {
+          "text": "Bến",
+          "start": 4.64,
+          "end": 4.72
+        },
+        {
+          "text": "Lức",
+          "start": 4.8,
+          "end": 4.96
+        },
+        {
+          "text": "-",
+          "start": 5.04,
+          "end": 5.04
+        },
+        {
+          "text": "Long",
+          "start": 5.04,
+          "end": 5.12
+        },
+        {
+          "text": "Thành,",
+          "start": 5.2,
+          "end": 5.68
+        },
+        {
+          "text": "dự",
+          "start": 5.72,
+          "end": 5.84
+        },
+        {
+          "text": "kiến",
+          "start": 5.92,
+          "end": 6.08
+        },
+        {
+          "text": "khai",
+          "start": 6.16,
+          "end": 6.32
+        },
+        {
+          "text": "thác",
+          "start": 6.36,
+          "end": 6.56
+        },
+        {
+          "text": "trong",
+          "start": 6.6,
+          "end": 6.72
+        },
+        {
+          "text": "tháng",
+          "start": 6.8,
+          "end": 6.96
+        },
+        {
+          "text": "11.",
+          "start": 7.04,
+          "end": 7.68
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene4",
+      "durationSec": 10.448979591836734,
+      "speech": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ không giờ ngày hai mươi bốn tháng mười hai. Từ dự án tới sân bay khoảng 33 ba mươi ba ki-lô-mét đường xe chạy.",
+      "words": [
+        {
+          "text": "Và",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "mốc",
+          "start": 0.24,
+          "end": 0.48
+        },
+        {
+          "text": "lớn",
+          "start": 0.56,
+          "end": 0.68
+        },
+        {
+          "text": "nhất:",
+          "start": 0.72,
+          "end": 1.2
+        },
+        {
+          "text": "sân",
+          "start": 1.28,
+          "end": 1.36
+        },
+        {
+          "text": "bay",
+          "start": 1.44,
+          "end": 1.52
+        },
+        {
+          "text": "Long",
+          "start": 1.6,
+          "end": 1.68
+        },
+        {
+          "text": "Thành",
+          "start": 1.76,
+          "end": 2
+        },
+        {
+          "text": "dự",
+          "start": 2.08,
+          "end": 2.24
+        },
+        {
+          "text": "kiến",
+          "start": 2.32,
+          "end": 2.48
+        },
+        {
+          "text": "khai",
+          "start": 2.56,
+          "end": 2.72
+        },
+        {
+          "text": "thác",
+          "start": 2.76,
+          "end": 2.88
+        },
+        {
+          "text": "thương",
+          "start": 2.96,
+          "end": 3.12
+        },
+        {
+          "text": "mại",
+          "start": 3.16,
+          "end": 3.36
+        },
+        {
+          "text": "từ",
+          "start": 3.44,
+          "end": 3.6
+        },
+        {
+          "text": "0",
+          "start": 3.76,
+          "end": 3.92
+        },
+        {
+          "text": "giờ",
+          "start": 4,
+          "end": 4.24
+        },
+        {
+          "text": "ngày",
+          "start": 4.4,
+          "end": 4.56
+        },
+        {
+          "text": "24/12.",
+          "start": 4.72,
+          "end": 6.16
+        },
+        {
+          "text": "Từ",
+          "start": 6.2,
+          "end": 6.28
+        },
+        {
+          "text": "dự",
+          "start": 6.32,
+          "end": 6.48
+        },
+        {
+          "text": "án",
+          "start": 6.56,
+          "end": 6.72
+        },
+        {
+          "text": "tới",
+          "start": 6.8,
+          "end": 6.92
+        },
+        {
+          "text": "sân",
+          "start": 6.96,
+          "end": 7.12
+        },
+        {
+          "text": "bay",
+          "start": 7.2,
+          "end": 7.36
+        },
+        {
+          "text": "khoảng",
+          "start": 7.52,
+          "end": 7.76
+        },
+        {
+          "text": "33",
+          "start": 7.92,
+          "end": 8.4
+        },
+        {
+          "text": "km",
+          "start": 8.56,
+          "end": 9.44
+        },
+        {
+          "text": "đường",
+          "start": 9.6,
+          "end": 9.76
+        },
+        {
+          "text": "xe",
+          "start": 9.84,
+          "end": 9.92
+        },
+        {
+          "text": "chạy.",
+          "start": 10,
+          "end": 10.4
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene5",
+      "durationSec": 8.280816326530612,
+      "speech": "Còn Bee Cons Central Park: đợt hai giới thiệu ngày hai mươi chín tháng mười một, đợt ba ngày hai mươi bảy tháng mười hai, ba ngày sau mốc sân bay.",
+      "words": [
+        {
+          "text": "Còn",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "Bcons",
+          "start": 0.4,
+          "end": 0.96
+        },
+        {
+          "text": "Central",
+          "start": 1.04,
+          "end": 1.36
+        },
+        {
+          "text": "Park:",
+          "start": 1.44,
+          "end": 2
+        },
+        {
+          "text": "đợt",
+          "start": 2.04,
+          "end": 2.16
+        },
+        {
+          "text": "2",
+          "start": 2.24,
+          "end": 2.4
+        },
+        {
+          "text": "giới",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "thiệu",
+          "start": 2.84,
+          "end": 3.04
+        },
+        {
+          "text": "ngày",
+          "start": 3.08,
+          "end": 3.28
+        },
+        {
+          "text": "29/11,",
+          "start": 3.36,
+          "end": 4.48
+        },
+        {
+          "text": "đợt",
+          "start": 4.64,
+          "end": 4.8
+        },
+        {
+          "text": "3",
+          "start": 4.88,
+          "end": 4.96
+        },
+        {
+          "text": "ngày",
+          "start": 5.2,
+          "end": 5.44
+        },
+        {
+          "text": "27/12,",
+          "start": 5.52,
+          "end": 6.68
+        },
+        {
+          "text": "3",
+          "start": 6.88,
+          "end": 6.96
+        },
+        {
+          "text": "ngày",
+          "start": 7.04,
+          "end": 7.36
+        },
+        {
+          "text": "sau",
+          "start": 7.4,
+          "end": 7.52
+        },
+        {
+          "text": "mốc",
+          "start": 7.56,
+          "end": 7.68
+        },
+        {
+          "text": "sân",
+          "start": 7.72,
+          "end": 7.84
+        },
+        {
+          "text": "bay.",
+          "start": 7.92,
+          "end": 8.32
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
