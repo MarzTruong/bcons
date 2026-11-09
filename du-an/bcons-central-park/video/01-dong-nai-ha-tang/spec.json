@@ -167,7 +167,8 @@
           "file": "assets/images/phoi-canh-green-park.jpg",
           "label": "Phối cảnh minh họa",
           "sourceId": "phoi-canh"
-        }
+        },
+        "ghiChu": "Thông tin mang tính tham khảo"
       }
     }
   ],

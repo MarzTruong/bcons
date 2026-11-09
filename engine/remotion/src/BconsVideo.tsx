@@ -15,6 +15,7 @@ import { TapChiDataCards, TapChiGround, TapChiProjectClose, TapChiStatHero } fro
 import { BangDataCards, BangProjectClose, BangStatHero, BoardGround } from "./templates/BangLs";
 import { BanVeDataCards, BanVeProjectClose, BanVeStatHero, BlueprintSheet } from "./templates/BanVe";
 import { Watermark, WatermarkContext } from "./Watermark";
+import { DuAnContext } from "./duAn";
 import { SFX_VOLUME, musicVolume, pickSfx, sfxEvents } from "./amThanh";
 import { LEAD, buildTiming, cueFrame, type Timestamps } from "./timing";
 import type { Scene, VideoSpec } from "./spec";
@@ -189,6 +190,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
     <ThemeContext.Provider value={C}>
       <MotionContext.Provider value={motion}>
       <WatermarkContext.Provider value={spec.watermark}>
+      <DuAnContext.Provider value={spec.duAn ?? { ten: "", diaChi: "" }}>
         <AbsoluteFill style={{ fontFamily, color: C.text, background: C.bg }}>
           <Background />
           {spec.scenes.map((scene, i) => {
@@ -250,6 +252,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
             }
           />
         </AbsoluteFill>
+      </DuAnContext.Provider>
       </WatermarkContext.Provider>
       </MotionContext.Provider>
     </ThemeContext.Provider>

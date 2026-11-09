@@ -47,3 +47,13 @@ test("style moi: xoay 3 kiểu A (ảnh) / B (bản tin) / C (khối màu) theo 
   assert.equal(moiOf("bantin", 7).kind, "bantin");
   assert.equal(moiOf("moi", 7).kind, "anh", "video 7 = kiểu A (anh chọn hướng A trước)");
 });
+
+test("bản đồ bộ moi: 4 màu điểm/tuyến khác nhau, khác màu nhấn; nhãn trắng viền đen đọc được trên vệ tinh (cả video 02 kiểu bản tin chữ tối)", async () => {
+  const { moiOf, moiMapColors } = await import("../src/issues.ts");
+  for (const so of [1, 2, 3]) {
+    const c = moiMapColors(moiOf("moi", so));
+    assert.equal(new Set([c.white, c.gold, c.red, c.teal]).size, 4, `so ${so}`);
+    assert.equal(c.label, "#ffffff");
+    assert.equal(c.stroke, "#000000");
+  }
+});

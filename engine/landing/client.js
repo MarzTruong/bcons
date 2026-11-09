@@ -91,6 +91,10 @@ $("form").addEventListener("submit", async (e) => {
     nguon: source(), trang: location.origin + location.pathname,
   };
   $("send").disabled = true;
+  // Máy chủ coi gửi dưới 3 giây kể từ lúc mở trang là máy tự động: chờ đủ rồi mới gửi để không mất khách tự điền nhanh.
+  const cho = 3200 - (Date.now() - T0);
+  if (cho > 0) await new Promise((r) => setTimeout(r, cho));
+  payload.t = Date.now() - T0;
   try {
     // Apps Script không trả CORS: gửi "no-cors" (text/plain), coi gửi được là thành công.
     await fetch(D.formUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });

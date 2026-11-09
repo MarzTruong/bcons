@@ -9,6 +9,7 @@ import { LEAD } from "../timing";
 import { clamp, useSpring, type TemplateProps } from "./common";
 import { penDraw } from "./banveGeo";
 import { NameQr, useWatermark } from "../Watermark";
+import { tachTen, useDuAn } from "../duAn";
 
 const { fontFamily: draft } = loadFont("normal", {
   weights: ["500", "600", "700", "800"],
@@ -267,6 +268,8 @@ const CropMarks: React.FC<{ color: string }> = ({ color }) => {
 
 /** project-close kiểu bản vẽ: ảnh phối cảnh là khung nhìn trên tờ bản vẽ, tên dự án, ghi chú gõ dần, khối tên + QR. */
 export const BanVeProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, frames }) => {
+  const duAn = useDuAn();
+  const [ten1, ten2] = tachTen(duAn.ten);
   const C = useTheme();
   const w = useWatermark();
   const frame = useCurrentFrame();
@@ -288,11 +291,11 @@ export const BanVeProjectClose: React.FC<TemplateProps<"project-close">> = ({ pr
       ) : null}
       <div style={{ position: "absolute", top: props.image ? 890 : 300, left: SIDE, right: SIDE }}>
         <div style={{ fontFamily: draft, fontWeight: 800, fontSize: 132, lineHeight: 0.95, textTransform: "uppercase", color: C.text }}>
-          Bcons
+          {ten1}
           <br />
-          <span style={{ color: C.teal }}>Central Park</span>
+          <span style={{ color: C.teal }}>{ten2}</span>
         </div>
-        <div style={{ marginTop: 12, fontSize: 36, fontWeight: 600, color: C.muted }}>236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai</div>
+        <div style={{ marginTop: 12, fontSize: 36, fontWeight: 600, color: C.muted }}>{duAn.diaChi}</div>
         <div style={{ marginTop: 26, height: 2, background: C.faint }} />
         <div style={{ marginTop: 26, minHeight: 170, fontSize: 44, fontWeight: 700, lineHeight: 1.3, color: C.text }}>
           {message.slice(0, chars)}
@@ -315,7 +318,7 @@ export const BanVeProjectClose: React.FC<TemplateProps<"project-close">> = ({ pr
         </div>
       ) : null}
       <div style={{ position: "absolute", bottom: 66, left: 0, right: 0, textAlign: "center", fontSize: 28, color: C.faint }}>
-        Thông tin mang tính tham khảo
+        {props.ghiChu}
       </div>
     </AbsoluteFill>
   );

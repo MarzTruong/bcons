@@ -237,10 +237,13 @@ export function checkShownSymbols(spec) {
  * Cổng chặn dùng trước khi tạo giọng hoặc render: spec phải hợp lệ, `approved`,
  * và mọi sourceId có trong bảng nguồn. Chạy TRƯỚC khi đọc API key hay gọi mạng.
  */
-/** Gắn watermark mặc định của dự án (project.json → watermark) khi spec không tự khai báo. Không sửa spec gốc. */
+/** Gắn watermark mặc định (project.json → watermark) khi spec không tự khai báo, và tên + địa chỉ dự án cho cảnh cuối
+ * (project.json → ten, diaChiVideo hoặc diaChi). Không sửa spec gốc. */
 export function applyWatermark(spec, projectConfig) {
-  if (spec.watermark || !projectConfig?.watermark) return spec;
-  return { ...spec, watermark: projectConfig.watermark };
+  let out = spec;
+  if (!spec.watermark && projectConfig?.watermark) out = { ...out, watermark: projectConfig.watermark };
+  if (!spec.duAn && projectConfig?.ten) out = { ...out, duAn: { ten: projectConfig.ten, diaChi: projectConfig.diaChiVideo ?? projectConfig.diaChi ?? "" } };
+  return out;
 }
 
 export function prepareRun(name, { projDir = activeProjDir() } = {}) {

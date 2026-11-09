@@ -7,6 +7,7 @@ import { useTheme } from "../theme";
 import { LEAD } from "../timing";
 import { clamp, type TemplateProps } from "./common";
 import { NameQr, useWatermark } from "../Watermark";
+import { useDuAn } from "../duAn";
 import { flapChar, type BangIssue } from "../issues";
 
 const { fontFamily: led } = loadFont("normal", {
@@ -161,6 +162,7 @@ export const BangDataCards: React.FC<TemplateProps<"data-cards">> = ({ props, cu
 
 /** project-close kiểu bảng: ảnh phối cảnh trong khung bảng, dòng số nổi bật lấy từ thông điệp (vd. 6,9%/năm) lật ô, thông điệp gõ dần, tên + QR. */
 export const BangProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, frames }) => {
+  const duAn = useDuAn();
   const B = useBang();
   const w = useWatermark();
   const frame = useCurrentFrame();
@@ -177,8 +179,8 @@ export const BangProjectClose: React.FC<TemplateProps<"project-close">> = ({ pro
         </div>
       ) : null}
       <div style={{ position: "absolute", top: props.image ? 670 : 200, left: SIDE, right: SIDE }}>
-        <div style={{ fontFamily: led, fontWeight: 700, fontSize: 88, lineHeight: 1.05 }}>Bcons Central Park</div>
-        <div style={{ fontSize: 32, fontWeight: 600, marginTop: 8, opacity: 0.8 }}>236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai</div>
+        <div style={{ fontFamily: led, fontWeight: 700, fontSize: 88, lineHeight: 1.05 }}>{duAn.ten}</div>
+        <div style={{ fontSize: 32, fontWeight: 600, marginTop: 8, opacity: 0.8 }}>{duAn.diaChi}</div>
         {so ? (
           <div style={{ marginTop: 30 }}>
             <Flap text={so} start={LEAD + 10} size={140} />
@@ -194,7 +196,7 @@ export const BangProjectClose: React.FC<TemplateProps<"project-close">> = ({ pro
           <NameQr ten={w!.ten!} link={w!.link!} />
         </div>
       ) : null}
-      <div style={{ position: "absolute", bottom: 58, left: 0, right: 0, textAlign: "center", fontSize: 26, opacity: 0.7 }}>Thông tin mang tính tham khảo</div>
+      {props.ghiChu ? <div style={{ position: "absolute", bottom: 58, left: 0, right: 0, textAlign: "center", fontSize: 26, opacity: 0.7 }}>{props.ghiChu}</div> : null}
     </AbsoluteFill>
   );
 };

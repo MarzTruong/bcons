@@ -218,6 +218,8 @@ export const ProjectCloseProps = z.object({
   message: z.string(),
   /** Ảnh phối cảnh dự án (file trong thư mục dự án, vd. assets/images/...). Không có thì dùng thẻ chữ như cũ. */
   image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
+  /** Dòng chữ nhỏ cuối video (vd. "Thông tin mang tính tham khảo"). Tùy ngữ cảnh: chỉ ghi khi anh đồng ý cho video đó. */
+  ghiChu: z.string().optional(),
 });
 
 const sceneBase = {
@@ -267,6 +269,8 @@ export const VideoSpecSchema = z.object({
       trongThe: z.boolean().optional(),
     })
     .optional(),
+  /** Tên + địa chỉ dự án cho cảnh cuối; render tự gắn từ project.json (applyWatermark). */
+  duAn: z.object({ ten: z.string(), diaChi: z.string() }).optional(),
   scenes: z.array(SceneSchema).min(1),
 });
 

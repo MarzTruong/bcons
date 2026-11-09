@@ -1,7 +1,7 @@
 import React from "react";
 import { loadFont } from "@remotion/google-fonts/BeVietnamPro";
 import type { StyleName } from "./spec";
-import { issueOf, moiOf } from "./issues";
+import { issueOf, moiOf, moiMapColors } from "./issues";
 
 export const { fontFamily } = loadFont("normal", {
   weights: ["400", "600", "700", "800"],
@@ -10,6 +10,8 @@ export const { fontFamily } = loadFont("normal", {
 
 /** Bảng màu của một phong cách. teal/gold = hai màu nhấn chính, text = màu chữ, neutral = điểm "trắng" trên bản đồ. */
 export type Palette = {
+  /** Màu riêng cho bản đồ (bộ moi): không có thì dùng teal/gold/red/neutral. */
+  map?: { white: string; gold: string; red: string; teal: string; label: string; stroke: string };
   bg: string;
   bg2: string;
   teal: string;
@@ -140,7 +142,7 @@ export function paletteFor(style: StyleName | undefined, so: number | undefined)
   }
   if (style === "moi" || style === "anh" || style === "bantin" || style === "khoimau") {
     const m = moiOf(style, so);
-    return { ...PALETTES.classic, bg: m.bg, bg2: m.bg, teal: m.accent, gold: m.accent, red: m.accent, text: m.text, neutral: m.text, muted: m.muted, faint: `${m.muted}aa`, dim: m.muted, onAccent: m.bg, grid: "transparent", stroke: "#000000", scrim: m.bg, bars: [m.accent, m.text, m.muted, m.accent], look: "moi", so, issue: m as unknown as Record<string, string> };
+    return { ...PALETTES.classic, bg: m.bg, bg2: m.bg, teal: m.accent, gold: m.accent, red: m.accent, map: moiMapColors(m), text: m.text, neutral: m.text, muted: m.muted, faint: `${m.muted}aa`, dim: m.muted, onAccent: m.bg, grid: "transparent", stroke: "#000000", scrim: m.bg, bars: [m.accent, m.text, m.muted, m.accent], look: "moi", so, issue: m as unknown as Record<string, string> };
   }
   return PALETTES[style as keyof typeof PALETTES];
 }

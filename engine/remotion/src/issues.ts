@@ -78,3 +78,9 @@ export function moiOf(style: string, so: number | undefined): MoiLook {
   if (style in MOI) return MOI[style as MoiKind];
   return MOI[MOI_XOAY[(so ?? 0) % 3]];
 }
+
+/** Màu riêng cho bản đồ bộ "moi" (nền vệ tinh tối, không theo màu nền trang): bốn màu điểm/tuyến khác nhau,
+ * chữ nhãn trắng viền đen để đọc được trên ảnh vệ tinh ở cả kiểu bản tin (chữ trang màu tối). */
+export function moiMapColors(m: { accent: string }) {
+  return { white: "#ffffff", gold: m.accent, red: "#ff4d6d", teal: "#4fc3f7", label: "#ffffff", stroke: "#000000" };
+}

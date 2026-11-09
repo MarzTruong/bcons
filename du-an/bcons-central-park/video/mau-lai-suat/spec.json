@@ -98,7 +98,8 @@
       "markup": "Thông điệp kết mẫu về dự án Bcons{Bee Cons} Central{Central} Park{Park}.",
       "cues": {},
       "props": {
-        "message": "Thông điệp kết mẫu - chỉ để xem bố cục"
+        "message": "Thông điệp kết mẫu - chỉ để xem bố cục",
+        "ghiChu": "Thông tin mang tính tham khảo"
       }
     }
   ]

@@ -13,5 +13,6 @@ export async function canCapNhat(run) {
 export function docLogCapNhat(log) {
   const tomTat = String(log).trim().split(/\r?\n/).filter((l) => !/KHONG CO BAN MOI/.test(l)).slice(-12).join("\n");
   const ban = (String(log).match(/Ban hien tai: (\w+)/) ?? [])[1];
-  return { ok: !/\bLOI\b|error|fatal|lỗi/i.test(tomTat), tomTat, khongMoi: /KHONG CO BAN MOI/.test(log), ban };
+  const loi = tomTat.split("\n").filter((l) => !/^Ban hien tai:/.test(l)).join("\n"); // nội dung commit có chữ "lỗi" không phải lỗi
+  return { ok: !/\bLOI\b|error|fatal|lỗi/i.test(loi), tomTat, khongMoi: /KHONG CO BAN MOI/.test(log), ban };
 }

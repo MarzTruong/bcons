@@ -39,3 +39,9 @@ test("compare-bars cần 2 đến 4 cột", () => {
   assert.doesNotThrow(() => parseSpec(base(ok, "compare-bars")));
   assert.throws(() => parseSpec(base({ ...ok, bars: [bar] }, "compare-bars")));
 });
+
+test("project-close: ghiChu tùy chọn (dòng chữ nhỏ cuối video chỉ hiện khi spec ghi, anh duyệt từng video)", async () => {
+  const { ProjectCloseProps } = await import("../src/spec.ts");
+  assert.equal(ProjectCloseProps.safeParse({ message: "x" }).success, true);
+  assert.equal(ProjectCloseProps.parse({ message: "x", ghiChu: "Thông tin mang tính tham khảo" }).ghiChu, "Thông tin mang tính tham khảo");
+});

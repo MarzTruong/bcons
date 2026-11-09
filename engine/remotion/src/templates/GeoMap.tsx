@@ -141,7 +141,8 @@ const BottomCard: React.FC<{ delay: number; tag: string; big: string; sub: strin
 export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames }) => {
   const C = useTheme();
   const enter = useEnter();
-  const HEX = { white: C.neutral, gold: C.gold, red: C.red, teal: C.teal } as const;
+  const HEX = C.map ?? ({ white: C.neutral, gold: C.gold, red: C.red, teal: C.teal } as const);
+  const HALO = C.map?.stroke ?? C.stroke;
   const containerRef = useRef<HTMLDivElement>(null);
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
@@ -249,11 +250,12 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
     }
     if (!containerRef.current) return;
     let cancelled = false;
+    let inst: mapboxgl.Map | null = null; // gỡ bản đồ khi rời cảnh để không giữ WebGL (video nhiều cảnh bản đồ)
     loadAll(props)
       .then((loaded) => {
         if (cancelled || !containerRef.current) return;
         mapboxgl.accessToken = token;
-        const m = new mapboxgl.Map({
+        const m = (inst = new mapboxgl.Map({
           container: containerRef.current,
           style: props.mapStyle,
           center: [106.87, 10.94],
@@ -262,7 +264,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
           attributionControl: false,
           fadeDuration: 0,
           preserveDrawingBuffer: true,
-        });
+        }));
         m.on("error", (e) => {
           const status = (e.error as { status?: number } | undefined)?.status;
           if (status === 401 || status === 403) {
@@ -358,7 +360,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
             type: "symbol",
             source: "line-labels",
             layout: { "text-field": ["get", "label"], "text-size": 32, "text-allow-overlap": true, "text-anchor": "center" },
-            paint: { "text-color": ["get", "color"], "text-halo-color": C.stroke, "text-halo-width": 4, "text-opacity": ["get", "p"] },
+            paint: { "text-color": ["get", "color"], "text-halo-color": HALO, "text-halo-width": 4, "text-opacity": ["get", "p"] },
           });
           m.addLayer({
             id: "point-dots",
@@ -383,7 +385,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
               "text-allow-overlap": true,
               "text-max-width": 9,
             },
-            paint: { "text-color": C.text, "text-halo-color": C.stroke, "text-halo-width": 3, "text-opacity": ["get", "p"] },
+            paint: { "text-color": C.map?.label ?? C.text, "text-halo-color": HALO, "text-halo-width": 3, "text-opacity": ["get", "p"] },
           });
           m.addLayer({
             id: "area-labels",
@@ -396,7 +398,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
               "text-max-width": 10,
               "text-anchor": "center",
             },
-            paint: { "text-color": ["get", "color"], "text-halo-color": C.stroke, "text-halo-width": 3.5, "text-opacity": ["get", "p"] },
+            paint: { "text-color": ["get", "color"], "text-halo-color": HALO, "text-halo-width": 3.5, "text-opacity": ["get", "p"] },
           });
           m.jumpTo(init);
           m.once("idle", () => {
@@ -411,6 +413,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       .catch((e) => cancelRender(e));
     return () => {
       cancelled = true;
+      inst?.remove();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -436,6 +439,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       continueRender(handle);
     });
     map.triggerRepaint();
+    return () => clearInterval(retry);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [frame, map, data]);
 
@@ -524,7 +528,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
             position: "absolute",
             left: 60,
             right: 60,
-            bottom: 470,
+            bottom: 560, // trên vùng phụ đề (Captions bắt đầu ở y=1400)
             minHeight: 150,
             fontSize: 50,
             fontWeight: 700,

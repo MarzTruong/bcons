@@ -37,7 +37,7 @@ test("tài liệu đang dùng không trỏ tới file/thư mục không còn tro
     for (const m of fs.readFileSync(f, "utf8").matchAll(/`((?:engine|du-an|docs|\.claude)\/[^`\s]+)`/g)) {
       const p = m[1].replace(/[#:].*$/, "");
       if (/[<>*{}]/.test(p) || p.includes("/x/")) continue; // mẫu đường dẫn, không phải file thật
-      if (/\.env$|\/out\/|node_modules|\.am-thanh|audio-test/.test(p)) continue; // chỉ có trên máy anh
+      if (/\.env$|\/out\/|\/dist\/|node_modules|\.am-thanh|audio-test/.test(p)) continue; // chỉ có trên máy anh
       if (!fs.existsSync(path.join(ROOT, p))) dead.push(`${rel(f)} → ${p}`);
     }
   }

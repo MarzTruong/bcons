@@ -10,6 +10,7 @@ import { useTheme } from "../theme";
 import { LEAD } from "../timing";
 import { clamp, type TemplateProps } from "./common";
 import { NameQr, useWatermark } from "../Watermark";
+import { tachTen, useDuAn } from "../duAn";
 import type { MoiLook } from "../issues";
 
 const { fontFamily: display } = loadFont("normal", {
@@ -150,6 +151,8 @@ export const MoiDataCards: React.FC<TemplateProps<"data-cards">> = ({ props, cue
 
 /** project-close: ảnh dự án phía trên, tên dự án, thông điệp gõ dần, tên + QR. */
 export const MoiProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, frames }) => {
+  const duAn = useDuAn();
+  const [ten1, ten2] = tachTen(duAn.ten);
   const M = useMoi();
   const w = useWatermark();
   const frame = useCurrentFrame();
@@ -172,9 +175,9 @@ export const MoiProjectClose: React.FC<TemplateProps<"project-close">> = ({ prop
       ) : null}
       <div style={{ position: "absolute", top: M.kind === "bantin" ? 790 : 800, left: SIDE, right: SIDE }}>
         <div style={{ fontFamily: display, fontWeight: 900, fontSize: 100, lineHeight: 1, color: M.kind === "anh" ? M.text : inner }}>
-          Bcons <span style={{ color: M.kind === "khoimau" ? inner : M.accent }}>Central Park</span>
+          {ten1} <span style={{ color: M.kind === "khoimau" ? inner : M.accent }}>{ten2}</span>
         </div>
-        <div style={{ fontSize: 32, fontWeight: 600, marginTop: 12, opacity: 0.85 }}>236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai</div>
+        <div style={{ fontSize: 32, fontWeight: 600, marginTop: 12, opacity: 0.85 }}>{duAn.diaChi}</div>
         <div style={{ marginTop: 26, minHeight: 150, fontSize: 42, fontWeight: 700, lineHeight: 1.3 }}>
           {message.slice(0, chars)}
           <span style={{ opacity: frame % 20 < 10 ? 1 : 0 }}>|</span>
@@ -185,7 +188,7 @@ export const MoiProjectClose: React.FC<TemplateProps<"project-close">> = ({ prop
           <NameQr ten={w!.ten!} link={w!.link!} />
         </div>
       ) : null}
-      <div style={{ position: "absolute", bottom: 58, left: 0, right: 0, textAlign: "center", fontSize: 26, opacity: 0.7 }}>Thông tin mang tính tham khảo</div>
+      {props.ghiChu ? <div style={{ position: "absolute", bottom: 58, left: 0, right: 0, textAlign: "center", fontSize: 26, opacity: 0.7 }}>{props.ghiChu}</div> : null}
     </AbsoluteFill>
   );
 };

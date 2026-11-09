@@ -4,9 +4,12 @@ import { useTheme } from "../theme";
 import { LEAD } from "../timing";
 import { clamp, type TemplateProps } from "./common";
 import { NameQr, useWatermark } from "../Watermark";
+import { tachTen, useDuAn } from "../duAn";
 
 /** Mẫu `project-close`: thẻ dự án + thông điệp gõ chữ + (watermark qr) khối tên + QR. Không ghi SĐT dạng chữ. */
 export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, frames }) => {
+  const duAn = useDuAn();
+  const [ten1, ten2] = tachTen(duAn.ten.toUpperCase());
   const C = useTheme();
   const w = useWatermark();
   const frame = useCurrentFrame();
@@ -46,9 +49,9 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
           <div style={{ position: "absolute", left: 40, right: 40, bottom: 34, textAlign: "center" }}>
             <div style={{ fontSize: 34, fontWeight: 600, color: C.gold }}>DỰ ÁN</div>
             <div style={{ fontSize: compact ? 76 : 96, fontWeight: 800, lineHeight: 1.05 }}>
-              BCONS <span style={{ color: C.teal }}>CENTRAL PARK</span>
+              {ten1} <span style={{ color: C.teal }}>{ten2}</span>
             </div>
-            <div style={{ fontSize: 34, color: C.muted, marginTop: 10 }}>236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai</div>
+            <div style={{ fontSize: 34, color: C.muted, marginTop: 10 }}>{duAn.diaChi}</div>
           </div>
           <div style={{ position: "absolute", top: 20, right: 26, fontSize: 24, color: "#fffc", textShadow: "0 2px 8px #000" }}>{props.image.label}</div>
         </div>
@@ -67,12 +70,12 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
       >
         <div style={{ fontSize: 40, fontWeight: 600, color: C.gold }}>DỰ ÁN</div>
         <div style={{ fontSize: 112, fontWeight: 800, lineHeight: 1.05, marginTop: 14 }}>
-          BCONS
+          {ten1}
           <br />
-          <span style={{ color: C.teal }}>CENTRAL PARK</span>
+          <span style={{ color: C.teal }}>{ten2}</span>
         </div>
         <div style={{ fontSize: 36, color: C.muted, marginTop: 30 }}>
-          236 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai
+          {duAn.diaChi}
         </div>
       </div>
       )}
@@ -122,7 +125,7 @@ export const ProjectClose: React.FC<TemplateProps<"project-close">> = ({ props, 
             Tự tính dòng tiền: {w.link}
           </div>
         ) : null}
-        Thông tin mang tính tham khảo
+        {props.ghiChu}
       </div>
     </AbsoluteFill>
   );

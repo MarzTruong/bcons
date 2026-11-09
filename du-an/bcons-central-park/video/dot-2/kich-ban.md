@@ -19,7 +19,7 @@ Mục tiêu: giới thiệu vị trí và tiện ích. Cuối video có lời k�
 | 8–16 | Cắt nhanh: hồ bơi resort, quảng trường nhạc nước, cung đường đi bộ | "60 tiện ích nội khu: hồ bơi resort, quảng trường nhạc nước, khu thể thao, khu vui chơi trẻ em." |
 | 16–22 | Phối cảnh khu thương mại, mặt bằng căn hộ | "Khu thương mại ngay tại khối đế. Từ Studio đến 3 phòng ngủ." |
 | 22–27 | Logo Bcons, hình nhà mẫu | "Chủ đầu tư Bcons: 23 dự án, 13 dự án bàn giao vượt tiến độ." |
-| 27–30 | Slogan, hotline | **"Theo dòng di sản, thuận lòng phồn vinh." Giới thiệu đợt 2: 29/11. Hotline 0905 935 935.** |
+| 27–30 | Slogan, tên + QR (cảnh cuối) | **"Theo dòng di sản, thuận lòng phồn vinh." Giới thiệu đợt 2: 29/11.** (không ghi số điện thoại trên hình, quy tắc 7: QR mở landing) |
 
 Caption: *Căn hộ xanh giữa lòng Biên Hòa. Giới thiệu đợt 2 ngày 29/11. Nhắn để nhận thông tin và đăng ký xem nhà mẫu.* #BconsCentralPark #BiênHòa #CănHộ
 
@@ -58,7 +58,7 @@ Không nói: "lãi suất 6,9%" khi nhắc PTTT 05 (PTTT 05 chỉ ghi hỗ trợ
 |---|---|---|
 | 0–4 | Hình sự kiện đợt 1 (thư mục 16. Hình Ảnh Sự Kiện) ⚠ cần được phép dùng | "29/11: Giới thiệu đợt 2 Bcons Central Park." |
 | 4–10 | Nhà mẫu, quà tặng, bốc thăm | "Tham quan nhà mẫu, nhận tư vấn trực tiếp, nhiều phần quà." ⚠ kiểm tra quà đợt 2 có giống đợt 1 không |
-| 10–15 | Hotline, QR đăng ký | "Đăng ký trước để được ưu tiên. Hotline 0905 935 935." |
+| 10–15 | Tên + QR đăng ký | "Đăng ký trước để được ưu tiên. Quét mã QR để đăng ký." (không ghi số điện thoại trên hình) |
 
 Lưu ý quy định nhà mẫu: khách phải đăng ký thông tin trước khi tham quan.
 

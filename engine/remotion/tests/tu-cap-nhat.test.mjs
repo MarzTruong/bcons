@@ -25,3 +25,9 @@ test("docLogCapNhat: /capnhat mà không có gì mới thì báo 'đã là bản
   assert.equal(r.khongMoi, true);
   assert.equal(r.ban, "88ad23a");
 });
+
+test("docLogCapNhat: commit mới có chữ 'lỗi'/'error' trong dòng 'Ban hien tai' không bị báo nhầm là cập nhật lỗi", () => {
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nBan hien tai: 85778ce Sửa lỗi đọc cột PTTT\n").ok, true);
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nBan hien tai: 4bf520f bot: fix error buttons\n").ok, true);
+  assert.equal(docLogCapNhat("Ban hien tai: 85778ce Sửa lỗi\nLOI: khong lay duoc ban moi\n").ok, false);
+});
