@@ -1,0 +1,254 @@
+{
+  "name": "08-cuoi-nam-ve-dich",
+  "so": 8,
+  "tieuDe": "Cuối năm, 3 công trình về đích",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Từ giờ tới Noel, quanh Biên Hòa có 3{ba} công trình giao thông dự kiến về đích. Mình xem lần lượt từng cái.",
+      "cues": {
+        "value": "3"
+      },
+      "nhan": [
+        "Noel,"
+      ],
+      "props": {
+        "badge": "Nguồn: Pháp Luật Plus 01/11, CafeF 30/10 và 04/11/2026",
+        "titleLines": [
+          "Cuối năm 2026",
+          "quanh Biên Hòa"
+        ],
+        "cardLabel": "Công trình giao thông dự kiến về đích",
+        "value": 3,
+        "decimals": 0,
+        "unit": "công trình",
+        "sourceId": "tong-3-cong-trinh",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-dem"
+        }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "geo-map",
+      "markup": "Gần nhất là Vành đai 3{ba} đoạn trên cao, gần 15 km{mười lăm ki-lô-mét} tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11.{mười một.} Từ dự án ra Tân Vạn khoảng 11{mười một} phút lái xe.",
+      "cues": {
+        "a": "Gần",
+        "tv": "Tân",
+        "dt": "dự"
+      },
+      "props": {
+        "kicker": "Tháng 11/2026",
+        "title": "Vành đai 3 trên cao",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "central-park",
+            "tan-van"
+          ],
+          "padding": {
+            "top": 640,
+            "bottom": 560,
+            "left": 260,
+            "right": 260
+          },
+          "maxZoom": 13
+        },
+        "points": [
+          {
+            "key": "central-park",
+            "label": "Bcons Central Park",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "big": true,
+            "cueKey": "a",
+            "offset": 0,
+            "sourceId": "geo-central-park"
+          },
+          {
+            "key": "tan-van",
+            "label": "Nút giao Tân Vạn",
+            "file": "assets/geo/osm-diem/diem-tan-van.geojson",
+            "featureKey": "tan-van",
+            "color": "gold",
+            "cueKey": "tv",
+            "offset": 0,
+            "sourceId": "geo-tan-van"
+          }
+        ],
+        "lines": [
+          {
+            "key": "duong",
+            "file": "assets/geo/osm-diem/tuyen-du-an-tan-van.geojson",
+            "kind": "official",
+            "color": "teal",
+            "width": 8,
+            "cueKey": "dt",
+            "drawFrames": 60,
+            "sourceId": "geo-du-an-tan-van"
+          }
+        ],
+        "areas": [],
+        "info": {
+          "title": "Vành đai 3 TP.HCM, đoạn trên cao",
+          "text": "Gần 15 km tới nút giao Tân Vạn · mục tiêu thông xe tháng 11/2026",
+          "cueKey": "a",
+          "sourceId": "vanh-dai-3"
+        },
+        "note": "Tuyến xanh: đường lái xe theo OpenStreetMap; 11 phút là ước tính lúc đường thông thoáng"
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "geo-map",
+      "markup": "Xa hơn về phía Long Thành, nút giao Tân Hiệp nối cao tốc Biên Hòa -{} Vũng Tàu với Bến Lức -{} Long Thành, dự kiến khai thác trong tháng 11.{mười một.}",
+      "cues": {
+        "a": "Xa",
+        "th": "Tân",
+        "kt": "khai"
+      },
+      "props": {
+        "kicker": "Tháng 11/2026",
+        "title": "Nút giao Tân Hiệp",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "central-park",
+            "tan-hiep"
+          ],
+          "padding": {
+            "top": 640,
+            "bottom": 560,
+            "left": 260,
+            "right": 260
+          },
+          "maxZoom": 12
+        },
+        "points": [
+          {
+            "key": "central-park",
+            "label": "Bcons Central Park",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "big": true,
+            "cueKey": "a",
+            "offset": 0,
+            "sourceId": "geo-central-park"
+          },
+          {
+            "key": "tan-hiep",
+            "label": "Nút giao Tân Hiệp",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "tan-hiep",
+            "color": "gold",
+            "cueKey": "th",
+            "offset": 0,
+            "sourceId": "geo-tan-hiep"
+          }
+        ],
+        "lines": [],
+        "areas": [],
+        "info": {
+          "title": "Nút giao Tân Hiệp",
+          "text": "Nối cao tốc Biên Hòa - Vũng Tàu với Bến Lức - Long Thành · dự kiến khai thác tháng 11/2026",
+          "cueKey": "kt",
+          "sourceId": "tan-hiep"
+        },
+        "note": "Điểm theo tọa độ thật"
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "geo-map",
+      "markup": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ 0{không} giờ ngày 24/12.{hai mươi bốn tháng mười hai.} Từ dự án tới sân bay khoảng 33 km{ba mươi ba ki-lô-mét} đường xe chạy.",
+      "cues": {
+        "a": "Và",
+        "sb": "sân",
+        "dt": "Từ"
+      },
+      "props": {
+        "kicker": "0 giờ ngày 24/12/2026",
+        "title": "Sân bay Long Thành",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "central-park",
+            "long-thanh"
+          ],
+          "padding": {
+            "top": 640,
+            "bottom": 560,
+            "left": 260,
+            "right": 260
+          },
+          "maxZoom": 12
+        },
+        "points": [
+          {
+            "key": "central-park",
+            "label": "Bcons Central Park",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "central-park",
+            "color": "red",
+            "big": true,
+            "cueKey": "a",
+            "offset": 0,
+            "sourceId": "geo-central-park"
+          },
+          {
+            "key": "long-thanh",
+            "label": "Sân bay QT Long Thành",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "long-thanh",
+            "color": "gold",
+            "cueKey": "sb",
+            "offset": 0,
+            "sourceId": "geo-long-thanh"
+          }
+        ],
+        "lines": [
+          {
+            "key": "duong",
+            "file": "assets/geo/osm-diem/tuyen-du-an-san-bay.geojson",
+            "kind": "official",
+            "color": "teal",
+            "width": 8,
+            "cueKey": "dt",
+            "drawFrames": 75,
+            "sourceId": "geo-du-an-san-bay"
+          }
+        ],
+        "areas": [],
+        "info": {
+          "title": "Sân bay Long Thành",
+          "text": "Dự kiến khai thác thương mại từ 0 giờ ngày 24/12/2026",
+          "cueKey": "sb",
+          "sourceId": "san-bay"
+        },
+        "note": "Tuyến xanh: đường lái xe theo OpenStreetMap, khoảng 33 km"
+      }
+    },
+    {
+      "id": "scene5",
+      "template": "project-close",
+      "markup": "Còn Bcons{Bee Cons} Central{Central} Park: đợt 2{hai} giới thiệu ngày 29/11,{hai mươi chín tháng mười một,} đợt 3{ba} ngày 27/12,{hai mươi bảy tháng mười hai,} 3{ba} ngày sau mốc sân bay.",
+      "cues": {},
+      "props": {
+        "message": "Đợt 2 giới thiệu ngày 29/11 · đợt 3 ngày 27/12/2026",
+        "image": {
+          "file": "assets/images/phoi-canh-green-park.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh"
+        }
+      }
+    }
+  ]
+}
