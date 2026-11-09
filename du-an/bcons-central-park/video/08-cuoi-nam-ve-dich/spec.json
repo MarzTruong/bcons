@@ -2,7 +2,7 @@
   "name": "08-cuoi-nam-ve-dich",
   "so": 8,
   "tieuDe": "Cuối năm, 3 công trình về đích",
-  "status": "draft",
+  "status": "approved",
   "style": "moi",
   "motion": "classic",
   "scenes": [
@@ -92,7 +92,8 @@
             "width": 8,
             "cueKey": "dt",
             "drawFrames": 60,
-            "sourceId": "geo-du-an-tan-van"
+            "sourceId": "geo-du-an-tan-van",
+            "vetChay": true
           }
         ],
         "areas": [],
@@ -223,7 +224,8 @@
             "width": 8,
             "cueKey": "dt",
             "drawFrames": 75,
-            "sourceId": "geo-du-an-san-bay"
+            "sourceId": "geo-du-an-san-bay",
+            "vetChay": true
           }
         ],
         "areas": [],

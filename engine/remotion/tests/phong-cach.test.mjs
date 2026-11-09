@@ -57,3 +57,13 @@ test("bản đồ bộ moi: 4 màu điểm/tuyến khác nhau, khác màu nhấn
     assert.equal(c.stroke, "#000000");
   }
 });
+
+test("capCho: phụ đề kiểu bản tin (phang, chữ tối) trên cảnh bản đồ đổi sang chữ trắng đổ bóng; cảnh khác giữ nguyên", async () => {
+  const { capCho } = await import("../src/capKieu.ts");
+  const { moiOf } = await import("../src/issues.ts");
+  assert.equal(moiOf("moi", 8).cap, "phang", "video 8 là kiểu bản tin");
+  assert.deepEqual(capCho("phang", true), { cap: "bong", chuTrang: true });
+  assert.deepEqual(capCho("phang", false), { cap: "phang", chuTrang: false });
+  assert.deepEqual(capCho("nhan", true), { cap: "nhan", chuTrang: false });
+  assert.deepEqual(capCho("bong", true), { cap: "bong", chuTrang: false });
+});

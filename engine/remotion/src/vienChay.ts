@@ -21,3 +21,11 @@ export const cometRanges = (phase: number, len: number, frac: number = VIEN.doDa
   const b = a + frac * len;
   return b <= len ? [[a, b]] : [[a, len], [0, b - len]];
 };
+
+/** Vệt sáng chạy dọc tuyến (đường hở) từ đầu tới cuối rồi lặp: đoạn [km đầu, km cuối], null khi vệt đang ngoài tuyến. */
+export const lineCometRange = (phase: number, len: number, frac: number = VIEN.doDai): [number, number] | null => {
+  const head = phase * len * (1 + frac);
+  const a = Math.max(0, head - frac * len);
+  const b = Math.min(len, head);
+  return b - a > 1e-9 ? [a, b] : null;
+};

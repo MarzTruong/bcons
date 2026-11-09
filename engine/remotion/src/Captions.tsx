@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { fontFamily, useTheme } from "./theme";
 import { FPS, LEAD, type Word } from "./timing";
 import { fontSizeFor, groupWords, mergePunct } from "./captionChunks";
+import { capCho } from "./capKieu";
 
 type Chunk = { words: Word[]; from: number; to: number; size: number };
 
@@ -25,7 +26,7 @@ const isNumber = (s: string) => /\d/.test(s);
  * Phụ đề từng từ. Từ đang đọc đổi màu; số và chữ trong `nhan` (spec) được nhấn: nền màu quét ngang,
  * bật to nhẹ, viền sáng; đọc xong vẫn giữ màu nhấn.
  */
-export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, nhan = [] }) => {
+export const Captions: React.FC<{ words: Word[]; nhan?: string[]; trenBanDo?: boolean }> = ({ words, nhan = [], trenBanDo = false }) => {
   const C = useTheme();
   const frame = useCurrentFrame();
   const chunks = useMemo(() => buildChunks(words), [words]);
@@ -34,7 +35,9 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
   const pop = interpolate(frame, [chunk.from, chunk.from + 6], [0, 1], clamp);
   const t = (frame - LEAD) / FPS;
   // Bộ "moi": bong = chữ trắng đổ bóng mềm (trên ảnh), phang = không viền, nhan = nhãn dán nền vàng chữ đen.
-  const cap = C.look === "moi" ? (C.issue as { cap?: string } | undefined)?.cap : undefined;
+  const kieu = capCho(C.look === "moi" ? (C.issue as { cap?: string } | undefined)?.cap : undefined, trenBanDo);
+  const cap = kieu.cap;
+  const chu = kieu.chuTrang ? "#ffffff" : C.text;
   const nhanBg = cap === "nhan" ? (C.issue as { block?: string; onBlock?: string }) : undefined;
   const strong = (w: Word) => isNumber(w.text) || nhan.some((n) => w.text.replace(/[,.!?;:]$/, "") === n.replace(/[,.!?;:]$/, ""));
   return (
@@ -48,7 +51,7 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
           fontSize: chunk.size,
           lineHeight: 1.25,
           textAlign: "center",
-          color: nhanBg ? nhanBg.onBlock : C.text,
+          color: nhanBg ? nhanBg.onBlock : chu,
           background: nhanBg ? nhanBg.block : undefined,
           padding: nhanBg ? "6px 26px 10px" : undefined,
           borderRadius: nhanBg ? 18 : undefined,
@@ -76,7 +79,7 @@ export const Captions: React.FC<{ words: Word[]; nhan?: string[] }> = ({ words, 
                 marginLeft: s ? 6 : 0,
                 padding: s ? "0 10px" : 0,
                 borderRadius: 12,
-                color: nhanBg ? (s && said ? "#c81e1e" : nhanBg.onBlock) : s && said ? accent : active ? C.gold : C.text,
+                color: nhanBg ? (s && said ? "#c81e1e" : nhanBg.onBlock) : s && said ? accent : active ? C.gold : chu,
                 transform: `scale(${bump})`,
                 backgroundImage: s ? `linear-gradient(90deg, ${accent}40 ${sweep}%, transparent ${sweep}%)` : undefined,
                 textShadow: s && active && C.look !== "tapchi" && C.look !== "moi" ? `0 0 18px ${accent}aa, 0 4px 0 ${C.stroke}` : undefined,

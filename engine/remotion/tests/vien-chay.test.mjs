@@ -16,3 +16,11 @@ test("cometPhase: chưa vẽ xong viền thì chưa chạy (null); sau đó lặ
   assert.ok(Math.abs(cometPhase(70 + VIEN.chuKy / 2, 40, 30) - 0.5) < 1e-9);
   assert.equal(cometPhase(70 + VIEN.chuKy, 40, 30), 0);
 });
+
+test("lineCometRange: vệt sáng chạy dọc tuyến từ đầu tới cuối rồi lặp lại (tuyến hở, không vòng qua điểm đầu)", async () => {
+  const { lineCometRange } = await import("../src/vienChay.ts");
+  assert.equal(lineCometRange(0, 100, 0.2), null, "đầu chu kỳ: vệt chưa vào tuyến");
+  assert.deepEqual(lineCometRange(0.5, 100, 0.2).map((x) => +x.toFixed(6)), [40, 60]);
+  assert.deepEqual(lineCometRange(0.1, 100, 0.2).map((x) => +x.toFixed(6)), [0, 12], "đang đi vào");
+  assert.deepEqual(lineCometRange(0.95, 100, 0.2).map((x) => +x.toFixed(6)), [94, 100], "đang ra khỏi cuối tuyến");
+});

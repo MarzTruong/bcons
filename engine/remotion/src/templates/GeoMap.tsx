@@ -18,7 +18,7 @@ import { useTheme } from "../theme";
 import { useEnter } from "../motion";
 import { useSpring, type TemplateProps } from "./common";
 import { fitCam, projectLngLat, shiftCenter, type Cam } from "../geoCamera";
-import { cometPhase, cometRanges } from "../vienChay";
+import { cometPhase, cometRanges, lineCometRange } from "../vienChay";
 
 const clamp01 = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
@@ -173,6 +173,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       }),
     );
     const lineLabels: Feature[] = [];
+    const lineComets: Feature[] = [];
     const lines = props.lines.map((ln) => {
       const full = d.lines[ln.key];
       const len = turf.length(full);
@@ -183,6 +184,14 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       });
       const part = turf.lineSliceAlong(full, 0, Math.max(0.001, len * prog));
       part.properties = { color: HEX[ln.color], width: ln.width ?? 8, kind: ln.kind, p: prog > 0 ? 1 : 0 };
+      // Vệt sáng chạy dọc tuyến sau khi vẽ xong (vetChay, anh yêu cầu 10/11/2026)
+      const lp = ln.vetChay ? cometPhase(f, t0, ln.drawFrames) : null;
+      const r = lp === null ? null : lineCometRange(lp, len, 0.18);
+      if (r) {
+        const seg = turf.lineSliceAlong(full, r[0], Math.max(r[0] + 0.0005, r[1]));
+        seg.properties = { p: 1 };
+        lineComets.push(seg);
+      }
       if (full.properties?.label) {
         lineLabels.push(turf.point(turf.along(full, len / 2).geometry.coordinates, { label: full.properties.label, color: HEX[ln.color], p: prog >= 1 ? 1 : 0 }));
       }
@@ -237,7 +246,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
       areas: turf.featureCollection(areaFeats),
       areaLines: turf.featureCollection(areaLines),
       areaLabels: turf.featureCollection(areaLabels),
-      comets: turf.featureCollection(comets),
+      comets: turf.featureCollection([...comets, ...lineComets]),
       dim: turf.featureCollection(dimFeat),
     };
   };
@@ -400,6 +409,9 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
             },
             paint: { "text-color": ["get", "color"], "text-halo-color": HALO, "text-halo-width": 3.5, "text-opacity": ["get", "p"] },
           });
+          // Vệt sáng nằm trên tuyến (sau line-main) nhưng dưới chấm điểm và nhãn.
+          m.moveLayer("area-comet-glow", "line-labels");
+          m.moveLayer("area-comet", "line-labels");
           m.jumpTo(init);
           m.once("idle", () => {
             setInitial(init);
@@ -541,7 +553,7 @@ export const GeoMap: React.FC<TemplateProps<"geo-map">> = ({ props, cue, frames 
           <span style={{ color: C.gold, opacity: frame % 20 < 10 ? 1 : 0 }}>|</span>
         </div>
       ) : null}
-      <div style={{ position: "absolute", bottom: 62, left: 40, right: 40, textAlign: "center", fontSize: 24, color: C.muted }}>
+      <div style={{ position: "absolute", bottom: 62, left: 40, right: 210, textAlign: "left", fontSize: 24, color: C.muted }}>
         {props.note}
       </div>
       <div style={{ position: "absolute", bottom: 20, width: "100%", textAlign: "center", fontSize: 22, color: C.dim }}>

@@ -220,7 +220,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     frames: d.frames,
                   }, C.look)}
                   {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
-                    <Captions words={d.words} nhan={scene.nhan} />
+                    <Captions words={d.words} nhan={scene.nhan} trenBanDo={scene.template === "geo-map"} />
                   )}
                 </SceneTransition>
                 {khongGiong ? null : (

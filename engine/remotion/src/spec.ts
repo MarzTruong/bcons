@@ -126,6 +126,8 @@ export const GeoLine = z
     offset: z.number().optional(),
     /** Số frame để tuyến vẽ xong. */
     drawFrames: z.number().int().min(1),
+    /** Sau khi vẽ xong, một vệt sáng chạy dọc tuyến lặp lại (tăng thị giác). */
+    vetChay: z.boolean().optional(),
     sourceId: z.string().min(1).optional(),
   })
   .superRefine(officialNeedsSource);

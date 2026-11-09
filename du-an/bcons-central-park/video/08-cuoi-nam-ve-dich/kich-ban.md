@@ -1,6 +1,6 @@
 # Video 8 "Cuối năm, 3 công trình về đích" (09/11/2026)
 
-Spec: `du-an/bcons-central-park/video/08-cuoi-nam-ve-dich/spec.json` (status `draft`, chờ anh duyệt cổng 2). Nguồn: kiểm gộp 3 báo cáo Gemini ngày 07/11, đã mở link gốc đối chiếu từng câu: `du-an/bcons-central-park/nguon/gemini/2026-11-07-gop-3-bao-cao-KIEM.md`. Tọa độ và tuyến đường: `du-an/bcons-central-park/assets/geo/NGUON.md`. Lịch giới thiệu đợt 2, đợt 3 lấy từ `du-an/bcons-central-park/thong-tin.md`.
+Spec: `du-an/bcons-central-park/video/08-cuoi-nam-ve-dich/spec.json` (status `approved`: anh duyệt chữ, số liệu, caption và storyboard ngày 10/11/2026; không thêm dòng "tham khảo"). Nguồn: kiểm gộp 3 báo cáo Gemini ngày 07/11, đã mở link gốc đối chiếu từng câu: `du-an/bcons-central-park/nguon/gemini/2026-11-07-gop-3-bao-cao-KIEM.md`. Tọa độ và tuyến đường: `du-an/bcons-central-park/assets/geo/NGUON.md`. Lịch giới thiệu đợt 2, đợt 3 lấy từ `du-an/bcons-central-park/thong-tin.md`.
 
 Góc: ba mốc giao thông quanh Biên Hòa dự kiến xong trong tháng 11–12/2026, kết bằng lịch giới thiệu của dự án. Cả ba đều là **dự kiến/mục tiêu**, lời bình nói rõ, không nói chắc chắn thông xe.
 
@@ -18,7 +18,8 @@ Ghi chú nội dung:
 - Cảnh 2: "gần 15 km" (CafeF/VTC ghi khoảng 14,7 km; Báo Xây dựng ghi 17 km cho đoạn rộng hơn). 11 phút là ước tính đường lái xe của OSRM khi đường thông thoáng, chữ nhỏ trên bản đồ ghi rõ.
 - Cảnh 3: không nói khoảng cách hay thời gian tới Tân Hiệp (tuyến OSRM đi vòng do nút giao chưa thông). Tân Hiệp không phải phường Tam Hiệp của dự án.
 - Cảnh 4: 33 km là đường xe chạy (OSRM), không phải đường chim bay (29,9 km).
-- Cảnh 5: dòng "Thông tin mang tính tham khảo" chưa thêm, chờ anh quyết.
+- Cảnh 5: không thêm dòng "Thông tin mang tính tham khảo" (anh quyết 10/11/2026).
+- Tuyến xanh có vệt sáng chạy dọc sau khi vẽ xong (`vetChay`, anh yêu cầu 10/11/2026).
 
 ## Bảng nguồn
 
@@ -48,4 +49,4 @@ Ghi chú nội dung:
 - [x] Không so sánh dự án khác.
 - [x] Không đọc/không hiện SĐT dạng chữ; tên + QR tự thêm khi render.
 - [x] Bản đồ: điểm theo tọa độ có nguồn; tuyến là đường lái xe thật (OSRM, `official`), không vẽ tuyến giả.
-- [ ] Anh duyệt chữ, số liệu, caption và storyboard.
+- [x] Anh duyệt chữ, số liệu, caption và storyboard ngày 10/11/2026.
