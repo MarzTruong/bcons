@@ -1,5 +1,5 @@
 // Nhạc nền + hiệu ứng âm thanh cho video.
-// - Nhạc: anh để trong Drive "Bcons - Dong bo thiet bi\\am-thanh\\nhac" (máy nào cũng có); máy không có Drive thì <repo>/am-thanh/nhac/. Không lên git (giấy phép không cho phát tán file nhạc).
+// - Nhạc: anh để trong Drive "Bcons\\am-thanh\\nhac" (máy nào cũng có); máy không có Drive thì <repo>/am-thanh/nhac/. Không lên git (giấy phép không cho phát tán file nhạc).
 // - Hiệu ứng: tạo một lần bằng ElevenLabs (`npm run sfx -- --dong-y`, tốn ít credit; chỉ tạo file còn thiếu), 11 biến thể vut/tach/don, lưu Drive am-thanh/sfx/ (máy không có Drive: engine/remotion/am-thanh/sfx/).
 // Trước khi render, chép vào <du-an>/.am-thanh/ (public dir của Remotion, không lên git).
 import fs from "node:fs";

@@ -23,7 +23,7 @@ AGY **không** làm: video Remotion, giọng ElevenLabs, bot Telegram, sửa `en
 Việc của AGY nằm ở `agy/nhiem-vu/` (Claude viết, mới nhất có ngày lớn nhất; mẫu `agy/nhiem-vu/_mau.md`). Anh cũng có thể giao thẳng bằng lệnh tắt trong khung chat của AGY (ví dụ `/nghien-cuu lãi suất vay mua nhà tháng 11`).
 
 ## Trả kết quả (thư mục bàn giao)
-- **Drive:** `Bcons - Dong bo thiet bi/agy/den-claude/<yyyy-mm-dd>-<loại>-<chủ đề>/` (trên máy anh: `G:\My Drive\Bcons - Dong bo thiet bi\agy\den-claude\`). Loại: `nghien-cuu` | `kiem-toan` | `thiet-ke` | `zalo`.
+- **Drive:** `Bcons/agy/den-claude/<yyyy-mm-dd>-<loại>-<chủ đề>/` (trên máy anh: `G:\My Drive\Bcons\agy\den-claude\`). Loại: `nghien-cuu` | `kiem-toan` | `thiet-ke` | `zalo`.
 - File chính `ket-qua.md` theo mẫu `agy/mau/<loại>.md`; dòng đầu ghi commit repo đã đọc (`git log -1`) và nhiệm vụ gốc.
 - Không ghi được vào Drive: lưu ở Artifact, anh tải về và gửi cho Claude.
 - Xong thì báo anh: "AGY xong việc <tên thư mục>". Anh gọi Claude bằng `/agy-doc`.

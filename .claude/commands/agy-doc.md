@@ -2,7 +2,7 @@
 description: Đọc kết quả Antigravity (AGY) để ở Drive, đối chiếu với repo, báo anh và lưu bản đã kiểm vào repo
 argument-hint: [tên thư mục bàn giao, bỏ trống = mới nhất]
 ---
-AGY chỉ đọc repo và để kết quả ở Drive `Bcons - Dong bo thiet bi/agy/den-claude/` (id thư mục `197wlXCCHm3YesY8IPTjHwQrefX-ECYBB`). Nếu anh đính kèm file vào chat thì dùng file đó.
+AGY chỉ đọc repo và để kết quả ở Drive `Bcons/agy/den-claude/` (id thư mục `197wlXCCHm3YesY8IPTjHwQrefX-ECYBB`). Nếu anh đính kèm file vào chat thì dùng file đó.
 
 1. Tìm thư mục $ARGUMENTS (hoặc mới nhất theo `modifiedTime`) trong `den-claude/` bằng connector Google Drive, đọc `ket-qua.md` và file phụ. File quá lớn (HTML nhúng ảnh) thì xin anh đính kèm vào chat, đừng bỏ qua.
 2. Việc theo loại (tên thư mục: `<ngày>-<loại>-<chủ đề>`):

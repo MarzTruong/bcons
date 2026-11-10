@@ -1,4 +1,4 @@
-// Chọn máy chạy bot (PC / laptop) qua thư mục Drive dùng chung "Bcons - Dong bo thiet bi/bot/".
+// Chọn máy chạy bot (PC / laptop) qua thư mục Drive dùng chung "Bcons/bot/".
 // Telegram chỉ cho MỘT máy nhận tin, nên hai máy "nói chuyện" bằng file trên Drive:
 // - may-<máy>.json: { host, role: "chay" | "cho", beat } — mỗi máy tự ghi file của mình (tránh hai máy ghi đè nhau).
 // - lenh.json: { to, from, at } — máy đang chạy ghi khi anh bấm "chuyển sang máy X"; máy X thấy thì nhận việc.

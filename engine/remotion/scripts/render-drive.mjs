@@ -2,7 +2,7 @@
 // Chạy: npm run render:drive -- <tên-video> [tên-file.mp4] [--du-an <mã>]
 // Chỉ render khi spec "approved" và mọi sourceId có trong bảng nguồn.
 // Thư mục đích: DRIVE_VIDEO_DIR trong .env, nếu không có thì tự tìm
-// "<ổ>:\My Drive\Bcons - Dong bo thiet bi\video" trên các ổ đĩa.
+// "<ổ>:\My Drive\Bcons\video" trên các ổ đĩa.
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";

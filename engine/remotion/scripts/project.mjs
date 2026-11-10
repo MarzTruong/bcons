@@ -18,17 +18,20 @@ function findRepoRoot(start) {
 
 export const REPO_ROOT = findRepoRoot(path.dirname(fileURLToPath(import.meta.url)));
 
-const DRIVE_SUB = "My Drive\\Bcons - Dong bo thiet bi";
+// Tên thư mục Drive: "Bcons" (anh đổi 11/11/2026); tên cũ vẫn dò được cho máy chưa đồng bộ kịp.
+const DRIVE_SUBS = ["My Drive\\Bcons", "My Drive\\Bcons - Dong bo thiet bi"];
 
 /**
- * Thư mục Drive dùng chung giữa các máy ("Bcons - Dong bo thiet bi"): video render, nhạc, bảng giá.
+ * Thư mục Drive dùng chung giữa các máy ("Bcons"): video render, nhạc, bảng giá.
  * DRIVE_DIR trong .env nếu đặt; không thì dò các ổ (Drive for desktop thường là G:). Không có thì null.
  */
 export function findDriveRoot({ env = process.env, exists = fs.existsSync } = {}) {
   if (env.DRIVE_DIR) return env.DRIVE_DIR;
   for (const letter of "GHIJKLMNOPQRSTUVWXYZDEF") {
-    const dir = `${letter}:\\${DRIVE_SUB}`;
-    if (exists(dir)) return dir;
+    for (const sub of DRIVE_SUBS) {
+      const dir = `${letter}:\\${sub}`;
+      if (exists(dir)) return dir;
+    }
   }
   return null;
 }
