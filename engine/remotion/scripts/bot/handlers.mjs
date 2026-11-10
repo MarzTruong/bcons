@@ -164,6 +164,7 @@ export function createBot(deps) {
           const c = parseCaption(fs.readFileSync(cap, "utf8"));
           await say(`📘 FACEBOOK – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
           await say(`🎵 TIKTOK – ${name}\n\n${c.tiktok ?? "(chưa có)"}`);
+          if (c.zalo) await say(`💬 ZALO – ${name}\n\n${c.zalo}`);
         } else await say(`${name}: chưa có caption.`);
         const mp4 = path.join(outDir, `${name}.mp4`);
         if (fs.existsSync(mp4)) await sendPreview(mp4, `Bản xem thử ${name} (chưa phải bản đăng)`);

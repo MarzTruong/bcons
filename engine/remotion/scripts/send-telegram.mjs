@@ -48,6 +48,7 @@ export function buildTelegramRequests({ token, chatId, mp4Path, caption, label =
     for (const part of chunkText(`TIKTOK ${label}\n\n${tiktok}`)) reqs.push(msg(api, chatId, part));
   }
   if (facebook) for (const part of chunkText(`FACEBOOK ${label}\n\n${facebook}`)) reqs.push(msg(api, chatId, part));
+  if (caption.zalo) for (const part of chunkText(`ZALO ${label}\n\n${caption.zalo}`)) reqs.push(msg(api, chatId, part));
   return reqs;
 }
 

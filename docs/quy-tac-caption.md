@@ -21,3 +21,10 @@ Caption là quảng cáo, người đọc lướt điện thoại chứ không �
 
 ## Không nới
 Quy tắc cứng trong `CLAUDE.md` giữ nguyên: số có nguồn, không hứa lợi nhuận hay tăng giá, giá ghi VAT và phí bảo trì 2%, trần 6,9% chỉ ở PTTT 03/04, hạ tầng tương lai ghi "dự kiến" hoặc "phương án", caption được ghi SĐT của anh (số trong `project.json` → `lienHe`), không ghi số khác. Viết tự nhiên là đổi cách nói, không đổi sự thật.
+
+## Zalo (anh bổ sung 10/11/2026)
+Cùng tinh thần và quy tắc cứng như FB/TikTok; thêm:
+- Caption có phần Zalo thì thêm `zalo` vào `kenh` và viết `## Zalo` trong `caption.md` (cùng bị kiểm SĐT, cụm cấm, VAT + phí bảo trì). Bài Zalo độc lập: `du-an/<mã>/content/zalo/<ngày>-<chủ đề>/caption.md` với `kenh: [zalo]`, kiểm bằng `npm run check:caption -- --bai ../../du-an/<mã>/content/zalo/<thư mục>`.
+- Giọng gần gũi như nhắn tin: xưng "em", gọi "anh chị", đoạn ngắn, ít icon (không làm gạch đầu dòng), một lời mời cụ thể (nhắn Zalo, đặt lịch xem nhà mẫu). Bài nhật ký/nhóm khoảng 400–900 ký tự; tin chăm sóc ngắn hơn.
+- **Không** dùng Zalo cá nhân nhắn hàng loạt. Tin chủ động chỉ gửi khách đã đồng ý nhận tin, qua Zalo OA/ZNS (`CLAUDE.md` mục "Tin nhắn hàng loạt").
+- Bản nháp do Antigravity viết (skill `bcons-content-zalo`) vẫn qua kiểm quy tắc cứng và anh duyệt trước khi đăng.

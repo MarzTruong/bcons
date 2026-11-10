@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 // Đọc và kiểm caption.md (bài Facebook + caption TikTok) theo quy tắc cứng trong CLAUDE.md.
-// Định dạng: frontmatter (status, duyetLuc, noiDungSha256, videoSha256, kenh) rồi "## Facebook", "## TikTok".
+// Định dạng: frontmatter (status, duyetLuc, noiDungSha256, videoSha256, kenh) rồi "## Facebook", "## TikTok" và tùy chọn "## Zalo".
 import crypto from "node:crypto";
 
 const FRONT_RE = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
@@ -34,7 +34,7 @@ export function parseCaption(text) {
     const m = body.match(re);
     return m ? m[1].replace(/\r\n/g, "\n").trim() : null;
   };
-  return { meta, facebook: section("Facebook"), tiktok: section("TikTok"), body };
+  return { meta, facebook: section("Facebook"), tiktok: section("TikTok"), zalo: section("Zalo"), body };
 }
 
 function normalizeBody(body) {
@@ -96,23 +96,24 @@ export function captionOptsFor(captionPath) {
 export function checkCaption(text, { allowPhones = [] } = {}) {
   const allow = new Set(allowPhones.map(normPhone));
   const errs = [];
-  const { meta, facebook, tiktok } = parseCaption(text);
+  const { meta, facebook, tiktok, zalo } = parseCaption(text);
   const lines = text.replace(/\r\n/g, "\n").split("\n");
   const lineOf = (i) => `dòng ${i + 1}`;
   const kenh = meta.kenh.length ? meta.kenh : ["facebook", "tiktok"];
   if (kenh.includes("facebook") && !facebook) errs.push('Thiếu phần "## Facebook"');
   if (kenh.includes("tiktok") && !tiktok) errs.push('Thiếu phần "## TikTok"');
+  if (kenh.includes("zalo") && !zalo) errs.push('Thiếu phần "## Zalo"');
   if (tiktok && tiktok.length > TIKTOK_MAX) errs.push(`Caption TikTok dài ${tiktok.length} ký tự, tối đa 2.200`);
   if (meta.status === "approved" && !meta.duyetLuc) errs.push("status approved nhưng thiếu duyetLuc");
 
   // FB và TikTok đăng riêng nên mỗi phần phải tự ghi VAT + phí bảo trì khi nhắc giá căn.
   const vatOk = (sec) => !!sec && /\bvat\b/.test(fold(sec)) && /bao tri/.test(fold(sec));
-  const vatBySection = { facebook: vatOk(facebook), tiktok: vatOk(tiktok), "": false };
+  const vatBySection = { facebook: vatOk(facebook), tiktok: vatOk(tiktok), zalo: vatOk(zalo), "": false };
   let sec = "";
   const start = splitFront(text).offset;
   lines.forEach((line, i) => {
     if (i < start) return; // bỏ qua frontmatter
-    const h = line.match(/^##\s+(facebook|tiktok)\s*$/i);
+    const h = line.match(/^##\s+(facebook|tiktok|zalo)\s*$/i);
     if (h) {
       sec = h[1].toLowerCase();
       return;
@@ -124,7 +125,7 @@ export function checkCaption(text, { allowPhones = [] } = {}) {
     for (const b of BANNED) if (f.includes(fold(b))) errs.push(`${lineOf(i)}: cụm "${b}" (không hứa lợi nhuận/tăng giá, không nói sắp hết)`);
     if (/loi nhuan\s*\d/.test(f)) errs.push(`${lineOf(i)}: nêu số lợi nhuận (không hứa lợi nhuận)`);
     if (PRICE_RE.test(f) && APT_RE.test(f) && !vatBySection[sec]) {
-      errs.push(`${lineOf(i)}: nhắc giá căn nhưng phần ${sec === "tiktok" ? "TikTok" : "Facebook"} chưa ghi rõ VAT và phí bảo trì 2%`);
+      errs.push(`${lineOf(i)}: nhắc giá căn nhưng phần ${sec === "tiktok" ? "TikTok" : sec === "zalo" ? "Zalo" : "Facebook"} chưa ghi rõ VAT và phí bảo trì 2%`);
     }
   });
   return errs;

@@ -111,3 +111,12 @@ test("guiVideo: false (bước /duyet): vẫn kiểm duyệt theo đúng file vi
   await sendApproved({ captionPath: c, mp4Path: mp4, env: ENV, fetchFn: f.fn, guiVideo: false });
   assert.ok(f.calls.length >= 2 && f.calls.every((u) => /sendMessage$/.test(u)), f.calls.join("|"));
 });
+
+test("buildTelegramRequests: caption có phần Zalo thì gửi thêm tin 'ZALO <nhãn>' sau Facebook", async () => {
+  const { buildTelegramRequests } = await import("../scripts/send-telegram.mjs");
+  const reqs = buildTelegramRequests({ token: "t", chatId: "1", mp4Path: null, label: "x", caption: { facebook: "bài fb", tiktok: "tt", zalo: "chào anh chị" } });
+  const texts = reqs.map((r) => r.body.get("text"));
+  assert.ok(texts.some((t) => t.startsWith("ZALO x") && t.includes("chào anh chị")), texts.join("|"));
+  const khong = buildTelegramRequests({ token: "t", chatId: "1", mp4Path: null, label: "x", caption: { facebook: "bài fb", tiktok: "tt", zalo: null } });
+  assert.ok(!khong.some((r) => String(r.body.get("text")).startsWith("ZALO")));
+});

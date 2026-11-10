@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 09/11/2026 (sửa theo audit đợt 1–3; dời "Đã làm" sang `docs/nhat-ky.md`)
+Cập nhật lần cuối: 10/11/2026 (sửa theo audit đợt 1–3; dời "Đã làm" sang `docs/nhat-ky.md`)
 
 ## Đã làm
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
@@ -22,6 +22,7 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 - [ ] Video 8 `08-cuoi-nam-ve-dich` (anh chọn góc 09/11/2026): cổng 1 xong, đang ở cổng 2. **Chờ anh gửi tọa độ Google Maps của nút giao Tân Hiệp và nút giao Tân Vạn** (Overpass không trả, Mapbox chỉ ra tên khu vực). Chưa đo khoảng cách nút giao Tân Hiệp tới dự án, không nói "sát dự án".
 - [ ] Phiên "Landing Bcons" (landing nhiều dự án): chờ anh OK kế hoạch (Mapbox vệ tinh, bỏ file UQ, 5 tháp, OpenFreeMap) và tạo token Mapbox `pk.` mới cho web (giới hạn URL `https://bcons-central-park-dsj.pages.dev`) rồi gửi. Chưa có thay đổi nào chưa lưu trên GitHub.
 - [ ] Hạn mức Claude: lúc kiểm (09/11) phiên landing và phiên ảnh báo hạn mức 7 ngày đã vượt, đang dùng phần vượt mức. Hạn chế mở thêm phiên song song.
+- [ ] Antigravity (AGY) đã có chỗ làm việc (10/11/2026): `agy/README.md`, luật/skill/lệnh tắt ở `.agents/`, thư mục bàn giao Drive `agy/den-claude/`, mẫu ở `agy/mau/`. 2 nhiệm vụ đầu: `agy/nhiem-vu/2026-11-10-thiet-ke-landing-v2.md`, `...-zalo-gioi-thieu-dot-2.md`. Anh gửi AGY đoạn dán (Claude đã đưa), AGY xong thì anh gõ `/agy-doc`. Chưa biết AGY có đọc `.agents/` (thư mục `.agent` hay `.agents` tùy bản); nếu không thấy, bảo AGY đọc `agy/README.md`. Zalo: `caption.md` có thêm phần `## Zalo` tùy chọn.
 ## Chưa làm
 - [ ] `/capnhat` rồi `/kiemgia` lại (đã sửa lỗi đọc cột), gửi kết quả cho em. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
 - [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).

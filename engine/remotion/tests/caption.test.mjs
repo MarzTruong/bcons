@@ -101,3 +101,35 @@ test("captionOptsFor: caption trong du-an/<mã>/ lấy SĐT được phép từ 
   const p = new URL("../../../du-an/bcons-central-park/video/04-ha-tang-bien-hoa/caption.md", import.meta.url).pathname;
   assert.deepEqual(captionOptsFor(p).allowPhones, ["0938323139"]);
 });
+
+// Zalo (anh bổ sung 10/11/2026): phần "## Zalo" tùy chọn, cùng quy tắc cứng như FB/TikTok.
+const makeZalo = (fb, tt, zl, kenh = "[facebook, tiktok, zalo]") =>
+  `---\nstatus: draft\nkenh: ${kenh}\n---\n## Facebook\n${fb}\n\n## TikTok\n${tt}\n\n## Zalo\n${zl}\n`;
+
+test("parseCaption đọc phần Zalo; caption cũ không có Zalo thì zalo = null", () => {
+  assert.equal(parseCaption(CLEAN).zalo, null);
+  const c = parseCaption(makeZalo("a", "b", "Chào anh chị, tuần này có tin mới về hạ tầng Biên Hòa."));
+  assert.deepEqual(c.meta.kenh, ["facebook", "tiktok", "zalo"]);
+  assert.match(c.zalo, /^Chào anh chị/);
+  assert.equal(c.tiktok, "b");
+});
+
+test("kenh có zalo mà thiếu phần '## Zalo' thì báo lỗi; kenh không có zalo thì không đòi", () => {
+  const thieu = "---\nstatus: draft\nkenh: [facebook, tiktok, zalo]\n---\n## Facebook\na\n\n## TikTok\nb\n";
+  assert.ok(checkCaption(thieu).some((e) => /## Zalo/.test(e)));
+  assert.deepEqual(checkCaption(CLEAN), []);
+});
+
+test("quy tắc cứng áp dụng cho phần Zalo: SĐT lạ, hứa tăng giá, nhắc giá căn thiếu VAT/phí bảo trì", () => {
+  assert.ok(checkCaption(makeZalo("a", "b", "Gọi 0905 935 935 nha")).some((e) => /số điện thoại/.test(e)));
+  assert.ok(checkCaption(makeZalo("a", "b", "Chắc chắn tăng giá năm sau")).some((e) => /tăng giá/.test(e)));
+  const gia = checkCaption(makeZalo("a", "b", "Căn 2PN giá 4 tỷ."));
+  assert.ok(gia.some((e) => /Zalo.*VAT/.test(e)), gia.join("|"));
+  assert.deepEqual(checkCaption(makeZalo("a", "b", "Căn 2PN giá 4 tỷ chưa VAT, phí bảo trì 2% tính riêng.")), []);
+  assert.deepEqual(checkCaption(makeZalo("a", "b", "Gọi hoặc Zalo 0938.32.31.39 (Tuấn Trương)"), { allowPhones: ["0938.32.31.39"] }), []);
+});
+
+test("bài Zalo độc lập (kenh: [zalo], chỉ có phần Zalo) không bị đòi Facebook/TikTok", () => {
+  const z = "---\nstatus: draft\nkenh: [zalo]\n---\n## Zalo\nChào anh chị, đợt 2 giới thiệu ngày 29/11. Nhắn em để đặt lịch xem nhà mẫu nha.\n";
+  assert.deepEqual(checkCaption(z), []);
+});
