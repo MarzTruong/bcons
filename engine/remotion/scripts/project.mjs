@@ -75,6 +75,7 @@ export function videoPaths(name, projDir) {
     sources: path.join(dir, "kich-ban.md"),
     storyboard: path.join(dir, "storyboard.md"),
     caption: path.join(dir, "caption.md"),
+    zalo: path.join(dir, "zalo.md"),
     audioDir: path.join(dir, "audio"),
   };
 }

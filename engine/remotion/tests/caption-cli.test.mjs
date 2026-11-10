@@ -58,3 +58,20 @@ test("duyetVideo từ chối khi caption chưa duyệt hoặc thiếu mp4", () =
   duyetCaption(cap);
   assert.throws(() => duyetVideo(cap, mp4 + ".khong-co"), /Không thấy video/);
 });
+
+test("checkVideoFiles: kiểm cả video/<tên>/zalo.md (nếu có) theo quy tắc cứng; không có zalo.md thì chỉ kiểm caption.md", async () => {
+  const { checkVideoFiles } = await import("../scripts/caption-cli.mjs");
+  const projDir = fs.mkdtempSync(path.join(os.tmpdir(), "zl-"));
+  const dir = path.join(projDir, "video", "a");
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "caption.md"), CAP);
+  assert.deepEqual(checkVideoFiles("a", projDir).map((r) => path.basename(r.file)), ["caption.md"]);
+  const zalo = (body) => `---\nstatus: draft\nkenh: [zalo]\n---\n## Zalo\n${body}\n`;
+  fs.writeFileSync(path.join(dir, "zalo.md"), zalo("Gọi 0905 935 935 nha anh chị"));
+  const r = checkVideoFiles("a", projDir);
+  assert.deepEqual(r.map((x) => path.basename(x.file)), ["caption.md", "zalo.md"]);
+  assert.deepEqual(r[0].errs, []);
+  assert.ok(r[1].errs.some((e) => /số điện thoại/.test(e)));
+  fs.writeFileSync(path.join(dir, "zalo.md"), zalo("Đợt 2 giới thiệu ngày 29/11, nhắn em đặt lịch xem nhà mẫu nha."));
+  assert.deepEqual(checkVideoFiles("a", projDir)[1].errs, []);
+});

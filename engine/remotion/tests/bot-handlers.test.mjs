@@ -397,3 +397,11 @@ test("nút 🎬 kiểu cũ (ok:gemvid:<id>, gửi trước bản sửa) bấm sa
   const btns = last.extra.reply_markup.inline_keyboard.flat();
   assert.ok(btns.some((b) => /tim-thong-tin-moi-nhat/.test(b.text) && b.callback_data.startsWith("gv:")));
 });
+
+test("/xem gửi thêm bài Zalo từ video/<tên>/zalo.md nếu có", async () => {
+  const s = setup();
+  fs.writeFileSync(path.join(s.projDir, "video", "a", "zalo.md"), "---\nstatus: draft\nkenh: [zalo]\n---\n## Zalo\nChào anh chị, đợt 2 giới thiệu ngày 29/11 nha.\n");
+  await s.bot.handleUpdate(msg("/xem a"));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.ok(s.said.some((m) => /ZALO/.test(m.text) && /đợt 2 giới thiệu ngày 29\/11/.test(m.text)), s.said.map((m) => m.text.slice(0, 30)).join("|"));
+});

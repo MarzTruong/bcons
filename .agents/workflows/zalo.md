@@ -1,7 +1,7 @@
 ---
-description: Viết bản nháp nội dung đăng Zalo cho Bcons
+description: Viết bài Zalo từ kịch bản video (vai content creator)
 ---
-Đầu vào của anh: chủ đề và loại bài (OA / nhật ký / nhóm / chăm sóc).
+Đầu vào của anh: tên video (vd. `08-cuoi-nam-ve-dich`), hoặc "tất cả" để làm mọi video có kịch bản.
 
 1. Đọc `agy/README.md`, `CLAUDE.md` (quy tắc cứng) và nhiệm vụ mới nhất ở `agy/nhiem-vu/` nếu có.
 2. Làm theo skill `bcons-content-zalo` (`.agents/skills/bcons-content-zalo/SKILL.md`).

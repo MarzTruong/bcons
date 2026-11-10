@@ -14,8 +14,8 @@
 | Nghiên cứu thị trường có nguồn | Tìm báo chính thống, bảng 6 cột (`/nghien-cuu`) | Cổng 1: kiểm từng link, loại số sai, viết kịch bản/spec/caption |
 | Kiểm toán độc lập (bảo mật, rớt lead, số liệu, pháp lý) | Báo cáo có file:dòng (`/kiem-toan`) | Đối chiếu, `phan-hoi.md`, sửa phần đúng (lưu ở `kiem-toan/`) |
 | Thiết kế giao diện | Bản mẫu HTML + ảnh chụp, ≥ 2 phương án (`/thiet-ke`) | Chụp ảnh cho anh chọn; được chọn thì tích hợp `engine/landing`, chạy test, gắn công thức `calc.mjs` |
-| Nội dung đăng Zalo độc lập | Bản nháp theo giọng Zalo (`/zalo`) | Kiểm quy tắc cứng, lưu `du-an/<mã>/content/zalo/`, anh duyệt |
-| Caption FB/TikTok/Zalo đi kèm video | không | Claude viết ở `caption.md` (`## Facebook`, `## TikTok`, tùy chọn `## Zalo`) |
+| Content creator: bài Zalo từ kịch bản video | Một bài Zalo cho mỗi video dựa trên `kich-ban.md`, bảng nguồn, `spec.json` (`/zalo`) | Lưu `video/<tên>/zalo.md`, kiểm quy tắc cứng, anh duyệt |
+| Caption Facebook/TikTok từ kịch bản | không | Claude viết ở `caption.md` (`## Facebook`, `## TikTok`) |
 | Video Remotion, giọng ElevenLabs, render | không | Claude + bot |
 | Sửa `engine/`, bot, test, commit, `NOTES.md` | không | Claude |
 | Đăng bài, nhắn khách | không | Anh duyệt rồi đăng (Metricool/Zalo OA) |

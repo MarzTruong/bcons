@@ -8,7 +8,7 @@
 | Nghiên cứu thị trường có nguồn | Tìm báo chính thống 30 ngày gần nhất, ra bảng 6 cột | skill `bcons-nghien-cuu`, lệnh `/nghien-cuu` | Cổng 1: mở từng link kiểm, loại số sai, rồi viết kịch bản |
 | Kiểm toán độc lập (CISA, bảo mật, rớt lead, pháp lý) | Đọc repo, chạy test, ra báo cáo có file:dòng | skill `bcons-kiem-toan`, lệnh `/kiem-toan` | Đối chiếu từng mã, ghi `phan-hoi.md`, sửa phát hiện đúng |
 | Thiết kế giao diện (landing, thẻ, banner) | Dựng **bản mẫu HTML + ảnh chụp** cho anh chọn | skill `bcons-thiet-ke`, lệnh `/thiet-ke` | Chụp ảnh mẫu cho anh chọn; được chọn thì tích hợp vào `engine/landing` và chạy test |
-| Nội dung đăng Zalo (không gắn video) | Viết bản nháp bài Zalo theo mẫu | skill `bcons-content-zalo`, lệnh `/zalo` | Chạy kiểm quy tắc cứng, lưu vào `du-an/<mã>/content/zalo/`, đưa anh duyệt |
+| Content creator: bài đăng Zalo từ kịch bản video | Đọc `kich-ban.md` + bảng nguồn + `spec.json` của từng video, viết một bài Zalo cho mỗi video (như caption FB/TikTok, thêm nền tảng thứ ba) | skill `bcons-content-zalo`, lệnh `/zalo` | Lưu `video/<tên>/zalo.md`, chạy kiểm quy tắc cứng, đưa anh duyệt |
 
 AGY **không** làm: video Remotion, giọng ElevenLabs, bot Telegram, sửa `engine/`, đăng bài, nhắn khách.
 

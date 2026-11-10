@@ -104,3 +104,8 @@ test("project.json của Bcons Central Park khớp số CĐT; _mau đủ khóa",
   assert.doesNotThrow(() => readProjectConfig(path.join(REPO_ROOT, "du-an", "_mau")));
   assert.equal(readActiveProject(), "bcons-central-park");
 });
+
+test("videoPaths có zalo.md: bài Zalo viết từ kịch bản video, nằm riêng để không đổi dấu duyệt của caption.md (video 1–7 đã duyệt và lên lịch)", () => {
+  const p = videoPaths("lai-suat", "/x/du-an/a");
+  assert.match(p.zalo.replaceAll("\\", "/"), /video\/lai-suat\/zalo\.md$/);
+});

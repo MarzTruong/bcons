@@ -59,6 +59,15 @@ export function captionPathFor(name, projDir, baiDir) {
   return baiDir ? path.resolve(baiDir, "caption.md") : videoPaths(name, projDir).caption;
 }
 
+/** Các file chữ đăng bài của một video cần kiểm: caption.md (FB/TikTok) và zalo.md nếu có (viết từ kịch bản, để riêng
+ * nên không đổi dấu duyệt của caption.md). */
+export function checkVideoFiles(name, projDir) {
+  const p = videoPaths(name, projDir);
+  return [p.caption, p.zalo]
+    .filter((f) => fs.existsSync(f))
+    .map((file) => ({ file, errs: checkCaption(fs.readFileSync(file, "utf8"), captionOptsFor(file)) }));
+}
+
 function takeBai(rest) {
   const i = rest.indexOf("--bai");
   if (i < 0) return { bai: null, rest };
@@ -87,6 +96,17 @@ function main(argv) {
         failed = true;
         console.error(`LỖI ${n}:\n  - ${errs.join("\n  - ")}`);
       } else console.log(`OK ${n} (${parseCaption(fs.readFileSync(file, "utf8")).meta.status || "draft"})`);
+    }
+    if (!bai) {
+      for (const n of names) {
+        const z = videoPaths(n, projDir).zalo;
+        if (!fs.existsSync(z)) continue;
+        const errs = checkCaption(fs.readFileSync(z, "utf8"), captionOptsFor(z));
+        if (errs.length) {
+          failed = true;
+          console.error(`LỖI ${n} (zalo.md):\n  - ${errs.join("\n  - ")}`);
+        } else console.log(`OK ${n} (zalo.md)`);
+      }
     }
     return failed ? 1 : 0;
   }
