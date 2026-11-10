@@ -134,7 +134,7 @@
     {
       "id": "scene2",
       "durationSec": 10.448979591836734,
-      "speech": "Gần nhất là Vành đai ba đoạn trên cao, gần 15 mười lăm ki-lô-mét tới nút giao Tân Vạn, mục tiêu thông xe trong tháng mười một. Từ dự án ra Tân Vạn khoảng mười một phút lái xe.",
+      "speech": "Gần nhất là Vành đai ba đoạn trên cao, gần mười lăm ki-lô-mét tới nút giao Tân Vạn, mục tiêu thông xe trong tháng mười một. Từ dự án ra Tân Vạn khoảng mười một phút lái xe.",
       "words": [
         {
           "text": "Gần",
@@ -143,176 +143,176 @@
         },
         {
           "text": "nhất",
-          "start": 0.32,
-          "end": 0.48
+          "start": 0.28,
+          "end": 0.56
         },
         {
           "text": "là",
           "start": 0.64,
-          "end": 0.72
+          "end": 0.8
         },
         {
           "text": "Vành",
-          "start": 0.8,
-          "end": 0.96
+          "start": 0.88,
+          "end": 1.04
         },
         {
           "text": "đai",
-          "start": 1.04,
+          "start": 1.08,
           "end": 1.2
         },
         {
           "text": "3",
           "start": 1.28,
-          "end": 1.36
+          "end": 1.44
         },
         {
           "text": "đoạn",
-          "start": 1.44,
-          "end": 1.6
+          "start": 1.52,
+          "end": 1.76
         },
         {
           "text": "trên",
-          "start": 1.68,
-          "end": 1.84
+          "start": 1.8,
+          "end": 1.92
         },
         {
           "text": "cao,",
-          "start": 1.92,
-          "end": 2.4
+          "start": 2,
+          "end": 2.56
         },
         {
           "text": "gần",
-          "start": 2.48,
-          "end": 2.64
+          "start": 2.6,
+          "end": 2.8
         },
         {
           "text": "15",
-          "start": 2.72,
-          "end": 3.04
+          "start": 2.88,
+          "end": 3.2
         },
         {
           "text": "km",
-          "start": 3.2,
-          "end": 4.08
+          "start": 3.28,
+          "end": 3.84
         },
         {
           "text": "tới",
-          "start": 4.12,
-          "end": 4.24
+          "start": 3.92,
+          "end": 4
         },
         {
           "text": "nút",
+          "start": 4.08,
+          "end": 4.24
+        },
+        {
+          "text": "giao",
           "start": 4.28,
           "end": 4.48
         },
         {
-          "text": "giao",
-          "start": 4.533,
+          "text": "Tân",
+          "start": 4.56,
           "end": 4.64
         },
         {
-          "text": "Tân",
-          "start": 4.8,
-          "end": 4.88
-        },
-        {
           "text": "Vạn,",
-          "start": 5.04,
-          "end": 5.44
+          "start": 4.8,
+          "end": 5.28
         },
         {
           "text": "mục",
-          "start": 5.48,
-          "end": 5.6
+          "start": 5.32,
+          "end": 5.44
         },
         {
           "text": "tiêu",
-          "start": 5.68,
-          "end": 5.84
+          "start": 5.52,
+          "end": 5.68
         },
         {
           "text": "thông",
-          "start": 5.92,
-          "end": 6.08
+          "start": 5.76,
+          "end": 6
         },
         {
           "text": "xe",
-          "start": 6.16,
-          "end": 6.4
+          "start": 6.08,
+          "end": 6.24
         },
         {
           "text": "trong",
-          "start": 6.48,
-          "end": 6.64
+          "start": 6.32,
+          "end": 6.48
         },
         {
           "text": "tháng",
-          "start": 6.72,
-          "end": 6.8
+          "start": 6.56,
+          "end": 6.64
         },
         {
           "text": "11.",
-          "start": 6.88,
-          "end": 7.52
+          "start": 6.72,
+          "end": 7.36
         },
         {
           "text": "Từ",
-          "start": 7.56,
-          "end": 7.68
+          "start": 7.387,
+          "end": 7.44
         },
         {
           "text": "dự",
-          "start": 7.72,
-          "end": 7.84
+          "start": 7.52,
+          "end": 7.68
         },
         {
           "text": "án",
-          "start": 7.92,
-          "end": 8.08
+          "start": 7.76,
+          "end": 7.92
         },
         {
           "text": "ra",
-          "start": 8.16,
-          "end": 8.24
+          "start": 8,
+          "end": 8.16
         },
         {
           "text": "Tân",
-          "start": 8.32,
-          "end": 8.48
+          "start": 8.24,
+          "end": 8.32
         },
         {
           "text": "Vạn",
-          "start": 8.56,
-          "end": 8.8
+          "start": 8.48,
+          "end": 8.72
         },
         {
           "text": "khoảng",
-          "start": 8.88,
-          "end": 9.12
+          "start": 8.8,
+          "end": 9.04
         },
         {
           "text": "11",
-          "start": 9.2,
-          "end": 9.56
+          "start": 9.12,
+          "end": 9.52
         },
         {
           "text": "phút",
           "start": 9.6,
-          "end": 9.76
+          "end": 9.68
         },
         {
           "text": "lái",
-          "start": 9.8,
+          "start": 9.76,
           "end": 9.92
         },
         {
           "text": "xe.",
-          "start": 10,
+          "start": 10.04,
           "end": 10.4
         }
       ],
-      "seed": 20260
+      "seed": 27900
     },
     {
       "id": "scene3",
