@@ -143,6 +143,25 @@ export function parseMarkup(markup) {
   return out;
 }
 
+/**
+ * Số hiển thị không có ngoặc (máy đọc nguyên số) đứng ngay trước một chữ có ngoặc mà lời đọc lại bắt đầu bằng số:
+ * "15 km{mười lăm ki-lô-mét}" bị đọc "mười lăm mười lăm ki-lô-mét". Viết đúng: "15{mười lăm} km{ki-lô-mét}".
+ */
+export function checkDoubledNumber(spec) {
+  const NUM = /^(không|một|mốt|hai|ba|bốn|tư|năm|lăm|sáu|bảy|tám|chín|mười|mươi|trăm|nghìn|ngàn|triệu|tỷ|tỉ)(\s|$)/i;
+  const errors = [];
+  for (const sc of spec.scenes ?? []) {
+    const t = parseMarkup(sc.markup ?? "");
+    for (let i = 1; i < t.length; i++) {
+      const a = t[i - 1], b = t[i];
+      if (/\d/.test(a.show) && a.say === a.show && b.say !== b.show && NUM.test(b.say.trim())) {
+        errors.push(`Cảnh ${sc.id}: "${a.show} ${b.show}{${b.say}}" sẽ đọc lặp số; viết "${a.show}{...} ${b.show}{...}"`);
+      }
+    }
+  }
+  return errors;
+}
+
 const speechOf = (tokens) => tokens.filter((t) => t.say).map((t) => t.say).join(" ");
 
 /** Khoảng ký tự [a, b] trong lời đọc của từng token có đọc (token chỉ hiển thị: null). */

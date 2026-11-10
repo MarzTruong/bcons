@@ -116,3 +116,15 @@ test("checkTimestamps bắt lệch số cảnh, id và lời đọc", () => {
   assert.match(checkTimestamps(s, { scenes: [{ id: "x", speech: "một, hai và ba." }] }).join("\n"), /id/);
   assert.match(checkTimestamps(s, { scenes: [{ id: "scene1", speech: "cũ" }] }).join("\n"), /lời bình.*generate-voice/s);
 });
+
+test("checkDoubledNumber: số đứng trước đơn vị có ngoặc đọc lại số ('15 km{mười lăm ki-lô-mét}') bị chặn (video 8 bị đọc lặp 15, anh báo 10/11/2026)", async () => {
+  const { checkDoubledNumber } = await import("../scripts/spec-tools.mjs");
+  const mk = (markup) => ({ scenes: [{ id: "scene2", markup }] });
+  const cu = "Gần nhất là Vành đai 3{ba} đoạn trên cao, gần 15 km{mười lăm ki-lô-mét} tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11.{mười một.}";
+  const cu4 = "Từ dự án tới sân bay khoảng 33 km{ba mươi ba ki-lô-mét} đường xe chạy.";
+  assert.equal(checkDoubledNumber(mk(cu)).length, 1);
+  assert.match(checkDoubledNumber(mk(cu4))[0], /33.*đọc lặp/);
+  const moi = "Gần nhất là Vành đai 3{ba} đoạn trên cao, gần 15{mười lăm} km{ki-lô-mét} tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11.{mười một.}";
+  assert.deepEqual(checkDoubledNumber(mk(moi)), []);
+  assert.deepEqual(checkDoubledNumber(mk("thấp hơn mức 9,5{chín phẩy năm} đến 11,5%{mười một phẩy năm phần trăm} của quý III.{ba.}")), []);
+});
