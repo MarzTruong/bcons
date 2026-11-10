@@ -29,6 +29,8 @@ export const AREAS = [
   { key: "kcn-amata", name: "KCN Amata", osmIds: ["way/583464295"], refHa: 513.01 },
   { key: "kcn-bien-hoa-1", name: "KCN Biên Hòa 1", osmIds: ["way/568387663"], refHa: 335 },
   { key: "du-an-central-park", name: "Khu đất Bcons Central Park (theo OSM)", osmIds: ["way/1015150479"] },
+  // Ranh sân bay theo OSM (aeroway=aerodrome, iata LTH); video 8 cảnh 4 (anh yêu cầu 10/11/2026)
+  { key: "san-bay-long-thanh", name: "Sân bay quốc tế Long Thành (theo OSM)", osmIds: ["relation/13456478"] },
 ];
 
 /** Overpass JSON (out geom) -> Map<"way/id", Feature>. Hỗ trợ way kín và relation multipolygon (vòng outer). */

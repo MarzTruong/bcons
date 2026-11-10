@@ -11,7 +11,7 @@ Góc: ba mốc giao thông quanh Biên Hòa dự kiến xong trong tháng 11–1
 | 1 | `stat-hero` | "Cuối năm 2026 / quanh Biên Hòa"; số 3 "công trình"; ảnh phối cảnh ban đêm (ghi minh họa) | Từ giờ tới Noel, quanh Biên Hòa có 3 công trình giao thông dự kiến về đích. Mình xem lần lượt từng cái. |
 | 2 | `geo-map` | Bản đồ vệ tinh: dự án (đỏ) → nút giao Tân Vạn (vàng), tuyến lái xe thật (xanh) tự vẽ; thẻ "Vành đai 3 TP.HCM, đoạn trên cao" | Gần nhất là Vành đai 3 đoạn trên cao, gần 15 km tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11. Từ dự án ra Tân Vạn khoảng 11 phút lái xe. |
 | 3 | `geo-map` | Dự án và nút giao Tân Hiệp (không vẽ tuyến); thẻ "Nút giao Tân Hiệp" | Xa hơn về phía Long Thành, nút giao Tân Hiệp nối cao tốc Biên Hòa - Vũng Tàu với Bến Lức - Long Thành, dự kiến khai thác trong tháng 11. |
-| 4 | `geo-map` | Dự án → sân bay Long Thành, tuyến lái xe thật tự vẽ; thẻ "Dự kiến khai thác thương mại từ 0 giờ ngày 24/12/2026" | Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ 0 giờ ngày 24/12. Từ dự án tới sân bay khoảng 33 km đường xe chạy. |
+| 4 | `geo-map` | Dự án → sân bay Long Thành, ranh sân bay (OSM) tự vẽ dần có vệt sáng chạy viền, tuyến lái xe thật tự vẽ; thẻ "Dự kiến khai thác thương mại từ 0 giờ ngày 24/12/2026" | Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ 0 giờ ngày 24/12. Từ dự án tới sân bay khoảng 33 km đường xe chạy. |
 | 5 | `project-close` | Ảnh phối cảnh (minh họa), thẻ dự án, "Đợt 2 giới thiệu ngày 29/11 · đợt 3 ngày 27/12/2026"; tên + QR | Còn Bcons Central Park: đợt 2 giới thiệu ngày 29/11, đợt 3 ngày 27/12, ba ngày sau mốc sân bay. |
 
 Ghi chú nội dung:
@@ -33,6 +33,7 @@ Ghi chú nội dung:
 | geo-tan-van | Nút giao Tân Vạn | 09/11/2026 | OpenStreetMap (Nominatim) | https://www.openstreetmap.org/way/563802782 | `assets/geo/NGUON.md` |
 | geo-tan-hiep | Nút giao Tân Hiệp | 09/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.674713488386246,107.0385183569583 | `assets/geo/NGUON.md` |
 | geo-long-thanh | Sân bay Long Thành | 04/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.773541785186673,107.04195752766535 | `assets/geo/NGUON.md` |
+| geo-san-bay-long-thanh | Ranh sân bay Long Thành | 10/11/2026 | OpenStreetMap (relation 13456478, aeroway=aerodrome) | https://www.openstreetmap.org/relation/13456478 | Ranh do cộng đồng OSM vẽ, không phải ranh pháp lý; file `assets/geo/osm/san-bay-long-thanh.geojson` (`npm run geo:fetch`). |
 | geo-du-an-tan-van | Tuyến lái xe dự án → Tân Vạn: 10,8 km, ~11 phút | 09/11/2026 | OpenStreetMap (OSRM) | https://router.project-osrm.org | Ước tính lúc đường thông thoáng. |
 | geo-du-an-san-bay | Tuyến lái xe dự án → sân bay Long Thành: 33,2 km, ~41 phút | 09/11/2026 | OpenStreetMap (OSRM) | https://router.project-osrm.org | Video chỉ nói "khoảng 33 km". |
 | phoi-canh-dem | Hình ảnh phối cảnh dự án ban đêm (file 202605_BPTH_ST02_ARIAL_01_NIGHT (1).jpg) | 05/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Ghi "minh họa". Dùng lại từ video 6. |

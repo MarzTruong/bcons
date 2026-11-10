@@ -9,21 +9,57 @@ export const VIEN = {
 } as const;
 
 /** Pha 0..1 của vệt sáng; null khi viền chưa vẽ xong. */
-export const cometPhase = (frame: number, start: number, drawFrames: number): number | null => {
+export const cometPhase = (
+  frame: number,
+  start: number,
+  drawFrames: number,
+): number | null => {
   const t = frame - (start + drawFrames);
   if (t < 0) return null;
   return (t % VIEN.chuKy) / VIEN.chuKy;
 };
 
+/**
+ * Pha 0..1 của vệt sáng (dọc tuyến hoặc quanh viền vùng); null khi chưa vẽ xong hoặc vòng hiện tại không kịp chạy hết
+ * trước khi cảnh kết thúc (`sceneFrames`), để không bị cắt giữa chừng lúc chuyển cảnh.
+ */
+export const lineCometPhase = (
+  frame: number,
+  start: number,
+  drawFrames: number,
+  sceneFrames: number,
+): number | null => {
+  const t = frame - (start + drawFrames);
+  if (t < 0) return null;
+  const fullPasses = Math.floor(
+    (sceneFrames - (start + drawFrames)) / VIEN.chuKy,
+  );
+  if (t >= fullPasses * VIEN.chuKy) return null;
+  return (t % VIEN.chuKy) / VIEN.chuKy;
+};
+
 /** Đoạn sáng trên chu vi dài `len` (một hoặc hai đoạn khi vượt qua điểm đầu). */
-export const cometRanges = (phase: number, len: number, frac: number = VIEN.doDai): [number, number][] => {
+export const cometRanges = (
+  phase: number,
+  len: number,
+  frac: number = VIEN.doDai,
+): [number, number][] => {
   const a = phase * len;
   const b = a + frac * len;
-  return b <= len ? [[a, b]] : [[a, len], [0, b - len]];
+  return b <= len
+    ? [[a, b]]
+    : [
+        [a, len],
+        [0, b - len],
+      ];
 };
 
 /** Vệt sáng chạy dọc tuyến (đường hở) từ đầu tới cuối rồi lặp: đoạn [km đầu, km cuối], null khi vệt đang ngoài tuyến. */
-export const lineCometRange = (phase: number, len: number, frac: number = VIEN.doDai): [number, number] | null => {
+export const lineCometRange = (
+  phase: number,
+  len: number,
+  frac: number = VIEN.doDai,
+): [number, number] | null => {
   const head = phase * len * (1 + frac);
   const a = Math.max(0, head - frac * len);
   const b = Math.min(len, head);

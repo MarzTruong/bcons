@@ -37,7 +37,7 @@
     {
       "id": "scene2",
       "template": "geo-map",
-      "markup": "Gần nhất là Vành đai 3{ba} đoạn trên cao, gần 15 km{mười lăm ki-lô-mét} tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11.{mười một.} Từ dự án ra Tân Vạn khoảng 11{mười một} phút lái xe.",
+      "markup": "Gần nhất là Vành đai 3{ba} đoạn trên cao, gần 15{mười lăm} km{ki-lô-mét} tới nút giao Tân Vạn, mục tiêu thông xe trong tháng 11.{mười một.} Từ dự án ra Tân Vạn khoảng 11{mười một} phút lái xe.",
       "cues": {
         "a": "Gần",
         "tv": "Tân",
@@ -90,7 +90,8 @@
             "kind": "official",
             "color": "teal",
             "width": 8,
-            "cueKey": "dt",
+            "cueKey": "tv",
+            "offset": 10,
             "drawFrames": 60,
             "sourceId": "geo-du-an-tan-van",
             "vetChay": true
@@ -169,11 +170,11 @@
     {
       "id": "scene4",
       "template": "geo-map",
-      "markup": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ 0{không} giờ ngày 24/12.{hai mươi bốn tháng mười hai.} Từ dự án tới sân bay khoảng 33 km{ba mươi ba ki-lô-mét} đường xe chạy.",
+      "markup": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ 0{không} giờ ngày 24/12.{hai mươi bốn tháng mười hai.} Từ dự án tới sân bay khoảng 33{ba mươi ba} km{ki-lô-mét} đường xe chạy.",
       "cues": {
         "a": "Và",
         "sb": "sân",
-        "dt": "Từ"
+        "ng": "ngày"
       },
       "props": {
         "kicker": "0 giờ ngày 24/12/2026",
@@ -182,7 +183,7 @@
         "camera": {
           "fit": [
             "central-park",
-            "long-thanh"
+            "san-bay"
           ],
           "padding": {
             "top": 640,
@@ -222,13 +223,26 @@
             "kind": "official",
             "color": "teal",
             "width": 8,
-            "cueKey": "dt",
-            "drawFrames": 75,
+            "cueKey": "ng",
+            "drawFrames": 60,
             "sourceId": "geo-du-an-san-bay",
             "vetChay": true
           }
         ],
-        "areas": [],
+        "areas": [
+          {
+            "key": "san-bay",
+            "file": "assets/geo/osm/san-bay-long-thanh.geojson",
+            "kind": "official",
+            "label": "",
+            "cueKey": "sb",
+            "color": "gold",
+            "fillOpacity": 0.22,
+            "drawFrames": 45,
+            "vienChay": true,
+            "sourceId": "geo-san-bay-long-thanh"
+          }
+        ],
         "info": {
           "title": "Sân bay Long Thành",
           "text": "Dự kiến khai thác thương mại từ 0 giờ ngày 24/12/2026",
