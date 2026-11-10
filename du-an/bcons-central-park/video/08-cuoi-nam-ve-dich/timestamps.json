@@ -479,8 +479,8 @@
     },
     {
       "id": "scene4",
-      "durationSec": 10.448979591836734,
-      "speech": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ không giờ ngày hai mươi bốn tháng mười hai. Từ dự án tới sân bay khoảng 33 ba mươi ba ki-lô-mét đường xe chạy.",
+      "durationSec": 10.266122448979592,
+      "speech": "Và mốc lớn nhất: sân bay Long Thành dự kiến khai thác thương mại từ không giờ ngày hai mươi bốn tháng mười hai. Từ dự án tới sân bay khoảng ba mươi ba ki-lô-mét đường xe chạy.",
       "words": [
         {
           "text": "Và",
@@ -490,155 +490,155 @@
         {
           "text": "mốc",
           "start": 0.24,
-          "end": 0.48
+          "end": 0.4
         },
         {
           "text": "lớn",
-          "start": 0.56,
-          "end": 0.68
+          "start": 0.48,
+          "end": 0.64
         },
         {
           "text": "nhất:",
           "start": 0.72,
-          "end": 1.2
+          "end": 1.28
         },
         {
           "text": "sân",
-          "start": 1.28,
-          "end": 1.36
+          "start": 1.32,
+          "end": 1.44
         },
         {
           "text": "bay",
-          "start": 1.44,
-          "end": 1.52
+          "start": 1.52,
+          "end": 1.6
         },
         {
           "text": "Long",
-          "start": 1.6,
-          "end": 1.68
+          "start": 1.68,
+          "end": 1.76
         },
         {
           "text": "Thành",
-          "start": 1.76,
-          "end": 2
+          "start": 1.84,
+          "end": 2.16
         },
         {
           "text": "dự",
-          "start": 2.08,
-          "end": 2.24
-        },
-        {
-          "text": "kiến",
           "start": 2.32,
           "end": 2.48
         },
         {
-          "text": "khai",
+          "text": "kiến",
           "start": 2.56,
-          "end": 2.72
+          "end": 2.8
+        },
+        {
+          "text": "khai",
+          "start": 2.88,
+          "end": 3.04
         },
         {
           "text": "thác",
-          "start": 2.76,
-          "end": 2.88
+          "start": 3.08,
+          "end": 3.2
         },
         {
           "text": "thương",
-          "start": 2.96,
-          "end": 3.12
+          "start": 3.28,
+          "end": 3.44
         },
         {
           "text": "mại",
-          "start": 3.16,
-          "end": 3.36
+          "start": 3.52,
+          "end": 3.76
         },
         {
           "text": "từ",
-          "start": 3.44,
-          "end": 3.6
+          "start": 3.84,
+          "end": 4
         },
         {
           "text": "0",
-          "start": 3.76,
-          "end": 3.92
-        },
-        {
-          "text": "giờ",
-          "start": 4,
+          "start": 4.08,
           "end": 4.24
         },
         {
-          "text": "ngày",
+          "text": "giờ",
           "start": 4.4,
-          "end": 4.56
+          "end": 4.64
+        },
+        {
+          "text": "ngày",
+          "start": 4.8,
+          "end": 5.04
         },
         {
           "text": "24/12.",
-          "start": 4.72,
-          "end": 6.16
+          "start": 5.08,
+          "end": 6.56
         },
         {
           "text": "Từ",
-          "start": 6.2,
-          "end": 6.28
-        },
-        {
-          "text": "dự",
-          "start": 6.32,
-          "end": 6.48
-        },
-        {
-          "text": "án",
-          "start": 6.56,
+          "start": 6.6,
           "end": 6.72
         },
         {
-          "text": "tới",
+          "text": "dự",
           "start": 6.8,
-          "end": 6.92
+          "end": 6.96
         },
         {
-          "text": "sân",
-          "start": 6.96,
-          "end": 7.12
+          "text": "án",
+          "start": 7.04,
+          "end": 7.2
         },
         {
-          "text": "bay",
-          "start": 7.2,
+          "text": "tới",
+          "start": 7.28,
           "end": 7.36
         },
         {
+          "text": "sân",
+          "start": 7.44,
+          "end": 7.6
+        },
+        {
+          "text": "bay",
+          "start": 7.72,
+          "end": 7.84
+        },
+        {
           "text": "khoảng",
-          "start": 7.52,
-          "end": 7.76
+          "start": 8,
+          "end": 8.24
         },
         {
           "text": "33",
-          "start": 7.92,
-          "end": 8.4
+          "start": 8.4,
+          "end": 8.8
         },
         {
           "text": "km",
-          "start": 8.56,
-          "end": 9.44
+          "start": 8.88,
+          "end": 9.28
         },
         {
           "text": "đường",
+          "start": 9.36,
+          "end": 9.52
+        },
+        {
+          "text": "xe",
           "start": 9.6,
           "end": 9.76
         },
         {
-          "text": "xe",
-          "start": 9.84,
-          "end": 9.92
-        },
-        {
           "text": "chạy.",
-          "start": 10,
-          "end": 10.4
+          "start": 9.84,
+          "end": 10.24
         }
       ],
-      "seed": 20260
+      "seed": 42886
     },
     {
       "id": "scene5",
