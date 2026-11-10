@@ -6,7 +6,8 @@
 1. **AGY chỉ đọc repo:** không commit, không push, không sửa hay viết code/tài liệu trong repo.
 2. **Chỉ Claude Code (và bot Telegram `/duyet`, `/gemini` trên máy anh) ghi vào `main`.**
 3. **AGY bàn giao qua Drive:** `Bcons - Dong bo thiet bi/agy/den-claude/<ngày>-<loại>-<chủ đề>/ket-qua.md` (mẫu ở `agy/mau/`). Không ghi được Drive thì anh tải Artifact gửi vào chat Claude.
-4. **Claude đối chiếu rồi mới đưa vào repo:** audit 09/11 có 2 phát hiện sai, báo cáo vận hành có nhiều chỗ lệch; số liệu AGY thu thập luôn qua cổng 1 (mở lại từng link).
+4. **AGY chạy trên PC trong bản sao riêng `E:\Claude\bcons-agy`** (anh chốt 10/11/2026): không có `.env`/`data/`/`anh/`, quyền push tắt, `git pull` đầu mỗi việc. Claude chạy cloud nên chỉ đọc được thành phẩm trên Drive.
+5. **Claude đối chiếu rồi mới đưa vào repo:** audit 09/11 có 2 phát hiện sai, báo cáo vận hành có nhiều chỗ lệch; số liệu AGY thu thập luôn qua cổng 1 (mở lại từng link).
 
 ## Thế mạnh và việc giao
 | Việc | AGY làm | Claude làm |

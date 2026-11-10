@@ -2,6 +2,13 @@
 
 **Bắt đầu đọc từ file này.** AGY chỉ ĐỌC repo `MarzTruong/bcons`: không commit, không push, không sửa hay viết code trong repo (anh chốt 10/11/2026). Việc của AGY là làm ra tài liệu, bản mẫu, bản nháp rồi để vào thư mục bàn giao. Claude Code đọc, đối chiếu với repo, rồi mới đưa vào repo.
 
+## Chỗ chạy (anh chốt 10/11/2026)
+AGY chạy trên PC của anh, trong **bản sao riêng `E:\Claude\bcons-agy`**, không mở thư mục bot `E:\Claude\bcons` (thư mục đó có `.env`, `data/`, `anh/`). Bản sao lấy từ GitHub nên không có dữ liệu nội bộ; quyền push đã tắt (`git remote set-url --push origin DISABLED`).
+- **Đầu mỗi việc: chạy `git pull`** trong bản sao rồi mới đọc nhiệm vụ (không pull sẽ làm việc trên bản cũ).
+- Cần chạy thử (landing, test): `npm ci` trong `engine/landing` hoặc `engine/remotion` của bản sao. Không có khóa API nên không gọi được ElevenLabs/Gemini, đúng ý.
+- Claude chạy trên cloud, **không đọc được bản sao trên PC**: mọi thành phẩm (báo cáo, HTML, ảnh chụp) phải lưu vào thư mục bàn giao Drive bên dưới, không để lại trong bản sao.
+- Không đọc `E:\Claude\bcons`, `data/`, `anh/`, `.env`, và không chép dữ liệu trong đó vào báo cáo. Cần bảng giá để thiết kế thì dùng số trong `du-an/<mã>/thong-tin.md` hoặc file giá công khai Claude đính kèm trong nhiệm vụ.
+
 ## Thế mạnh của AGY và việc giao (theo báo cáo đề xuất vận hành 09/11/2026, đã đối chiếu)
 | Loại việc | AGY làm | Skill / lệnh tắt | Claude làm tiếp |
 |---|---|---|---|

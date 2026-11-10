@@ -5,6 +5,9 @@
 - Commit repo để đọc: `<git log -1>`
 - Đọc trước: <file trong repo>
 
+## Trước khi làm
+Trong bản sao `E:\Claude\bcons-agy`: chạy `git pull`, kiểm `git log -1` khớp dòng "Commit repo để đọc" ở trên hoặc mới hơn.
+
 ## Mục tiêu
 <1–3 câu: làm gì, để dùng vào đâu>
 
