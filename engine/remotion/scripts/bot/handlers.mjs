@@ -156,10 +156,20 @@ export function createBot(deps) {
       const ok = deps.cancel?.();
       return say(ok ? `Đã dừng: ${current}.` : `Việc "${current}" không dừng giữa chừng được, chờ xong nhé.`);
     },
-    xem([name]) {
+    xem([name, kieu]) {
       if (!checkName(name)) return;
       return enqueue(`xem ${name}`, async () => {
-        const cap = videoPaths(name, projDir).caption;
+        const vp = videoPaths(name, projDir);
+        const cap = vp.caption;
+        if (/^icon$/i.test(kieu ?? "")) {
+          if (!fs.existsSync(vp.captionIcon)) return say(`${name}: chưa có bản icon (caption-icon.md). Nhắn Claude "viết bản caption có icon cho ${name}".`);
+          const c = parseCaption(fs.readFileSync(vp.captionIcon, "utf8"));
+          await say(`📘 FACEBOOK (ICON) – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
+          await say(`🎵 TIKTOK (ICON) – ${name}\n\n${c.tiktok ?? "(chưa có)"}`);
+          if (c.zalo) await say(`💬 ZALO (ICON) – ${name}\n\n${c.zalo}`);
+          return;
+        }
+        if (fs.existsSync(vp.captionIcon)) await say(`Có thêm bản caption có icon: /xem ${name} icon`);
         if (fs.existsSync(cap)) {
           const c = parseCaption(fs.readFileSync(cap, "utf8"));
           await say(`📘 FACEBOOK – ${name}\n\n${c.facebook ?? "(chưa có)"}`);

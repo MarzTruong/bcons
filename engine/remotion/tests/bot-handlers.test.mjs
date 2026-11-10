@@ -405,3 +405,24 @@ test("/xem gửi thêm bài Zalo từ video/<tên>/zalo.md nếu có", async () 
   await new Promise((r) => setTimeout(r, 30));
   assert.ok(s.said.some((m) => /ZALO/.test(m.text) && /đợt 2 giới thiệu ngày 29\/11/.test(m.text)), s.said.map((m) => m.text.slice(0, 30)).join("|"));
 });
+
+test("/xem <tên> icon gửi bản caption có icon (caption-icon.md); /xem thường nhắc có bản icon", async () => {
+  const s = setup();
+  fs.writeFileSync(path.join(s.projDir, "video", "a", "caption-icon.md"), "---\nstatus: draft\nkenh: [facebook, tiktok, zalo]\n---\n## Facebook\nBài FB có icon 🏠\n\n## TikTok\nTikTok có icon 🏠 #bienhoa\n\n## Zalo\nZalo có icon 💬\n");
+  await s.bot.handleUpdate(msg("/xem a icon"));
+  await new Promise((r) => setTimeout(r, 30));
+  const all = s.said.map((m) => m.text).join("\n");
+  assert.match(all, /FACEBOOK.*ICON[\s\S]*Bài FB có icon 🏠/);
+  assert.match(all, /TIKTOK.*ICON[\s\S]*TikTok có icon/);
+  assert.match(all, /ZALO.*ICON[\s\S]*Zalo có icon 💬/);
+  assert.doesNotMatch(all, /Bài FB\n/, "không gửi bản chữ thuần khi hỏi icon");
+  const s2 = setup();
+  fs.writeFileSync(path.join(s2.projDir, "video", "a", "caption-icon.md"), "---\nstatus: draft\nkenh: [facebook, tiktok]\n---\n## Facebook\nx 🏠\n\n## TikTok\ny\n");
+  await s2.bot.handleUpdate(msg("/xem a"));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.ok(s2.said.some((m) => /\/xem a icon/.test(m.text)), s2.said.map((m) => m.text.slice(0, 25)).join("|"));
+  const s3 = setup();
+  await s3.bot.handleUpdate(msg("/xem a icon"));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.ok(s3.said.some((m) => /chưa có bản icon/i.test(m.text)));
+});

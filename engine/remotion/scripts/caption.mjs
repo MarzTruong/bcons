@@ -131,6 +131,31 @@ export function checkCaption(text, { allowPhones = [] } = {}) {
   return errs;
 }
 
+const ICON_RE = /\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic}|[\u{1F3FB}-\u{1F3FF}])*/gu;
+const ICON_SLOP = ["✅", "✔", "❌", "🔥", "💥", "🚀", "💯", "‼"];
+const ICON_MAX = 4;
+
+/**
+ * Giới hạn icon cho bản caption có icon (caption-icon.md) để không thành "AI slop": tối đa 4 icon mỗi phần,
+ * không dùng icon làm gạch đầu dòng (từ 2 dòng bắt đầu bằng icon), một icon không lặp quá 2 lần, cấm bộ icon rập khuôn.
+ */
+export function checkIcons(text) {
+  const errs = [];
+  const { facebook, tiktok, zalo } = parseCaption(text);
+  for (const [ten, sec] of [["Facebook", facebook], ["TikTok", tiktok], ["Zalo", zalo]]) {
+    if (!sec) continue;
+    const icons = sec.match(ICON_RE) ?? [];
+    if (icons.length > ICON_MAX) errs.push(`Phần ${ten}: ${icons.length} icon, tối đa ${ICON_MAX} (icon vừa phải, mỗi cái có chỗ riêng)`);
+    const dauDong = sec.split("\n").filter((l) => new RegExp(`^\\s*(?:${ICON_RE.source})`, "u").test(l)).length;
+    if (dauDong >= 2) errs.push(`Phần ${ten}: ${dauDong} dòng bắt đầu bằng icon (icon làm gạch đầu dòng, giống máy viết)`);
+    const dem = new Map();
+    for (const ic of icons) dem.set(ic, (dem.get(ic) ?? 0) + 1);
+    for (const [ic, n] of dem) if (n > 2) errs.push(`Phần ${ten}: icon ${ic} lặp ${n} lần`);
+    for (const b of ICON_SLOP) if (sec.includes(b)) errs.push(`Phần ${ten}: icon ${b} là icon rập khuôn quảng cáo (AI slop), bỏ đi`);
+  }
+  return errs;
+}
+
 /** Trả caption mới với frontmatter đã cập nhật theo patch; nội dung giữ nguyên. */
 export function writeMeta(text, patch) {
   const { body } = splitFront(text);

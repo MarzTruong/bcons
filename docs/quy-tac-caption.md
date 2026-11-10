@@ -28,3 +28,15 @@ Zalo là nền tảng thứ ba viết từ kịch bản video, bên cạnh Faceb
 - Cùng số liệu và cùng nguồn với video và caption FB/TikTok, nhưng không chép nguyên văn. Giọng gần gũi như nhắn tin: xưng "em", gọi "anh chị", đoạn ngắn, khoảng 400–900 ký tự, ít icon (không làm gạch đầu dòng), một lời mời cụ thể (nhắn Zalo, đặt lịch xem nhà mẫu).
 - **Không** dùng Zalo cá nhân nhắn hàng loạt. Tin chủ động chỉ gửi khách đã đồng ý nhận tin, qua Zalo OA/ZNS (`CLAUDE.md` mục "Tin nhắn hàng loạt").
 - Bản nháp do Antigravity viết (skill `bcons-content-zalo`) vẫn qua kiểm quy tắc cứng và anh duyệt trước khi đăng.
+
+## Bản có icon (anh hỏi 10/11/2026)
+Icon không tự nó là "AI slop": FB/TikTok/Zalo đều quen có icon. Slop là icon rập khuôn: làm gạch đầu dòng, ✅🔥💥🚀 chồng lên nhau, bài nào cũng 📍 địa chỉ. Vì vậy **mỗi bài có hai bản để anh chọn**:
+- **Bản chữ thuần**: `caption.md` (FB/TikTok), `zalo.md` (Zalo).
+- **Bản có icon**: `video/<tên>/caption-icon.md` (cùng nội dung chữ, thêm icon; có `## Facebook`, `## TikTok`, `## Zalo`). Bot: `/xem <tên> icon`.
+
+Quy tắc icon (code kiểm trong `checkIcons`, `npm run check:caption -- <tên>`):
+- Tối đa **4 icon mỗi phần**; thực tế dùng 2–3, mỗi icon có chỗ riêng (một cái ở câu mở hoặc ý chính, một cái ở lời mời nhắn tin).
+- Không dùng icon làm gạch đầu dòng (không quá 1 dòng bắt đầu bằng icon); một icon không lặp quá 2 lần.
+- Cấm bộ rập khuôn: ✅ ✔ ❌ 🔥 💥 🚀 💯 ‼. Không icon trong dòng nguồn, số liệu.
+- Chọn icon hợp nghĩa (🏗️ công trình, ✈️ sân bay, 🏦 ngân hàng, 🏭 khu công nghiệp, 💬 nhắn tin), đổi theo từng bài, không một bộ icon cho mọi bài.
+Anh chọn bản nào cho từng video thì nhắn Claude, em cập nhật bài đăng/Sheet theo bản đó (bài đã lên lịch Metricool sửa riêng).

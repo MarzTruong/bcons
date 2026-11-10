@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { bodyHash, captionOptsFor, checkCaption, parseCaption, writeMeta } from "./caption.mjs";
+import { bodyHash, captionOptsFor, checkCaption, checkIcons, parseCaption, writeMeta } from "./caption.mjs";
 import { listVideos, takeProjectFlag, videoPaths } from "./project.mjs";
 
 /** Giờ Việt Nam dạng 2026-11-07T09:30:00+07:00. */
@@ -63,9 +63,14 @@ export function captionPathFor(name, projDir, baiDir) {
  * nên không đổi dấu duyệt của caption.md). */
 export function checkVideoFiles(name, projDir) {
   const p = videoPaths(name, projDir);
-  return [p.caption, p.zalo]
+  return [p.caption, p.zalo, p.captionIcon]
     .filter((f) => fs.existsSync(f))
-    .map((file) => ({ file, errs: checkCaption(fs.readFileSync(file, "utf8"), captionOptsFor(file)) }));
+    .map((file) => {
+      const text = fs.readFileSync(file, "utf8");
+      const errs = checkCaption(text, captionOptsFor(file));
+      if (path.basename(file) === "caption-icon.md") errs.push(...checkIcons(text));
+      return { file, errs };
+    });
 }
 
 function takeBai(rest) {
@@ -99,13 +104,14 @@ function main(argv) {
     }
     if (!bai) {
       for (const n of names) {
-        const z = videoPaths(n, projDir).zalo;
-        if (!fs.existsSync(z)) continue;
-        const errs = checkCaption(fs.readFileSync(z, "utf8"), captionOptsFor(z));
-        if (errs.length) {
-          failed = true;
-          console.error(`LỖI ${n} (zalo.md):\n  - ${errs.join("\n  - ")}`);
-        } else console.log(`OK ${n} (zalo.md)`);
+        for (const { file, errs } of checkVideoFiles(n, projDir)) {
+          const base = path.basename(file);
+          if (base === "caption.md") continue; // đã kiểm ở vòng trên
+          if (errs.length) {
+            failed = true;
+            console.error(`LỖI ${n} (${base}):\n  - ${errs.join("\n  - ")}`);
+          } else console.log(`OK ${n} (${base})`);
+        }
       }
     }
     return failed ? 1 : 0;

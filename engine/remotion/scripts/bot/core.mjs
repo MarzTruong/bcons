@@ -8,7 +8,7 @@ import { listVideos, videoPaths } from "../project.mjs";
 export const HELP = [
   "Lệnh bot Bcons:",
   "/danhsach – trạng thái các video",
-  "/xem <tên> – gửi caption + bản xem thử",
+  "/xem <tên> – gửi caption + bản xem thử; thêm chữ icon (vd. /xem 8 icon) để xem bản caption có icon",
   "/duyet <tên> – duyệt caption + video vừa render, gửi chữ caption để đăng, lưu lên GitHub",
   "/render <số> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
   "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để tick chọn 1, nhiều hoặc tất cả video.)",

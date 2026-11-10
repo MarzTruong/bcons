@@ -133,3 +133,26 @@ test("bài Zalo độc lập (kenh: [zalo], chỉ có phần Zalo) không bị �
   const z = "---\nstatus: draft\nkenh: [zalo]\n---\n## Zalo\nChào anh chị, đợt 2 giới thiệu ngày 29/11. Nhắn em để đặt lịch xem nhà mẫu nha.\n";
   assert.deepEqual(checkCaption(z), []);
 });
+
+// Bản caption có icon (caption-icon.md): icon có chừng mực để không thành "AI slop" (anh hỏi 10/11/2026).
+const ICON = (fb, tt = "x", zl = "y") => makeZalo(fb, tt, zl);
+
+test("checkIcons: tối đa 4 icon mỗi phần, không dùng icon làm gạch đầu dòng, không lặp một icon quá 2 lần, cấm bộ icon rập khuôn", async () => {
+  const { checkIcons } = await import("../scripts/caption.mjs");
+  const ok = ICON("Cho thuê căn hộ ở Biên Hòa 🏠 lợi suất 4,4%/năm.\n\nNhắn Zalo em nha 💬 0938.32.31.39");
+  assert.deepEqual(checkIcons(ok), []);
+  const nhieu = ICON("🏠 a 🔥 b 💬 c 📍 d 🌿 e");
+  assert.ok(checkIcons(nhieu).some((e) => /Facebook.*tối đa 4/.test(e)), checkIcons(nhieu).join("|"));
+  const gach = ICON("Mốc 1\n📍 Vành đai 3\n📍 Tân Hiệp\n📍 Sân bay");
+  assert.ok(checkIcons(gach).some((e) => /gạch đầu dòng/.test(e)));
+  const lap = ICON("Nhà 🏠 gần chợ 🏠 và trường 🏠");
+  assert.ok(checkIcons(lap).some((e) => /lặp/.test(e)));
+  const slop = ICON("Căn hộ đẹp ✅ giá tốt 🔥");
+  assert.ok(checkIcons(slop).some((e) => /✅/.test(e)));
+  assert.ok(checkIcons(slop).some((e) => /🔥/.test(e)));
+});
+
+test("checkIcons: không đếm icon trong dòng nguồn cuối bài và chữ không có icon thì không lỗi", async () => {
+  const { checkIcons } = await import("../scripts/caption.mjs");
+  assert.deepEqual(checkIcons(CLEAN), []);
+});

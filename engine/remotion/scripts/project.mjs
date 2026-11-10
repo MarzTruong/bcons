@@ -76,6 +76,7 @@ export function videoPaths(name, projDir) {
     storyboard: path.join(dir, "storyboard.md"),
     caption: path.join(dir, "caption.md"),
     zalo: path.join(dir, "zalo.md"),
+    captionIcon: path.join(dir, "caption-icon.md"),
     audioDir: path.join(dir, "audio"),
   };
 }

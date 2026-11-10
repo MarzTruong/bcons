@@ -75,3 +75,18 @@ test("checkVideoFiles: kiểm cả video/<tên>/zalo.md (nếu có) theo quy t�
   fs.writeFileSync(path.join(dir, "zalo.md"), zalo("Đợt 2 giới thiệu ngày 29/11, nhắn em đặt lịch xem nhà mẫu nha."));
   assert.deepEqual(checkVideoFiles("a", projDir)[1].errs, []);
 });
+
+test("checkVideoFiles: kiểm cả caption-icon.md (quy tắc cứng + giới hạn icon)", async () => {
+  const { checkVideoFiles } = await import("../scripts/caption-cli.mjs");
+  const projDir = fs.mkdtempSync(path.join(os.tmpdir(), "ic-"));
+  const dir = path.join(projDir, "video", "a");
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, "caption.md"), CAP);
+  const icon = (fb) => `---\nstatus: draft\nkenh: [facebook, tiktok]\n---\n## Facebook\n${fb}\n\n## TikTok\nx\n`;
+  fs.writeFileSync(path.join(dir, "caption-icon.md"), icon("Hạ tầng 🏠 gần chợ 🔥 và 📍 trường 🌿 cùng 💬 nữa 🚗"));
+  const r = checkVideoFiles("a", projDir);
+  assert.deepEqual(r.map((x) => path.basename(x.file)), ["caption.md", "caption-icon.md"]);
+  assert.ok(r[1].errs.some((e) => /tối đa 4|🔥/.test(e)));
+  fs.writeFileSync(path.join(dir, "caption-icon.md"), icon("Hạ tầng Biên Hòa 🏠 đang đổi khác."));
+  assert.deepEqual(checkVideoFiles("a", projDir)[1].errs, []);
+});

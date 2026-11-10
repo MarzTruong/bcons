@@ -34,7 +34,7 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
 |---|---|
 | `/huongdan` | Danh sách lệnh (gõ dấu `/` trong Telegram cũng hiện menu lệnh, bot tự đăng ký mỗi lần mở) |
 | `/danhsach` | Trạng thái từng video: caption nháp/đã duyệt, có video chưa, video đã duyệt chưa |
-| `/xem <tên>` | Gửi caption Facebook + TikTok và bản xem thử video |
+| `/xem <tên>` | Gửi caption Facebook + TikTok (và bài Zalo nếu có `zalo.md`) và bản xem thử video. Có `caption-icon.md` thì bot nhắc, gõ `/xem <tên> icon` để xem bản có icon |
 | `/duyet <tên>` | Duyệt caption + đúng file video vừa render, gửi **chữ caption** FB/TikTok về Telegram để sao chép (không gửi lại video, đã xem ở bước render), tự lưu lên GitHub |
 | `/render <tên>` | Render video (vài phút), xong gửi bản xem thử |
 | `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy. Cảnh nào bị trôi giọng (vd. giọng Bắc): `/giong <tên> canh1` chỉ tạo lại cảnh đó, lượt đọc mới |
