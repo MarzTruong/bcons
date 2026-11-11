@@ -76,7 +76,7 @@ function parseLandingRow_(headers, row) {
   return { ok: true, rec: rec };
 }
 
-/** Bằng chứng đồng ý đúng khuôn Code.gs ghi (dùng chung cho parseLandingRow_ và dongYThang_). */
+/** Bằng chứng đồng ý đúng khuôn Code.gs ghi (dùng chung cho parseLandingRow_, bangChungHopLe_ và ngayDongY_). */
 function hasConsentEvidence_(s) {
   return /^Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, [^\n\r]*\)$/.test(String(s == null ? '' : s));
 }
@@ -135,19 +135,53 @@ function mergeNguon_(a, b) {
   return toks.join('+');
 }
 
-/** Đồng ý nhận tin: 'Không' thắng; 'Có' chỉ tính khi có bằng chứng đúng khuôn; còn lại 'Chưa rõ'. */
-function dongYThang_(a, b) {
-  var noEv = function (e) { return /^(Có \(|[a-z][a-z0-9-]{2,39}: Có \()/.test(e) ? '' : e; };
-  var rut = function (v) { return v === 'Không' || v === 'Đã rút lại'; };
-  if (rut(a.v)) return { v: a.v, e: noEv(a.e) };
-  if (rut(b.v)) return { v: b.v, e: noEv(b.e) };
-  if (a.v === 'Có' && bangChungHopLe_(a.e)) return a;
-  if (b.v === 'Có' && bangChungHopLe_(b.e)) return b;
-  return { v: 'Chưa rõ', e: '' };
+/** Tách DongYBangChung thành các đoạn có mã: [{ma, ev, iso}] theo thứ tự xuất hiện, mỗi mã giữ bằng chứng MỚI nhất (bằng nhau giữ bản đứng trước).
+ *  Cả ô phải hợp lệ (bangChungHopLe_), một đoạn hỏng thì bỏ cả ô (fail closed). Bằng chứng cũ không mã không thuộc dự án nào nên không có mặt ở đây. */
+function segmentsOf_(bangChung) {
+  var out = [];
+  var e = s_(bangChung);
+  if (!e || !bangChungHopLe_(e) || hasConsentEvidence_(e)) return out;
+  e.split(' || ').forEach(function (part) {
+    var m = /^([a-z][a-z0-9-]{2,39}): ([\s\S]*)$/.exec(part);
+    var iso = ngayDongY_(m[2]);
+    if (!iso) return;
+    for (var i = 0; i < out.length; i++) {
+      if (out[i].ma === m[1]) {
+        if (iso > out[i].iso) out[i] = { ma: m[1], ev: m[2], iso: iso };
+        return;
+      }
+    }
+    out.push({ ma: m[1], ev: m[2], iso: iso });
+  });
+  return out;
 }
 
-/** Hợp nhất hai bản ghi khách trùng SĐT (spec mục 6). Trả đối tượng mới, không sửa đầu vào.
- *  Chữ đầu vào phải đã qua cell_; Sheets.gs (Task 6-7) phải áp cell_ khi ghi ra Sheet. */
+/** Mốc rút lại để so sánh: '' = chưa rút; ISO hợp lệ; ô có chữ nhưng không đọc được -> mốc xa nhất (fail closed, không bằng chứng nào mới hơn). */
+function rutLaiLimit_(v) {
+  var s = s_(v);
+  if (!s) return '';
+  return isoOrEmpty_(s) || '9999-12-31T23:59:59.999Z';
+}
+
+/** Các đoạn bằng chứng được tính đồng ý: mới hơn NgayRutLai (không có NgayRutLai thì tất cả). Bằng nhau KHÔNG tính. */
+function doanConHieuLuc_(segs, ngayRutLai) {
+  var lim = rutLaiLimit_(ngayRutLai);
+  return segs.filter(function (g) { return !lim || g.iso > lim; });
+}
+
+/** Trạng thái đồng ý chung: 'Có' khi có ít nhất một dự án vừa nằm trong dongYDuAn vừa có bằng chứng hợp lệ mới hơn ngayRutLai;
+ *  'Đã rút lại' khi có ngayRutLai mà không còn đồng ý nào như vậy; còn lại 'Chưa rõ'. Bằng chứng cũ không mã không tính. */
+function trangThaiDongY_(dongYDuAn, bangChung, ngayRutLai) {
+  var listed = codesOnly_(dongYDuAn).split(';');
+  var ok = doanConHieuLuc_(segmentsOf_(bangChung), ngayRutLai).some(function (g) { return listed.indexOf(g.ma) >= 0; });
+  if (ok) return 'Có';
+  return s_(ngayRutLai) ? 'Đã rút lại' : 'Chưa rõ';
+}
+
+/** Hợp nhất hai bản ghi khách trùng SĐT (spec mục 6, mục 16). Trả đối tượng mới, không sửa đầu vào.
+ *  Đồng ý theo từng dự án: DongYBangChung gộp theo mã (mỗi mã giữ bằng chứng mới nhất, cũ trước mới sau; đoạn cũ hơn ngày rút lại vẫn giữ làm lịch sử);
+ *  DongYDuAn SUY RA từ các đoạn mới hơn NgayRutLai (không bao giờ từ ô gõ tay); NgayRutLai không bị xóa khi điền lại form.
+ *  Chữ đầu vào phải đã qua cell_; Sheets.gs phải áp cell_ khi ghi ra Sheet. */
 function mergeCustomer_(existing, incoming, nowIso) {
   var ex = existing || {}, inc = incoming || {};
   var out = {};
@@ -158,10 +192,37 @@ function mergeCustomer_(existing, incoming, nowIso) {
   out.SDT = normalizePhone_(ex.SDT) || normalizePhone_(inc.SDT);
   out.DuAnQuanTam = unionList_(ex.DuAnQuanTam, inc.DuAnQuanTam);
   out.NguonGoc = mergeNguon_(ex.NguonGoc, inc.NguonGoc);
-  var nt = dongYThang_({ v: s_(ex.DongYNhanTin), e: s_(ex.DongYBangChung) }, { v: s_(inc.DongYNhanTin), e: s_(inc.DongYBangChung) });
-  out.DongYNhanTin = nt.v;
-  out.DongYBangChung = nt.e;
-  out.DongYNhanTin = out.DongYNhanTin === 'Có' || out.DongYNhanTin === 'Không' || out.DongYNhanTin === 'Đã rút lại' ? out.DongYNhanTin : 'Chưa rõ';
+
+  // Ngày rút lại: giữ của existing; 'Không' (anh gõ) là lần rút mới -> nowIso; 'Đã rút lại' mà chưa có ngày -> nowIso. 'Không rõ' và chữ lạ không phải rút lại.
+  var rut = s_(ex.NgayRutLai) !== '' ? s_(ex.NgayRutLai) : s_(inc.NgayRutLai);
+  var rutIso = isoOrEmpty_(rut);
+  if (rutIso) rut = rutIso;
+  var kieu = [foldText_(ex.DongYNhanTin), foldText_(inc.DongYNhanTin)];
+  if (kieu.indexOf('khong') >= 0) rut = nowIso;
+  else if (!rut && kieu.indexOf('darutlai') >= 0) rut = nowIso;
+  out.NgayRutLai = rut;
+
+  // Bằng chứng: existing trước, rồi incoming; mỗi mã giữ bản mới nhất (bằng nhau giữ bản cũ).
+  var merged = segmentsOf_(ex.DongYBangChung);
+  segmentsOf_(inc.DongYBangChung).forEach(function (g) {
+    for (var i = 0; i < merged.length; i++) {
+      if (merged[i].ma === g.ma) {
+        if (g.iso > merged[i].iso) merged[i] = g;
+        return;
+      }
+    }
+    merged.push(g);
+  });
+  out.DongYBangChung = merged.map(function (g) { return g.ma + ': ' + g.ev; }).join(' || ');
+  // Không có đoạn nào gắn mã: giữ nguyên bằng chứng cũ không mã (nếu có) chỉ để làm lịch sử, nó không cấp đồng ý cho dự án nào.
+  if (!out.DongYBangChung) {
+    [s_(ex.DongYBangChung), s_(inc.DongYBangChung)].some(function (e) {
+      if (e && hasConsentEvidence_(e) && e.indexOf(' || ') < 0) { out.DongYBangChung = e; return true; }
+      return false;
+    });
+  }
+  out.DongYDuAn = doanConHieuLuc_(merged, rut).map(function (g) { return g.ma; }).join(';');
+  out.DongYNhanTin = trangThaiDongY_(out.DongYDuAn, out.DongYBangChung, rut);
   out.NgayCapNhat = nowIso;
   return out;
 }

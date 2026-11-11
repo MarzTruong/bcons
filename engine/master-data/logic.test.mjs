@@ -232,15 +232,17 @@ test("mergeCustomer_: Landing rồi CRM (và ngược lại) -> Landing+CRM; d�
   assert.equal(merge(mk({ DuAnQuanTam: "a-b-c;;" }), mk({ DuAnQuanTam: ";a-b-c; d-e-f" })).DuAnQuanTam, "a-b-c;d-e-f");
 });
 
-test("mergeCustomer_: Không thắng Có ở cả hai chiều; Chưa rõ + Chưa rõ không thành Có", () => {
-  const co = mk({ DongYNhanTin: "Có", DongYBangChung: MA });
+test("mergeCustomer_: Không thắng Có ở cả hai chiều (nay thành 'Đã rút lại' + NgayRutLai); Chưa rõ + Chưa rõ không thành Có", () => {
+  const co = mk({ DongYNhanTin: "Có", DongYBangChung: "bcons-newsky: " + MA, DongYDuAn: "bcons-newsky" });
   const khong = mk({ DongYNhanTin: "Không", DongYBangChung: "Rút lại 2026-11-10" });
   for (const [a, b] of [[co, khong], [khong, co]]) {
     const r = merge(a, b);
-    assert.equal(r.DongYNhanTin, "Không");
-    assert.equal(r.DongYBangChung, "Rút lại 2026-11-10");
+    assert.equal(r.DongYNhanTin, "Đã rút lại");
+    assert.equal(r.NgayRutLai, NOW);
+    assert.equal(r.DongYDuAn, "");
+    assert.equal(r.DongYBangChung, "bcons-newsky: " + MA, "chữ 'Rút lại ...' không phải bằng chứng nên bỏ; bằng chứng thật giữ làm lịch sử");
   }
-  assert.equal(merge(mk({ DongYNhanTin: "Không" }), co).DongYBangChung, "");
+  assert.equal(merge(mk({ DongYNhanTin: "Không" }), mk({ DongYBangChung: "Rút lại 2026-11-10" })).DongYBangChung, "");
   const cr = mk({ DongYNhanTin: "Chưa rõ" });
   const r = merge(cr, cr);
   assert.equal(r.DongYNhanTin, "Chưa rõ");
@@ -248,9 +250,9 @@ test("mergeCustomer_: Không thắng Có ở cả hai chiều; Chưa rõ + Chưa
   assert.equal(merge(mk({}), mk({})).DongYNhanTin, "Chưa rõ");
   const up = merge(cr, co);
   assert.equal(up.DongYNhanTin, "Có");
-  assert.equal(up.DongYBangChung, MA);
+  assert.equal(up.DongYBangChung, "bcons-newsky: " + MA);
   const keep = merge(co, mk({ DongYNhanTin: "Có", DongYBangChung: "Có (khác)" }));
-  assert.equal(keep.DongYBangChung, MA, "giữ bằng chứng cũ");
+  assert.equal(keep.DongYBangChung, "bcons-newsky: " + MA, "giữ bằng chứng cũ");
 });
 
 test("mergeCustomer_: cột anh giữ nguyên; cột anh trống thì nhận giá trị mới", () => {
@@ -263,7 +265,7 @@ test("mergeCustomer_: cột anh giữ nguyên; cột anh trống thì nhận gi�
   assert.equal(r2.TrangThaiCRM, "Đã gọi");
 });
 
-test("mergeCustomer_: không sửa đầu vào, kết quả đúng 17 khóa, đầu vào thiếu khóa vẫn chạy", () => {
+test("mergeCustomer_: không sửa đầu vào, kết quả đúng 19 khóa, đầu vào thiếu khóa vẫn chạy", () => {
   const ex = mk({ HoTen: "A", DuAnQuanTam: "a-b-c" });
   const inc = mk({ HoTen: "B", DuAnQuanTam: "d-e-f" });
   const exCopy = JSON.stringify(ex), incCopy = JSON.stringify(inc);
@@ -281,10 +283,10 @@ test("mergeCustomer_: không sửa đầu vào, kết quả đúng 17 khóa, đ�
 
 // ---- mergeCustomer_ hardening ----
 test("mergeCustomer_: 'Có' chỉ tính khi có bằng chứng đúng khuôn", () => {
-  const good = mk({ DongYNhanTin: "Có", DongYBangChung: MA });
+  const good = mk({ DongYNhanTin: "Có", DongYBangChung: "bcons-newsky: " + MA });
   const r1 = merge(mk({ DongYNhanTin: "Có", DongYBangChung: "" }), good);
   assert.equal(r1.DongYNhanTin, "Có");
-  assert.equal(r1.DongYBangChung, MA);
+  assert.equal(r1.DongYBangChung, "bcons-newsky: " + MA);
   const r2 = merge(mk({}), mk({ DongYNhanTin: "Có", DongYBangChung: "" }));
   assert.deepEqual([r2.DongYNhanTin, r2.DongYBangChung], ["Chưa rõ", ""]);
   const r3 = merge(mk({ DongYNhanTin: "Chưa rõ" }), mk({ DongYNhanTin: "Có", DongYBangChung: "zzz" }));
@@ -298,9 +300,9 @@ test("mergeCustomer_: 'Có' chỉ tính khi có bằng chứng đúng khuôn", (
 test("mergeCustomer_: 'Không' không mang bằng chứng giống đồng ý", () => {
   const E = mk({ DongYNhanTin: "Không", DongYBangChung: MA });
   let r = merge(E, mk({}));
-  assert.deepEqual([r.DongYNhanTin, r.DongYBangChung], ["Không", ""]);
-  r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: MA }), E);
-  assert.deepEqual([r.DongYNhanTin, r.DongYBangChung], ["Không", ""]);
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn, r.NgayRutLai], ["Đã rút lại", "", NOW]);
+  r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: "bcons-newsky: " + MA }), E);
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn], ["Đã rút lại", ""]);
 });
 
 test("mergeCustomer_: ô Sheets dạng Date/số được chuẩn hóa", () => {
@@ -615,4 +617,194 @@ test("parseLandingRow_: ô Dự án nhiều mã -> đồng ý chỉ cho mã hợ
   assert.equal(sk.DongYDuAn, "bcons-bbb");
   assert.equal(ctx.coTheNhan_(sk, "bcons-aaa"), false);
   assert.equal(ctx.coTheNhan_(sk, "khong-ro"), false);
+});
+
+// ---- Task 2: gộp đồng ý theo dự án, ngày rút lại ----
+const evAt = (d, page = "https://x.pages.dev/") => `Có (${d}T03:15:00.000Z, mẫu v1-2026-11-06, ${page})`;
+const seg = (ma, d) => `${ma}: ${evAt(d)}`;
+const consent = (ma, d) => mk({ DongYNhanTin: "Có", DongYDuAn: ma, DongYBangChung: seg(ma, d) });
+const T10 = "2026-11-10T00:00:00.000Z";
+
+test("Task 2 (a): đồng ý A rồi landing đồng ý B -> 'A;B' (cũ trước), Có, đủ hai đoạn bằng chứng", () => {
+  const r = merge(consent("aaa-aaa", "2026-11-05"), consent("bbb-bbb", "2026-11-06"));
+  assert.equal(r.DongYDuAn, "aaa-aaa;bbb-bbb");
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYBangChung, seg("aaa-aaa", "2026-11-05") + " || " + seg("bbb-bbb", "2026-11-06"));
+  assert.equal(r.NgayRutLai, "");
+  assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), true);
+  assert.equal(ctx.coTheNhan_(r, "bbb-bbb"), true);
+});
+
+test("Task 2 (b): NgayRutLai 10/11 + bằng chứng 05/11 -> vẫn Đã rút lại, DongYDuAn rỗng", () => {
+  const ex = mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 });
+  const r = merge(ex, consent("aaa-aaa", "2026-11-05"));
+  assert.equal(r.DongYNhanTin, "Đã rút lại");
+  assert.equal(r.DongYDuAn, "");
+  assert.equal(r.NgayRutLai, T10);
+  assert.equal(r.DongYBangChung, seg("aaa-aaa", "2026-11-05"), "giữ làm lịch sử, không cho nhắn");
+  assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), false);
+});
+
+test("Task 2 (c): bằng chứng 12/11 -> Có, chỉ dự án mới, NgayRutLai giữ nguyên", () => {
+  const ex = mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10, DongYDuAn: "", DongYBangChung: seg("old-old", "2026-11-05") });
+  const r = merge(ex, consent("aaa-aaa", "2026-11-12"));
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYDuAn, "aaa-aaa");
+  assert.equal(r.NgayRutLai, T10);
+  assert.equal(ctx.coTheNhan_(r, "old-old"), false);
+  assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), true);
+});
+
+test("Task 2 (d): đồng ý A và B, rút lại, điền lại chỉ A -> chỉ A nhắn được", () => {
+  const both = merge(consent("aaa-aaa", "2026-11-05"), consent("bbb-bbb", "2026-11-05"));
+  const withdrawn = merge(Object.assign({}, both, { DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), mk({}));
+  assert.equal(withdrawn.DongYNhanTin, "Đã rút lại");
+  const r = merge(withdrawn, consent("aaa-aaa", "2026-11-12"));
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYDuAn, "aaa-aaa");
+  assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), true);
+  assert.equal(ctx.coTheNhan_(r, "bbb-bbb"), false);
+  assert.match(r.DongYBangChung, /bbb-bbb: /, "bằng chứng cũ của B còn làm lịch sử");
+});
+
+test("Task 2 (e): bằng chứng rác/không hợp lệ không bao giờ ra Có", () => {
+  const bads = ["zzz", "Có (x)", "aaa-aaa: zzz", "aaa-aaa: Có (2026-13-45, mẫu v1, x)", "Có (không-ngày, mẫu v1, x)", "AAA-AAA: " + evAt("2026-11-12"), "x: " + evAt("2026-11-12"), seg("aaa-aaa", "2026-11-12") + " || zzz", " || ", "aaa-aaa: Có (2026-11-12T03:15:00.000Z, mẫu v1, a || b)"];
+  for (const bad of bads) {
+    for (const ex of [mk({}), mk({ NgayRutLai: T10, DongYNhanTin: "Đã rút lại" })]) {
+      const r = merge(ex, mk({ DongYNhanTin: "Có", DongYDuAn: "aaa-aaa", DongYBangChung: bad }));
+      assert.notEqual(r.DongYNhanTin, "Có", JSON.stringify(bad));
+      assert.equal(r.DongYDuAn, "", JSON.stringify(bad));
+      assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), false);
+    }
+  }
+});
+
+test("Task 2 (f): gộp cùng incoming hai lần cho cùng kết quả; cả khi có rút lại", () => {
+  const ex = merge(consent("aaa-aaa", "2026-11-05"), mk({ NhuCau: "Ở" }));
+  const inc = consent("bbb-bbb", "2026-11-06");
+  const once = merge(ex, inc);
+  assert.deepEqual(merge(once, inc), once);
+  const w = merge(mk({ DongYNhanTin: "Không", DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-05") }), mk({}));
+  assert.deepEqual(merge(w, mk({})), w);
+  const w2 = merge(w, consent("aaa-aaa", "2026-11-05"));
+  assert.deepEqual(merge(w2, consent("aaa-aaa", "2026-11-05")), w2);
+});
+
+test("Task 2 (g): DongYDuAn gõ tay 'zzz' không bằng chứng + incoming 'abc' -> chỉ 'abc'", () => {
+  const ex = mk({ DongYNhanTin: "Có", DongYDuAn: "zzz", DongYBangChung: "" });
+  const r = merge(ex, consent("abc-abc", "2026-11-06"));
+  assert.equal(r.DongYDuAn, "abc-abc");
+  assert.equal(ctx.coTheNhan_(r, "zzz"), false);
+  const r2 = merge(mk({ DongYNhanTin: "Có", DongYDuAn: "zzz-zzz", DongYBangChung: seg("abc-abc", "2026-11-06") }), mk({}));
+  assert.equal(r2.DongYDuAn, "abc-abc", "DongYDuAn suy ra từ bằng chứng, không từ ô gõ tay");
+  const r3 = merge(mk({ DongYNhanTin: "Có", DongYDuAn: "zzz-zzz" }), mk({}));
+  assert.deepEqual([r3.DongYNhanTin, r3.DongYDuAn], ["Chưa rõ", ""]);
+});
+
+test("Task 2 (h): bằng chứng của hai dự án cùng được giữ; cùng dự án giữ bản mới nhất", () => {
+  const r = merge(consent("aaa-aaa", "2026-11-05"), consent("bbb-bbb", "2026-11-06"));
+  assert.match(r.DongYBangChung, /aaa-aaa: /);
+  assert.match(r.DongYBangChung, /bbb-bbb: /);
+  const newer = merge(consent("aaa-aaa", "2026-11-05"), consent("aaa-aaa", "2026-11-08"));
+  assert.equal(newer.DongYBangChung, seg("aaa-aaa", "2026-11-08"));
+  const older = merge(consent("aaa-aaa", "2026-11-08"), consent("aaa-aaa", "2026-11-05"));
+  assert.equal(older.DongYBangChung, seg("aaa-aaa", "2026-11-08"));
+  const tie = merge(mk({ DongYBangChung: "aaa-aaa: " + evAt("2026-11-08", "https://old/"), DongYNhanTin: "Có" }), mk({ DongYBangChung: "aaa-aaa: " + evAt("2026-11-08", "https://new/"), DongYNhanTin: "Có" }));
+  assert.match(tie.DongYBangChung, /https:\/\/old\//, "bằng nhau: giữ bản cũ");
+});
+
+test("Task 2 (i): bằng chứng đúng bằng NgayRutLai KHÔNG mở lại nhắn tin; 1 ms sau thì mở", () => {
+  const ex = mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-10T03:15:00.000Z" });
+  const eq = merge(ex, consent("aaa-aaa", "2026-11-10"));
+  assert.deepEqual([eq.DongYNhanTin, eq.DongYDuAn], ["Đã rút lại", ""]);
+  const later = merge(Object.assign({}, ex, { NgayRutLai: "2026-11-10T03:14:59.999Z" }), consent("aaa-aaa", "2026-11-10"));
+  assert.deepEqual([later.DongYNhanTin, later.DongYDuAn], ["Có", "aaa-aaa"]);
+});
+
+test("Task 2 (j): existing Có + incoming 'Đã rút lại' -> Đã rút lại, NgayRutLai = now, DongYDuAn rỗng", () => {
+  const r = merge(consent("aaa-aaa", "2026-11-05"), mk({ DongYNhanTin: "Đã rút lại" }));
+  assert.equal(r.DongYNhanTin, "Đã rút lại");
+  assert.equal(r.NgayRutLai, NOW);
+  assert.equal(r.DongYDuAn, "");
+  assert.equal(ctx.coTheNhan_(r, "aaa-aaa"), false);
+  const r2 = merge(mk({ DongYNhanTin: "Đã rút lại", DongYBangChung: seg("aaa-aaa", "2026-11-05") }), mk({}));
+  assert.equal(r2.NgayRutLai, NOW, "existing đã rút lại mà chưa có ngày");
+});
+
+test("Task 2 (k): rút lại và đồng ý mới (bằng chứng mới hơn) trong cùng một lần gộp -> Có", () => {
+  const inc = Object.assign(consent("aaa-aaa", "2026-11-12"), {});
+  const r = merge(consent("bbb-bbb", "2026-11-05"), Object.assign({}, inc, { DongYNhanTin: "Đã rút lại" }));
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYDuAn, "aaa-aaa");
+  assert.equal(r.NgayRutLai, NOW, "ngày rút lại vẫn ghi làm lịch sử");
+  assert.equal(ctx.coTheNhan_(r, "bbb-bbb"), false, "đồng ý cũ của B đã bị rút");
+});
+
+test("Task 2 (l): 'Không rõ' và chữ lạ không phải rút lại và không bao giờ cho Có", () => {
+  for (const v of ["Không rõ", "Không biết", "abc", "Chưa rõ"]) {
+    const r = merge(mk({ DongYNhanTin: v }), mk({}));
+    assert.equal(r.DongYNhanTin, "Chưa rõ", v);
+    assert.equal(r.NgayRutLai, "", v);
+  }
+  const r = merge(mk({ DongYNhanTin: "Không rõ" }), consent("aaa-aaa", "2026-11-06"));
+  assert.deepEqual([r.DongYNhanTin, r.NgayRutLai], ["Có", ""]);
+});
+
+test("Task 2: anh gõ 'Không' (mọi cách gõ) vào existing là rút lại; 'Không' mới thắng bằng chứng cũ cả khi đã có ngày rút lại cũ", () => {
+  for (const v of ["Không", " không ", "KHONG", "Khong."]) {
+    const r = merge(mk({ DongYNhanTin: v, DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-05") }), mk({}));
+    assert.deepEqual([r.DongYNhanTin, r.NgayRutLai, r.DongYDuAn], ["Đã rút lại", NOW, ""], JSON.stringify(v));
+  }
+  // đã từng rút (10/11), điền lại 12/11 (nay Có), rồi anh gõ Không: rút mới ở NOW (11/11 < 12/11 giả lập) -> dùng NOW sau đó
+  const later = "2026-11-20T02:00:00.000Z";
+  const refilled = { ...merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), consent("aaa-aaa", "2026-11-12")) };
+  assert.equal(refilled.DongYNhanTin, "Có");
+  const typed = plain(ctx.mergeCustomer_({ ...refilled, DongYNhanTin: "Không" }, mk({}), later));
+  assert.deepEqual([typed.DongYNhanTin, typed.NgayRutLai, typed.DongYDuAn], ["Đã rút lại", later, ""]);
+});
+
+test("Task 2: NgayRutLai hỏng (không phải ISO) -> fail closed: không bao giờ Có; giữ nguyên giá trị", () => {
+  const r = merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "mai" }), consent("aaa-aaa", "2026-12-30"));
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn, r.NgayRutLai], ["Đã rút lại", "", "mai"]);
+  const d = merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: new Date(T10) }), mk({}));
+  assert.equal(d.NgayRutLai, T10, "ô Date của Sheets");
+});
+
+test("Task 2: bằng chứng cũ không mã không cấp đồng ý cho dự án nào; giữ làm lịch sử chỉ khi không có đoạn có mã", () => {
+  const r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: MA }), mk({}));
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn, r.DongYBangChung], ["Chưa rõ", "", MA]);
+  assert.deepEqual(merge(r, mk({})), r, "idempotent");
+  const r2 = merge(mk({ DongYNhanTin: "Có", DongYBangChung: MA }), consent("aaa-aaa", "2026-11-12"));
+  assert.deepEqual([r2.DongYNhanTin, r2.DongYDuAn, r2.DongYBangChung], ["Có", "aaa-aaa", seg("aaa-aaa", "2026-11-12")]);
+  const r3 = merge(mk({ DongYNhanTin: "Có", DongYBangChung: MA, DongYDuAn: "aaa-aaa" }), mk({}));
+  assert.equal(ctx.coTheNhan_(r3, "aaa-aaa"), false);
+});
+
+test("Task 2: một đoạn hỏng làm cả ô bằng chứng của bên đó bị bỏ (fail closed); bên kia vẫn dùng được", () => {
+  const corrupt = seg("aaa-aaa", "2026-11-12") + " || zzz";
+  const r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: corrupt }), consent("bbb-bbb", "2026-11-12"));
+  assert.deepEqual([r.DongYDuAn, r.DongYBangChung], ["bbb-bbb", seg("bbb-bbb", "2026-11-12")]);
+});
+
+test("Task 2: trangThaiDongY_ (trực tiếp)", () => {
+  const t = (d, b, n) => ctx.trangThaiDongY_(d, b, n);
+  const A = seg("aaa-aaa", "2026-11-12");
+  assert.equal(t("aaa-aaa", A, ""), "Có");
+  assert.equal(t("aaa-aaa", A, T10), "Có");
+  assert.equal(t("", A, T10), "Đã rút lại", "DongYDuAn không liệt kê -> không Có");
+  assert.equal(t("aaa-aaa", "", ""), "Chưa rõ", "không bằng chứng");
+  assert.equal(t("aaa-aaa", "", T10), "Đã rút lại");
+  assert.equal(t("aaa-aaa", seg("aaa-aaa", "2026-11-05"), T10), "Đã rút lại");
+  assert.equal(t("bbb-bbb", A, ""), "Chưa rõ", "mã khác");
+  assert.equal(t("aaa-aaa", MA, ""), "Chưa rõ", "không mã");
+  assert.equal(t(undefined, undefined, undefined), "Chưa rõ");
+});
+
+test("Task 2: cùng một mã xuất hiện hai lần trong một ô -> giữ bản mới nhất, bất kể thứ tự", () => {
+  for (const cell of [seg("aaa-aaa", "2026-11-05") + " || " + seg("aaa-aaa", "2026-11-08"), seg("aaa-aaa", "2026-11-08") + " || " + seg("aaa-aaa", "2026-11-05")]) {
+    const r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: cell }), mk({}));
+    assert.equal(r.DongYBangChung, seg("aaa-aaa", "2026-11-08"));
+    const w = merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-06T00:00:00.000Z", DongYBangChung: cell }), mk({}));
+    assert.equal(w.DongYNhanTin, "Có", "bản mới 08/11 > ngày rút 06/11");
+  }
 });
