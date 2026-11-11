@@ -47,7 +47,7 @@ MB (độc quyền gói trần 6,9%), OCB, BIDV, Public Bank, ACB, Vietcombank, 
 Chưa có.
 
 ## Giá (tóm tắt, giá chưa VAT, chưa phí bảo trì 2%; VAT 10% tính thêm)
-Nguồn: file CĐT "06102026 FILE CHECK GIÁ THÁP B - BCONS NEWSKY" (200 căn tháp B, hai nhóm B1 và B2). Chỉ có tháp B, chưa có giá tháp A. Giá từng căn nằm trong Master File trên Drive (không đưa vào repo).
+Nguồn: file CĐT "06102026 FILE CHECK GIÁ THÁP B - BCONS NEWSKY" (200 căn tháp B, hai nhóm B1 và B2). **File giá CĐT là nguồn chính xác nhất** (anh xác nhận 11/11/2026); giá trong slide kick-off/training (48,3 và 49,5 triệu/m² tim tường) chỉ để tham khảo, khi lệch thì lấy theo file CĐT (PTTT 09 thấp nhất khoảng 45,2 triệu/m²). Chỉ có tháp B, chưa có giá tháp A. Giá từng căn nằm trong Master File trên Drive (không đưa vào repo).
 
 | Loại căn | Số căn | DT tim tường (m²) | DT thông thủy (m²) | Giá PTTT 09 (tỷ) | Giá PTTT 08 (tỷ) | Giá PTTT 10 (tỷ) |
 |---|---|---|---|---|---|---|
@@ -59,4 +59,4 @@ Nguồn: file CĐT "06102026 FILE CHECK GIÁ THÁP B - BCONS NEWSKY" (200 căn t
 Chiết khấu so với giá PTTT 09: PTTT 08 là 5,65%, PTTT 10 là 2,15%. Tình trạng từng căn (trống, cọc, LOCK) cập nhật theo giỏ hàng chung, chưa đưa vào đây.
 
 ## Còn thiếu, cần anh
-Lịch mở bán và các đợt; tên kênh Facebook; bảng giá tháp A (anh báo đã bán hết hoặc LOCK); tên đơn vị cọc của anh trên GHC Newsky.
+Lịch mở bán và các đợt; tên kênh Facebook; bảng giá tháp A (anh báo đã bán hết hoặc LOCK). Đơn vị cọc của anh trên GHC: BCONS PS.
