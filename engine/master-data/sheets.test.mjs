@@ -54,12 +54,11 @@ function assertNoLeak({ F, logs }) {
   for (const s of [...NAMES, ...PHONES, "Ten Khac"]) assert.ok(!all.includes(s), "rò rỉ: " + s);
 }
 
-test("TAB_HEADERS_: đúng bảy tab, KhachHang = KHACH_COLS, ChuaPhanDuAn thêm GanDuAn", () => {
+test("TAB_HEADERS_: đúng sáu tab (không còn ChuaPhanDuAn), KhachHang = KHACH_COLS", () => {
   const { ctx } = setup();
   const t = plain(ctx.TAB_HEADERS_);
-  assert.deepEqual(Object.keys(t).sort(), ["CauHinh", "ChuaPhanDuAn", "KhachHang", "Loi", "NhapCRM", "NhatKy", "TuChoi"]);
+  assert.deepEqual(Object.keys(t).sort(), ["CauHinh", "KhachHang", "Loi", "NhapCRM", "NhatKy", "TuChoi"]);
   assert.deepEqual(t.KhachHang, KHACH_COLS);
-  assert.deepEqual(t.ChuaPhanDuAn, [...KHACH_COLS, "GanDuAn"]);
   assert.deepEqual(t.NhapCRM, ["HoTen", "SDT", "DuAnQuanTam", "TrangThaiCRM", "DaGop"]);
   assert.deepEqual(t.Loi, ["Thời gian", "Nguồn", "Dòng", "Lý do"]);
   assert.deepEqual(t.TuChoi, ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"]);
@@ -81,12 +80,13 @@ test("ensureTabs_: tạo tab thiếu với tiêu đề, đặt cột SĐT là v�
   ctx.ensureTabs_(F.SpreadsheetApp.getActiveSpreadsheet(), true);
   assert.equal(F.snapshot(), before);
   ctx.ensureTabs_(F.SpreadsheetApp.getActiveSpreadsheet(), false);
-  for (const n of ["KhachHang", "NhapCRM", "Loi", "ChuaPhanDuAn", "TuChoi", "NhatKy", "CauHinh"]) assert.ok(F.values(null, n), n);
+  for (const n of ["KhachHang", "NhapCRM", "Loi", "TuChoi", "NhatKy", "CauHinh"]) assert.ok(F.values(null, n), n);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
   assert.deepEqual(F.values(null, "Loi"), [["Thời gian", "Nguồn", "Dòng", "Lý do"]]);
   // tab có sẵn giữ nguyên dữ liệu
   assert.equal(F.values(null, "KhachHang").length, 2);
   // SĐT là văn bản: ghi chuỗi có số 0 đầu vào cột SĐT các tab đó thì đọc lại vẫn là chuỗi
-  for (const [tab, col] of [["KhachHang", 2], ["NhapCRM", 2], ["TuChoi", 1], ["ChuaPhanDuAn", 2]]) {
+  for (const [tab, col] of [["KhachHang", 2], ["NhapCRM", 2], ["TuChoi", 1]]) {
     const sh = F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName(tab);
     sh.getRange(5, col, 1, 1).setValues([["0900000009"]]);
     assert.equal(sh.getRange(5, col, 1, 1).getValues()[0][0], "0900000009", tab);
@@ -607,7 +607,7 @@ test("HoTen là văn bản: ensureTabs_ đặt '@' cho cột HoTen, tên '0123' 
   assert.strictEqual(kh[3][khCol(kh, "HoTen")], "12345");
   const ss = T.F.SpreadsheetApp.getActiveSpreadsheet();
   const fmt = T.F.calls.writes.filter((w) => w.method === "setNumberFormat");
-  for (const tab of ["NhapCRM", "KhachHang", "ChuaPhanDuAn"]) assert.ok(fmt.some((w) => w.sheet === tab && w.col === 1 || w.sheet === tab && w.col === 3), "chưa định dạng HoTen ở " + tab);
+  for (const tab of ["NhapCRM", "KhachHang"]) assert.ok(fmt.some((w) => w.sheet === tab && w.col === 1 || w.sheet === tab && w.col === 3), "chưa định dạng HoTen ở " + tab);
   assert.ok(ss.getSheetByName("NhapCRM"));
 });
 
@@ -624,10 +624,9 @@ const TC_HEADER = ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"];
 const TC_OLD = "2026-11-05T00:00:00.000Z";
 /** Dòng TuChoi: chuỗi = yêu cầu 'Xóa' có ngày; mảng = dòng thô (đủ 5 cột). */
 const tcRow = (x) => (Array.isArray(x) ? x : [x, "", TC_OLD, "Xóa", ""]);
-function build({ khach, cauHinh = CAU2, tuChoi, byId = { M1: {}, M2: {} }, chua } = {}) {
+function build({ khach, cauHinh = CAU2, tuChoi, byId = { M1: {}, M2: {} } } = {}) {
   const master = { CauHinh: cauHinh, KhachHang: [KHACH_COLS, ...(khach || [])] };
   if (tuChoi) master.TuChoi = [TC_HEADER, ...tuChoi.map(tcRow)];
-  if (chua) master.ChuaPhanDuAn = [[...KHACH_COLS, "GanDuAn"], ...chua];
   const F = fakeSheets({ master, byId });
   const ctx = loadGs([LOGIC, SHEETS]);
   const logs = [];
@@ -647,7 +646,7 @@ const w = (F) => F.calls.writes.length;
 test("phanBo_: khách hai dự án có mặt ở cả hai Master, chỉ cột A..L; cột N trở đi của anh không bị đụng sau lần chạy lại", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky;bcons-central-park" })] });
   const r = run(ctx);
-  assert.deepEqual(r, { dayVao: { "bcons-newsky": 1, "bcons-central-park": 1 }, chua: 0, chan: 0, rutLai: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0 });
+  assert.deepEqual(r, { dayVao: { "bcons-newsky": 1, "bcons-central-park": 1 }, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 0 });
   for (const id of ["M1", "M2"]) {
     const t = tab(F, id, "KhachTuMaster");
     assert.deepEqual(t[0].slice(0, 12), TM);
@@ -686,51 +685,20 @@ test("phanBo_: lần hai không đổi gì thì không ghi gì", () => {
   const r = run(ctx);
   assert.equal(w(F), 0);
   assert.equal(F.snapshot(), snap);
-  assert.deepEqual(r, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, chua: 0, chan: 0, rutLai: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0 });
+  assert.deepEqual(r, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 1 }); // khách 2 DuAnQuanTam trống: chỉ đếm
 });
 
-test("phanBo_: dự án lạ hoặc trống -> ChuaPhanDuAn (GanDuAn để trống), không vào Master", () => {
+test("phanBo_: dự án trống ở lại KhachHang (không vào Master, không có tab ChuaPhanDuAn); mã lạ có giá trị không phân bổ, không đếm là trống", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "du-an-la" })] });
   const r = run(ctx);
-  assert.equal(r.chua, 2);
-  const t = tab(F, null, "ChuaPhanDuAn");
-  assert.deepEqual(t.slice(1).map((x) => x[0]), [pad(1), pad(2)]);
-  assert.equal(t[0][KHACH_COLS.length], "GanDuAn");
-  assert.equal(t[1][KHACH_COLS.length], "");
-  assert.equal(t[1][1], PHONES[0]);
+  assert.equal(r.chuaCoDuAn, 1);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
   assert.deepEqual(masterMa(F, "M1"), []);
   assert.deepEqual(masterMa(F, "M2"), []);
+  assert.equal(khDoc(F)[1].DuAnQuanTam, "du-an-la");
 });
 
-test("phanBo_: anh điền GanDuAn -> khách sang đúng Master, rời ChuaPhanDuAn, KhachHang.DuAnQuanTam có mã", () => {
-  const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "" })] });
-  run(ctx);
-  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, KHACH_COLS.length + 1).setValues([["bcons-central-park"]]);
-  const r = run(ctx);
-  assert.equal(r.dayVao["bcons-central-park"], 1);
-  assert.equal(r.dayVao["bcons-newsky"], 0);
-  assert.deepEqual(masterMa(F, "M2"), [pad(1)]);
-  assert.deepEqual(masterMa(F, "M1"), []);
-  assert.deepEqual(tab(F, null, "ChuaPhanDuAn").slice(1).map((x) => x[0]), [pad(2)]);
-  assert.equal(khDoc(F)[0].DuAnQuanTam, "bcons-central-park");
-  // lần ba: ổn định
-  F.calls.writes.length = 0;
-  run(ctx);
-  assert.equal(w(F), 0);
-});
-
-test("phanBo_: GanDuAn là mã không có trong CauHinh -> vẫn ở ChuaPhanDuAn, GanDuAn của anh giữ nguyên", () => {
-  const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" })] });
-  run(ctx);
-  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, KHACH_COLS.length + 1).setValues([["khong-co-ma"]]);
-  run(ctx);
-  const t = tab(F, null, "ChuaPhanDuAn");
-  assert.equal(t[1][0], pad(1));
-  assert.equal(t[1][KHACH_COLS.length], "khong-co-ma");
-  assert.equal(khDoc(F)[0].DuAnQuanTam, "");
-});
-
-test("phanBo_: SĐT vào TuChoi (+84 ...) -> xóa khỏi mọi Master kể cả bản cũ ở dự án chưa từng phân bổ và ChuaPhanDuAn; KhachHang bị xóa SDT/HoTen", () => {
+test("phanBo_: SĐT vào TuChoi (+84 ...) -> xóa khỏi mọi Master kể cả bản cũ ở dự án chưa từng phân bổ; KhachHang bị xóa SDT/HoTen", () => {
   const stale = [TM, [pad(1), PHONES[0], NAMES[0], "", "Landing", "bcons-newsky", "", "", "", "Có", "", ""]];
   const keep = [pad(2), PHONES[1], NAMES[1], "", "Landing", "bcons-central-park", "", "", "", "Có", "", ""];
   const { F, ctx } = build({
@@ -738,41 +706,39 @@ test("phanBo_: SĐT vào TuChoi (+84 ...) -> xóa khỏi mọi Master kể cả 
     byId: { M1: { KhachTuMaster: stale }, M2: { KhachTuMaster: [TM] } },
   });
   run(ctx);
-  // M1 chưa từng được phân bổ khách 1 (bản cũ), ChuaPhanDuAn cũng có bản cũ
+  // M1 chưa từng được phân bổ khách 1 (bản cũ)
   F.SpreadsheetApp.openById("M1").getSheetByName("KhachTuMaster").getRange(3, 1, 1, 12).setValues([keep.map(String)]);
-  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, 1, 1, 18).setValues([[pad(1), PHONES[0], NAMES[0], ...Array(15).fill("")]]);
   assert.deepEqual(masterMa(F, "M2"), [pad(1), pad(2)]);
   const ss = F.SpreadsheetApp.getActiveSpreadsheet();
   ss.getSheetByName("TuChoi").getRange(1, 1, 2, 5).setValues([TC_HEADER, ["+84 90 000 0001", "", TC_OLD, "Xóa", ""]]);
   const r = run(ctx);
-  assert.equal(r.chan, 1);
+  assert.equal(r.xoa, 1);
   assert.deepEqual(r.lyDo, { tuchoi: 1, khong: 0 });
   assert.deepEqual(masterMa(F, "M1"), [pad(2)]);
   assert.deepEqual(masterMa(F, "M2"), [pad(2)]);
-  assert.deepEqual(tab(F, null, "ChuaPhanDuAn").slice(1).filter((x) => x[0]), []);
   const k = khDoc(F)[0];
   assert.equal(k.MaKhach, pad(1));
   for (const c of ["SDT", "HoTen", "NhuCau", "CanXem", "DongYBangChung"]) assert.equal(k[c], "", c);
-  assert.equal(k.DongYNhanTin, "Không");
+  assert.equal(k.DongYNhanTin, "Đã rút lại");
+  assert.equal(k.DongYDuAn, "", "xóa luôn DongYDuAn");
   assert.equal(k.GhiChu, "Rút lại"); // GhiChu là chữ tự do, có thể chứa ghi chú cá nhân: thay bằng dấu
   assert.equal(khDoc(F)[1].HoTen, NAMES[1]);
 });
 
-test("phanBo_: lần chạy thứ hai sau khi rút lại: không ghi gì, không liệt kê lại, không đếm chan/chua", () => {
+test("phanBo_: lần chạy thứ hai sau khi xóa: không ghi gì, không liệt kê lại, không đếm xoa", () => {
   const { F, ctx } = build({
     khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "" })],
     tuChoi: ["0900000001"],
   });
   const r1 = run(ctx);
-  assert.equal(r1.chan, 1);
+  assert.equal(r1.xoa, 1);
   assert.equal(khDoc(F)[0].GhiChu, "Rút lại");
   F.calls.writes.length = 0;
   const snap = F.snapshot();
   const r2 = run(ctx);
   assert.equal(w(F), 0);
   assert.equal(F.snapshot(), snap);
-  assert.deepEqual(r2, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, chua: 0, chan: 0, rutLai: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0 });
-  assert.deepEqual(tab(F, null, "ChuaPhanDuAn").slice(1).map((x) => x[0]), [pad(2)]);
+  assert.deepEqual(r2, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 1 }); // khách 2 DuAnQuanTam trống: chỉ đếm
   assert.deepEqual(masterMa(F, "M1"), []);
   // ngay cả khi TuChoi bị xóa dòng, khách đã rút lại không quay lại
   F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TuChoi").getRange(2, 1).setValues([[""]]);
@@ -781,15 +747,16 @@ test("phanBo_: lần chạy thứ hai sau khi rút lại: không ghi gì, không
   assert.equal(w(F), 0);
 });
 
-test("phanBo_: anh gõ 'không' (thường) ở DongYNhanTin -> rút lại như 'Không': hồ sơ giữ nguyên, không phân bổ, không xóa", () => {
+test("phanBo_: anh gõ 'không' (thường) ở DongYNhanTin -> rút lại như 'Không': hồ sơ giữ nguyên, chuyển 'Đã rút lại' (NgayRutLai = now), Master 'Đã rút lại', không xóa", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "không" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky" })] });
   const r = run(ctx);
-  assert.equal(r.chan, 0);
-  assert.equal(r.rutLai, 0); // gõ tay: không có gì mới để ghi nhận
+  assert.equal(r.xoa, 0);
+  assert.equal(r.rutLai, 1); // gõ tay: khách vừa được ghi nhận rút lại
   assert.deepEqual(r.lyDo, { tuchoi: 0, khong: 0 });
-  assert.deepEqual(masterMa(F, "M1"), [pad(2)]);
+  assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(2)], "hồ sơ vẫn được phân bổ, với trạng thái đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
   const k = khDoc(F)[0];
-  assert.equal(k.DongYNhanTin, "không"); // không ghi đè chữ của anh
+  assert.equal(k.DongYNhanTin, "Đã rút lại"); // Task 4: chữ gõ tay được chuẩn hóa thành trạng thái hệ thống
   assert.equal(k.SDT, PHONES[0]);
   assert.equal(k.HoTen, NAMES[0]);
 });
@@ -807,9 +774,9 @@ test("phanBo_: TuChoi 'Xóa': dòng còn sót SĐT trong Master từ lần chạ
 test("phanBo_: SĐT trống mà không phải rút lại -> bỏ qua, không đẩy đi đâu, không đếm", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: "", HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky" })] });
   const r = run(ctx);
-  assert.deepEqual(r, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, chua: 0, chan: 0, rutLai: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0 });
+  assert.deepEqual(r, { dayVao: { "bcons-newsky": 0, "bcons-central-park": 0 }, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 0 });
   assert.deepEqual(masterMa(F, "M1"), []);
-  assert.equal(tab(F, null, "ChuaPhanDuAn").length, 1);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
 });
 
 test("phanBo_: lỗi khi quyết định (dạng lạ) -> ném lỗi trước mọi lần ghi, nhả khóa", () => {
@@ -857,7 +824,7 @@ test("phanBo_: dryRun không đổi gì (tab, lưới, định dạng) nhưng tr
   assert.equal(a.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
   const b = mk();
   assert.deepEqual(run(b.ctx), dry);
-  assert.deepEqual(dry, { dayVao: { "bcons-newsky": 1, "bcons-central-park": 1 }, chua: 1, chan: 1, rutLai: 0, lyDo: { tuchoi: 1, khong: 0 }, masterLoi: [], tuChoiLoi: 0 });
+  assert.deepEqual(dry, { dayVao: { "bcons-newsky": 1, "bcons-central-park": 1 }, rutLai: 0, dongYLai: 0, xoa: 1, lyDo: { tuchoi: 1, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 1 });
 });
 
 test("phanBo_: dòng CauHinh thiếu masterSheetId hoặc maDuAn bị bỏ qua; mã đó không phải đích hợp lệ", () => {
@@ -865,7 +832,7 @@ test("phanBo_: dòng CauHinh thiếu masterSheetId hoặc maDuAn bị bỏ qua; 
   const { F, ctx } = build({ cauHinh: cau, khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-central-park" })] });
   const r = run(ctx);
   assert.deepEqual(r.dayVao, { "bcons-newsky": 0 });
-  assert.equal(r.chua, 1);
+  assert.equal(r.chuaCoDuAn, 0, "mã dự án có giá trị nhưng không có Master: không phân bổ, không đếm là trống");
   assert.deepEqual(F.calls.openById, ["M1"]);
 });
 
@@ -923,12 +890,12 @@ test("xóa: dòng KhachHang không có MaKhach mà có SĐT trong TuChoi 'Xóa' 
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(7), PHONES[0], NAMES[0])] }, M2: {} },
   });
   const r = run(ctx);
-  assert.equal(r.chan, 1);
+  assert.equal(r.xoa, 1);
   assert.deepEqual(masterMa(F, "M1"), []);
   const k = khDoc(F)[0];
   assert.equal(k.SDT, "");
   assert.equal(k.HoTen, "");
-  assert.equal(k.DongYNhanTin, "Không");
+  assert.equal(k.DongYNhanTin, "Đã rút lại");
 });
 
 test("xóa: hai dòng KhachHang cùng SĐT (KH-1 'Chưa rõ', KH-2 'Có') trong TuChoi 'Xóa' -> cả hai bị xóa, không ai được thêm lại vào Master", () => {
@@ -942,31 +909,31 @@ test("xóa: hai dòng KhachHang cùng SĐT (KH-1 'Chưa rõ', KH-2 'Có') trong 
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(2), PHONES[0], NAMES[0])] }, M2: {} },
   });
   const r = run(ctx);
-  assert.equal(r.chan, 2);
+  assert.equal(r.xoa, 2);
   assert.deepEqual(masterMa(F, "M1"), [pad(3)]);
   assert.deepEqual(masterMa(F, "M2"), []);
   for (const k of khDoc(F).slice(0, 2)) {
     assert.equal(k.SDT, "");
     assert.equal(k.HoTen, "");
-    assert.equal(k.DongYNhanTin, "Không");
+    assert.equal(k.DongYNhanTin, "Đã rút lại");
   }
   assert.equal(khDoc(F)[2].HoTen, NAMES[1]);
 });
 
 test("làm nốt xóa dở: dòng 'Không' SĐT rỗng, GhiChu = dấu 'Rút lại' do phanBo_ ghi, còn dữ liệu cá nhân (viết hoa/thường lẫn lộn) -> xóa hết và xóa bản sao Master theo MaKhach", () => {
-  for (const flag of ["Không", "không", "KHÔNG", " Khong "]) {
+  for (const flag of ["Không", "không", "KHÔNG", " Khong ", "Đã rút lại"]) {
     const { F, ctx } = build({
       khach: [khRow({ MaKhach: pad(1), SDT: "", HoTen: NAMES[0], NhuCau: "Mua để ở", CanXem: "2PN", NguonChiTiet: "facebook", PTTT: "PTTT 03", NguoiChamSoc: "Nhan Vien A", DongYBangChung: "Có (x)", GhiChu: "Rút lại", DongYNhanTin: flag, TrangThaiCRM: "Đã gọi" })],
       byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), "", NAMES[0])] }, M2: { KhachTuMaster: [TM, mrow(pad(1), "", NAMES[0])] } },
     });
     const r = run(ctx);
-    assert.equal(r.chan, 1, flag);
+    assert.equal(r.xoa, 1, flag);
     assert.deepEqual(masterMa(F, "M1"), [], flag);
     assert.deepEqual(masterMa(F, "M2"), [], flag);
     const k = khDoc(F)[0];
     for (const c of PII) assert.equal(k[c], "", flag + c);
     assert.equal(k.GhiChu, "Rút lại", flag);
-    assert.equal(k.DongYNhanTin, "Không");
+    assert.equal(k.DongYNhanTin, "Đã rút lại");
     assert.equal(k.TrangThaiCRM, "Đã gọi");
     F.calls.writes.length = 0;
     run(ctx);
@@ -977,7 +944,7 @@ test("làm nốt xóa dở: dòng 'Không' SĐT rỗng, GhiChu = dấu 'Rút l�
 test("rút lại: GhiChu chỉ có 'Rút lại' + SĐT rỗng + 'Không' -> bỏ qua, không ghi gì", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: "", GhiChu: "Rút lại", DongYNhanTin: "Không" })] });
   const r = run(ctx);
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   assert.equal(F.calls.writes.filter((x) => x.sheet === "KhachHang").length, 0);
 });
 
@@ -1094,15 +1061,13 @@ test("quy trình ghi: tính hết trước khi ghi -> có người rút lại m�
 });
 
 for (const [label, hit] of [
-  ["sau khi ghi TuChoi (lúc xóa Master)", (i) => i.method === "deleteRow" && i.owner === "M1"],
-  ["sau khi xóa Master (lúc xóa ChuaPhanDuAn)", (i) => i.method === "deleteRow" && i.owner === "MASTER" && i.sheet === "ChuaPhanDuAn"],
-  ["sau khi xóa ChuaPhanDuAn (lúc ghi KhachHang)", (i) => i.method === "setValues" && i.owner === "MASTER" && i.sheet === "KhachHang"],
+  ["lúc xóa bản sao ở Master", (i) => i.method === "deleteRow" && i.owner === "M1"],
+  ["sau khi xóa Master (lúc xóa dữ liệu cá nhân ở KhachHang)", (i) => i.method === "setValues" && i.owner === "MASTER" && i.sheet === "KhachHang" && i.col === KHACH_COLS.indexOf("SDT") + 1],
 ]) {
   test("chết giữa chừng " + label + ": SĐT còn ở KhachHang, chạy lại hoàn tất việc xóa", () => {
     const { F, ctx } = build({
       khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky" })],
       tuChoi: [PHONES[0]],
-      chua: [[pad(1), PHONES[0], NAMES[0], ...Array(15).fill("")]],
       byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] }, M2: {} },
     });
     F.hooks.onWrite = (i) => { if (hit(i)) throw new Error("chết"); };
@@ -1112,7 +1077,6 @@ for (const [label, hit] of [
     F.hooks.onWrite = null;
     run(ctx);
     assert.deepEqual(masterMa(F, "M1"), []);
-    assert.equal(tab(F, null, "ChuaPhanDuAn").slice(1).filter((x) => x[0]).length, 0);
     assert.equal(khDoc(F)[0].SDT, "");
     assert.deepEqual(tuChoiPhones(F), ["0900000001"]);
   });
@@ -1165,7 +1129,8 @@ test("chayTatCa_: chạy đủ ba bước, trả số đếm từng bước, loi
   assert.equal(r.skipped, undefined);
   assert.deepEqual([r.landing.doc, r.landing.moi, r.landing.trung, r.landing.loi], [3, 1, 1, 1]);
   assert.deepEqual([r.crm.doc, r.crm.moi, r.crm.loi], [2, 1, 1]);
-  assert.equal(typeof r.phanBo.chua, "number");
+  assert.equal(typeof r.phanBo.chuaCoDuAn, "number");
+  assert.equal(typeof r.phanBo.rutLai, "number");
   assert.deepEqual(r.phanBo.masterLoi, []);
 });
 
@@ -1182,7 +1147,7 @@ test("chayTatCa_: đúng một dòng NhatKy: giờ ISO, nguồn, số đọc, m�
   assert.equal(moi, r.landing.moi + r.crm.moi);
   assert.equal(trung, r.landing.trung + r.crm.trung);
   assert.equal(loi, r.landing.loi + r.crm.loi + r.phanBo.masterLoi.length);
-  assert.match(String(ghiChu), /^chua=\d+ chan=\d+ tuchoi=\d+ khong=\d+ vao=\d+ ms=\d+$/);
+  assert.match(String(ghiChu), /^rutlai=\d+ dongylai=\d+ xoa=\d+ tuchoi=\d+ khong=\d+ vao=\d+ ms=\d+$/);
 });
 
 test("chayTatCa_: nguồn 'Gộp ngay' được ghi đúng; mặc định 'Tự động'", () => {
@@ -1528,7 +1493,7 @@ test("chayThu: alert nêu đủ các số của ba bước", () => {
   assert.match(a, /^Chạy thử/);
   assert.ok(a.includes("Landing: đọc 3, mới 1, trùng 1, lỗi 1"), a);
   assert.ok(a.includes("CRM: đọc 2, mới 1, trùng 0, lỗi 1"), a);
-  assert.match(a, /Phân bổ: .*chưa phân \d+, rút lại \d+/);
+  assert.match(a, /Phân bổ: .*chưa có mã dự án \d+, rút lại \d+, đồng ý lại \d+, xóa \d+/);
 });
 
 test("gopNgay khi bị bỏ qua (khóa bận) báo anh thử lại, không ném", () => {
@@ -1730,7 +1695,7 @@ test("lần chạy chỉ chuyển khách (dayVao > 0) KHÔNG phải rảnh: luô
   assert.notEqual(nk[1][6], "nhịp: đang chạy, không có gì mới");
 });
 
-test("mỗi mục làm lần chạy thành không rảnh: đọc, mới, trùng, lỗi, chặn, chưa phân, tuchoi, khong", () => {
+test("mỗi mục làm lần chạy thành không rảnh: đọc, mới, trùng, lỗi, xóa, tuchoi, khong", () => {
   // landing có một dòng lỗi (loi) và một mới
   let e = full({ landingRows: [leadRow({ ten: "Ten A", sdt: "0900000005", badPhone: "12345" })], crmRows: [] });
   runAll(e.ctx);
@@ -1740,11 +1705,11 @@ test("mỗi mục làm lần chạy thành không rảnh: đọc, mới, trùng,
   e = idleFull();
   runAll(e.ctx); runAll(e.ctx, { now: new Date(NOW.getTime() + 60000) });
   const base = nhatKy(e.F).length;
-  // TuChoi loại Xóa -> chan > 0
+  // TuChoi loại Xóa -> xoa > 0
   const sdt0 = e.F.values(null, "KhachHang")[1][KHACH_COLS.indexOf("SDT")];
   e.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TuChoi").getRange(2, 1, 1, 5).setValues([[sdt0, "", "2026-11-05T00:00:00.000Z", "Xóa", ""]]);
   const r = runAll(e.ctx, { now: new Date(NOW.getTime() + 120000) });
-  assert.ok(r.phanBo.chan >= 1);
+  assert.ok(r.phanBo.xoa >= 1);
   assert.equal(nhatKy(e.F).length, base + 1);
   assert.match(nhatKy(e.F)[base][6], /tuchoi=1/);
 });
@@ -1888,14 +1853,27 @@ test("mã dự án lạ gõ ở CauHinh (tên người) không tới được Te
   assert.match(tgTexts(F)[0], /mã lạ/);
 });
 
-test("lần chạy chỉ đưa khách vào ChuaPhanDuAn (chua > 0, vao = 0) không phải rảnh", () => {
-  const { F, ctx } = full({ landingRows: [], crmRows: [], khach: [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Khach Cu", DuAnQuanTam: "" })], byId: { L1: { Landing: [HEADERS] }, M1: {} } });
-  const r = runAll(ctx);
-  assert.equal(r.phanBo.chua, 1);
+test("lần chạy chỉ có khách rút lại (vao = 0) không phải rảnh; khách DuAnQuanTam trống một mình (chỉ đếm chuaCoDuAn) thì rảnh", () => {
+  const mk = (khach, tuChoi) => full({ landingRows: [], crmRows: [], khach, tuChoi, byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  const rut = mk([khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Khach Cu", DuAnQuanTam: "bcons-central-park" })], [["0900000009", "", TC_OLD, "Rút lại", ""]]);
+  const r = runAll(rut.ctx);
+  assert.equal(r.phanBo.rutLai, 1);
   assert.equal(r.phanBo.dayVao["bcons-newsky"], 0);
-  assert.equal(nhatKy(F).length, 2);
-  assert.match(nhatKy(F)[1][6], /^chua=1 .* vao=0 /);
-  assert.notEqual(nhatKy(F)[1][6], "nhịp: đang chạy, không có gì mới");
+  assert.equal(nhatKy(rut.F).length, 2);
+  assert.match(nhatKy(rut.F)[1][6], /^rutlai=1 dongylai=0 xoa=0 .* vao=0 /);
+  assert.notEqual(nhatKy(rut.F)[1][6], "nhịp: đang chạy, không có gì mới");
+  const blank = mk([khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Khach Cu", DuAnQuanTam: "" })]);
+  const rb = runAll(blank.ctx);
+  assert.equal(rb.phanBo.chuaCoDuAn, 1);
+  assert.equal(nhatKy(blank.F)[1][6], "nhịp: đang chạy, không có gì mới");
+});
+
+test("lần chạy chỉ có khách điền lại (dongYLai > 0, không ai vào dự án) không phải rảnh", () => {
+  const { F, ctx } = full({ landingRows: [], crmRows: [], khach: [consented(pad(1), "0900000009", "Khach Cu", "bcons-central-park", "2026-11-10")], tuChoi: [["0900000009", "", TC_OLD, "Rút lại", ""]], byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  const r = runAll(ctx);
+  assert.equal(r.phanBo.dongYLai, 1);
+  assert.equal(r.phanBo.dayVao["bcons-newsky"], 0);
+  assert.match(nhatKy(F)[1][6], /^rutlai=0 dongylai=1 /);
 });
 
 // ---------------- Sửa sau review cuối ----------------
@@ -1913,7 +1891,7 @@ test("M1: SĐT trong TuChoi sai dạng -> Loi 'Rút lại' + số dòng (không 
   const { F, ctx } = mk();
   const r = run(ctx);
   assert.equal(r.tuChoiLoi, 2);
-  assert.equal(r.chan, 1); // số hợp lệ vẫn chặn
+  assert.equal(r.xoa, 1); // số hợp lệ vẫn chặn
   assert.deepEqual(masterMa(F, "M1"), [pad(1)]); // khách khác vẫn được phân bổ
   const loi = tcLoiRows(F);
   assert.equal(loi.length, 2);
@@ -1968,28 +1946,6 @@ test("M3: phanBo_ ném đúng thông báo tiêu đề sai và chayTatCa_ báo LO
   const { F, ctx } = full({ landingRows: [], crmRows: [], khach: [khRow({ MaKhach: pad(1), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky" })], byId: { L1: { Landing: [HEADERS] }, M1: { KhachTuMaster: [["Sai", ...TM.slice(1)]] } } });
   assert.equal(runAll(ctx).loi, "LOI_TAB");
   assert.equal(tgTexts(F).length, 1);
-});
-
-test("M5: ChuaPhanDuAn - cột anh gõ (TrangThaiCRM, TrangThaiChamSoc, NguoiChamSoc, GhiChu) chỉ điền khi trống, không bị KhachHang ghi đè", () => {
-  const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "", TrangThaiCRM: "Nóng", TrangThaiChamSoc: "Đã gọi", NguoiChamSoc: "An", GhiChu: "ghi chú KH" })] });
-  run(ctx);
-  const sh = F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn");
-  let t = tab(F, null, "ChuaPhanDuAn");
-  const col = (c) => t[0].indexOf(c);
-  assert.equal(t[1][col("GhiChu")], "ghi chú KH"); // trống -> đã điền lần đầu
-  sh.getRange(2, col("GhiChu") + 1).setValues([["anh gõ ở đây"]]);
-  sh.getRange(2, col("TrangThaiCRM") + 1).setValues([["Lạnh"]]);
-  sh.getRange(2, col("NguoiChamSoc") + 1).setValues([[""]]); // anh xóa -> trống -> được điền lại
-  const kh = F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang");
-  kh.getRange(2, 15).setValues([["Chăm sóc B"]]); // TrangThaiChamSoc đổi ở KhachHang
-  kh.getRange(2, 3).setValues([["Ten Doi Moi"]]); // cột hệ thống khác vẫn cập nhật
-  run(ctx);
-  t = tab(F, null, "ChuaPhanDuAn");
-  assert.equal(t[1][col("GhiChu")], "anh gõ ở đây");
-  assert.equal(t[1][col("TrangThaiCRM")], "Lạnh");
-  assert.equal(t[1][col("TrangThaiChamSoc")], "Đã gọi");
-  assert.equal(t[1][col("NguoiChamSoc")], "An");
-  assert.equal(t[1][col("HoTen")], "Ten Doi Moi");
 });
 
 function nBadLanding(n) {
@@ -2047,12 +2003,13 @@ test("M10: tiêu đề NhapCRM và tiêu đề tab đích gõ NFD/thừa khoản
 test("L1: phanBo_ - 'Không rõ' không rút lại, không xóa, ghi Loi một lần mỗi dòng mỗi lần chạy, xử lý như Chưa rõ", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Không rõ" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Không" })] });
   const r = run(ctx);
-  assert.equal(r.chan, 0);
-  assert.equal(r.rutLai, 0); // 'Không' đúng khuôn: rút lại, hồ sơ giữ, không phân bổ (gõ tay: không có gì mới để ghi nhận)
+  assert.equal(r.xoa, 0);
+  assert.equal(r.rutLai, 1); // khách 2 gõ 'Không' đúng khuôn: rút lại (khách 1 'Không rõ' thì không)
   assert.equal(khDoc(F)[0].SDT, PHONES[0]);
   assert.equal(khDoc(F)[0].DongYNhanTin, "Không rõ"); // không ghi đè chữ của anh
-  assert.deepEqual(masterMa(F, "M1"), [pad(1)]);
+  assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(2)]);
   assert.equal(tab(F, "M1", "KhachTuMaster")[1][9], "Chưa rõ");
+  assert.equal(tab(F, "M1", "KhachTuMaster")[2][9], "Đã rút lại");
   assert.deepEqual(tuChoiPhones(F), []);
   const loi = tcLoiRows(F);
   assert.equal(loi.length, 1);
@@ -2146,17 +2103,19 @@ test("Task3: tab TuChoi mới tạo có đủ 5 tiêu đề", () => {
   assert.deepEqual(tcTab(F), [TC_HEADER]);
 });
 
-test("Task3 (a): TuChoi 'Rút lại' -> khách không vào Master, không bị xóa, đếm rutLai; Master cũ và dòng TuChoi nguyên", () => {
+test("Task3 (a): TuChoi 'Rút lại' -> khách không bị xóa, đếm rutLai, vẫn được phân bổ (Task 4) với trạng thái 'Đã rút lại'; dòng TuChoi nguyên", () => {
   const { F, ctx } = build({
     khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky;bcons-central-park", NhuCau: "Mua để ở" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky" })],
     tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
   });
   const r = run(ctx);
   assert.equal(r.rutLai, 1);
-  assert.equal(r.chan, 0);
-  assert.deepEqual(r.dayVao, { "bcons-newsky": 1, "bcons-central-park": 0 });
-  assert.deepEqual(masterMa(F, "M1"), [pad(2)]);
-  assert.deepEqual(masterMa(F, "M2"), []);
+  assert.equal(r.xoa, 0);
+  assert.deepEqual(r.dayVao, { "bcons-newsky": 2, "bcons-central-park": 1 });
+  assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(2)]);
+  assert.deepEqual(masterMa(F, "M2"), [pad(1)]);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(2))[9], "Chưa rõ", "khách 2: đồng ý 'Có' chung nhưng chưa có đồng ý theo dự án");
   const k = khDoc(F)[0];
   assert.equal(k.HoTen, NAMES[0]);
   assert.equal(k.SDT, PHONES[0]);
@@ -2165,12 +2124,13 @@ test("Task3 (a): TuChoi 'Rút lại' -> khách không vào Master, không bị x
   assert.equal(String(tcTab(F)[1][2]), TC_OLD);
 });
 
-test("Task3 (a): khách rutLai không được đẩy vào ChuaPhanDuAn dù DuAnQuanTam trống", () => {
+test("Task3 (a): khách rutLai có DuAnQuanTam trống: ở lại KhachHang (đánh dấu rút lại), không có tab ChuaPhanDuAn, được đếm ở chuaCoDuAn", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" })], tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]] });
   const r = run(ctx);
   assert.equal(r.rutLai, 1);
-  assert.equal(r.chua, 0);
-  assert.deepEqual(tab(F, null, "ChuaPhanDuAn").slice(1).filter((x) => x[0]), []);
+  assert.equal(r.chuaCoDuAn, 1);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
 });
 
 test("Task3 (b)(d): loại 'Xóa' (mọi cách viết) -> luồng xóa cũ; loại trống/lạ -> chỉ rút lại, không xóa", () => {
@@ -2181,7 +2141,7 @@ test("Task3 (b)(d): loại 'Xóa' (mọi cách viết) -> luồng xóa cũ; lo�
       byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] }, M2: {} },
     });
     const r = run(ctx);
-    assert.equal(r.chan, xoa ? 1 : 0, JSON.stringify(loai));
+    assert.equal(r.xoa, xoa ? 1 : 0, JSON.stringify(loai));
     assert.equal(r.rutLai, xoa ? 0 : 1, JSON.stringify(loai));
     assert.equal(khDoc(F)[0].HoTen, xoa ? "" : NAMES[0], JSON.stringify(loai));
     assert.deepEqual(masterMa(F, "M1"), xoa ? [] : [pad(1)], JSON.stringify(loai)); // bản cũ ở Master: Task 4 mới cập nhật trạng thái
@@ -2194,7 +2154,7 @@ test("Task3 (h)(k): cùng SĐT nhiều dòng (số, +84, chuỗi): 'Xóa' thắn
     tuChoi: [[PHONES[0], "", "2026-11-09T00:00:00.000Z", "Rút lại", ""], ["+84 90 000 0001", "", "2026-11-05T00:00:00.000Z", "Xóa", ""]],
   });
   const r = run(ctx);
-  assert.equal(r.chan, 1);
+  assert.equal(r.xoa, 1);
   assert.equal(r.rutLai, 0);
   assert.equal(khDoc(F)[0].HoTen, "");
 });
@@ -2206,15 +2166,17 @@ test("Task3 (k): SĐT trong TuChoi viết nhiều dạng (số 900000001, +84, 0
   }
 });
 
-test("Task3 (c): đồng ý MỚI HƠN NgayGhi mở lại (vào Master, không rutLai); cũ hơn và bằng nhau thì không", () => {
+test("Task3 (c): đồng ý MỚI HƠN NgayGhi mở lại (Master 'Có', không rutLai, dongYLai); cũ hơn và bằng nhau thì không (Master 'Đã rút lại' / bị xóa)", () => {
   const cases = [["2026-11-12T03:14:59.999Z", true], ["2026-11-12T03:15:00.000Z", false], ["2026-11-13T00:00:00.000Z", false]];
   for (const loai of ["Rút lại", "Xóa"]) {
     for (const [ngayGhi, lifted] of cases) {
       const { F, ctx } = build({ khach: [consented(pad(1), PHONES[0], NAMES[0], "bcons-newsky", "2026-11-12")], tuChoi: [[PHONES[0], "", ngayGhi, loai, ""]] });
       const r = run(ctx, { now: new Date("2026-11-20T00:00:00.000Z") });
-      assert.equal(r.dayVao["bcons-newsky"], lifted ? 1 : 0, loai + ngayGhi);
+      assert.equal(r.dayVao["bcons-newsky"], !lifted && loai === "Xóa" ? 0 : 1, loai + ngayGhi);
       assert.equal(r.rutLai, !lifted && loai === "Rút lại" ? 1 : 0, loai + ngayGhi);
-      assert.equal(r.chan, !lifted && loai === "Xóa" ? 1 : 0, loai + ngayGhi);
+      assert.equal(r.dongYLai, lifted && loai === "Rút lại" ? 1 : 0, loai + ngayGhi);
+      if (loai === "Rút lại") assert.equal(masterRow(F, "M1", pad(1))[9], lifted ? "Có" : "Đã rút lại", loai + ngayGhi);
+      assert.equal(r.xoa, !lifted && loai === "Xóa" ? 1 : 0, loai + ngayGhi);
       assert.equal(String(tcTab(F)[1][3]), loai, "dòng TuChoi không bị xóa/sửa loại");
     }
   }
@@ -2228,7 +2190,8 @@ test("Task3 (e): dòng TuChoi không có NgayGhi (hoặc rác) được ghi Ngay
   });
   const r = run(ctx);
   assert.equal(r.rutLai, 3);
-  assert.equal(r.dayVao["bcons-newsky"], 0);
+  assert.equal(r.dayVao["bcons-newsky"], 3);
+  for (const ma of [pad(1), pad(2), pad(3)]) assert.equal(masterRow(F, "M1", ma)[9], "Đã rút lại", ma);
   const t = tcTab(F);
   assert.equal(String(t[1][2]), "2026-11-11T01:00:00.000Z");
   assert.equal(String(t[2][2]), "2026-11-11T01:00:00.000Z");
@@ -2275,20 +2238,22 @@ test("Task3 (i): gõ 'Không' ở DongYNhanTin (có SĐT) -> rutLai, KHÔNG xóa
     khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Không" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Không rõ" })],
   });
   const r = run(ctx);
-  assert.equal(r.rutLai, 0);
-  assert.equal(r.chan, 0);
-  assert.deepEqual(masterMa(F, "M1"), [pad(2)]);
+  assert.equal(r.rutLai, 1);
+  assert.equal(r.xoa, 0);
+  assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(2)]);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(2))[9], "Chưa rõ");
   assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
-  assert.equal(khDoc(F)[0].DongYNhanTin, "Không");
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
   assert.deepEqual(tcTab(F), [TC_HEADER]);
 });
 
-test("Task3 (j): khách DuAnQuanTam rỗng không bị coi là rút lại/xóa, ở lại KhachHang (và ChuaPhanDuAn như cũ)", () => {
+test("Task3 (j): khách DuAnQuanTam rỗng không bị coi là rút lại/xóa, ở lại KhachHang (chỉ đếm chuaCoDuAn)", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" })] });
   const r = run(ctx);
   assert.equal(r.rutLai, 0);
-  assert.equal(r.chan, 0);
-  assert.equal(r.chua, 1);
+  assert.equal(r.xoa, 0);
+  assert.equal(r.chuaCoDuAn, 1);
   assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
 });
 
@@ -2317,14 +2282,17 @@ test("Task3 (l): không PII ở Loi/NhatKy/Logger khi có rutLai, đóng dấu N
   for (const s of [...NAMES, ...PHONES, "090000000"]) assert.ok(!loi.includes(s), s);
 });
 
-test("Task3: cùng SĐT hai dòng KhachHang, một dòng rút lại (TuChoi 'Rút lại') -> cả hai dòng không được phân bổ (rút lại là theo khách/SĐT)", () => {
+test("Task3: cùng SĐT hai dòng KhachHang, một dòng rút lại (TuChoi 'Rút lại') -> cả hai dòng đều 'Đã rút lại' ở Master (rút lại là theo khách/SĐT), đếm một khách", () => {
   const { F, ctx } = build({
     khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Không" }), khRow({ MaKhach: pad(2), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "bcons-central-park", DongYNhanTin: "Có" }), khRow({ MaKhach: pad(3), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "bcons-newsky" })],
   });
   const r = run(ctx);
-  assert.equal(r.rutLai, 0);
-  assert.deepEqual(masterMa(F, "M1"), [pad(3)]);
-  assert.deepEqual(masterMa(F, "M2"), []);
+  assert.equal(r.rutLai, 1);
+  assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(3)]);
+  assert.deepEqual(masterMa(F, "M2"), [pad(2)]);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M2", pad(2))[9], "Đã rút lại");
+  assert.notEqual(masterRow(F, "M1", pad(3))[9], "Đã rút lại");
   assert.equal(khDoc(F)[1].HoTen, NAMES[0]);
 });
 
@@ -2342,7 +2310,7 @@ test("Review 1 (Sheets): Xóa 05/11 bị đồng ý 10/11 mở + Rút lại 12/1
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] }, M2: {} },
   });
   const r = run(ctx, { now: LATER });
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   assert.equal(r.rutLai, 1);
   assert.ok(F.calls.writes.every((x) => x.method !== "deleteRow"));
   assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
@@ -2356,19 +2324,19 @@ test("Review 1 (Sheets): Xóa cũ đã bị mở + Rút lại KHÔNG ngày -> ru
     tuChoi: [[PHONES[0], "", "2026-11-05T00:00:00.000Z", "Xóa", ""], [PHONES[0], "", "", "Rút lại", ""]],
   });
   const r = run(ctx, { now: LATER });
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   assert.equal(r.rutLai, 1);
   assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
 });
 
-test("Review 2 (Sheets): NgayGhi là Date 0 giờ VN (T17:00Z) -> đồng ý cùng ngày VN không mở lại: Rút lại -> rutLai (không phân bổ), Xóa -> xóa", () => {
+test("Review 2 (Sheets): NgayGhi là Date 0 giờ VN (T17:00Z) -> đồng ý cùng ngày VN không mở lại: Rút lại -> rutLai (vẫn phân bổ, 'Đã rút lại'), Xóa -> xóa", () => {
   const cell = new Date("2026-11-10T17:00:00.000Z");
   for (const loai of ["Rút lại", "Xóa"]) {
     const { F, ctx } = build({ khach: [consented(pad(1), PHONES[0], NAMES[0], CHUNG, "2026-11-11")], tuChoi: [[PHONES[0], "", cell, loai, ""]] });
     // đồng ý lúc 03:15Z cùng ngày VN 11/11 (đã sớm hơn cuối ngày VN)
     const r = run(ctx, { now: LATER });
-    assert.equal(r.dayVao[CHUNG], 0, loai);
-    assert.equal(loai === "Xóa" ? r.chan : r.rutLai, 1, loai);
+    assert.equal(r.dayVao[CHUNG], loai === "Xóa" ? 0 : 1, loai);
+    assert.equal(loai === "Xóa" ? r.xoa : r.rutLai, 1, loai);
     assert.equal(khDoc(F)[0].HoTen, loai === "Xóa" ? "" : NAMES[0], loai);
   }
   // ngày hôm sau: mở lại
@@ -2382,7 +2350,7 @@ test("Review 3: dòng không SĐT 'Không' gõ tay, còn dữ liệu và GhiChu 
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), "", NAMES[0])] }, M2: {} },
   });
   const r = run(ctx);
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   assert.equal(F.calls.writes.filter((x) => x.sheet === "KhachHang").length, 0);
   assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
   assert.equal(khDoc(F)[1].HoTen, NAMES[1]);
@@ -2391,7 +2359,7 @@ test("Review 3: dòng không SĐT 'Không' gõ tay, còn dữ liệu và GhiChu 
 
 test("Review 3: dấu 'Rút lại' mà HẾT dữ liệu cá nhân thì bỏ qua (không ghi gì)", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: "", GhiChu: "Rút lại", DongYNhanTin: "Không" })] });
-  assert.equal(run(ctx).chan, 0);
+  assert.equal(run(ctx).xoa, 0);
   assert.equal(F.calls.writes.filter((x) => x.sheet === "KhachHang").length, 0);
 });
 
@@ -2406,7 +2374,7 @@ test("Review 3: xóa ghi dấu (DongYNhanTin='Không', GhiChu='Rút lại') TRƯ
   };
   assert.throws(() => ctx.phanBo_({ dryRun: false, now: NOW }), /chết/);
   const k = khDoc(F)[0];
-  assert.equal(k.DongYNhanTin, "Không", "dấu phải có trước");
+  assert.equal(k.DongYNhanTin, "Đã rút lại", "dấu phải có trước");
   assert.equal(k.GhiChu, "Rút lại");
   F.hooks.onWrite = null;
   run(ctx);
@@ -2421,7 +2389,7 @@ test("Review 3: chết giữa lúc xóa dữ liệu cá nhân (SĐT đã mất, 
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), "", NAMES[0])] }, M2: {} },
   });
   const r = run(ctx);
-  assert.equal(r.chan, 1);
+  assert.equal(r.xoa, 1);
   assert.equal(khDoc(F)[0].HoTen, "");
   assert.deepEqual(masterMa(F, "M1"), []);
 });
@@ -2434,7 +2402,7 @@ test("Review 4: rút lại hiện rõ — KhachHang 'Đã rút lại' + NgayRutL
   });
   const r = run(ctx);
   assert.equal(r.rutLai, 1);
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   const k = khDoc(F)[0];
   assert.equal(k.DongYNhanTin, "Đã rút lại");
   assert.equal(String(k.NgayRutLai), "2026-11-08T00:00:00.000Z");
@@ -2442,10 +2410,10 @@ test("Review 4: rút lại hiện rõ — KhachHang 'Đã rút lại' + NgayRutL
   assert.equal(khDoc(F)[1].DongYNhanTin, "Có");
   const mcol = (id, i) => tab(F, id, "KhachTuMaster")[i][9];
   assert.equal(mcol("M1", 1), "Đã rút lại");
-  assert.equal(mcol("M1", 2), "Có", "khách khác không đổi");
+  assert.equal(mcol("M1", 2), "Chưa rõ", "khách khác: tính lại theo dự án (chưa có DongYDuAn) chứ không còn chép 'Có' chung");
   assert.equal(mcol("M2", 1), "Đã rút lại");
   assert.deepEqual(masterMa(F, "M1"), [pad(1), pad(2)], "không thêm/xóa dòng");
-  assert.deepEqual(masterMa(F, "M2"), [pad(1)], "không upsert vào dự án chưa có dòng");
+  assert.deepEqual(masterMa(F, "M2"), [pad(1)]);
   F.calls.writes.length = 0;
   const r2 = run(ctx);
   assert.equal(r2.rutLai, 0);
@@ -2503,11 +2471,14 @@ test("Review 4: đồng ý mới hơn NgayGhi sau khi đã hiện rút lại -> 
   assert.equal(tab(F, "M1", "KhachTuMaster")[1][9], "Có");
 });
 
-test("Review 4: Master không mở được khi có người rút lại (không có xóa) -> ném lỗi trước mọi lần ghi như trước, không PII", () => {
+test("Review 4 (Task 4): Master không mở được khi có người rút lại (không có xóa) -> KHÔNG ném: KhachHang đánh dấu rút lại, masterLoi, không PII", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: CHUNG })], tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]], byId: { M1: { KhachTuMaster: [TM] } } });
-  const snap = F.snapshot();
-  assert.throws(() => ctx.phanBo_({ dryRun: false, now: NOW }), /KhachTuMaster/);
-  assert.equal(F.snapshot(), snap);
+  const r = run(ctx);
+  assert.deepEqual(r.masterLoi, [CP]);
+  assert.equal(r.rutLai, 1);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
+  assert.equal(JSON.stringify(tab(F, null, "Loi")).includes(PHONES[0]), false);
 });
 
 test("Review 5: LoaiYeuCau lạ ('Xóa dữ liệu') -> vẫn Rút lại (không xóa) và MỘT dòng Loi {Rút lại, số dòng, lý do}, đếm vào tuChoiLoi; chạy lại không lặp", () => {
@@ -2519,7 +2490,7 @@ test("Review 5: LoaiYeuCau lạ ('Xóa dữ liệu') -> vẫn Rút lại (không
   assert.equal(dry.tuChoiLoi, 3); // 2 loại lạ + 1 SĐT sai
   assert.equal(F.values(null, "Loi"), null);
   const r = run(ctx);
-  assert.equal(r.chan, 0);
+  assert.equal(r.xoa, 0);
   assert.equal(r.rutLai, 2);
   assert.equal(r.tuChoiLoi, 3);
   const loi = tcLoiRows(F).filter((x) => String(x[3]).startsWith("Loại yêu cầu lạ"));
@@ -2552,7 +2523,7 @@ test("Review 6: hai dòng KhachHang cùng SĐT, chỉ một dòng có đồng ý
     byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0]), mrow(pad(2), PHONES[0], NAMES[0])] }, M2: {} },
   });
   const r = run(ctx, { now: LATER });
-  assert.equal(r.chan, 1);
+  assert.equal(r.xoa, 1);
   assert.equal(khDoc(F)[0].HoTen, "");
   assert.equal(khDoc(F)[1].HoTen, NAMES[0]);
   assert.equal(khDoc(F)[1].NhuCau, "mới");
@@ -2574,4 +2545,464 @@ test("Review 2: NgayGhi chỉ có ngày (Date 0 giờ VN, 'YYYY-MM-DD', 'DD/MM/Y
   // NgayRutLai = cuối ngày VN 11/11
   assert.equal(String(khDoc(F)[0].NgayRutLai), "2026-11-11T17:00:00.000Z");
   assert.ok(T);
+});
+
+// ======================= Task 4: rút lại giữ hồ sơ, đồng ý lại, bỏ ChuaPhanDuAn =======================
+const NEWSKY = "bcons-newsky";
+const CP = "bcons-central-park";
+const BOTH = NEWSKY + ";" + CP;
+const T4_NOW = new Date("2026-11-20T00:00:00.000Z");
+const T4_ZERO = { dayVao: { [NEWSKY]: 0, [CP]: 0 }, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 0 };
+const zero4 = (o = {}) => ({ ...T4_ZERO, ...o });
+/** Như build() nhưng có Sheet landing L1 để thử điền lại form qua gopLanding_ (mergeCustomer_ thật). */
+function buildL({ khach, tuChoi, landingRows = [], masters = { M1: {}, M2: {} } } = {}) {
+  return build({ khach, tuChoi, cauHinh: [CAU_HINH, [NEWSKY, "L1", "M1"], [CP, "", "M2"]], byId: { L1: { Landing: [HEADERS, ...landingRows] }, ...masters } });
+}
+const gop = (ctx, now = T4_NOW) => plain(ctx.gopLanding_({ dryRun: false, now }));
+const appendLanding = (F, row) => {
+  const sh = F.SpreadsheetApp.openById("L1").getSheetByName("Landing");
+  sh.getRange(sh.getLastRow() + 1, 1, 1, row.length).setValues([row]);
+};
+const masterRow = (F, id, ma) => (tab(F, id, "KhachTuMaster") || []).slice(1).find((r) => r[0] === ma);
+const iso = (v) => (v instanceof Date ? v.toISOString() : String(v));
+
+test("Task4 (a): TuChoi 'Rút lại' -> hồ sơ giữ nguyên mọi dữ liệu, dòng Master được thêm/cập nhật với trạng thái 'Đã rút lại'; lần hai không ghi gì", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], BOTH, "2026-11-01", { NhuCau: "Mua để ở", CanXem: "2PN", PTTT: "PTTT 03", NguoiChamSoc: "An", GhiChu: "ghi chú của anh" })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] }, M2: {} },
+  });
+  const r = run(ctx);
+  assert.deepEqual(r, zero4({ dayVao: { [NEWSKY]: 1, [CP]: 1 }, rutLai: 1 }));
+  const k = khDoc(F)[0];
+  assert.equal(k.SDT, PHONES[0]);
+  assert.equal(k.HoTen, NAMES[0]);
+  assert.equal(k.NhuCau, "Mua để ở");
+  assert.equal(k.CanXem, "2PN");
+  assert.equal(k.PTTT, "PTTT 03");
+  assert.equal(k.NguoiChamSoc, "An");
+  assert.equal(k.GhiChu, "ghi chú của anh");
+  assert.ok(k.DongYBangChung.includes("mẫu v1"), "bằng chứng còn nguyên");
+  assert.equal(k.DongYNhanTin, "Đã rút lại");
+  assert.equal(String(k.NgayRutLai), TC_OLD);
+  for (const id of ["M1", "M2"]) {
+    const m = masterRow(F, id, pad(1));
+    assert.ok(m, id);
+    assert.equal(m[1], PHONES[0]);
+    assert.equal(m[2], NAMES[0]);
+    assert.equal(m[6], "Mua để ở", "A..J vẫn được cập nhật");
+    assert.equal(m[9], "Đã rút lại", id);
+  }
+  assert.ok(F.calls.writes.every((x) => x.method !== "deleteRow"));
+  F.calls.writes.length = 0;
+  const snap = F.snapshot();
+  const r2 = run(ctx);
+  assert.equal(w(F), 0);
+  assert.equal(F.snapshot(), snap);
+  assert.deepEqual(r2, zero4());
+});
+
+test("Task4 (a2): 'Không' gõ tay -> KhachHang 'Đã rút lại' + NgayRutLai = now, Master 'Đã rút lại', hồ sơ giữ; lần hai không ghi gì", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Không", NhuCau: "x" })],
+  });
+  const r = run(ctx);
+  assert.equal(r.rutLai, 1);
+  assert.equal(r.xoa, 0);
+  const k = khDoc(F)[0];
+  assert.equal(k.DongYNhanTin, "Đã rút lại");
+  assert.equal(String(k.NgayRutLai), NOW.toISOString());
+  assert.equal(k.HoTen, NAMES[0]);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  F.calls.writes.length = 0;
+  const r2 = run(ctx);
+  assert.equal(w(F), 0);
+  assert.equal(r2.rutLai, 0);
+  assert.equal(String(khDoc(F)[0].NgayRutLai), NOW.toISOString(), "ngày không bị đẩy");
+});
+
+test("Task4 (c)(Focus 6): điền lại form có đồng ý mới -> KhachHang 'Có' đúng dự án đó, DaDongYLai ghi ngày bằng chứng, dòng TuChoi còn nguyên; Master dự án đó 'Có', dự án kia 'Chưa rõ'; lần hai không ghi gì", () => {
+  const T = buildL({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], BOTH, "2026-11-01", { NhuCau: "Mua để ở" })],
+    tuChoi: [[PHONES[0], "gọi cho anh", TC_OLD, "Rút lại", ""]],
+  });
+  const { F, ctx } = T;
+  run(ctx, { now: T4_NOW });
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Đã rút lại");
+  appendLanding(F, leadRow({ ten: "Ten Moi", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-12T03:00:00.000Z") }));
+  const g = gop(ctx);
+  assert.equal(g.trung, 1);
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.dongYLai, 1);
+  assert.equal(r.rutLai, 0);
+  assert.equal(r.xoa, 0);
+  const k = khDoc(F)[0];
+  assert.equal(k.DongYNhanTin, "Có");
+  assert.equal(k.DongYDuAn, NEWSKY);
+  assert.equal(String(k.NgayRutLai), TC_OLD, "ngày rút lại giữ làm lịch sử");
+  assert.equal(k.HoTen, NAMES[0]);
+  const t = tcTab(F);
+  assert.equal(t.length, 2, "dòng TuChoi không bị xóa");
+  assert.deepEqual([t[1][0], t[1][1], iso(t[1][2]), t[1][3]], [PHONES[0], "gọi cho anh", TC_OLD, "Rút lại"]);
+  assert.equal(iso(t[1][4]), "2026-11-12T03:00:00.000Z");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Có");
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Chưa rõ", "đồng ý dự án A không mở nhắn dự án B");
+  F.calls.writes.length = 0;
+  const snap = F.snapshot();
+  const r2 = run(ctx, { now: T4_NOW });
+  assert.equal(w(F), 0);
+  assert.equal(F.snapshot(), snap);
+  assert.deepEqual(r2, zero4());
+});
+
+test("Task4 (d): bằng chứng CŨ hơn ngày rút lại bị đọc lại từ landing -> vẫn 'Đã rút lại', Master 'Đã rút lại', dongYLai 0, DaDongYLai trống", () => {
+  const T = buildL({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Chưa rõ" })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+    landingRows: [leadRow({ ten: "Ten Cu", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-01T03:00:00.000Z") })],
+  });
+  const { F, ctx } = T;
+  gop(ctx);
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.rutLai, 1);
+  assert.equal(r.dongYLai, 0);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  // lần sau lại có một dòng landing cũ khác
+  appendLanding(F, leadRow({ ten: "Ten Cu 2", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-02T03:00:00.000Z") }));
+  gop(ctx);
+  const r2 = run(ctx, { now: T4_NOW });
+  assert.equal(r2.dongYLai, 0);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(String(tcTab(F)[1][4]), "");
+});
+
+test("Task4 (n): KhachHang còn 'Đã rút lại' cũ nhưng đã có bằng chứng mới hơn NgayRutLai (không qua landing) -> tính lại 'Có', Master 'Có', DaDongYLai được ghi", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-12", { DongYNhanTin: "Đã rút lại", NgayRutLai: TC_OLD })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+  });
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.rutLai, 0);
+  assert.equal(r.dongYLai, 1);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Có");
+  assert.equal(khDoc(F)[0].DongYDuAn, NEWSKY);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Có");
+  assert.equal(iso(tcTab(F)[1][4]), "2026-11-12T03:15:00.000Z");
+});
+
+test("Task4 (b2): DaDongYLai đã có thì không ghi đè và không đếm lại; dòng 'Xóa' bị mở không ghi DaDongYLai", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-12"), consented(pad(2), PHONES[1], NAMES[1], NEWSKY, "2026-11-12")],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", "đã ghi tay"], [PHONES[1], "", TC_OLD, "Xóa", ""]],
+  });
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.dongYLai, 0);
+  const t = tcTab(F);
+  assert.equal(t[1][4], "đã ghi tay");
+  assert.equal(t[2][4], "");
+});
+
+test("Task4 (e): 'Xóa' -> xóa mọi Master, giữ MaKhach, xóa dữ liệu cá nhân VÀ DongYDuAN/DongYBangChung, trạng thái 'Đã rút lại', SĐT còn trong TuChoi; lần hai không ghi gì", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], BOTH, "2026-11-01", { NhuCau: "Mua để ở", GhiChu: "ghi chú" }), consented(pad(2), PHONES[1], NAMES[1], BOTH, "2026-11-01")],
+    tuChoi: [PHONES[0]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0]), mrow(pad(2), PHONES[1], NAMES[1])] }, M2: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] } },
+  });
+  const r = run(ctx);
+  assert.equal(r.xoa, 1);
+  assert.deepEqual(r.lyDo, { tuchoi: 1, khong: 0 });
+  assert.equal(r.rutLai, 0);
+  assert.deepEqual(r.dayVao, { [NEWSKY]: 1, [CP]: 1 });
+  const k = khDoc(F)[0];
+  assert.equal(k.MaKhach, pad(1));
+  for (const c of [...PII, "DongYDuAn"]) assert.equal(k[c], "", c);
+  assert.equal(k.DongYNhanTin, "Đã rút lại");
+  assert.equal(k.GhiChu, "Rút lại");
+  assert.equal(masterRow(F, "M1", pad(1)), undefined);
+  assert.equal(masterRow(F, "M2", pad(1)), undefined);
+  assert.ok(masterRow(F, "M1", pad(2)) && masterRow(F, "M2", pad(2)));
+  assert.deepEqual(tuChoiPhones(F), [PHONES[0]]);
+  F.calls.writes.length = 0;
+  const snap = F.snapshot();
+  const r2 = run(ctx);
+  assert.equal(w(F), 0);
+  assert.equal(F.snapshot(), snap);
+  assert.equal(r2.xoa, 0);
+});
+
+test("Task4 (e2): 'Xóa' rồi khách điền lại form với đồng ý mới -> HỒ SƠ MỚI (MaKhach mới) 'Có', vào Master với 'Có'; hồ sơ cũ vẫn trống", () => {
+  const T = buildL({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-01", { NhuCau: "cũ" })],
+    tuChoi: [PHONES[0]],
+    masters: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] }, M2: {} },
+  });
+  const { F, ctx } = T;
+  run(ctx, { now: T4_NOW });
+  assert.equal(khDoc(F)[0].SDT, "");
+  appendLanding(F, leadRow({ ten: "Ten Moi", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-12T03:00:00.000Z") }));
+  const g = gop(ctx);
+  assert.equal(g.moi, 1);
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.xoa, 0);
+  assert.equal(r.dayVao[NEWSKY], 1);
+  const kh = khDoc(F);
+  assert.equal(kh.length, 2);
+  assert.equal(kh[0].SDT, "");
+  assert.equal(kh[0].NhuCau, "");
+  assert.equal(kh[1].MaKhach, pad(2));
+  assert.equal(kh[1].SDT, PHONES[0]);
+  assert.equal(kh[1].DongYNhanTin, "Có");
+  assert.equal(kh[1].DongYDuAn, NEWSKY);
+  assert.equal(masterRow(F, "M1", pad(1)), undefined);
+  assert.equal(masterRow(F, "M1", pad(2))[9], "Có");
+});
+
+test("Task4 (f): khách DuAnQuanTam trống ở lại KhachHang nguyên vẹn, chuaCoDuAn đếm; không tạo, không đọc, không ghi ChuaPhanDuAn (kể cả tab cũ còn sót)", () => {
+  const stale = [[...KHACH_COLS, "GanDuAn"], khRow({ MaKhach: pad(9), HoTen: "Cu Sot" }).concat(["bcons-central-park"])];
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "du-an-la" }), khRow({ MaKhach: "", SDT: PHONES[2], HoTen: NAMES[2], DuAnQuanTam: "" }), khRow({ MaKhach: pad(4), SDT: PHONES[3], HoTen: NAMES[3], DuAnQuanTam: NEWSKY })],
+  });
+  const r = run(ctx);
+  assert.equal(r.chuaCoDuAn, 2, 'mã lạ du-an-la có giá trị nên không tính là trống');
+  assert.equal(r.xoa + r.rutLai + r.dongYLai, 0);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
+  const kh = khDoc(F);
+  assert.equal(kh[0].HoTen, NAMES[0]);
+  assert.equal(kh[1].HoTen, NAMES[1]);
+  assert.deepEqual(masterMa(F, "M1"), [pad(4)]);
+  assert.deepEqual(masterMa(F, "M2"), []);
+  // tab cũ còn sót: không đọc, không ghi
+  const T2 = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" })] });
+  T2.F.SpreadsheetApp.getActiveSpreadsheet().insertSheet("ChuaPhanDuAn").getRange(1, 1, 2, stale[0].length).setValues(stale);
+  const before = T2.F.snapshot();
+  const reads = [];
+  T2.F.hooks.onRead = (i) => { if (i.sheet === "ChuaPhanDuAn") reads.push(i); };
+  const writesBefore = T2.F.calls.writes.length;
+  run(T2.ctx);
+  T2.ctx.ensureTabs_(T2.F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  assert.deepEqual(reads, [], "không đọc ChuaPhanDuAn");
+  assert.deepEqual(T2.F.calls.writes.slice(writesBefore).filter((x) => x.sheet === "ChuaPhanDuAn"), [], "không ghi ChuaPhanDuAn");
+  assert.deepEqual(tab(T2.F, null, "ChuaPhanDuAn"), stale);
+  assert.ok(before);
+});
+
+test("Task4 (f2): TAB_HEADERS_ không còn ChuaPhanDuAn; ensureTabs_ không tạo tab đó", () => {
+  const { F, ctx } = build({ khach: [] });
+  assert.ok(!("ChuaPhanDuAn" in plain(ctx.TAB_HEADERS_)));
+  ctx.ensureTabs_(F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  assert.equal(F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
+});
+
+test("Task4 (g): dryRun không ghi gì ở cả bốn kiểu (phân bổ thường, rút lại, đồng ý lại, xóa) và trả cùng số đếm như chạy thật", () => {
+  const mk = () => build({
+    khach: [
+      khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: BOTH }), // phân bổ thường
+      khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: NEWSKY }), // rút lại
+      consented(pad(3), PHONES[2], NAMES[2], NEWSKY, "2026-11-12"), // đồng ý lại
+      khRow({ MaKhach: pad(4), SDT: PHONES[3], HoTen: NAMES[3], DuAnQuanTam: NEWSKY }), // xóa
+      khRow({ MaKhach: pad(5), SDT: "0900000005", HoTen: "Khach Nam", DuAnQuanTam: "" }),
+    ],
+    tuChoi: [[PHONES[1], "", TC_OLD, "Rút lại", ""], [PHONES[2], "", TC_OLD, "Rút lại", ""], [PHONES[3], "", TC_OLD, "Xóa", ""]],
+  });
+  const a = mk();
+  const snap = a.F.snapshot();
+  const maxBefore = a.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang").getMaxRows();
+  const dry = run(a.ctx, { dryRun: true, now: T4_NOW });
+  assert.equal(w(a.F), 0);
+  assert.equal(a.F.snapshot(), snap);
+  assert.equal(a.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang").getMaxRows(), maxBefore);
+  assert.equal(a.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn"), null);
+  assert.equal(a.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Loi"), null);
+  assert.equal(a.F.SpreadsheetApp.openById("M1").getSheetByName("KhachTuMaster"), null);
+  assert.deepEqual(dry, { dayVao: { [NEWSKY]: 3, [CP]: 1 }, rutLai: 1, dongYLai: 1, xoa: 1, lyDo: { tuchoi: 1, khong: 0 }, masterLoi: [], tuChoiLoi: 0, chuaCoDuAn: 1 });
+  assert.deepEqual(run(mk().ctx, { now: T4_NOW }), dry);
+});
+
+test("Task4 (h1): rút lại + một Master không mở được -> KHÔNG ném: KhachHang đánh dấu trước, Master mở được cập nhật 'Đã rút lại', masterLoi + Loi chỉ có mã dự án, không phân bổ khách khác", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: BOTH }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: NEWSKY })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] } }, // M2 không mở được
+  });
+  const order = [];
+  F.hooks.onWrite = (i) => order.push(i.owner + ":" + i.sheet + ":" + i.method);
+  const r = run(ctx);
+  assert.deepEqual(r.masterLoi, [CP]);
+  assert.equal(r.rutLai, 1);
+  assert.deepEqual(r.dayVao, { [NEWSKY]: 0, [CP]: 0 });
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(khDoc(F)[0].HoTen, NAMES[0]);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(2)), undefined, "không phân bổ khi còn Master hỏng");
+  assert.ok(order.indexOf("MASTER:KhachHang:setValues") < order.indexOf("M1:KhachTuMaster:setValues"), "KhachHang trước");
+  const loi = tab(F, null, "Loi");
+  assert.deepEqual([loi[1][1], loi[1][3]], ["Rút lại", "Không mở được Master " + CP]);
+  for (const s of [...NAMES, ...PHONES]) assert.ok(!JSON.stringify(loi).includes(s));
+  assert.ok(F.calls.writes.every((x) => x.method !== "deleteRow"));
+});
+
+test("Task4 (h2): 'Xóa' + Master không mở được -> KhachHang giữ dữ liệu cá nhân (kể cả DongYDuAn) cho tới khi mọi Master xóa xong; sau khi Master mở lại, chạy lại hoàn tất", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], BOTH, "2026-11-01", { NhuCau: "x" })],
+    tuChoi: [PHONES[0]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] } },
+  });
+  const r = run(ctx);
+  assert.deepEqual(r.masterLoi, [CP]);
+  assert.equal(r.xoa, 1);
+  const k = khDoc(F)[0];
+  assert.equal(k.SDT, PHONES[0]);
+  assert.equal(k.DongYDuAn, NEWSKY);
+  assert.equal(k.DongYNhanTin, "Đã rút lại", "đã đánh dấu");
+  assert.equal(masterRow(F, "M1", pad(1)), undefined);
+  const again = run(ctx);
+  assert.deepEqual(again.masterLoi, [CP]);
+  assert.equal(khDoc(F)[0].SDT, PHONES[0]);
+});
+
+test("Task4 (h3): Master hỏng, KHÔNG có việc rút lại/xóa mới -> vẫn ném lỗi trước mọi lần ghi (cả khi đã có khách rút lại từ trước)", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Đã rút lại", NgayRutLai: TC_OLD }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: NEWSKY })],
+    byId: { M1: {} }, // M2 hỏng
+  });
+  const snap = F.snapshot();
+  assert.throws(() => ctx.phanBo_({ dryRun: false, now: NOW }), /KhachTuMaster/);
+  assert.equal(F.snapshot(), snap);
+  assert.equal(w(F), 0);
+  assert.throws(() => ctx.phanBo_({ dryRun: true, now: NOW }), /KhachTuMaster/);
+});
+
+test("Task4 (i): 500 khách (cả rút lại) vào 2 dự án vẫn chỉ tốn số lần ghi hằng số", () => {
+  const khach = [], tc = [];
+  for (let i = 1; i <= 500; i++) {
+    const ph = "09" + String(10000000 + i);
+    khach.push(khRow({ MaKhach: pad(i), SDT: ph, HoTen: "Khach " + i, DuAnQuanTam: i % 2 ? BOTH : NEWSKY }));
+    if (i % 5 === 0) tc.push([ph, "", TC_OLD, "Rút lại", ""]);
+  }
+  const { F, ctx } = build({ khach, tuChoi: tc });
+  ctx.ensureTabs_(F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  F.calls.writes.length = 0;
+  const r = run(ctx);
+  assert.equal(r.dayVao[NEWSKY], 500);
+  assert.equal(r.rutLai, 100);
+  assert.ok(w(F) <= 20, "số lần ghi: " + w(F));
+  assert.equal(tab(F, "M1", "KhachTuMaster")[5][9], "Đã rút lại");
+  F.calls.writes.length = 0;
+  const r2 = run(ctx);
+  assert.equal(w(F), 0);
+  assert.equal(r2.rutLai, 0);
+});
+
+test("Task4 (k): cột K/L fill-only và cột N trở đi của anh sống sót trên dòng đã rút lại; ghi không vượt cột L", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, TrangThaiCRM: "Nóng", TrangThaiChamSoc: "Đã gọi" })],
+    byId: { M1: { KhachTuMaster: [[...TM, "", "Ghi chú của anh"], [...mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có", TrangThaiCRM: "Lạnh" }), "", "ghi chú của anh"]] }, M2: {} },
+  });
+  F.SpreadsheetApp.getActiveSpreadsheet().insertSheet("TuChoi").getRange(1, 1, 2, 5).setValues([TC_HEADER, [PHONES[0], "", TC_OLD, "Rút lại", ""]]);
+  const r = run(ctx);
+  assert.equal(r.rutLai, 1);
+  const m = tab(F, "M1", "KhachTuMaster")[1];
+  assert.equal(m[9], "Đã rút lại");
+  assert.equal(m[10], "Lạnh", "K của anh giữ");
+  assert.equal(m[11], "Đã gọi", "L trống -> điền");
+  assert.equal(m[13], "ghi chú của anh");
+  assert.deepEqual(F.calls.writes.filter((x) => x.owner === "M1" && x.method === "setValues" && x.col + x.nc - 1 > 12), []);
+});
+
+test("Task4 (l)(Focus 6): khách chỉ đồng ý Newsky nhưng quan tâm cả hai -> Master Central Park hiện 'Chưa rõ', Master Newsky 'Có'; khách 'Chưa rõ' hiện 'Chưa rõ' ở cả hai", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], BOTH, "2026-11-01"), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: BOTH, DongYNhanTin: "Chưa rõ" })],
+  });
+  run(ctx, { now: T4_NOW });
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Có");
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Chưa rõ");
+  assert.equal(masterRow(F, "M1", pad(2))[9], "Chưa rõ");
+  assert.equal(masterRow(F, "M2", pad(2))[9], "Chưa rõ");
+  // đổi sau: khách đồng ý thêm dự án thứ hai (bằng chứng mới) -> cả hai 'Có'
+  const sh = F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang");
+  const set = (col, v) => sh.getRange(2, KHACH_COLS.indexOf(col) + 1, 1, 1).setValues([[v]]);
+  set("DongYDuAn", BOTH);
+  set("DongYBangChung", NEWSKY + ": " + ev3("2026-11-01") + " || " + CP + ": " + ev3("2026-11-02"));
+  run(ctx, { now: T4_NOW });
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Có");
+});
+
+test("Task4 (m): không rò tên/SĐT/ID Sheet ra Logger, Loi, NhatKy, Telegram khi rút lại + điền lại + xóa", () => {
+  const T = buildL({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-01"), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: NEWSKY })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""], [PHONES[1], "", TC_OLD, "Xóa", ""], ["090000000", "", TC_OLD, "Xóa", ""]],
+  });
+  run(T.ctx, { now: T4_NOW });
+  appendLanding(T.F, leadRow({ ten: "Ten Moi", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-12T03:00:00.000Z") }));
+  gop(T.ctx);
+  run(T.ctx, { now: T4_NOW });
+  assertNoLeak(T);
+  const loi = JSON.stringify(T.F.values(null, "Loi"));
+  for (const s of [...NAMES, ...PHONES, "Ten Moi", "090000000"]) assert.ok(!loi.includes(s), s);
+});
+
+test("Task4: rút lại khi các dòng Master sẵn có khác dự án (khách bỏ dự án khỏi DuAnQuanTam) vẫn được đổi sang 'Đã rút lại'", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+    byId: { M1: {}, M2: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] } },
+  });
+  run(ctx);
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+});
+
+// ---- Task 4: bổ sung sau kiểm đột biến ----
+test("Task4 (c2): dongYLai đếm KHÁCH (mỗi SĐT một lần), nhiều dòng TuChoi cùng SĐT chỉ đếm một; DaDongYLai ghi cho cả hai dòng", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-12"), consented(pad(2), PHONES[1], NAMES[1], NEWSKY, "2026-11-12"), consented(pad(3), PHONES[2], NAMES[2], NEWSKY, "2026-11-12")],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""], [PHONES[0], "", "2026-11-06T00:00:00.000Z", "Rút lại", ""], [PHONES[1], "", TC_OLD, "Rút lại", ""]],
+  });
+  const r = run(ctx, { now: T4_NOW });
+  assert.equal(r.dongYLai, 2);
+  const t = tcTab(F);
+  assert.deepEqual([1, 2, 3].map((i) => iso(t[i][4])), ["2026-11-12T03:15:00.000Z", "2026-11-12T03:15:00.000Z", "2026-11-12T03:15:00.000Z"]);
+  assert.equal(run(ctx, { now: T4_NOW }).dongYLai, 0);
+});
+
+test("Task4 (f3): chuaCoDuAn chỉ đếm dòng có SĐT hoặc MaKhach (dòng chỉ có tên thì không)", () => {
+  const { ctx } = build({ khach: [khRow({ MaKhach: "", SDT: "", HoTen: "chỉ có tên", DuAnQuanTam: "" }), khRow({ MaKhach: pad(2), SDT: "", HoTen: "", DuAnQuanTam: "" }), khRow({ MaKhach: "", SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: " " })] });
+  assert.equal(run(ctx).chuaCoDuAn, 2);
+});
+
+test("Task4 (e3): xóa dở ở một Master (không xóa được dòng) -> Master đó KHÔNG bị ghi gì thêm, Master khác vẫn cập nhật, KhachHang giữ dữ liệu cá nhân, masterLoi + Loi chỉ mã", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: BOTH })],
+    tuChoi: [PHONES[0]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0])] }, M2: {} },
+  });
+  F.SpreadsheetApp.openById("M1").getSheetByName("KhachTuMaster").deleteRow = () => {}; // xóa không có tác dụng
+  const m1Before = JSON.stringify(tab(F, "M1", "KhachTuMaster"));
+  const r = run(ctx);
+  assert.deepEqual(r.masterLoi, [NEWSKY]);
+  assert.equal(JSON.stringify(tab(F, "M1", "KhachTuMaster")), m1Before, "Master xóa dở không bị ghi thêm");
+  assert.equal(masterRow(F, "M2", pad(2))[1], PHONES[1], "Master khác vẫn được phân bổ");
+  assert.equal(khDoc(F)[0].SDT, PHONES[0]);
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  const loi = JSON.stringify(tab(F, null, "Loi"));
+  assert.ok(loi.includes("Không xóa được dòng ở Master " + NEWSKY));
+  for (const x of [...NAMES, ...PHONES]) assert.ok(!loi.includes(x));
+});
+
+test("Task4 (a3): KhachHang đã 'Đã rút lại' nhưng dòng Master còn 'Có' (cũ) -> rutLai đếm lần sửa Master, lần hai không ghi gì", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Đã rút lại", NgayRutLai: TC_OLD })],
+    tuChoi: [[PHONES[0], "", TC_OLD, "Rút lại", ""]],
+    byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] }, M2: {} },
+  });
+  const r = run(ctx);
+  assert.equal(r.rutLai, 1);
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  F.calls.writes.length = 0;
+  assert.equal(run(ctx).rutLai, 0);
+  assert.equal(w(F), 0);
 });
