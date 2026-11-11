@@ -10,8 +10,10 @@ function normalizePhone_(s) {
   return /^0\d{9,10}$/.test(d) ? d : '';
 }
 
-/** Thứ tự cột tab KhachHang (spec mục 5, không có HanGiu). */
-var KHACH_COLS = ['MaKhach', 'SDT', 'HoTen', 'NgayTao', 'NgayCapNhat', 'NguonGoc', 'NguonChiTiet', 'DuAnQuanTam', 'NhuCau', 'CanXem', 'PTTT', 'DongYNhanTin', 'DongYBangChung', 'TrangThaiCRM', 'TrangThaiChamSoc', 'NguoiChamSoc', 'GhiChu'];
+/** Thứ tự cột tab KhachHang (spec mục 5, không có HanGiu). 17 cột đầu giữ nguyên vị trí; DongYDuAn, NgayRutLai thêm ở cuối.
+ *  DongYNhanTin = trạng thái chung: 'Có' | 'Chưa rõ' | 'Đã rút lại'. DongYDuAn = mã dự án đã đồng ý, ngăn ';'.
+ *  DongYBangChung = mỗi dự án một đoạn '<mã>: <bằng chứng>', ngăn ' || '. NgayRutLai = ISO hoặc rỗng. */
+var KHACH_COLS = ['MaKhach', 'SDT', 'HoTen', 'NgayTao', 'NgayCapNhat', 'NguonGoc', 'NguonChiTiet', 'DuAnQuanTam', 'NhuCau', 'CanXem', 'PTTT', 'DongYNhanTin', 'DongYBangChung', 'TrangThaiCRM', 'TrangThaiChamSoc', 'NguoiChamSoc', 'GhiChu', 'DongYDuAn', 'NgayRutLai'];
 
 /** Chữ đưa vào Sheet: cắt 500 ký tự, chặn công thức (giống cell_ của landing). */
 function cell_(v) {
@@ -64,14 +66,47 @@ function parseLandingRow_(headers, row) {
   rec.NhuCau = cell_(get('Nhu cầu'));
   rec.CanXem = cell_(can);
   rec.PTTT = cell_(get('PTTT'));
-  rec.DongYNhanTin = coBangChung ? 'Có' : 'Chưa rõ';
-  rec.DongYBangChung = coBangChung ? dongY : '';
+  // Đồng ý chỉ tính cho đúng dự án của dòng; không có dự án hoặc bằng chứng hỏng thì 'Chưa rõ' (khách vẫn được lưu).
+  var maDongY = duAn.split(';')[0]; // ô Dự án nhiều mã: chỉ gắn đồng ý cho mã đầu (bảo thủ)
+  var coDongY = coBangChung && maDongY !== '';
+  rec.DongYNhanTin = coDongY ? 'Có' : 'Chưa rõ';
+  rec.DongYDuAn = coDongY ? maDongY : '';
+  rec.DongYBangChung = coDongY ? maDongY + ': ' + dongY : '';
   return { ok: true, rec: rec };
 }
 
 /** Bằng chứng đồng ý đúng khuôn Code.gs ghi (dùng chung cho parseLandingRow_ và dongYThang_). */
 function hasConsentEvidence_(s) {
   return /^Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, [^\n\r]*\)$/.test(String(s == null ? '' : s));
+}
+
+/** Ngày (ISO) của lần đồng ý, lấy từ 'Có (<ISO>, mẫu ...)'. Sai khuôn hoặc không phải chuỗi -> ''. */
+function ngayDongY_(evidence) {
+  if (typeof evidence !== 'string' || !hasConsentEvidence_(evidence)) return '';
+  return isoOrEmpty_(/^Có \((\d{4}-\d{2}-\d{2}T[\d:.]+Z), /.exec(evidence)[1]);
+}
+
+/** Bằng chứng hợp lệ ở dạng cũ (không mã) hoặc dạng mới: các đoạn '<mã>: <bằng chứng>' ngăn ' || ', đoạn nào cũng đúng khuôn. */
+function bangChungHopLe_(e) {
+  e = String(e == null ? '' : e);
+  if (hasConsentEvidence_(e)) return true;
+  var parts = e.split(' || ');
+  for (var i = 0; i < parts.length; i++) {
+    var m = /^([a-z][a-z0-9-]{2,39}): ([\s\S]*)$/.exec(parts[i]);
+    if (!m || !hasConsentEvidence_(m[2])) return false;
+  }
+  return true;
+}
+
+/** Có được nhắn về dự án maDuAn không: mã nằm trong DongYDuAn (khớp nguyên mã, không phân biệt hoa thường) và chưa rút lại. */
+function coTheNhan_(rec, maDuAn) {
+  if (!rec || typeof maDuAn !== 'string') return false;
+  var ma = maDuAn.trim().toLowerCase();
+  if (!ma) return false;
+  if (s_(rec.DongYNhanTin) === 'Đã rút lại') return false;
+  var list = String(rec.DongYDuAn == null ? '' : rec.DongYDuAn).toLowerCase().split(';');
+  for (var i = 0; i < list.length; i++) if (list[i].trim() === ma) return true;
+  return false;
 }
 
 /** Giá trị ô Sheets -> chuỗi: Date -> ISO (Date hỏng -> ''), null -> '', còn lại String().trim(). */
@@ -101,11 +136,12 @@ function mergeNguon_(a, b) {
 
 /** Đồng ý nhận tin: 'Không' thắng; 'Có' chỉ tính khi có bằng chứng đúng khuôn; còn lại 'Chưa rõ'. */
 function dongYThang_(a, b) {
-  var noEv = function (e) { return /^Có \(/.test(e) ? '' : e; };
-  if (a.v === 'Không') return { v: 'Không', e: noEv(a.e) };
-  if (b.v === 'Không') return { v: 'Không', e: noEv(b.e) };
-  if (a.v === 'Có' && hasConsentEvidence_(a.e)) return a;
-  if (b.v === 'Có' && hasConsentEvidence_(b.e)) return b;
+  var noEv = function (e) { return /^(Có \(|[a-z][a-z0-9-]{2,39}: Có \()/.test(e) ? '' : e; };
+  var rut = function (v) { return v === 'Không' || v === 'Đã rút lại'; };
+  if (rut(a.v)) return { v: a.v, e: noEv(a.e) };
+  if (rut(b.v)) return { v: b.v, e: noEv(b.e) };
+  if (a.v === 'Có' && bangChungHopLe_(a.e)) return a;
+  if (b.v === 'Có' && bangChungHopLe_(b.e)) return b;
   return { v: 'Chưa rõ', e: '' };
 }
 
@@ -124,7 +160,7 @@ function mergeCustomer_(existing, incoming, nowIso) {
   var nt = dongYThang_({ v: s_(ex.DongYNhanTin), e: s_(ex.DongYBangChung) }, { v: s_(inc.DongYNhanTin), e: s_(inc.DongYBangChung) });
   out.DongYNhanTin = nt.v;
   out.DongYBangChung = nt.e;
-  out.DongYNhanTin = out.DongYNhanTin === 'Có' || out.DongYNhanTin === 'Không' ? out.DongYNhanTin : 'Chưa rõ';
+  out.DongYNhanTin = out.DongYNhanTin === 'Có' || out.DongYNhanTin === 'Không' || out.DongYNhanTin === 'Đã rút lại' ? out.DongYNhanTin : 'Chưa rõ';
   out.NgayCapNhat = nowIso;
   return out;
 }
@@ -138,7 +174,7 @@ function foldText_(v) {
  *  'la' = bắt đầu bằng "không" nhưng không đúng ('Không rõ', 'Không biết') -> không rút lại, cần anh kiểm; còn lại ''. */
 function dongYKieu_(v) {
   var f = foldText_(v);
-  if (f === 'khong') return 'khong';
+  if (f === 'khong' || f === 'darutlai') return 'khong'; // 'Đã rút lại' (trạng thái mới) cũng chặn
   return f.indexOf('khong') === 0 ? 'la' : '';
 }
 

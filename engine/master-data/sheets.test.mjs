@@ -10,7 +10,7 @@ const LOGIC = path.join(here, "apps-script", "Logic.gs");
 const SHEETS = path.join(here, "apps-script", "Sheets.gs");
 const landing = loadGs([path.join(here, "..", "landing", "apps-script", "Code.gs")]);
 const HEADERS = plain(landing.HEADERS);
-const KHACH_COLS = ["MaKhach", "SDT", "HoTen", "NgayTao", "NgayCapNhat", "NguonGoc", "NguonChiTiet", "DuAnQuanTam", "NhuCau", "CanXem", "PTTT", "DongYNhanTin", "DongYBangChung", "TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu"];
+const KHACH_COLS = ["MaKhach", "SDT", "HoTen", "NgayTao", "NgayCapNhat", "NguonGoc", "NguonChiTiet", "DuAnQuanTam", "NhuCau", "CanXem", "PTTT", "DongYNhanTin", "DongYBangChung", "TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu", "DongYDuAn", "NgayRutLai"];
 const CAU_HINH = ["maDuAn", "landingSheetId", "masterSheetId"];
 const NOW = new Date("2026-11-11T01:00:00.000Z");
 
@@ -301,20 +301,20 @@ test("gopLanding_: gộp khách có sẵn chỉ ghi ô KHACH_COLS thật sự đ
   const ex = existingCustomer();
   const T = setup({ landingRows: [leadRow({ ten: "Ten Khac", sdt: PHONES[0] })] });
   T.ctx.ensureTabs_(T.F.SpreadsheetApp.getActiveSpreadsheet(), false);
-  // thêm cột riêng của anh (cột 18, 19) vào tab KhachHang
+  // thêm cột riêng của anh (ngay sau KHACH_COLS) vào tab KhachHang
   const sh = T.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang");
-  sh.getRange(1, 18, 2, 2).setValues([["Anh1", "Anh2"], ["=A2&B2", "ghi chú"]]);
+  sh.getRange(1, KHACH_COLS.length + 1, 2, 2).setValues([["Anh1", "Anh2"], ["=A2&B2", "ghi chú"]]);
   T.F.calls.writes.length = 0;
   assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 1, moi: 0, trung: 1, loi: 0 });
   const khWrites = T.F.calls.writes.filter((w) => w.owner === "MASTER" && w.sheet === "KhachHang" && w.method === "setValues");
   assert.ok(khWrites.length >= 1);
-  for (const w of khWrites) assert.ok(w.col + w.nc - 1 <= 17, "ghi vào cột ngoài KHACH_COLS: " + JSON.stringify(w));
+  for (const w of khWrites) assert.ok(w.col + w.nc - 1 <= KHACH_COLS.length, "ghi vào cột ngoài KHACH_COLS: " + JSON.stringify(w));
   const kh = T.F.values(null, "KhachHang");
   assert.equal(kh[1][KHACH_COLS.indexOf("NgayCapNhat")], NOW.toISOString());
-  assert.equal(kh[1][17], "=A2&B2");
+  assert.equal(kh[1][KHACH_COLS.length], "=A2&B2");
   // không ô nào khác ngoài NguonGoc/DongYNhanTin... bị ghi vô cớ: HoTen, MaKhach, SDT không nằm trong vùng ghi
   for (const col of [1, 2, 3]) assert.ok(!khWrites.some((w) => col >= w.col && col < w.col + w.nc), "cột " + col + " bị ghi");
-  assert.ok(ex.length === 17);
+  assert.ok(ex.length === KHACH_COLS.length);
 });
 
 test("gopLanding_: NgayTao/NgayCapNhat đọc về là Date (Sheets đổi chuỗi ISO) vẫn gộp bình thường", () => {
@@ -396,7 +396,7 @@ test("gopNhapCRM_: cùng SĐT với khách landing -> một dòng Landing+CRM, T
   assert.equal(row[khCol(kh, "TrangThaiCRM")], "Hẹn xem nhà");
   assert.equal(row[khCol(kh, "HoTen")], NAMES[1], "tên landing thắng");
   assert.equal(row[khCol(kh, "DongYNhanTin")], "Có");
-  assert.match(row[khCol(kh, "DongYBangChung")], /^Có \(2026-11-10T03:00:00\.000Z, mẫu /);
+  assert.match(row[khCol(kh, "DongYBangChung")], /^bcons-newsky: Có \(2026-11-10T03:00:00\.000Z, mẫu /); // đổi có chủ đích: bằng chứng gắn mã dự án
   assert.equal(T.F.values(null, "NhapCRM")[1][4], "KH-000002");
 });
 
@@ -557,7 +557,7 @@ test("gopNhapCRM_: 1000 dòng, cứ hai dòng có một khách cũ rải rác ->
   assert.equal(kh[2][khCol(kh, "TrangThaiCRM")], "");
   assert.equal(kh[2][khCol(kh, "NguonGoc")], "Landing");
   assert.equal(kh[2][khCol(kh, "NgayCapNhat")], "2026-10-01T00:00:00.000Z");
-  assert.equal(kh[5][18 - 1], "=A6", "cột của anh bên phải giữ nguyên");
+  assert.equal(kh[5][KHACH_COLS.length], "=A6", "cột của anh bên phải giữ nguyên");
   assert.equal(kh[1001][khCol(kh, "NguonGoc")], "CRM");
 });
 
@@ -691,8 +691,8 @@ test("phanBo_: dự án lạ hoặc trống -> ChuaPhanDuAn (GanDuAn để trố
   assert.equal(r.chua, 2);
   const t = tab(F, null, "ChuaPhanDuAn");
   assert.deepEqual(t.slice(1).map((x) => x[0]), [pad(1), pad(2)]);
-  assert.equal(t[0][17], "GanDuAn");
-  assert.equal(t[1][17], "");
+  assert.equal(t[0][KHACH_COLS.length], "GanDuAn");
+  assert.equal(t[1][KHACH_COLS.length], "");
   assert.equal(t[1][1], PHONES[0]);
   assert.deepEqual(masterMa(F, "M1"), []);
   assert.deepEqual(masterMa(F, "M2"), []);
@@ -701,7 +701,7 @@ test("phanBo_: dự án lạ hoặc trống -> ChuaPhanDuAn (GanDuAn để trố
 test("phanBo_: anh điền GanDuAn -> khách sang đúng Master, rời ChuaPhanDuAn, KhachHang.DuAnQuanTam có mã", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" }), khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: "" })] });
   run(ctx);
-  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, 18).setValues([["bcons-central-park"]]);
+  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, KHACH_COLS.length + 1).setValues([["bcons-central-park"]]);
   const r = run(ctx);
   assert.equal(r.dayVao["bcons-central-park"], 1);
   assert.equal(r.dayVao["bcons-newsky"], 0);
@@ -718,11 +718,11 @@ test("phanBo_: anh điền GanDuAn -> khách sang đúng Master, rời ChuaPhanD
 test("phanBo_: GanDuAn là mã không có trong CauHinh -> vẫn ở ChuaPhanDuAn, GanDuAn của anh giữ nguyên", () => {
   const { F, ctx } = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: "" })] });
   run(ctx);
-  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, 18).setValues([["khong-co-ma"]]);
+  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ChuaPhanDuAn").getRange(2, KHACH_COLS.length + 1).setValues([["khong-co-ma"]]);
   run(ctx);
   const t = tab(F, null, "ChuaPhanDuAn");
   assert.equal(t[1][0], pad(1));
-  assert.equal(t[1][17], "khong-co-ma");
+  assert.equal(t[1][KHACH_COLS.length], "khong-co-ma");
   assert.equal(khDoc(F)[0].DuAnQuanTam, "");
 });
 

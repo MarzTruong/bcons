@@ -48,8 +48,11 @@ test("normalizePhone_: tương đương Code.gs của landing (trừ ca 9 chữ 
   }
 });
 
-test("KHACH_COLS: đúng 17 cột, đúng thứ tự", () => {
-  assert.deepEqual(plain(ctx.KHACH_COLS), ["MaKhach", "SDT", "HoTen", "NgayTao", "NgayCapNhat", "NguonGoc", "NguonChiTiet", "DuAnQuanTam", "NhuCau", "CanXem", "PTTT", "DongYNhanTin", "DongYBangChung", "TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu"]);
+test("KHACH_COLS: đúng 19 cột, 17 cột đầu giữ nguyên vị trí, hai cột mới ở cuối", () => {
+  const cols = plain(ctx.KHACH_COLS);
+  assert.equal(cols.length, 19);
+  assert.deepEqual(cols.slice(0, 17), ["MaKhach", "SDT", "HoTen", "NgayTao", "NgayCapNhat", "NguonGoc", "NguonChiTiet", "DuAnQuanTam", "NhuCau", "CanXem", "PTTT", "DongYNhanTin", "DongYBangChung", "TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu"]);
+  assert.deepEqual(cols.slice(17), ["DongYDuAn", "NgayRutLai"]);
 });
 
 // ---- parseLandingRow_ (Task 3) ----
@@ -80,7 +83,8 @@ test("parseLandingRow_: dòng thật đủ khóa KHACH_COLS và ánh xạ đúng
   assert.equal(r.rec.NgayTao, "2026-11-06T03:15:00.000Z");
   assert.equal(r.rec.NguonGoc, "Landing");
   assert.equal(r.rec.DongYNhanTin, "Có");
-  assert.equal(r.rec.DongYBangChung, CONSENT);
+  assert.equal(r.rec.DongYBangChung, "bcons-newsky: " + CONSENT); // đổi có chủ đích: bằng chứng gắn mã dự án
+  assert.equal(r.rec.DongYDuAn, "bcons-newsky");
   assert.equal(r.rec.MaKhach, "");
 });
 
@@ -94,8 +98,12 @@ test("parseLandingRow_: dòng do rowFor_ thật của landing ghi ra (SĐT có d
   assert.equal(r.rec.SDT, "0981234567");
   assert.equal(r.rec.CanXem, "Studio");
   assert.equal(r.rec.DuAnQuanTam, "");
-  assert.equal(r.rec.DongYNhanTin, "Có");
-  assert.match(r.rec.DongYBangChung, /^Có \(2026-11-06T03:15:00\.000Z, mẫu v1-2026-11-06, https:\/\/x\.pages\.dev\/\)$/);
+  // đổi có chủ đích: dòng landing cũ không có mã dự án -> Chưa rõ (chưa biết đồng ý cho dự án nào), vẫn lưu khách
+  assert.equal(r.rec.DongYNhanTin, "Chưa rõ");
+  assert.equal(r.rec.DongYDuAn, "");
+  const r2 = plain(ctx.parseLandingRow_(HEADERS, landing.rowFor_({ ...lead, duAn: "bcons-newsky" }, now).slice().map((v, i) => (i === 2 ? String(v).replace(/^'/, "") : v)))).rec;
+  assert.equal(r2.DongYNhanTin, "Có");
+  assert.match(r2.DongYBangChung, /^bcons-newsky: Có \(2026-11-06T03:15:00\.000Z, mẫu v1-2026-11-06, https:\/\/x\.pages\.dev\/\)$/);
 });
 
 test("parseLandingRow_: SĐT dạng chuỗi, số mất số 0, và +84", () => {
@@ -166,15 +174,15 @@ test("parseLandingRow_: dòng rỗng -> ok:false", () => {
 });
 
 test("parseLandingRow_: chỉ coi là đã đồng ý khi đúng khuôn bằng chứng của Code.gs", () => {
-  const H = ["SĐT", "Họ tên", "Đồng ý nhận tin"];
-  const one = (v) => ctx.parseLandingRow_(H, ["0981234567", "Khách Mẫu", v]).rec;
+  const H = ["SĐT", "Họ tên", "Đồng ý nhận tin", "Dự án"];
+  const one = (v) => ctx.parseLandingRow_(H, ["0981234567", "Khách Mẫu", v, "bcons-newsky"]).rec;
   for (const bad of [" Có (x)", "\u00a0Có (x)", "Có (", "Có (=1+1)", "Có (x)\nđ", "Có (2026-11-06T03:15:00.000Z, mẫu v1, x)\n", true, 1, new Date(0)]) {
     assert.equal(one(bad).DongYNhanTin, "Chưa rõ", String(bad));
     assert.equal(one(bad).DongYBangChung, "");
   }
   const real = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
   assert.equal(one(real).DongYNhanTin, "Có");
-  assert.equal(one(real).DongYBangChung, real);
+  assert.equal(one(real).DongYBangChung, "bcons-newsky: " + real); // đổi có chủ đích: gắn mã dự án
   assert.equal(one("Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, )").DongYNhanTin, "Có", "trang rỗng vẫn đúng khuôn");
 });
 
@@ -444,4 +452,113 @@ test("normalizePhone_: '+84 (0) 981234567' chỉ Master_Data nhận (khác biệ
   assert.equal(ctx.normalizePhone_("84(0)981234567"), "0981234567");
   // landing không xử lý (0): ra số sai '00981234567', không bao giờ ra số đúng
   assert.notEqual(landing.normalizePhone_("+84 (0) 981234567"), "0981234567");
+});
+
+// ---- Task 1 (đồng ý theo dự án) ----
+const EV = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
+
+test("parseLandingRow_: dự án A có bằng chứng -> DongYDuAn A, bằng chứng gắn mã, Có; coTheNhan_ đúng A, sai B", () => {
+  const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "bcons-newsky" }))).rec;
+  assert.equal(r.DongYDuAn, "bcons-newsky");
+  assert.equal(r.DongYBangChung, "bcons-newsky: " + CONSENT);
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.NgayRutLai, "");
+  assert.equal(ctx.coTheNhan_(r, "bcons-newsky"), true);
+  assert.equal(ctx.coTheNhan_(r, "bcons-central-park"), false);
+});
+
+test("parseLandingRow_: hai dòng hai dự án khác nhau -> mỗi dòng đúng dự án của mình", () => {
+  const a = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "bcons-newsky" }))).rec;
+  const b = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "bcons-central-park" }))).rec;
+  assert.equal(a.DongYDuAn, "bcons-newsky");
+  assert.equal(b.DongYDuAn, "bcons-central-park");
+  assert.ok(b.DongYBangChung.startsWith("bcons-central-park: "));
+  assert.equal(ctx.coTheNhan_(a, "bcons-central-park"), false);
+});
+
+test("parseLandingRow_: không có Dự án (rỗng / khong-ro / dòng cũ) -> Chưa rõ, DongYDuAn rỗng, vẫn ok:true, không nhắn được", () => {
+  for (const v of ["", "khong-ro"]) {
+    const o = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": v })));
+    assert.equal(o.ok, true, v);
+    assert.equal(o.rec.DongYDuAn, "", v);
+    assert.equal(o.rec.DongYNhanTin, "Chưa rõ", v);
+    assert.equal(o.rec.DongYBangChung, "", v);
+    assert.equal(ctx.coTheNhan_(o.rec, "bcons-newsky"), false, v);
+  }
+  const old = plain(ctx.parseLandingRow_(HEADERS, landingRow().slice(0, 17)));
+  assert.equal(old.ok, true);
+  assert.equal(old.rec.DongYNhanTin, "Chưa rõ");
+});
+
+test("parseLandingRow_: có dự án nhưng bằng chứng hỏng -> Chưa rõ, DongYDuAn rỗng", () => {
+  for (const v of ["", "Có", "Không", "có (x)", " " + CONSENT]) {
+    const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Đồng ý nhận tin": v }))).rec;
+    assert.equal(r.DongYDuAn, "", JSON.stringify(v));
+    assert.equal(r.DongYNhanTin, "Chưa rõ", JSON.stringify(v));
+    assert.equal(r.DongYBangChung, "", JSON.stringify(v));
+  }
+});
+
+test("ngayDongY_: lấy ISO từ chuỗi thật; sai khuôn hoặc không phải chuỗi -> ''", () => {
+  assert.equal(ctx.ngayDongY_(CONSENT), "2026-11-06T03:15:00.000Z");
+  assert.equal(ctx.ngayDongY_(EV), "2026-11-06T03:15:00.000Z");
+  for (const v of [" Có (x)", "Có (", "", "Có (x)", " " + CONSENT, null, undefined, 5, {}, ["Có (2026-11-06T03:15:00.000Z, mẫu v1, x)"]]) {
+    assert.equal(ctx.ngayDongY_(v), "", JSON.stringify(v));
+  }
+});
+
+test("coTheNhan_: Đã rút lại thì luôn sai, kể cả dự án có trong DongYDuAn", () => {
+  const rec = { DongYDuAn: "bcons-newsky;bcons-central-park", DongYNhanTin: "Đã rút lại" };
+  assert.equal(ctx.coTheNhan_(rec, "bcons-newsky"), false);
+  assert.equal(ctx.coTheNhan_(rec, "bcons-central-park"), false);
+  assert.equal(ctx.coTheNhan_({ ...rec, DongYNhanTin: "Có" }, "bcons-central-park"), true);
+});
+
+test("coTheNhan_: khớp đúng từng mã, không khớp tiền tố/chuỗi con, không phân biệt hoa thường; đầu vào lạ -> false", () => {
+  const rec = { DongYDuAn: "aaa;abc-d", DongYNhanTin: "Có" };
+  assert.equal(ctx.coTheNhan_(rec, "aaa"), true);
+  assert.equal(ctx.coTheNhan_(rec, "abc-d"), true);
+  assert.equal(ctx.coTheNhan_(rec, "AAA"), true);
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "AAA; Abc-D ", DongYNhanTin: "Có" }, "abc-d"), true);
+  assert.equal(ctx.coTheNhan_(rec, "aa"), false);
+  assert.equal(ctx.coTheNhan_(rec, "aaab"), false);
+  assert.equal(ctx.coTheNhan_(rec, "abc"), false);
+  assert.equal(ctx.coTheNhan_(rec, ""), false);
+  assert.equal(ctx.coTheNhan_(rec, null), false);
+  assert.equal(ctx.coTheNhan_(null, "aaa"), false);
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "", DongYNhanTin: "Chưa rõ" }, "aaa"), false);
+});
+
+test("mergeCustomer_ (chuyển tiếp Task 1): bằng chứng gắn mã dự án vẫn được tính là hợp lệ; 'Đã rút lại' thắng như 'Không'", () => {
+  const inc = mk({ DongYNhanTin: "Có", DongYDuAn: "bcons-newsky", DongYBangChung: "bcons-newsky: " + CONSENT });
+  const r = merge(mk({}), inc);
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYDuAn, "bcons-newsky");
+  assert.equal(r.DongYBangChung, "bcons-newsky: " + CONSENT);
+  const w = merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-10T00:00:00.000Z" }), inc);
+  assert.equal(w.DongYNhanTin, "Đã rút lại");
+  assert.equal(w.NgayRutLai, "2026-11-10T00:00:00.000Z");
+});
+
+test("decideDestinations_ (chuyển tiếp Task 1): 'Đã rút lại' bị chặn như 'Không' (fail closed)", () => {
+  const d = plain(ctx.decideDestinations_({ SDT: "0981234567", DongYNhanTin: "Đã rút lại", DuAnQuanTam: "bcons-newsky" }, [], ["bcons-newsky"]));
+  assert.equal(d.chan, true);
+  assert.deepEqual(d.dich, []);
+});
+
+test("parseLandingRow_: ô Dự án có nhiều mã -> đồng ý chỉ gắn mã đầu tiên (bảo thủ), DuAnQuanTam giữ đủ", () => {
+  const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "bcons-newsky;bcons-central-park" }))).rec;
+  assert.equal(r.DuAnQuanTam, "bcons-newsky;bcons-central-park");
+  assert.equal(r.DongYDuAn, "bcons-newsky");
+  assert.equal(ctx.coTheNhan_(r, "bcons-central-park"), false);
+});
+
+test("mergeCustomer_ (chuyển tiếp Task 1): bằng chứng gắn mã nhưng hỏng, hoặc một đoạn hỏng trong nhiều đoạn, không nâng lên Có", () => {
+  for (const bad of ["bcons-newsky: zzz", "bcons-newsky: Có (x)", "bcons-newsky: " + CONSENT + " || zzz", "Bcons-Newsky: " + CONSENT, "x: " + CONSENT, " || ", ""]) {
+    const r = merge(mk({}), mk({ DongYNhanTin: "Có", DongYDuAn: "bcons-newsky", DongYBangChung: bad }));
+    assert.equal(r.DongYNhanTin, "Chưa rõ", JSON.stringify(bad));
+    assert.equal(r.DongYBangChung, "", JSON.stringify(bad));
+  }
+  const two = "bcons-newsky: " + CONSENT + " || bcons-central-park: " + CONSENT;
+  assert.equal(merge(mk({}), mk({ DongYNhanTin: "Có", DongYBangChung: two })).DongYNhanTin, "Có");
 });
