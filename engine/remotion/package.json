@@ -45,7 +45,7 @@
     "phu-de": "node scripts/phu-de.mjs",
     "storyboard": "node scripts/storyboard.mjs",
     "kiem-gia": "node scripts/kiem-masterfile.mjs",
-    "test": "node --test \"tests/*.test.mjs\" \"../automation/*.test.mjs\" \"../landing/*.test.mjs\"",
+    "test": "node --test \"tests/*.test.mjs\" \"../automation/*.test.mjs\" \"../landing/*.test.mjs\" \"../master-data/*.test.mjs\"",
     "check:spec": "node scripts/check-spec.mjs",
     "check:mapbox": "node scripts/check-mapbox.mjs",
     "geo:fetch": "node scripts/geo-fetch.mjs",
