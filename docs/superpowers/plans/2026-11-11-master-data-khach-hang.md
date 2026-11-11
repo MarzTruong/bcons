@@ -35,13 +35,13 @@
 
 ## File Structure
 - Create `engine/master-data/apps-script/Logic.gs`: hàm thuần (chuẩn hóa, đọc dòng landing, gộp, quyết định đích).
-- Create `engine/master-data/apps-script/Sheets.gs`: chạy gộp/phân bổ, nhật ký, Telegram, menu, trigger.
+- Create engine/master-data/apps-script/Sheets.gs: chạy gộp/phân bổ, nhật ký, Telegram, menu, trigger.
 - Create `engine/master-data/helpers.mjs`: `loadGs(files)` nạp `.gs` vào `vm`; `fakeSheets()` Sheet giả.
 - Create `engine/master-data/fixtures.mjs`: dữ liệu mẫu ẩn danh hóa.
-- Create `engine/master-data/logic.test.mjs`, `engine/master-data/sheets.test.mjs`.
+- Create `engine/master-data/logic.test.mjs`, engine/master-data/sheets.test.mjs.
 - Modify `engine/landing/apps-script/Code.gs`, `engine/landing/apps-script.test.mjs`, `engine/landing/client.js`.
 - Modify `engine/remotion/package.json` (glob test thêm `../master-data/*.test.mjs`).
-- Create `docs/huong-dan-master-data.md`; modify `docs/README.md`.
+- Create docs/huong-dan-master-data.md; modify `docs/README.md`.
 
 ### Task 1: Khung, trình nạp `.gs`, chuẩn hóa SĐT
 
@@ -118,7 +118,7 @@
 
 ### Task 6: Gộp landing vào KhachHang (idempotent, có dryRun)
 
-**Files:** Create `engine/master-data/apps-script/Sheets.gs`; Modify `helpers.mjs` (thêm `fakeSheets()`); Test `engine/master-data/sheets.test.mjs`
+**Files:** Create engine/master-data/apps-script/Sheets.gs; Modify `helpers.mjs` (thêm `fakeSheets()`); Test engine/master-data/sheets.test.mjs
 
 **Interfaces:**
 - Consumes: `parseLandingRow_`, `mergeCustomer_`, `KHACH_COLS`.
@@ -172,7 +172,7 @@
 
 ### Task 10: Hướng dẫn cho anh và tài liệu
 
-**Files:** Create `docs/huong-dan-master-data.md`; Modify `docs/README.md`, `docs/superpowers/specs/2026-11-11-master-data-khach-hang-design.md` (dòng **Trạng thái**), `NOTES.md`
+**Files:** Create docs/huong-dan-master-data.md; Modify `docs/README.md`, `docs/superpowers/specs/2026-11-11-master-data-khach-hang-design.md` (dòng **Trạng thái**), `NOTES.md`
 
 **Interfaces:** Hướng dẫn **không có lệnh PowerShell**, theo thứ tự cổng: G1 tạo bản sao Master_Data và `Master_<mã>` thử, dán `Logic.gs` + `Sheets.gs`, điền `CauHinh`; G2 thử landing; G3 bấm "Chạy thử (không ghi)" và đọc số liệu; G4 ghi thật lần đầu; G5 phân bổ thật; G6 chạy `caiLich_`. Có mục "khách xin rút lại": thêm SĐT vào tab `TuChoi`.
 
