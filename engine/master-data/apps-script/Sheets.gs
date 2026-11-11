@@ -380,13 +380,14 @@ var RUT_LAI_ = 'Rút lại';
 var DA_RUT_ = 'Đã rút lại';
 var TUCHOI_SAI_ = 'SĐT trong TuChoi không hợp lệ';
 var LOAI_LA_ = 'Loại yêu cầu lạ: ghi Rút lại hoặc Xóa';
-var DONGY_LA_ = 'Giá trị DongYNhanTin cần anh kiểm: ghi đúng Không để rút lại';
+var DONGY_LA_ = 'Giá trị DongYNhanTin lạ: gõ đúng Không để rút lại, hoặc xóa ô';
 
 /** Phân bổ KhachHang sang Master_<mã> (KhachTuMaster) theo DuAnQuanTam, bất kể đồng ý; xử lý rút lại, đồng ý lại và xóa (fail closed).
  *  Trả {dayVao: {mã: số khách thêm hoặc đổi}, rutLai: số khách MỚI được ghi nhận 'Đã rút lại' lần này (hồ sơ giữ nguyên, vẫn được phân bổ với trạng thái 'Đã rút lại'),
  *  dongYLai: số khách MỚI được mở lại (điền DaDongYLai ở TuChoi), xoa: số dòng khách vừa bị xóa dữ liệu (TuChoi loại Xóa),
  *  lyDo: {tuchoi, khong}, masterLoi: [mã dự án Master chưa xóa/cập nhật được], tuChoiLoi: số dòng TuChoi lỗi,
- *  chuaCoDuAn: số dòng KhachHang có SĐT/MaKhach mà DuAnQuanTam trống (chỉ đếm)}.
+ *  chuaCoDuAn: số dòng KhachHang có SĐT/MaKhach (không phải dấu đã xóa) mà DuAnQuanTam không có mã hợp lệ (chỉ đếm),
+ *  maDuAnLa: số khách có SĐT, mã đúng dạng nhưng không mã nào có trong CauHinh (gõ nhầm tên dự án), khachLoi: số dòng KhachHang MỚI ghi Loi vì DongYNhanTin có giá trị lạ (khách đó không được nhắn)}.
  *  Cột DongYNhanTin của Master_<mã> tính theo dự án của sheet đó: 'Có' nếu coTheNhan_, 'Đã rút lại' nếu khách đã rút lại, còn lại 'Chưa rõ'.
  *  Tính hết trong bộ nhớ (kể cả quyết định cho mọi khách) rồi mới ghi; lỗi ở bước tính thì không ghi gì. dryRun: không ghi gì.
  *  Master không mở được: có rút lại/xóa thì vẫn đánh dấu ở KhachHang trước, cập nhật/xóa ở các Master mở được, ghi masterLoi + Loi, không phân bổ gì thêm
@@ -649,6 +650,7 @@ var MASTER_THU_TU_ = { 'Đã rút lại': 0, 'Chưa rõ': 1, 'Có': 2 };
 /** Trạng thái đồng ý của khách với dự án `code`, tính từ bản ghi KHẨN (canon): 'Đã rút lại' nếu đã rút lại (cả khách), 'Có' nếu coTheNhan_, còn lại 'Chưa rõ'. */
 function trangThaiMaster_(it, code) {
   if (it.d.rutLai || it.obj.DongYNhanTin === DA_RUT_) return DA_RUT_;
+  if (it.kieu === 'la') return 'Chưa rõ'; // giá trị lạ ở KhachHang: không nhắn
   return coTheNhan_(it.obj, code) ? 'Có' : 'Chưa rõ';
 }
 
@@ -674,10 +676,11 @@ function phanBoLocked_(dryRun, nowIso) {
   var tcFull = readTuChoiFull_(master, nowIso);
   var tuChoi = tuChoiMap_(tcFull.vals, nowIso); // {SĐT: [{loai, ngayGhi}]}; ngayGhi '' = chưa biết (chặn tất cả)
   // Dòng lỗi TuChoi (SĐT sai, loại lạ, ngày tương lai): MỘT dòng Loi cho mỗi dòng TuChoi, không lặp ở lần chạy sau (tuChoiLoi chỉ đếm dòng mới ghi).
-  var daBao = (tcFull.la.length || tcFull.tuongLai.length || tuChoiRows.length) ? loiTuChoiDaBao_(master) : {};
+  var daBao = null; // đọc tab Loi khi cần (lười): các dòng lỗi đã báo
+  var layDaBao = function () { if (!daBao) daBao = loiTuChoiDaBao_(master); return daBao; };
   var tcLoi = [];
   var baoTuChoi = function (row, lyDo) {
-    if (daBao[lyDo + '|' + row]) return;
+    if (layDaBao()[lyDo + '|' + row]) return;
     daBao[lyDo + '|' + row] = true;
     tcLoi.push([nowIso, RUT_LAI_, row, lyDo]);
   };
@@ -704,14 +707,14 @@ function phanBoLocked_(dryRun, nowIso) {
   });
   var failedProjects = projects.filter(function (p) { return failedId[p.id]; });
   var failedCodes = failedProjects.map(function (p) { return p.code; });
-  var out = { dayVao: {}, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: tcLoi.length, chuaCoDuAn: 0 };
+  var out = { dayVao: {}, rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], tuChoiLoi: tcLoi.length, chuaCoDuAn: 0, maDuAnLa: 0, khachLoi: 0 };
   codes.forEach(function (c) { out.dayVao[c] = 0; });
 
   // Bước 1: quyết định cho mọi dòng khách (chưa ghi gì; decideDestinations_ ném lỗi thì dừng cả lần chạy).
   // Mỗi dòng có SĐT được tính lại thành bản ghi KHẨN bằng mergeCustomer_ CHỈ từ dòng KhachHang (không tin ô DongYNhanTin/DongYDuAn thô):
   // NgayRutLai được nâng lên tới ngày mọi dòng TuChoi đã biết (dòng chưa biết ngày = now, ổn định ngay trong lượt này) rồi mới suy ra đồng ý.
   var items = [];
-  var daLa = [];
+  var khLoi = []; // dòng KhachHang có DongYNhanTin lạ, chưa báo ở Loi
   var stampPhones = {};
   tcFull.stamp.forEach(function (rowNo) {
     var iSdt = tcFull.vals[0].map(function (h) { return hdr_(h); }).indexOf('SDT');
@@ -723,12 +726,17 @@ function phanBoLocked_(dryRun, nowIso) {
     if (rowBlank_(row)) continue;
     var obj = khachObj_(kh, row);
     var phone = normalizePhone_(obj.SDT);
-    if ((phone || s_(obj.MaKhach)) && codesOnly_(obj.DuAnQuanTam) === '') out.chuaCoDuAn++;
     var kieu = dongYKieu_(obj.DongYNhanTin);
     var optOut = kieu === 'khong';
+    var daXoa = !phone && optOut && s_(obj.GhiChu) === RUT_LAI_; // dấu hồ sơ đã xóa dữ liệu: không đếm là "chưa có mã dự án"
+    if ((phone || s_(obj.MaKhach)) && !daXoa && codesOnly_(obj.DuAnQuanTam) === '') out.chuaCoDuAn++;
     if (kieu === 'la') {
-      daLa.push([nowIso, RUT_LAI_, r + 1, DONGY_LA_]);
-      obj.DongYNhanTin = 'Chưa rõ'; // chỉ trong bộ nhớ (không ghi đè chữ của anh ở KhachHang)
+      // Giá trị anh gõ mà hệ thống không nhận ra: KHÔNG ghi đè chữ, khách không được nhắn (Master 'Chưa rõ'), ghi Loi một lần cho dòng này.
+      obj.DongYNhanTin = 'Chưa rõ'; // chỉ trong bộ nhớ
+      if (!layDaBao()[DONGY_LA_ + '|' + (r + 1)]) {
+        daBao[DONGY_LA_ + '|' + (r + 1)] = true;
+        khLoi.push([nowIso, RUT_LAI_, r + 1, DONGY_LA_]);
+      }
     }
     // Làm nốt một lần xóa dở: CHỈ khi dòng không SĐT mang đúng dấu mà chính phanBo_ ghi lúc xóa (DongYNhanTin 'Đã rút lại' + GhiChu 'Rút lại') và còn dữ liệu cá nhân.
     // Dòng không SĐT anh tự đánh dấu 'Không' (GhiChu của anh) không bao giờ bị xóa: không động tới.
@@ -758,6 +766,7 @@ function phanBoLocked_(dryRun, nowIso) {
     // Dòng của khách có TuChoi nhưng được đồng ý mới hơn mở ra (không xóa, không rút lại): không bị cuốn theo các dòng cùng SĐT.
     var lifted = !!phone && Object.prototype.hasOwnProperty.call(tuChoi, phone) && !dec.xoa && !dec.rutLai;
     if (resume) dec = { xoa: true, rutLai: false, dich: [], lyDo: 'khong' };
+    if (kieu === 'la') canon = Object.assign({}, canon, { DongYNhanTin: canon.DongYNhanTin === DA_RUT_ ? DA_RUT_ : 'Chưa rõ' });
     items.push({ r: r, obj: canon, ma: s_(obj.MaKhach), phone: phone, d: dec, lifted: lifted, kieu: kieu, changed: false });
   }
   // Xóa và rút lại đều theo SĐT: mọi dòng cùng SĐT với một dòng bị xóa đều bị xóa; cùng SĐT với một dòng rút lại thì cũng rút lại (Xóa thắng).
@@ -773,6 +782,10 @@ function phanBoLocked_(dryRun, nowIso) {
     if (it.d.xoa || !it.phone || it.lifted) return;
     if (purgePhone[it.phone]) it.d = { xoa: true, rutLai: false, dich: [], lyDo: purgePhone[it.phone] };
     else if (rutPhone[it.phone] && !it.d.rutLai) it.d = { xoa: false, rutLai: true, dich: it.d.dich, lyDo: 'rutlai' };
+  });
+  out.khachLoi = khLoi.length;
+  items.forEach(function (it) {
+    if (!it.d.xoa && it.phone && !it.d.dich.length && codesOnly_(it.obj.DuAnQuanTam) !== '') out.maDuAnLa++;
   });
   var purgeItems = items.filter(function (it) { return it.d.xoa; });
   purgeItems.forEach(function (it) {
@@ -793,7 +806,7 @@ function phanBoLocked_(dryRun, nowIso) {
   items.forEach(function (it) {
     if (it.d.xoa || !it.phone) return;
     ['DongYNhanTin', 'DongYDuAn', 'NgayRutLai'].forEach(function (c) {
-      if (c === 'DongYNhanTin' && it.kieu === 'la' && it.obj.DongYNhanTin === 'Chưa rõ') return; // 'Không rõ' của anh giữ nguyên chữ
+      if (c === 'DongYNhanTin' && it.kieu === 'la' && it.obj.DongYNhanTin !== DA_RUT_) return; // chữ lạ của anh giữ nguyên (trừ khi đã rút lại thật)
       var changed = markKhach_(kh, stMark, it.r, c, it.obj[c]);
       if (changed && c === 'DongYNhanTin' && it.obj.DongYNhanTin === DA_RUT_) it.changed = true;
     });
@@ -881,7 +894,7 @@ function phanBoLocked_(dryRun, nowIso) {
   // Bước 3: ghi. Dấu rút lại/xóa ở KhachHang trước, rồi (rút lại) trạng thái ở Master ngay sau; xóa thì xóa bản sao ở Master rồi mới xóa dữ liệu cá nhân ở KhachHang
   // (chết giữa chừng thì KhachHang còn SĐT, lần sau làm lại). Còn Master hỏng/xóa chưa hết thì KhachHang giữ nguyên dữ liệu cá nhân.
   ensureTabs_(master, false, []); // chỉ tab mới tạo được định dạng; tab cũ giữ nguyên (không đổi gì thì không ghi gì)
-  flushLoi_(master, tcLoi.concat(daLa)); // cảnh báo không chặn việc khác
+  flushLoi_(master, tcLoi.concat(khLoi)); // cảnh báo không chặn việc khác
   dongDauNgayGhi_(master, tcFull.stamp, nowIso); // dòng TuChoi chưa có ngày: hệ thống đóng dấu now (NgayRutLai đã tính bằng đúng ngày này)
   // Dấu TRƯỚC khi xóa dữ liệu cá nhân (chết giữa chừng thì không có dữ liệu nào mà thiếu dấu): 'Đã rút lại' + GhiChu 'Rút lại'; cùng lần ghi này có cả trạng thái rút lại hiện rõ.
   purgeItems.forEach(function (it) {
@@ -1107,7 +1120,7 @@ function chayRanh_(res) {
   if (!L || !C || !P) return false;
   var vao = 0;
   Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
-  return [L.doc, L.moi, L.trung, L.loi, C.doc, C.moi, C.trung, C.loi, P.xoa, P.rutLai, P.dongYLai, P.lyDo.tuchoi, P.lyDo.khong, vao, P.tuChoiLoi].every(function (n) { return !n; });
+  return [L.doc, L.moi, L.trung, L.loi, C.doc, C.moi, C.trung, C.loi, P.xoa, P.rutLai, P.dongYLai, P.lyDo.tuchoi, P.lyDo.khong, vao, P.tuChoiLoi, P.khachLoi].every(function (n) { return !n; });
 }
 
 /** Ghi NhatKy và báo Telegram cho một lần chạy (không dryRun). Lần chạy rảnh không ghi, trừ một dòng "nhịp" mỗi ngày VN. Ném lỗi nếu ghi NhatKy hỏng; người gọi xử lý. */
@@ -1115,11 +1128,11 @@ function ghiVaBao_(res, nguon, now, ms) {
   var props = PropertiesService.getScriptProperties();
   var L = res.landing || { doc: 0, moi: 0, trung: 0, loi: 0 };
   var C = res.crm || { doc: 0, moi: 0, trung: 0, loi: 0 };
-  var P = res.phanBo || { rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], dayVao: {} };
+  var P = res.phanBo || { rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], dayVao: {}, tuChoiLoi: 0, khachLoi: 0 };
   var masterLoi = (P.masterLoi && P.masterLoi.length) ? P.masterLoi : (res.masterLoiThrow || []);
   var vao = 0;
   Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
-  var loiSo = L.loi + C.loi + (P.tuChoiLoi || 0) + masterLoi.length + (res.loi && res.loi !== 'LOI_MASTER' ? 1 : 0);
+  var loiSo = L.loi + C.loi + (P.tuChoiLoi || 0) + (P.khachLoi || 0) + masterLoi.length + (res.loi && res.loi !== 'LOI_MASTER' ? 1 : 0);
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   if (chayRanh_(res)) {
     var homNay = ngayVN_(now);
@@ -1135,12 +1148,14 @@ function ghiVaBao_(res, nguon, now, ms) {
   props.setProperty(CHAY_CUOI_KEY_, String(now.getTime()));
   var loiDong = L.loi + C.loi >= LOI_DONG_NGUONG_; // nhiều dòng khách hỏng cùng một lần: báo một tin (cùng khóa chống lặp 6 giờ)
   var loiTuChoi = P.tuChoiLoi || 0; // dòng TuChoi lỗi MỚI ghi ở Loi lần này: một yêu cầu rút lại gõ sai phải hiện ra
-  if (!res.loi && !loiDong && !loiTuChoi) ghiNhanSach_(now.getTime());
+  var loiKhach = P.khachLoi || 0; // dòng KhachHang có DongYNhanTin lạ MỚI ghi ở Loi lần này (khách đó không được nhắn)
+  if (!res.loi && !loiDong && !loiTuChoi && !loiKhach) ghiNhanSach_(now.getTime());
   else {
     ghiNhanLoi_();
     if (!res.loi) {
       if (loiDong) baoLoi_('LOI_DONG', L.loi + C.loi, now);
       if (loiTuChoi) baoLoi_('LOI_TUCHOI', loiTuChoi, now);
+      if (loiKhach) baoLoi_('LOI_DONG_Y', loiKhach, now);
     }
     else if (res.loi === 'LOI_MASTER') baoLoi_('LOI_MASTER ' + maDuAnAnToan_(masterLoi), masterLoi.length, now, 'LOI_MASTER');
     else baoLoi_(res.loi, loiSo, now);
@@ -1172,6 +1187,7 @@ function baoCaoNgay_(opts) {
   var master = SpreadsheetApp.getActiveSpreadsheet();
   var nguon = { Landing: 0, CRM: 0, Khac: 0 };
   var moi = 0;
+  var maLa = 0; // khách có mã đúng dạng nhưng không mã nào có trong CauHinh
   var chuaCoMa = 0; // cùng định nghĩa với chuaCoDuAn của phanBo_: có SĐT hoặc MaKhach mà DuAnQuanTam không có mã hợp lệ
   var rutLai = 0; // khách có NgayRutLai rơi vào hôm qua
   var kh = master.getSheetByName('KhachHang');
@@ -1184,6 +1200,14 @@ function baoCaoNgay_(opts) {
     var iMa = headers.indexOf('MaKhach');
     var iDa = headers.indexOf('DuAnQuanTam');
     var iRut = headers.indexOf('NgayRutLai');
+    var iDong = headers.indexOf('DongYNhanTin');
+    var iGhi = headers.indexOf('GhiChu');
+    var maCauHinh = {};
+    var coCauHinh = false;
+    try {
+      var cfgSh = master.getSheetByName('CauHinh');
+      if (cfgSh) { projectsFromCfg_(cfgSh).forEach(function (p) { maCauHinh[p.code] = true; }); coCauHinh = true; }
+    } catch (e0) { /* không đọc được CauHinh: không đếm mã lạ */ }
     for (var r = 1; r < vals.length; r++) {
       if (iTao >= 0 && ngayVN_(vals[r][iTao]) === homQua) {
         moi++;
@@ -1192,7 +1216,10 @@ function baoCaoNgay_(opts) {
       }
       var coSdt = iSdt >= 0 && normalizePhone_(vals[r][iSdt]);
       var coMa = iMa >= 0 && s_(vals[r][iMa]);
-      if ((coSdt || coMa) && (iDa < 0 || codesOnly_(vals[r][iDa]) === '')) chuaCoMa++;
+      var daXoa = !coSdt && iDong >= 0 && iGhi >= 0 && dongYKieu_(vals[r][iDong]) === 'khong' && s_(vals[r][iGhi]) === RUT_LAI_;
+      var maHopLe = iDa < 0 ? '' : codesOnly_(vals[r][iDa]);
+      if ((coSdt || coMa) && !daXoa && maHopLe === '') chuaCoMa++;
+      if (coSdt && !daXoa && maHopLe !== '' && coCauHinh && !maHopLe.split(';').some(function (c) { return maCauHinh[c]; })) maLa++;
       if (iRut >= 0 && ngayVN_(vals[r][iRut]) === homQua) rutLai++;
     }
   }
@@ -1208,7 +1235,7 @@ function baoCaoNgay_(opts) {
   if (nguon.CRM) parts.push('CRM ' + nguon.CRM);
   if (nguon.Khac) parts.push('Khác ' + nguon.Khac);
   var text = '📊 Master_Data hôm qua: ' + moi + ' khách mới' + (parts.length ? ' (' + parts.join(', ') + ')' : '') +
-    '. Chưa có mã dự án: ' + chuaCoMa + '. Dòng lỗi: ' + demDong_(master, 'Loi') + '. Rút lại hôm qua: ' + rutLai + '. Điền lại hôm qua: ' + dongYLai + '.';
+    '. Chưa có mã dự án: ' + chuaCoMa + '. Mã dự án không có trong CauHinh: ' + maLa + '. Dòng lỗi: ' + demDong_(master, 'Loi') + '. Rút lại hôm qua: ' + rutLai + '. Điền lại hôm qua: ' + dongYLai + '.';
   var cuoi = Number(PropertiesService.getScriptProperties().getProperty(CHAY_CUOI_KEY_));
   if (cuoi > 0) text += ' Lần chạy cuối: ' + Math.max(0, Math.floor((now.getTime() - cuoi) / 60000)) + ' phút trước.';
   sendTelegram_(text);
@@ -1217,6 +1244,7 @@ function baoCaoNgay_(opts) {
 
 /** Cài lịch tự chạy (an toàn khi chạy nhiều lần): tạo trigger MỚI trước, rồi mới xóa cái cũ trùng hàm, nên tạo lỗi thì lịch cũ còn nguyên. Mỗi 15 phút gộp; tin tóm tắt chạy khoảng 8-9 giờ mỗi ngày (Apps Script tự chọn phút ngẫu nhiên trong giờ). Trigger khác giữ nguyên. */
 function caiLich_() {
+  if (!cauHinhHopLe_()) return false;
   var mine = ['chayTatCaTuDong', 'baoCaoNgayTuDong'];
   var cu = ScriptApp.getProjectTriggers().filter(function (t) { return mine.indexOf(t.getHandlerFunction()) >= 0; });
   var moi = [];
@@ -1228,6 +1256,25 @@ function caiLich_() {
     throw e;
   }
   cu.forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  return true;
+}
+
+/** CauHinh có ít nhất một dòng có maDuAn và (landingSheetId hoặc masterSheetId). Không có/không đọc được = false (không cài lịch chạy vào hư không). */
+function cauHinhHopLe_() {
+  try {
+    var cfg = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('CauHinh');
+    if (!cfg || cfg.getLastRow() < 2) return false;
+    var vals = cfg.getDataRange().getValues();
+    var hd = vals[0].map(function (h) { return hdr_(h); });
+    var iC = hd.indexOf('maDuAn'), iL = hd.indexOf('landingSheetId'), iM = hd.indexOf('masterSheetId');
+    if (iC < 0) return false;
+    for (var r = 1; r < vals.length; r++) {
+      if (s_(vals[r][iC]) && ((iL >= 0 && s_(vals[r][iL])) || (iM >= 0 && s_(vals[r][iM])))) return true;
+    }
+    return false;
+  } catch (e) {
+    return false;
+  }
 }
 
 // ---- Điểm vào của trigger và menu (tên không có "_" để chọn được ở menu/trigger) ----
@@ -1252,6 +1299,7 @@ function tomTatChay_(res, dryRun) {
     var vao = 0;
     Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
     lines.push('Phân bổ: vào dự án ' + vao + ', chưa có mã dự án ' + P.chuaCoDuAn + ', rút lại ' + P.rutLai + ', đồng ý lại ' + P.dongYLai + ', xóa ' + P.xoa + ', Master lỗi ' + (P.masterLoi || []).length + '.');
+    lines.push('Dòng TuChoi lỗi: ' + (P.tuChoiLoi || 0) + '. Giá trị trạng thái lạ: ' + (P.khachLoi || 0) + '. Mã dự án không có trong CauHinh: ' + (P.maDuAnLa || 0) + '.');
   }
   if (res.loi) lines.push('Lỗi: ' + res.loi + '.');
   return lines.join('\n');
@@ -1266,7 +1314,10 @@ function chayThu() {
 }
 
 function caiLichTuDong() {
-  caiLich_();
+  if (!caiLich_()) {
+    SpreadsheetApp.getUi().alert('Chưa có CauHinh hợp lệ (tab CauHinh cần ít nhất một dòng có maDuAn và Sheet id). Chưa cài lịch.');
+    return;
+  }
   SpreadsheetApp.getUi().alert('Đã cài lịch: gộp mỗi 15 phút, tin tóm tắt khoảng 8-9 giờ mỗi ngày.');
 }
 

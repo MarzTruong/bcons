@@ -277,12 +277,14 @@ function foldText_(v) {
   return String(v == null ? '' : v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/đ/g, 'd').replace(/[^a-z]/g, '');
 }
 
-/** Phân loại giá trị DongYNhanTin: 'khong' = đúng chữ Không (mọi cách gõ: hoa/thường, có/không dấu, NFC/NFD, dấu chấm, ký tự vô hình) -> rút lại;
- *  'la' = bắt đầu bằng "không" nhưng không đúng ('Không rõ', 'Không biết') -> không rút lại, cần anh kiểm; còn lại ''. */
+/** Phân loại giá trị DongYNhanTin (anh gõ ở KhachHang): 'khong' = đúng chữ Không (mọi cách gõ: hoa/thường, có/không dấu, NFC/NFD, dấu chấm, ký tự vô hình) hoặc 'Đã rút lại' -> rút lại;
+ *  '' = ô trống, 'Có' hoặc 'Chưa rõ' (giá trị hệ thống tự ghi, bình thường); 'la' = BẤT KỲ giá trị nào khác ('Rút lại', 'Từ chối', 'No', 'Không rõ'...):
+ *  không nhận ra -> không ghi đè, khách KHÔNG được nhắn (an toàn), ghi Loi. */
 function dongYKieu_(v) {
   var f = foldText_(v);
-  if (f === 'khong' || f === 'darutlai') return 'khong'; // 'Đã rút lại' (trạng thái mới) cũng chặn
-  return f.indexOf('khong') === 0 ? 'la' : '';
+  if (f === 'khong' || f === 'darutlai') return 'khong';
+  if (f === '' || f === 'co' || f === 'chuaro') return '';
+  return 'la';
 }
 
 /** Gom SĐT từ chối thành mảng đã chuẩn hóa. Dạng lạ → ném lỗi (không được lặng lẽ bỏ qua). */

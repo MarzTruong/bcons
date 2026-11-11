@@ -414,7 +414,8 @@ test("decideDestinations_: chỉ đúng 'Không' mới rút lại; 'Không rõ',
 test("dongYKieu_: khong (đúng) / la (bắt đầu bằng khong nhưng không đúng) / rỗng", () => {
   for (const v of ["Không", "KHÔNG", "khong", " Không. ", "Không".normalize("NFD"), "Không\u200b"]) assert.equal(ctx.dongYKieu_(v), "khong", JSON.stringify(v));
   for (const v of ["Không rõ", "Không biết", "khong chac"]) assert.equal(ctx.dongYKieu_(v), "la", v);
-  for (const v of ["Có", "Chưa rõ", "", null, undefined, "Biết rồi"]) assert.equal(ctx.dongYKieu_(v), "", String(v));
+  for (const v of ["Có", "Chưa rõ", "", null, undefined]) assert.equal(ctx.dongYKieu_(v), "", String(v));
+  for (const v of ["Rút lại", "Từ chối", "No", "Không nhận tin", "Biết rồi"]) assert.equal(ctx.dongYKieu_(v), "la", v);
 });
 
 test("decideDestinations_: tuChoi mọi dạng cũ đều rút lại", () => {
