@@ -85,3 +85,18 @@ test("lenhPhieu_: lệnh bấm được chỉ gồm chữ, số, gạch dưới;
   assert.ok(tg.includes("Dựng phiếu tính: /phieu_A18_09_02_9p5_20"));
   assert.ok(!ctx.formatTelegram_(ctx.validateLead_(lead).lead).includes("Dựng phiếu"));
 });
+
+test("duAn: giữ mã dự án đúng dạng, còn lại về khong-ro; hàng khớp HEADERS", () => {
+  assert.equal(ctx.validateLead_({ ...lead, duAn: "bcons-central-park" }).lead.duAn, "bcons-central-park");
+  for (const bad of ["<x>", undefined, "a".repeat(100), "AB", "có dấu"]) {
+    assert.equal(ctx.validateLead_({ ...lead, duAn: bad }).lead.duAn, "khong-ro", String(bad).slice(0, 10));
+  }
+  const l = ctx.validateLead_({ ...lead, duAn: "bcons-central-park" }).lead;
+  const row = ctx.rowFor_(l, new Date(0));
+  assert.equal(row.length, ctx.HEADERS.length);
+  assert.equal(ctx.HEADERS[17], "Dự án");
+  assert.equal(ctx.HEADERS[18], "Đã gộp");
+  assert.equal(ctx.HEADERS[16], "Ghi chú");
+  assert.equal(row[ctx.HEADERS.indexOf("Dự án")], "bcons-central-park");
+  assert.equal(row[ctx.HEADERS.indexOf("Đã gộp")], "");
+});

@@ -95,6 +95,7 @@ export function renderPage(data, project, { draft = false } = {}) {
     lai: data.laiGiaDinh,
     nam: data.namGiaDinh,
     formUrl: data.formUrl,
+    duAn: project.ma,
   }).replace(/</g, "\\u003c");
   const mau = data.anhNhaMau ?? [];
   return `<!doctype html>

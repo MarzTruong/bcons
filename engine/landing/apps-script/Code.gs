@@ -6,7 +6,7 @@
  * Xem docs/huong-dan-landing.md. Không dán token vào file này.
  */
 var SHEET_TAB = 'Landing';
-var HEADERS = ['Thời gian', 'Họ tên', 'SĐT', 'Nhu cầu', 'Căn xem', 'Loại căn', 'PTTT', 'Giá chưa VAT', 'Tự có đến nhận nhà', 'Vay', 'Trả góp/tháng (giả định)', 'Lãi giả định %', 'Kỳ hạn năm', 'Nguồn', 'Đồng ý nhận tin', 'Trạng thái chăm sóc', 'Ghi chú'];
+var HEADERS = ['Thời gian', 'Họ tên', 'SĐT', 'Nhu cầu', 'Căn xem', 'Loại căn', 'PTTT', 'Giá chưa VAT', 'Tự có đến nhận nhà', 'Vay', 'Trả góp/tháng (giả định)', 'Lãi giả định %', 'Kỳ hạn năm', 'Nguồn', 'Đồng ý nhận tin', 'Trạng thái chăm sóc', 'Ghi chú', 'Dự án', 'Đã gộp'];
 var NHU_CAU = ['Mua để ở', 'Mua cho thuê', 'Tìm hiểu thêm'];
 var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
 var CONSENT_VERSION = 'v1-2026-11-06';
@@ -67,6 +67,7 @@ function validateLead_(p) {
     nam: num_(p.nam, 0, 35),
     nguon: String(p.nguon || '').replace(/[^\w.\-]/g, '').slice(0, 60) || 'khong-ro',
     trang: clean_(p.trang, 200),
+    duAn: /^[a-z0-9-]{3,40}$/.test(String(p.duAn || '')) ? String(p.duAn) : 'khong-ro',
   };
   return { ok: true, phone: phone, lead: lead };
 }
@@ -115,7 +116,7 @@ function formatZalo_(l) {
 
 function rowFor_(l, now) {
   return [now, cell_(l.ten), "'" + l.phone, cell_(l.nhuCau), cell_(l.canMoTa), cell_(l.canLoai), cell_(l.pttt), l.giaChuaVat || '', l.tuCo, l.vay, Math.round(l.traGop), l.lai, l.nam, cell_(l.nguon),
-    'Có (' + now.toISOString() + ', mẫu ' + CONSENT_VERSION + ', ' + cell_(l.trang) + ')', 'Mới', ''];
+    'Có (' + now.toISOString() + ', mẫu ' + CONSENT_VERSION + ', ' + cell_(l.trang) + ')', 'Mới', '', l.duAn || 'khong-ro', ''];
 }
 
 function json_(o) {

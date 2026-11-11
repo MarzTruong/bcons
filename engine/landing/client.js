@@ -88,7 +88,7 @@ $("form").addEventListener("submit", async (e) => {
     ten, sdt, nhuCau: $("nhuCau").value, hp_x7: $("hp_x7").value, dongY: true, t: Date.now() - T0,
     canMa: u.ma, canLoai: u.loai, canMoTa: `tháp ${u.thap}, tầng ${u.tang}`, dt: u.dtTimTuong, pttt: PLANS[S.k].name,
     giaChuaVat: c.P, giaCoVat: c.G, phiBaoTri: c.fee, tuCo: c.ownBefore, vay: c.loan, traGop: Math.round(monthly), lai, nam,
-    nguon: source(), trang: location.origin + location.pathname,
+    duAn: D.duAn, nguon: source(), trang: location.origin + location.pathname,
   };
   $("send").disabled = true;
   // Máy chủ coi gửi dưới 3 giây kể từ lúc mở trang là máy tự động: chờ đủ rồi mới gửi để không mất khách tự điền nhanh.

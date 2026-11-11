@@ -94,3 +94,10 @@ test("checkStillForSale: căn mẫu đã cọc hoặc CĐT LOCK thì chặn; kh�
   assert.ok(errs.some((e) => /A15-12/.test(e)) && errs.some((e) => /E6-09/.test(e)));
   assert.deepEqual(checkStillForSale(full, path.join(dir, "khong-co.csv")), []);
 });
+
+test("trang: dữ liệu nhúng có mã dự án (duAn) để form ghi vào bảng khách", () => {
+  const html = renderPage(full, project);
+  const D = JSON.parse(html.match(/<script id="data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+  assert.equal(D.duAn, "bcons-central-park");
+  assert.equal(D.duAn, project.ma);
+});
