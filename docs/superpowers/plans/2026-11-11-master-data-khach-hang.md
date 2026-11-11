@@ -94,7 +94,7 @@
 **Files:** Modify `Logic.gs`; Test `logic.test.mjs`
 
 **Interfaces:**
-- Produces: `mergeCustomer_(existing: Record, incoming: Record, nowIso: string) -> Record`. Quy tắc (spec mục 6): cột "anh" (`TrangThaiCRM, TrangThaiChamSoc, NguoiChamSoc, GhiChu`) giữ nguyên `existing`; cột "hệ thống/anh" (`HoTen, NhuCau, CanXem, PTTT, NguonChiTiet`) chỉ điền khi `existing` trống; `DuAnQuanTam` = hợp hai danh sách ngăn `;`, không trùng, giữ thứ tự cũ; `NguonGoc` → `Landing+CRM` khi hai nguồn khác nhau; `DongYNhanTin`: nếu một bên `Không` → `Không`; nếu `existing` là `Có` giữ; ngược lại `incoming` nếu `Có`, còn lại `Chưa rõ`; `DongYBangChung` giữ cái đầu tiên có; `NgayCapNhat = nowIso`, `NgayTao`/`MaKhach` giữ cũ.
+- Produces: `mergeCustomer_(existing: Record, incoming: Record, nowIso: string) -> Record`. Quy tắc (spec mục 6): cột "anh" (`TrangThaiCRM, TrangThaiChamSoc, NguoiChamSoc, GhiChu`) giữ giá trị của `existing`, riêng ô `existing` trống thì điền từ `incoming` (khớp Task 7); cột "hệ thống/anh" (`HoTen, NhuCau, CanXem, PTTT, NguonChiTiet`) chỉ điền khi `existing` trống; `DuAnQuanTam` = hợp hai danh sách ngăn `;`, không trùng, giữ thứ tự cũ; `NguonGoc` → `Landing+CRM` khi hai nguồn khác nhau; `DongYNhanTin`: nếu một bên `Không` → `Không`; nếu `existing` là `Có` giữ; ngược lại `incoming` nếu `Có`, còn lại `Chưa rõ`; `DongYBangChung` giữ cái đầu tiên có; `NgayCapNhat = nowIso`, `NgayTao`/`MaKhach` giữ cũ.
 - `dongYThang_(a, b) -> string` nội bộ nếu cần.
 
 - [ ] **Step 1: Test thất bại**: (a) Review Focus 3: tên anh sửa không bị ghi đè; (b) landing rồi CRM → `Landing+CRM`, dự án hợp `a;b` không lặp; (c) `Không` thắng `Có`; (d) `incoming` không thể nâng `Chưa rõ` lên `Có` nếu `incoming.DongYNhanTin` cũng `Chưa rõ`; (e) cột anh không đổi dù incoming có giá trị.

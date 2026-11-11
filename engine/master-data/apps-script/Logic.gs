@@ -53,7 +53,7 @@ function parseLandingRow_(headers, row) {
   var iDongY = headers.indexOf('Đồng ý nhận tin');
   var dongYRaw = iDongY < 0 || iDongY >= row.length || typeof row[iDongY] !== 'string' ? '' : row[iDongY];
   // Bằng chứng đồng ý phải đúng khuôn Code.gs ghi: Có (<ISO>, mẫu <phiên bản>, <trang>), không cắt khoảng trắng.
-  var coBangChung = /^Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, [^\n\r]*\)$/.test(dongYRaw);
+  var coBangChung = hasConsentEvidence_(dongYRaw);
   var dongY = dongYRaw;
   rec.SDT = sdt;
   rec.HoTen = cell_(get('Họ tên'));
@@ -69,18 +69,22 @@ function parseLandingRow_(headers, row) {
   return { ok: true, rec: rec };
 }
 
-function s_(v) { return v == null ? '' : String(v); }
-
-/** Hợp hai danh sách ngăn bằng ';': thứ tự cũ trước, bỏ trùng, bỏ rỗng. */
-function unionList_(a, b) {
-  var out = [];
-  (s_(a) + ';' + s_(b)).split(';').forEach(function (x) {
-    x = x.trim();
-    if (x && out.indexOf(x) < 0) out.push(x);
-  });
-  return out.join(';');
+/** Bằng chứng đồng ý đúng khuôn Code.gs ghi (dùng chung cho parseLandingRow_ và dongYThang_). */
+function hasConsentEvidence_(s) {
+  return /^Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, [^\n\r]*\)$/.test(String(s == null ? '' : s));
 }
 
+/** Giá trị ô Sheets -> chuỗi: Date -> ISO (Date hỏng -> ''), null -> '', còn lại String().trim(). */
+function s_(v) {
+  if (v == null) return '';
+  if (Object.prototype.toString.call(v) === '[object Date]') return isNaN(v.getTime()) ? '' : v.toISOString();
+  return String(v).trim();
+}
+
+/** Hợp hai danh sách mã dự án: lọc bằng codesOnly_ từng bên, thứ tự cũ trước, không trùng. */
+function unionList_(a, b) {
+  return codesOnly_(codesOnly_(a) + ';' + codesOnly_(b));
+}
 function mergeNguon_(a, b) {
   var toks = [];
   (s_(a) + '+' + s_(b)).split(/[;+]/).forEach(function (x) {
@@ -95,16 +99,18 @@ function mergeNguon_(a, b) {
   return toks.join('+');
 }
 
-/** Đồng ý nhận tin: 'Không' của một bên thắng; 'Có' chỉ giữ/nhận khi bên đó thật sự là 'Có'. */
+/** Đồng ý nhận tin: 'Không' thắng; 'Có' chỉ tính khi có bằng chứng đúng khuôn; còn lại 'Chưa rõ'. */
 function dongYThang_(a, b) {
-  if (a.v === 'Không') return a;
-  if (b.v === 'Không') return { v: 'Không', e: b.e };
-  if (a.v === 'Có') return a;
-  if (b.v === 'Có') return b;
+  var noEv = function (e) { return /^Có \(/.test(e) ? '' : e; };
+  if (a.v === 'Không') return { v: 'Không', e: noEv(a.e) };
+  if (b.v === 'Không') return { v: 'Không', e: noEv(b.e) };
+  if (a.v === 'Có' && hasConsentEvidence_(a.e)) return a;
+  if (b.v === 'Có' && hasConsentEvidence_(b.e)) return b;
   return { v: 'Chưa rõ', e: '' };
 }
 
-/** Hợp nhất hai bản ghi khách trùng SĐT (spec mục 6). Trả đối tượng mới, không sửa đầu vào. */
+/** Hợp nhất hai bản ghi khách trùng SĐT (spec mục 6). Trả đối tượng mới, không sửa đầu vào.
+ *  Chữ đầu vào phải đã qua cell_; Sheets.gs (Task 6-7) phải áp cell_ khi ghi ra Sheet. */
 function mergeCustomer_(existing, incoming, nowIso) {
   var ex = existing || {}, inc = incoming || {};
   var out = {};
@@ -112,6 +118,7 @@ function mergeCustomer_(existing, incoming, nowIso) {
     var c = KHACH_COLS[k];
     out[c] = s_(ex[c]) !== '' ? s_(ex[c]) : s_(inc[c]);
   }
+  out.SDT = normalizePhone_(ex.SDT) || normalizePhone_(inc.SDT);
   out.DuAnQuanTam = unionList_(ex.DuAnQuanTam, inc.DuAnQuanTam);
   out.NguonGoc = mergeNguon_(ex.NguonGoc, inc.NguonGoc);
   var nt = dongYThang_({ v: s_(ex.DongYNhanTin), e: s_(ex.DongYBangChung) }, { v: s_(inc.DongYNhanTin), e: s_(inc.DongYBangChung) });

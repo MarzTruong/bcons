@@ -270,3 +270,63 @@ test("mergeCustomer_: không sửa đầu vào, kết quả đúng 17 khóa, đ�
   assert.equal(r2.SDT, "0981234567");
   assert.equal(merge({}, {}).DongYNhanTin, "Chưa rõ");
 });
+
+// ---- mergeCustomer_ hardening ----
+test("mergeCustomer_: 'Có' chỉ tính khi có bằng chứng đúng khuôn", () => {
+  const good = mk({ DongYNhanTin: "Có", DongYBangChung: MA });
+  const r1 = merge(mk({ DongYNhanTin: "Có", DongYBangChung: "" }), good);
+  assert.equal(r1.DongYNhanTin, "Có");
+  assert.equal(r1.DongYBangChung, MA);
+  const r2 = merge(mk({}), mk({ DongYNhanTin: "Có", DongYBangChung: "" }));
+  assert.deepEqual([r2.DongYNhanTin, r2.DongYBangChung], ["Chưa rõ", ""]);
+  const r3 = merge(mk({ DongYNhanTin: "Chưa rõ" }), mk({ DongYNhanTin: "Có", DongYBangChung: "zzz" }));
+  assert.deepEqual([r3.DongYNhanTin, r3.DongYBangChung], ["Chưa rõ", ""]);
+  const r4 = merge(mk({ DongYNhanTin: "Có", DongYBangChung: "zzz" }), mk({ DongYNhanTin: "Có", DongYBangChung: "" }));
+  assert.deepEqual([r4.DongYNhanTin, r4.DongYBangChung], ["Chưa rõ", ""]);
+  assert.equal(ctx.hasConsentEvidence_(MA), true);
+  assert.equal(ctx.hasConsentEvidence_("Có (x)"), false);
+});
+
+test("mergeCustomer_: 'Không' không mang bằng chứng giống đồng ý", () => {
+  const E = mk({ DongYNhanTin: "Không", DongYBangChung: MA });
+  let r = merge(E, mk({}));
+  assert.deepEqual([r.DongYNhanTin, r.DongYBangChung], ["Không", ""]);
+  r = merge(mk({ DongYNhanTin: "Có", DongYBangChung: MA }), E);
+  assert.deepEqual([r.DongYNhanTin, r.DongYBangChung], ["Không", ""]);
+});
+
+test("mergeCustomer_: ô Sheets dạng Date/số được chuẩn hóa", () => {
+  const d = new Date("2026-11-01T00:00:00.000Z");
+  const r = merge(mk({ NgayTao: d, SDT: 981234567 }), mk({ SDT: "098.123.4567" }));
+  assert.equal(r.NgayTao, "2026-11-01T00:00:00.000Z");
+  assert.equal(r.SDT, "0981234567");
+  assert.equal(merge(mk({ NgayTao: new Date("x") }), mk({})).NgayTao, "");
+  assert.equal(merge(mk({ SDT: "abc" }), mk({ SDT: "0981234567" })).SDT, "0981234567");
+  assert.equal(merge(mk({ SDT: "abc" }), mk({})).SDT, "");
+});
+
+test("mergeCustomer_: DuAnQuanTam lọc mã hợp lệ, không phân biệt hoa thường", () => {
+  const r = merge(mk({ DuAnQuanTam: "Bcons-X; khong-ro" }), mk({ DuAnQuanTam: "bcons-x;=x" }));
+  assert.equal(r.DuAnQuanTam, "bcons-x");
+});
+
+test("mergeCustomer_: nhận chữ đã qua cell_ và giữ nguyên; ô toàn khoảng trắng coi là trống", () => {
+  assert.equal(merge(mk({ HoTen: "'=x" }), mk({ HoTen: "B" })).HoTen, "'=x");
+  assert.equal(merge(mk({ HoTen: "   " }), mk({ HoTen: "Khách Mẫu" })).HoTen, "Khách Mẫu");
+});
+
+test("mergeCustomer_: idempotent", () => {
+  const a = mk({ SDT: "0981234567", HoTen: "A", NguonGoc: "Landing", DuAnQuanTam: "bcons-newsky", DongYNhanTin: "Có", DongYBangChung: MA });
+  const b = mk({ NguonGoc: "CRM", DuAnQuanTam: "bcons-sora", TrangThaiCRM: "Mới", NhuCau: "Ở" });
+  const once = merge(a, b);
+  assert.deepEqual(plain(ctx.mergeCustomer_(once, b, NOW)), once);
+});
+
+test("mergeCustomer_: NguonGoc đủ 25 tổ hợp", () => {
+  const V = ["", "Landing", "CRM", "Landing+CRM", "CRM+Landing"];
+  for (const x of V) for (const y of V) {
+    const toks = new Set(`${x}+${y}`.split("+").filter(Boolean));
+    const want = toks.size === 0 ? "" : toks.size === 2 ? "Landing+CRM" : [...toks][0];
+    assert.equal(merge(mk({ NguonGoc: x }), mk({ NguonGoc: y })).NguonGoc, want, `${x}|${y}`);
+  }
+});
