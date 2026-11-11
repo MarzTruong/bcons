@@ -23,7 +23,7 @@ export const plain = (x) => (x === undefined ? undefined : JSON.parse(JSON.strin
 // hooks.waitLockError = true làm waitLock ném lỗi.
 export function fakeSheets(spec = {}) {
   const calls = { fetch: [], lock: [], writes: [], openById: [] };
-  const hooks = { onWrite: null, waitLockError: false };
+  const hooks = { onWrite: null, onRead: null, waitLockError: false };
   const looksNumeric = (v) => typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v);
 
   function makeSheet(owner, name, rows) {
@@ -77,6 +77,7 @@ export function fakeSheets(spec = {}) {
       getRange(r, c, nr = 1, nc = 1) {
         return {
           getValues() {
+            if (hooks.onRead) hooks.onRead({ owner, sheet: name, row: r, col: c, nr, nc });
             const out = [];
             for (let i = 0; i < nr; i++) {
               const row = sh.data[r - 1 + i] || [];
