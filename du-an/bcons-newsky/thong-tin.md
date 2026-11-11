@@ -36,13 +36,22 @@ MB (độc quyền gói trần 6,9%), OCB, BIDV, Public Bank, ACB, Vietcombank, 
 
 ## Chính sách của sàn
 - Thông báo 213/TB-BPS (06/11/2026): quà tặng bốc thăm 1 xe Toyota Camry 2.0 cho khách của hệ thống Bcons PS có thỏa thuận quyền chọn thành công từ 06/11/2026; chỉ bốc thăm khi dự án đạt tối thiểu 95%/594 sản phẩm (565) đến hết 30/06/2027; phải thanh toán đủ, ký HĐMB đúng hạn, có mặt trực tiếp nhận. Hỏi anh trước khi nhắc trong nội dung.
-- Chính sách hoa hồng (193TB, 206TB): nội bộ, **không chép vào repo**.
+- Chính sách hoa hồng (193TB, 206TB): nội bộ, **không chép vào repo** (cũng chưa nhập vào Master File Newsky).
 
 ## Lịch mở bán
 Chưa có.
 
-## Giá (tóm tắt, ghi rõ chưa VAT / có VAT, phí bảo trì 2%)
-Chưa có bảng tóm tắt. Giá chi tiết nằm ở file check giá tháp B (xlsx, nội bộ) trên Drive `data/bcons-newsky/gia/`: không đưa vào repo.
+## Giá (tóm tắt, giá chưa VAT, chưa phí bảo trì 2%; VAT 10% tính thêm)
+Nguồn: file CĐT "06102026 FILE CHECK GIÁ THÁP B - BCONS NEWSKY" (200 căn tháp B, hai nhóm B1 và B2). Chỉ có tháp B, chưa có giá tháp A. Giá từng căn nằm trong Master File trên Drive (không đưa vào repo).
+
+| Loại căn | Số căn | DT tim tường (m²) | DT thông thủy (m²) | Giá PTTT 09 (tỷ) | Giá PTTT 08 (tỷ) | Giá PTTT 10 (tỷ) |
+|---|---|---|---|---|---|---|
+| 2PN-1WC | 8 | 47.25–47.37 | 41.83–42.28 | 2.56–2.70 | 2.42–2.55 | 2.51–2.64 |
+| 2PN-2WC | 60 | 54.76–65.69 | 49.43–59.49 | 2.75–3.50 | 2.59–3.30 | 2.69–3.42 |
+| 3PN-2WC | 122 | 74.68–80.47 | 66.65–72.09 | 3.87–4.72 | 3.65–4.45 | 3.79–4.62 |
+| 3PN-3WC | 10 | 94.70–94.70 | 85.42–85.89 | 4.28–4.59 | 4.04–4.33 | 4.19–4.49 |
+
+Chiết khấu so với giá PTTT 09: PTTT 08 là 5,65%, PTTT 10 là 2,15%. Tình trạng từng căn (trống, cọc, LOCK) cập nhật theo giỏ hàng chung, chưa đưa vào đây.
 
 ## Còn thiếu, cần anh
 Tình trạng khởi công; lịch mở bán; tên kênh Facebook; thông tin trong 2 file lớn (slide kick-off 155 MB, training 85 MB): connector Drive trả về rỗng, cần anh gửi nội dung chữ hoặc ảnh các trang chính.
