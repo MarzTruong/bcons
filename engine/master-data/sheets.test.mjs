@@ -355,3 +355,175 @@ test("gopLanding_: thiếu tab Landing -> lỗi nêu landingSheetId", () => {
   const T = setup({ landingRows: [], extraById: { L1: { Khac: [["x"]] } } });
   assert.throws(() => T.ctx.gopLanding_({ dryRun: false, now: NOW }), /L1/);
 });
+
+// ---- gopNhapCRM_ ----
+const CRM_H = ["HoTen", "SDT", "DuAnQuanTam", "TrangThaiCRM", "DaGop"];
+function setupCrm(crmRows, opts = {}) {
+  return setup({ landingRows: opts.landingRows || [], masterExtra: { NhapCRM: [CRM_H, ...crmRows], ...(opts.masterExtra || {}) }, withKhach: opts.withKhach });
+}
+const khCol = (kh, n) => kh[0].indexOf(n);
+
+test("gopNhapCRM_: khách CRM mới -> KhachHang NguonGoc CRM, Chưa rõ, không bằng chứng, DaGop = MaKhach", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "bcons-central-park", "Đã gọi", ""]]);
+  const r = plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }));
+  assert.deepEqual(r, { doc: 1, moi: 1, trung: 0, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 3);
+  const row = kh[2];
+  assert.equal(row[khCol(kh, "MaKhach")], "KH-000002");
+  assert.equal(row[khCol(kh, "SDT")], "0900000002");
+  assert.equal(row[khCol(kh, "NguonGoc")], "CRM");
+  assert.equal(row[khCol(kh, "DongYNhanTin")], "Chưa rõ");
+  assert.equal(row[khCol(kh, "DongYBangChung")], "");
+  assert.equal(row[khCol(kh, "TrangThaiCRM")], "Đã gọi");
+  assert.equal(row[khCol(kh, "DuAnQuanTam")], "bcons-central-park");
+  assert.equal(row[khCol(kh, "NgayTao")], NOW.toISOString());
+  assert.equal(T.F.values(null, "NhapCRM")[1][4], "KH-000002");
+  assert.deepEqual(T.F.calls.lock, ["wait", "release"]);
+  assertNoLeak(T);
+});
+
+test("gopNhapCRM_: cùng SĐT với khách landing -> một dòng Landing+CRM, TrangThaiCRM từ nhập tay, đồng ý và bằng chứng của landing còn nguyên", () => {
+  const T = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: PHONES[1] })], masterExtra: { NhapCRM: [CRM_H, ["Ten Khac", "0900000002", "", "Hẹn xem nhà", ""]] } });
+  T.ctx.gopLanding_({ dryRun: false, now: NOW });
+  const r = plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }));
+  assert.deepEqual(r, { doc: 1, moi: 0, trung: 1, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 3);
+  const row = kh[2];
+  assert.equal(row[khCol(kh, "NguonGoc")], "Landing+CRM");
+  assert.equal(row[khCol(kh, "TrangThaiCRM")], "Hẹn xem nhà");
+  assert.equal(row[khCol(kh, "HoTen")], NAMES[1], "tên landing thắng");
+  assert.equal(row[khCol(kh, "DongYNhanTin")], "Có");
+  assert.match(row[khCol(kh, "DongYBangChung")], /^Có \(2026-11-10T03:00:00\.000Z, mẫu /);
+  assert.equal(T.F.values(null, "NhapCRM")[1][4], "KH-000002");
+});
+
+test("gopNhapCRM_: '098.123.4567', '0981234567' và số 981234567 là một người", () => {
+  const T = setupCrm([["Khach A", "098.123.4567", "", "", ""], ["Khach B", "0981234567", "", "", ""], ["Khach C", 981234567, "", "", ""]]);
+  const r = plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }));
+  assert.deepEqual(r, { doc: 3, moi: 1, trung: 2, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 3);
+  assert.equal(kh[2][khCol(kh, "SDT")], "0981234567");
+  assert.equal(kh[2][khCol(kh, "HoTen")], "Khach A");
+  const marks = T.F.values(null, "NhapCRM").slice(1).map((x) => x[4]);
+  assert.deepEqual(marks, ["KH-000002", "KH-000002", "KH-000002"]);
+});
+
+test("gopNhapCRM_: thiếu hoặc sai SĐT -> Loi + 'LOI', không vào KhachHang", () => {
+  const T = setupCrm([["Khach Loi", "", "", "", ""], ["Khach Hai", "12345", "", "", ""]]);
+  const r = plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }));
+  assert.deepEqual(r, { doc: 2, moi: 0, trung: 0, loi: 2 });
+  assert.equal(T.F.values(null, "KhachHang").length, 2);
+  assert.deepEqual(T.F.values(null, "Loi"), [["Thời gian", "Nguồn", "Dòng", "Lý do"], [NOW.toISOString(), "CRM", 2, "SĐT không hợp lệ"], [NOW.toISOString(), "CRM", 3, "SĐT không hợp lệ"]]);
+  assert.deepEqual(T.F.values(null, "NhapCRM").slice(1).map((x) => x[4]), ["LOI", "LOI"]);
+  assertNoLeak(T);
+});
+
+test("gopNhapCRM_: hai dòng cùng SĐT mới trong một lần -> moi 1, trung 1, một dòng KhachHang", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "", "", ""], ["Khach Hai", "0900000002", "", "Đã gọi", ""]]);
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 2, moi: 1, trung: 1, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 3);
+  assert.equal(kh[2][khCol(kh, "TrangThaiCRM")], "Đã gọi", "ô trống được điền từ dòng sau");
+  assert.deepEqual(T.F.values(null, "NhapCRM").slice(1).map((x) => x[4]), ["KH-000002", "KH-000002"]);
+});
+
+test("gopNhapCRM_: DuAnQuanTam gõ tự do ('Central Park') bị bỏ thành '', khách vẫn được lưu; mã đúng giữ", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "Central Park", "", ""], ["Khach Hai", "0900000004", "bcons-newsky; Central Park", "", ""]]);
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 2, moi: 2, trung: 0, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh[2][khCol(kh, "DuAnQuanTam")], "");
+  assert.equal(kh[3][khCol(kh, "DuAnQuanTam")], "bcons-newsky");
+});
+
+test("gopNhapCRM_: tên bắt đầu bằng = không thành công thức", () => {
+  const T = setupCrm([["=HYPERLINK(1)", "0900000002", "", "=1+1", ""]]);
+  T.ctx.gopNhapCRM_({ dryRun: false, now: NOW });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh[2][khCol(kh, "HoTen")], "'=HYPERLINK(1)");
+  assert.equal(kh[2][khCol(kh, "TrangThaiCRM")], "'=1+1");
+});
+
+test("gopNhapCRM_: dryRun cùng số đếm nhưng không ghi gì", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "", "", ""], ["Khach Loi", "", "", "", ""], ["Khach Cu", "0900000001", "", "", ""]], { masterExtra: {} });
+  const before = T.F.snapshot();
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: true, now: NOW })), { doc: 3, moi: 1, trung: 1, loi: 1 });
+  assert.equal(T.F.snapshot(), before);
+  assert.equal(T.F.calls.writes.length, 0);
+});
+
+test("gopNhapCRM_: chạy lần hai sau thành công -> toàn số 0; dòng trống không tính", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "", "", ""], ["", "", "", "", ""], ["Khach Loi", "", "", "", ""]]);
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 2, moi: 1, trung: 0, loi: 1 });
+  const after = T.F.snapshot();
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 0, moi: 0, trung: 0, loi: 0 });
+  assert.equal(T.F.snapshot(), after);
+});
+
+test("gopNhapCRM_: chết sau khi ghi KhachHang, trước khi đánh dấu DaGop; chạy lại không nhân đôi", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "", "", ""], ["Khach Hai", "0900000004", "", "", ""]]);
+  T.F.hooks.onWrite = (w) => { if (w.sheet === "NhapCRM" && w.method === "setValues") throw new Error("chết giữa chừng"); };
+  assert.throws(() => T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }), /chết giữa chừng/);
+  assert.deepEqual(T.F.calls.lock, ["wait", "release"]);
+  assert.equal(T.F.values(null, "KhachHang").length, 4);
+  T.F.hooks.onWrite = null;
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 2, moi: 0, trung: 2, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 4);
+  assert.deepEqual(kh.slice(1).map((r) => r[0]), ["KH-000001", "KH-000002", "KH-000003"]);
+  assert.deepEqual(T.F.values(null, "NhapCRM").slice(1).map((x) => x[4]), ["KH-000002", "KH-000003"]);
+});
+
+test("gopNhapCRM_: thiếu tab NhapCRM -> toàn số 0, không ném lỗi, không tạo tab (dryRun và thật)", () => {
+  const T = setup({});
+  const before = T.F.snapshot();
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: true, now: NOW })), { doc: 0, moi: 0, trung: 0, loi: 0 });
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 0, moi: 0, trung: 0, loi: 0 });
+  assert.equal(T.F.snapshot(), before);
+});
+
+test("gopNhapCRM_: tab NhapCRM thiếu cột DaGop -> lỗi rõ, không ghi gì", () => {
+  const T = setup({ masterExtra: { NhapCRM: [["HoTen", "SDT"], ["Khach Moi", "0900000002"]] } });
+  const before = T.F.snapshot();
+  assert.throws(() => T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }), /NhapCRM thiếu cột/);
+  assert.equal(T.F.snapshot(), before);
+});
+
+test("gopNhapCRM_: không có tab KhachHang (lần đầu) -> ensureTabs_ tạo, khách CRM được lưu MaKhach KH-000001", () => {
+  const T = setupCrm([["Khach Moi", "0900000002", "", "", ""]], { withKhach: false });
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 1, moi: 1, trung: 0, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh[1][0], "KH-000001");
+  assert.equal(kh[1][khCol(kh, "SDT")], "0900000002");
+});
+
+test("gopLanding_ rồi gopNhapCRM_ cùng SĐT -> một khách Landing+CRM, mã không đổi", () => {
+  const T = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: PHONES[1] })], masterExtra: { NhapCRM: [CRM_H, ["Khach Moi", "090.000.0002", "", "Đã gọi", ""], ["Khach Hai", "0900000004", "", "", ""]] } });
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 1, moi: 1, trung: 0, loi: 0 });
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 2, moi: 1, trung: 1, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 4);
+  assert.equal(kh[2][khCol(kh, "MaKhach")], "KH-000002");
+  assert.equal(kh[2][khCol(kh, "NguonGoc")], "Landing+CRM");
+  assert.equal(kh[2][khCol(kh, "TrangThaiCRM")], "Đã gọi");
+  assert.equal(kh[3][khCol(kh, "MaKhach")], "KH-000003");
+  assert.equal(kh[3][khCol(kh, "NguonGoc")], "CRM");
+  assertNoLeak(T);
+});
+
+test("gopNhapCRM_: 200 dòng CRM mới chỉ tốn số lần ghi hằng số", () => {
+  const rows = [];
+  for (let i = 0; i < 200; i++) rows.push(["Khach " + i, "09123" + String(10000 + i), "", "", ""]);
+  rows.push(["Khach Xau", "12345", "", "", ""]);
+  const T = setupCrm(rows);
+  T.ctx.ensureTabs_(T.F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  T.F.calls.writes.length = 0;
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 201, moi: 200, trung: 0, loi: 1 });
+  assert.ok(T.F.calls.writes.length <= 12, "số lần ghi: " + T.F.calls.writes.length);
+  assert.equal(T.F.values(null, "KhachHang").length, 202);
+  const marks = T.F.values(null, "NhapCRM").slice(1).map((r) => r[4]);
+  assert.equal(marks.filter((m) => /^KH-/.test(m)).length, 200);
+  assert.equal(marks[200], "LOI");
+});
