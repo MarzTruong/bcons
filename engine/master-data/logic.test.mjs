@@ -51,3 +51,116 @@ test("normalizePhone_: tương đương Code.gs của landing (trừ ca 9 chữ 
 test("KHACH_COLS: đúng 17 cột, đúng thứ tự", () => {
   assert.deepEqual(plain(ctx.KHACH_COLS), ["MaKhach", "SDT", "HoTen", "NgayTao", "NgayCapNhat", "NguonGoc", "NguonChiTiet", "DuAnQuanTam", "NhuCau", "CanXem", "PTTT", "DongYNhanTin", "DongYBangChung", "TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu"]);
 });
+
+// ---- parseLandingRow_ (Task 3) ----
+const HEADERS = plain(landing.HEADERS);
+const CONSENT = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
+function landingRow(over = {}) {
+  const base = {
+    "Thời gian": "2026-11-06T03:15:00.000Z", "Họ tên": "Nguyễn Văn A", "SĐT": "0981234567", "Nhu cầu": "Mua để ở",
+    "Căn xem": "A1-12.05", "Loại căn": "2PN-2WC", "PTTT": "PTTT 03", "Nguồn": "facebook", "Đồng ý nhận tin": CONSENT,
+    "Trạng thái chăm sóc": "Mới", "Dự án": "bcons-newsky", "Đã gộp": "",
+  };
+  const m = { ...base, ...over };
+  return HEADERS.map((h) => (h in m ? m[h] : ""));
+}
+
+test("parseLandingRow_: dòng thật đủ khóa KHACH_COLS và ánh xạ đúng", () => {
+  const r = plain(ctx.parseLandingRow_(HEADERS, landingRow()));
+  assert.equal(r.ok, true);
+  assert.deepEqual(Object.keys(r.rec).sort(), [...plain(ctx.KHACH_COLS)].sort());
+  for (const k of plain(ctx.KHACH_COLS)) assert.equal(typeof r.rec[k], "string", k);
+  assert.equal(r.rec.SDT, "0981234567");
+  assert.equal(r.rec.HoTen, "Nguyễn Văn A");
+  assert.equal(r.rec.NhuCau, "Mua để ở");
+  assert.equal(r.rec.CanXem, "A1-12.05 · 2PN-2WC");
+  assert.equal(r.rec.PTTT, "PTTT 03");
+  assert.equal(r.rec.NguonChiTiet, "facebook");
+  assert.equal(r.rec.DuAnQuanTam, "bcons-newsky");
+  assert.equal(r.rec.NgayTao, "2026-11-06T03:15:00.000Z");
+  assert.equal(r.rec.NguonGoc, "Landing");
+  assert.equal(r.rec.DongYNhanTin, "Có");
+  assert.equal(r.rec.DongYBangChung, CONSENT);
+  assert.equal(r.rec.MaKhach, "");
+});
+
+test("parseLandingRow_: dòng do rowFor_ thật của landing ghi ra (SĐT có dấu ' khi ghi, Sheets trả không dấu)", () => {
+  const now = new Date("2026-11-06T03:15:00.000Z");
+  const lead = { ten: "Trần B", phone: "0981234567", nhuCau: "Mua cho thuê", canMoTa: "", canLoai: "Studio", pttt: "PTTT 01", giaChuaVat: 1, tuCo: 1, vay: 0, traGop: 0, lai: 0, nam: 0, nguon: "tiktok", trang: "https://x.pages.dev/", duAn: "" };
+  const row = landing.rowFor_(lead, now).slice();
+  row[2] = String(row[2]).replace(/^'/, "");
+  const r = plain(ctx.parseLandingRow_(HEADERS, row));
+  assert.equal(r.ok, true);
+  assert.equal(r.rec.SDT, "0981234567");
+  assert.equal(r.rec.CanXem, "Studio");
+  assert.equal(r.rec.DuAnQuanTam, "");
+  assert.equal(r.rec.DongYNhanTin, "Có");
+  assert.match(r.rec.DongYBangChung, /^Có \(2026-11-06T03:15:00\.000Z, mẫu v1-2026-11-06, https:\/\/x\.pages\.dev\/\)$/);
+});
+
+test("parseLandingRow_: SĐT dạng chuỗi, số mất số 0, và +84", () => {
+  for (const v of ["0981234567", 981234567, "+84 98 123 4567"]) {
+    const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "SĐT": v })));
+    assert.equal(r.rec.SDT, "0981234567", String(v));
+  }
+});
+
+test("parseLandingRow_: SĐT sai -> ok:false lyDo", () => {
+  assert.deepEqual(plain(ctx.parseLandingRow_(HEADERS, landingRow({ "SĐT": "12345" }))), { ok: false, lyDo: "SĐT không hợp lệ" });
+});
+
+test("parseLandingRow_: Dự án 'khong-ro' hoặc rỗng -> ''; mã thật giữ", () => {
+  assert.equal(plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "khong-ro" }))).rec.DuAnQuanTam, "");
+  assert.equal(plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "" }))).rec.DuAnQuanTam, "");
+  assert.equal(plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": "bcons-newsky" }))).rec.DuAnQuanTam, "bcons-newsky");
+});
+
+test("parseLandingRow_: chặn công thức trong chữ tự do", () => {
+  const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Họ tên": "=HYPERLINK(1)", "Nhu cầu": "+1", "Căn xem": "@x", "Loại căn": "", "PTTT": "-2", "Nguồn": "=cmd" })));
+  assert.equal(r.rec.HoTen, "'=HYPERLINK(1)");
+  assert.equal(r.rec.NhuCau, "'+1");
+  assert.equal(r.rec.CanXem, "'@x");
+  assert.equal(r.rec.PTTT, "'-2");
+  assert.equal(r.rec.NguonChiTiet, "'=cmd");
+  assert.equal(ctx.cell_("a".repeat(600)).length, 500);
+  assert.equal(ctx.cell_(null), "");
+});
+
+test("parseLandingRow_: ô đồng ý rỗng hoặc lạ -> Chưa rõ, không có bằng chứng", () => {
+  for (const v of ["", "Không", "Có", "có (x)"]) {
+    const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Đồng ý nhận tin": v })));
+    assert.equal(r.rec.DongYNhanTin, "Chưa rõ", v);
+    assert.equal(r.rec.DongYBangChung, "", v);
+  }
+});
+
+test("parseLandingRow_: Thời gian là Date -> ISO", () => {
+  const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Thời gian": new Date("2026-11-06T03:15:00.000Z") })));
+  assert.equal(r.rec.NgayTao, "2026-11-06T03:15:00.000Z");
+});
+
+test("parseLandingRow_: dòng cũ 17 ô (chưa có Dự án/Đã gộp) vẫn đọc được", () => {
+  const row = landingRow().slice(0, 17);
+  const r = plain(ctx.parseLandingRow_(HEADERS, row));
+  assert.equal(r.ok, true);
+  assert.equal(r.rec.DuAnQuanTam, "");
+  assert.equal(r.rec.SDT, "0981234567");
+});
+
+test("parseLandingRow_: đổi thứ tự cột vẫn ánh xạ đúng, cột lạ bị bỏ, không sửa đầu vào", () => {
+  const row = landingRow();
+  const idx = HEADERS.map((_, i) => i).reverse();
+  const h2 = [...idx.map((i) => HEADERS[i]), "Cột lạ"];
+  const r2 = [...idx.map((i) => row[i]), "x"];
+  const h2copy = [...h2], r2copy = [...r2];
+  const a = plain(ctx.parseLandingRow_(h2, r2));
+  const b = plain(ctx.parseLandingRow_(HEADERS, row));
+  assert.deepEqual(a, b);
+  assert.deepEqual(h2, h2copy);
+  assert.deepEqual(r2, r2copy);
+});
+
+test("parseLandingRow_: dòng rỗng -> ok:false", () => {
+  assert.equal(plain(ctx.parseLandingRow_(HEADERS, [])).ok, false);
+  assert.equal(plain(ctx.parseLandingRow_(HEADERS, HEADERS.map(() => ""))).ok, false);
+});
