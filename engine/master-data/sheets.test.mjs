@@ -2407,7 +2407,7 @@ test("Review 4: rút lại hiện rõ — KhachHang 'Đã rút lại' + NgayRutL
   assert.equal(k.DongYNhanTin, "Đã rút lại");
   assert.equal(String(k.NgayRutLai), "2026-11-08T00:00:00.000Z");
   assert.equal(k.HoTen, NAMES[0]);
-  assert.equal(khDoc(F)[1].DongYNhanTin, "Có");
+  assert.equal(khDoc(F)[1].DongYNhanTin, "Chưa rõ", "khách 2 'Có' không có bằng chứng: sửa lại (Review Task 4 C4)");
   const mcol = (id, i) => tab(F, id, "KhachTuMaster")[i][9];
   assert.equal(mcol("M1", 1), "Đã rút lại");
   assert.equal(mcol("M1", 2), "Chưa rõ", "khách khác: tính lại theo dự án (chưa có DongYDuAn) chứ không còn chép 'Có' chung");
@@ -2436,7 +2436,7 @@ test("Review 4: dòng TuChoi chưa có ngày: hiện 'Đã rút lại' ngay, Nga
   const r1 = run(ctx);
   assert.equal(r1.rutLai, 1);
   assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
-  assert.equal(khDoc(F)[0].NgayRutLai, "");
+  assert.equal(String(khDoc(F)[0].NgayRutLai), "2026-11-11T01:00:00.000Z", "Review Task 4 M5: ổn định ngay trong lượt đầu");
   assert.equal(String(tab(F, null, "TuChoi")[1][2]), "2026-11-11T01:00:00.000Z");
   const r2 = run(ctx, { now: new Date("2026-11-11T02:00:00.000Z") });
   assert.equal(r2.rutLai, 0);
@@ -2498,7 +2498,7 @@ test("Review 5: LoaiYeuCau lạ ('Xóa dữ liệu') -> vẫn Rút lại (không
   assert.ok(!JSON.stringify(F.values(null, "Loi")).includes(PHONES[0]));
   const r2 = run(ctx);
   assert.equal(tcLoiRows(F).filter((x) => String(x[3]).startsWith("Loại yêu cầu lạ")).length, 2, "không lặp");
-  assert.equal(r2.tuChoiLoi, 1); // chỉ SĐT sai (như cũ)
+  assert.equal(r2.tuChoiLoi, 0); // Review Task 4 M4: chỉ đếm dòng lỗi MỚI ghi (SĐT sai cũng đã có Loi)
 });
 
 test("Review 6: sửa tiêu đề TuChoi có cột lạ ở giữa: thêm SAU cột cuối, không ghi đè; tiêu đề trống ở cuối cũng không bị đè", () => {
@@ -3004,5 +3004,163 @@ test("Task4 (a3): KhachHang đã 'Đã rút lại' nhưng dòng Master còn 'Có
   assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
   F.calls.writes.length = 0;
   assert.equal(run(ctx).rutLai, 0);
+  assert.equal(w(F), 0);
+});
+
+// ======================= Review Task 4: đóng các chỗ cấp quyền nhầm (C1-C4, M1, M5, M6) =======================
+const R_MS = (x) => Date.parse(x);
+const rEdit = (F, row, col, v) => F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang").getRange(row, KHACH_COLS.indexOf(col) + 1, 1, 1).setValues([[v]]);
+const rLanding = (T, duAn, at, ph = PHONES[0]) => appendLanding(T.F, leadRow({ ten: "Ten Landing", sdt: ph, duAn, at: new Date(at) }));
+const rRun = (T, now) => { gop(T.ctx, new Date(now)); return run(T.ctx, { now: new Date(now) }); };
+const mStatus = (T, id, ma = pad(1)) => (masterRow(T.F, id, ma) || [])[9];
+const oneCustomer = (extra = {}) => buildL({ khach: [], ...extra });
+
+test("Review C1: 'Không' gõ SAU khi khách điền lại -> vẫn 'Đã rút lại' ở lượt sau, NgayRutLai >= lúc gõ, Master không mở lại", () => {
+  const T = buildL({ khach: [], landingRows: [leadRow({ ten: "Ten", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-10T03:00:00.000Z") })] });
+  rRun(T, "2026-11-11T01:00:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Có");
+  rEdit(T.F, 2, "DongYNhanTin", "Không");
+  rRun(T, "2026-11-11T02:00:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Đã rút lại");
+  rLanding(T, NEWSKY, "2026-11-11T03:00:00.000Z");
+  rRun(T, "2026-11-11T03:30:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Có");
+  rEdit(T.F, 2, "DongYNhanTin", "Không");
+  rRun(T, "2026-11-11T04:00:00.000Z");
+  assert.equal(khDoc(T.F)[0].DongYNhanTin, "Đã rút lại");
+  assert.ok(iso(khDoc(T.F)[0].NgayRutLai) >= "2026-11-11T04:00:00.000Z", iso(khDoc(T.F)[0].NgayRutLai));
+  for (const t of ["2026-11-11T04:15:00.000Z", "2026-11-11T04:30:00.000Z"]) {
+    rRun(T, t);
+    assert.equal(khDoc(T.F)[0].DongYNhanTin, "Đã rút lại", t);
+    assert.equal(mStatus(T, "M1"), "Đã rút lại", t);
+  }
+  rLanding(T, NEWSKY, "2026-11-11T05:00:00.000Z");
+  rRun(T, "2026-11-11T05:30:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Có", "bằng chứng thực sự mới hơn thì mở lại");
+});
+
+test("Review C1 (một lượt): 'Không' + landing phát lại dòng cũ + đồng ý mới trong cùng lượt -> 'Đã rút lại', NgayRutLai >= now, lượt sau không mở lại", () => {
+  const T = buildL({ khach: [], landingRows: [leadRow({ ten: "Ten", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-10T03:00:00.000Z") })] });
+  rRun(T, "2026-11-11T01:00:00.000Z");
+  rEdit(T.F, 2, "DongYNhanTin", "Không");
+  T.F.SpreadsheetApp.openById("L1").getSheetByName("Landing").getRange(2, HEADERS.indexOf("Đã gộp") + 1, 1, 1).setValues([[""]]);
+  rLanding(T, NEWSKY, "2026-11-11T01:30:00.000Z");
+  rRun(T, "2026-11-11T02:00:00.000Z");
+  assert.equal(khDoc(T.F)[0].DongYNhanTin, "Đã rút lại");
+  assert.ok(iso(khDoc(T.F)[0].NgayRutLai) >= "2026-11-11T02:00:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Đã rút lại");
+  rRun(T, "2026-11-11T02:15:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Đã rút lại");
+});
+
+test("Review C2: nâng NgayRutLai khi dòng TuChoi bị đồng ý mới mở -> đồng ý CŨ của dự án khác không sống lại (Master dự án đó 'Chưa rõ'), phát lại dòng cũ cũng không", () => {
+  const T = buildL({
+    khach: [],
+    landingRows: [leadRow({ ten: "Ten", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-10T03:00:00.000Z") }), leadRow({ ten: "Ten", sdt: PHONES[0], duAn: CP, at: new Date("2026-11-11T03:00:00.000Z") })],
+    tuChoi: [[PHONES[0], "", "2026-11-11T02:00:00.000Z", "Rút lại", ""]],
+  });
+  rRun(T, "2026-11-11T04:00:00.000Z");
+  assert.equal(mStatus(T, "M2"), "Có");
+  assert.equal(mStatus(T, "M1"), "Chưa rõ", "đồng ý Newsky (10/11) cũ hơn ngày rút lại (11/11 02:00)");
+  const k = khDoc(T.F)[0];
+  assert.equal(k.DongYDuAn, CP);
+  assert.equal(iso(k.NgayRutLai), "2026-11-11T02:00:00.000Z");
+  T.F.SpreadsheetApp.openById("L1").getSheetByName("Landing").getRange(2, HEADERS.indexOf("Đã gộp") + 1, 2, 1).setValues([[""], [""]]);
+  rRun(T, "2026-11-11T04:30:00.000Z");
+  assert.equal(mStatus(T, "M1"), "Chưa rõ");
+  assert.equal(mStatus(T, "M2"), "Có");
+});
+
+test("Review C2 (Xóa rồi điền lại): hồ sơ mới chỉ mang đồng ý MỚI HƠN ngày Xóa, dòng cũ phát lại không sống lại", () => {
+  const T = buildL({
+    khach: [],
+    landingRows: [leadRow({ ten: "Ten", sdt: PHONES[0], duAn: NEWSKY, at: new Date("2026-11-01T03:00:00.000Z") })],
+    masters: { M1: {}, M2: {} },
+  });
+  rRun(T, "2026-11-02T01:00:00.000Z");
+  appendRow4(T, [PHONES[0], "", "2026-11-05T00:00:00.000Z", "Xóa", ""]);
+  rRun(T, "2026-11-06T01:00:00.000Z");
+  assert.equal(khDoc(T.F)[0].SDT, "");
+  // phát lại dòng cũ + đồng ý mới Central Park
+  T.F.SpreadsheetApp.openById("L1").getSheetByName("Landing").getRange(2, HEADERS.indexOf("Đã gộp") + 1, 1, 1).setValues([[""]]);
+  rLanding(T, CP, "2026-11-12T03:00:00.000Z");
+  rRun(T, "2026-11-12T04:00:00.000Z");
+  const kh = khDoc(T.F);
+  const neu = kh[kh.length - 1];
+  assert.equal(neu.SDT, PHONES[0]);
+  assert.equal(neu.DongYDuAn, CP, "chỉ mang đồng ý mới hơn ngày Xóa");
+  assert.equal(mStatus(T, "M2", neu.MaKhach), "Có");
+  assert.notEqual(mStatus(T, "M1", neu.MaKhach), "Có", "đồng ý Newsky cũ không sống lại");
+});
+function appendRow4(T, arr) {
+  const sh = T.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TuChoi") || T.F.SpreadsheetApp.getActiveSpreadsheet().insertSheet("TuChoi");
+  if (sh.getLastRow() === 0) sh.getRange(1, 1, 1, 5).setValues([TC_HEADER]);
+  sh.getRange(1, 1, Math.max(sh.getMaxRows(), 2), 1).setNumberFormat("@");
+  sh.getRange(sh.getLastRow() + 1, 1, 1, arr.length).setValues([arr]);
+}
+
+test("Review C3: quét rút lại / 'Không' theo MaKhach HOẶC SĐT chuẩn hóa: dòng cũ ở Master khác MaKhach cùng SĐT cũng thành 'Đã rút lại'", () => {
+  for (const how of ["tuchoi", "khong"]) {
+    const { F, ctx } = build({
+      khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-01", how === "khong" ? { DongYNhanTin: "Không" } : {})],
+      tuChoi: how === "tuchoi" ? [[PHONES[0], "", TC_OLD, "Rút lại", ""]] : undefined,
+      byId: { M1: { KhachTuMaster: [TM, mrow("KH-000777", "+84 90 000 0001", "Stale", { DongYNhanTin: "Có" }), mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] }, M2: {} },
+    });
+    run(ctx, { now: T4_NOW });
+    assert.equal(masterRow(F, "M1", "KH-000777")[9], "Đã rút lại", how);
+    assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại", how);
+  }
+});
+
+test("Review C4: không tin ô thô: DongYNhanTin 'Có' + DongYDuAn gõ tay không có bằng chứng -> Master 'Chưa rõ', KhachHang được sửa; bằng chứng ở tương lai không cấp 'Có'", () => {
+  const { F, ctx } = build({
+    khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Có", DongYDuAn: NEWSKY }),
+      consented(pad(2), PHONES[1], NAMES[1], NEWSKY, "2026-12-30")],
+  });
+  run(ctx, { now: T4_NOW });
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Chưa rõ");
+  assert.equal(masterRow(F, "M1", pad(2))[9], "Chưa rõ", "bằng chứng ghi ngày tương lai");
+  const k = khDoc(F);
+  assert.equal(k[0].DongYNhanTin, "Chưa rõ");
+  assert.equal(k[0].DongYDuAn, "");
+  // Master đã có dòng 'Có' sai từ trước cũng bị hạ
+  const T = build({ khach: [khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Có", DongYDuAn: NEWSKY })], byId: { M1: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] }, M2: {} } });
+  run(T.ctx, { now: T4_NOW });
+  assert.equal(masterRow(T.F, "M1", pad(1))[9], "Chưa rõ");
+});
+
+test("Review M1: mọi dòng Master sẵn có của khách (cả dự án không còn trong DuAnQuanTam) được tính lại bằng coTheNhan_", () => {
+  const { F, ctx } = build({
+    khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-12")],
+    byId: { M1: {}, M2: { KhachTuMaster: [TM, mrow(pad(1), PHONES[0], NAMES[0], { DongYNhanTin: "Có" })] } },
+  });
+  run(ctx, { now: T4_NOW });
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Có");
+  assert.equal(masterRow(F, "M2", pad(1))[9], "Chưa rõ", "CP không còn trong DuAnQuanTam và không có đồng ý CP");
+});
+
+test("Review M5: TuChoi 'Rút lại' không ngày ổn định trong MỘT lượt (NgayRutLai = ngày đóng dấu); lượt hai không ghi gì", () => {
+  const { F, ctx } = build({ khach: [consented(pad(1), PHONES[0], NAMES[0], NEWSKY, "2026-11-01")], tuChoi: [[PHONES[0], "", "", "Rút lại", ""]] });
+  run(ctx, { now: NOW });
+  assert.equal(String(khDoc(F)[0].NgayRutLai), NOW.toISOString());
+  assert.equal(khDoc(F)[0].DongYNhanTin, "Đã rút lại");
+  assert.equal(masterRow(F, "M1", pad(1))[9], "Đã rút lại");
+  F.calls.writes.length = 0;
+  const r2 = run(ctx, { now: new Date(NOW.getTime() + 900000) });
+  assert.equal(w(F), 0);
+  assert.equal(r2.rutLai, 0);
+});
+
+test("Review M6: 'Đã rút lại' gõ tay với NgayRutLai trống -> phanBo_ đóng dấu NgayCapNhat (hợp lệ) hoặc now, giống mergeCustomer_", () => {
+  const { F, ctx } = build({ khach: [
+    khRow({ MaKhach: pad(1), SDT: PHONES[0], HoTen: NAMES[0], DuAnQuanTam: NEWSKY, DongYNhanTin: "Đã rút lại", NgayCapNhat: "2026-11-03T00:00:00.000Z" }),
+    khRow({ MaKhach: pad(2), SDT: PHONES[1], HoTen: NAMES[1], DuAnQuanTam: NEWSKY, DongYNhanTin: "Đã rút lại", NgayCapNhat: "hôm qua" }),
+  ] });
+  run(ctx, { now: T4_NOW });
+  const k = khDoc(F);
+  assert.equal(iso(k[0].NgayRutLai), "2026-11-03T00:00:00.000Z");
+  assert.equal(iso(k[1].NgayRutLai), T4_NOW.toISOString());
+  F.calls.writes.length = 0;
+  run(ctx, { now: new Date(T4_NOW.getTime() + 900000) });
   assert.equal(w(F), 0);
 });

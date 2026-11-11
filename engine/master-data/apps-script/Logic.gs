@@ -334,12 +334,19 @@ function ngayGhiNorm_(v) {
   return t.getUTCFullYear() === y && t.getUTCMonth() === mo - 1 && t.getUTCDate() === d ? t.toISOString() : '';
 }
 
+/** NgayGhi ở tương lai xa (> nowIso + 1 ngày; ngày sheet sửa tay hoặc gõ nhầm năm)? Khi đó coi như CHƯA BIẾT ngày (vẫn chặn, không bao giờ mở lại bằng ngày đó). nowIso hỏng/thiếu -> false. */
+function ngayGhiTuongLai_(v, nowIso) {
+  var norm = ngayGhiNorm_(v);
+  var now = Date.parse(s_(nowIso));
+  return !!norm && !isNaN(now) && Date.parse(norm) > now + 86400000;
+}
+
 /** Bản đồ TuChoi theo TỪNG DÒNG: {[SĐT chuẩn hóa]: [{loai: 'Rút lại'|'Xóa', ngayGhi: ISO hoặc ''}, ...]} theo thứ tự dòng.
  *  TuChoi chỉ thêm dòng, một SĐT có thể có nhiều dòng; mỗi dòng được xét riêng (decideDestinations_), không gộp loại/ngày theo SĐT.
  *  rows = mảng các dòng, có hoặc không dòng tiêu đề đầu (nhận ra bằng ô 'SDT'); cột theo TÊN (không tiêu đề: SDT, LyDo, NgayGhi, LoaiYeuCau).
- *  ngayGhi '' = chưa biết (trống hoặc rác): coi là "vừa rút lại, chặn mọi thứ", không bao giờ là "rất cũ".
+ *  ngayGhi '' = chưa biết (trống, rác, hoặc ở tương lai > nowIso + 1 ngày khi có nowIso): coi là "vừa rút lại, chặn mọi thứ", không bao giờ là "rất cũ".
  *  SĐT sai dạng bị bỏ (Sheets.gs báo ở tab Loi). Dạng đầu vào lạ -> ném lỗi (fail closed). */
-function tuChoiMap_(rows) {
+function tuChoiMap_(rows, nowIso) {
   var out = {};
   if (rows == null) return out;
   if (!Array.isArray(rows)) throw new Error('tuChoi: dạng không hỗ trợ');
@@ -360,7 +367,7 @@ function tuChoiMap_(rows) {
     var at = function (k) { return ix[k] < 0 || ix[k] >= row.length ? '' : row[ix[k]]; };
     var p = normalizePhone_(typeof at('sdt') === 'number' ? at('sdt') : s_(at('sdt')));
     if (!p) continue;
-    (out[p] = out[p] || []).push({ loai: loaiYeuCau_(at('loaiyeucau')), ngayGhi: ngayGhiNorm_(at('ngayghi')) });
+    (out[p] = out[p] || []).push({ loai: loaiYeuCau_(at('loaiyeucau')), ngayGhi: ngayGhiTuongLai_(at('ngayghi'), nowIso) ? '' : ngayGhiNorm_(at('ngayghi')) });
   }
   return out;
 }
