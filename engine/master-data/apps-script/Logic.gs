@@ -134,6 +134,14 @@ function foldText_(v) {
   return String(v == null ? '' : v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/đ/g, 'd').replace(/[^a-z]/g, '');
 }
 
+/** Phân loại giá trị DongYNhanTin: 'khong' = đúng chữ Không (mọi cách gõ: hoa/thường, có/không dấu, NFC/NFD, dấu chấm, ký tự vô hình) -> rút lại;
+ *  'la' = bắt đầu bằng "không" nhưng không đúng ('Không rõ', 'Không biết') -> không rút lại, cần anh kiểm; còn lại ''. */
+function dongYKieu_(v) {
+  var f = foldText_(v);
+  if (f === 'khong') return 'khong';
+  return f.indexOf('khong') === 0 ? 'la' : '';
+}
+
 /** Gom SĐT từ chối thành mảng đã chuẩn hóa. Dạng lạ → ném lỗi (không được lặng lẽ bỏ qua). */
 function tuChoiPhones_(tuChoi) {
   var out = [];
@@ -165,7 +173,7 @@ function decideDestinations_(rec, tuChoi, projectCodes) {
   rec = rec || {};
   var phone = normalizePhone_(rec.SDT);
   var blocked = phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0;
-  var lyDo = blocked ? 'tuchoi' : (foldText_(rec.DongYNhanTin).indexOf('khong') === 0 ? 'khong' : '');
+  var lyDo = blocked ? 'tuchoi' : (dongYKieu_(rec.DongYNhanTin) === 'khong' ? 'khong' : '');
   if (!phone && !lyDo) tuChoiPhones_(tuChoi); // vẫn kiểm dạng tuChoi để báo lỗi sớm
   if (lyDo) return { chan: true, chua: false, dich: [], lyDo: lyDo };
   if (!phone) return { chan: false, chua: true, dich: [], lyDo: '' };

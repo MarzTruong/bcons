@@ -392,6 +392,21 @@ test("decideDestinations_: 'Không' nhận mọi biến thể (fail closed)", ()
   for (const v of ["Chưa rõ", "", "Có", undefined]) assert.equal(decide({ ...R, DongYNhanTin: v }, []).chan, false, String(v));
 });
 
+test("decideDestinations_: chỉ đúng 'Không' mới rút lại; 'Không rõ', 'Không biết' KHÔNG chặn (L1)", () => {
+  for (const v of ["Không rõ", "không biết", "Khong ro", "Không chắc", "Không muốn nhận tin nhưng gọi được"]) {
+    const r = decide({ ...R, DongYNhanTin: v }, []);
+    assert.equal(r.chan, false, v);
+    assert.equal(r.lyDo, "", v);
+    assert.deepEqual(r.dich, ["bcons-sora"], v);
+  }
+});
+
+test("dongYKieu_: khong (đúng) / la (bắt đầu bằng khong nhưng không đúng) / rỗng", () => {
+  for (const v of ["Không", "KHÔNG", "khong", " Không. ", "Không".normalize("NFD"), "Không\u200b"]) assert.equal(ctx.dongYKieu_(v), "khong", JSON.stringify(v));
+  for (const v of ["Không rõ", "Không biết", "khong chac"]) assert.equal(ctx.dongYKieu_(v), "la", v);
+  for (const v of ["Có", "Chưa rõ", "", null, undefined, "Biết rồi"]) assert.equal(ctx.dongYKieu_(v), "", String(v));
+});
+
 test("decideDestinations_: tuChoi mọi dạng đều chặn", () => {
   const P = "0981234567";
   for (const t of [[P], new Set([P]), new Map([[P, 1]]), { [P]: true }, P, `0912345678\n${P}`, `0912345678, ${P}`, `0912345678;${P}`, `0912345678 ${P}`]) {
