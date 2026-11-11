@@ -32,7 +32,7 @@ Thuật ngữ dùng trong bài: **Sheet id** = đoạn chữ dài giữa `/d/` v
 8. Quay lại `Master_Data (thử)`, tải lại trang (`F5`). Sau vài giây có menu **Master_Data** trên thanh menu.
 9. Tạo tab `CauHinh` bằng tay (bấm dấu **+** ở góc dưới trái, đặt tên đúng chữ `CauHinh`). Hàng 1 gõ ba tiêu đề đúng chữ, từng ô một: `maDuAn` | `landingSheetId` | `masterSheetId`. Mỗi dự án một dòng:
    - `maDuAn`: mã dự án như `bcons-central-park`, `bcons-newsky` (chữ thường, gạch ngang, đúng mã trong `du-an/`).
-   - `landingSheetId`: Sheet id của Sheet có tab **Landing** mà landing dự án đó ghi vào. **Cho đến khi qua G5, điền id của bản sao `Landing (thử)`** (anh tạo ở G2 bước 1; lúc làm G1 chưa có thì để trống, điền sau khi làm G2 bước 1 và trước G3). **Không điền Sheet thật "Bcons - Khach quan tam Messenger" lúc này.** Sau khi G5 đạt mới đổi sang id Sheet thật (xem cuối G5). Central Park và Newsky dùng chung một Sheet landing, nên hai dòng điền cùng một id (hệ thống tự bỏ trùng, không đọc hai lần). Dự án nào landing không ghi vào Sheet nào thì để trống ô này.
+   - `landingSheetId`: Sheet id của Sheet có tab **Landing** mà landing dự án đó ghi vào. **Anh đã chọn (11/11/2026) chạy G4 trên Sheet thật, nên điền id Sheet thật "Bcons - Khach quan tam Messenger"** (chỉ điền sau khi xong G2; trước G4 phải làm **Bước 0** bên dưới). G3 "Chạy thử" chỉ đọc, không ghi gì vào Sheet thật. Muốn an toàn hơn thì điền tạm id bản sao `Landing (thử)` (anh tạo ở G2 bước 1) cho tới khi qua G5. Central Park và Newsky dùng chung một Sheet landing, nên hai dòng điền cùng một id (hệ thống tự bỏ trùng, không đọc hai lần). Dự án nào landing không ghi vào Sheet nào thì để trống ô này.
    - Nhớ: bấm **Gộp ngay** sẽ ghi mã khách `KH-...` (hoặc `LOI`) vào cột S **Đã gộp** của Sheet landing nào đang có trong `CauHinh`. Muốn làm lại từ đầu thì xóa cột S của Sheet landing đó (khách khớp theo SĐT nên không bị nhân đôi).
    - `masterSheetId`: Sheet id của `Master_<mã> (thử)` dự án đó. Để trống thì dự án đó không được phân bổ và khách của nó rơi vào `ChuaPhanDuAn`.
    - Cách lấy Sheet id: mở Sheet đó, nhìn thanh địa chỉ `https://docs.google.com/spreadsheets/d/`**`1AbC...xyz`**`/edit`, chép đoạn in đậm.
@@ -82,7 +82,24 @@ Các mã này em phân loại dựa vào chữ trong thông báo lỗi của Goo
 **Anh nói "OK G3" hoặc "Dừng".**
 
 ## G4 và G5. Ghi thật lần đầu, rồi phân bổ
-Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân bổ) trong một lần, nên G4 và G5 nằm chung một cú bấm. An toàn vì đang trỏ vào các Sheet **thử**.
+Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân bổ) trong một lần, nên G4 và G5 nằm chung một cú bấm. **Lần này ghi lên Sheet landing THẬT** (anh đã chọn), nên làm đúng **Bước 0** trước khi bấm.
+
+**Bước 0 (bắt buộc), tạo bản lưu:**
+1. Trong Drive, chuột phải Sheet **Bcons - Khach quan tam Messenger** → **Tạo bản sao (Make a copy)**, đặt tên `Landing (lưu trước G4 - ngày hôm nay)`. Không chạm vào bản này nữa. Đó là bản để quay lại.
+2. Nếu anh đã gõ khách vào tab `NhapCRM` của `Master_Data (thử)`, tạo bản sao của luôn Sheet đó (cùng cách) đặt tên `Master_Data (lưu trước G4)`.
+3. Đọc phần dưới đây để biết hệ thống sẽ ghi gì, rồi mới bấm.
+
+**Hệ thống sẽ ghi những gì khi bấm Gộp ngay:**
+- Trong **Sheet landing thật**: chỉ ghi vào **cột S `Đã gộp`** của các dòng khách chưa có chữ ở cột đó (điền mã `KH-...` hoặc `LOI`). **Không sửa** tên, SĐT hay cột nào khác, và không xóa dòng nào.
+- Trong **`Master_Data`**: tạo các tab còn thiếu (`KhachHang`, `NhapCRM`, `Loi`, `ChuaPhanDuAn`, `TuChoi`, `NhatKy`) và ghi khách vào đó.
+- Trong **`Master_<mã>`**: tạo tab `KhachTuMaster` và thêm khách (cột A..L).
+- Telegram: chỉ gửi tin khi có lỗi (không kèm tên/SĐT).
+
+**Nếu sai thì quay lại:**
+- Cột S của landing thật: mở bản lưu, copy cột S (hoặc để trống nếu bản lưu chưa có chữ), dán đè vào cột S của Sheet thật; hoặc xóa trống cột S (không xóa tiêu đề) rồi **Gộp ngay** lại, hệ thống đọc lại từ đầu và không nhân đôi khách (khớp theo SĐT).
+- `Master_Data` và `Master_<mã>`: xóa nội dung các tab mới tạo (hoặc xóa hẳn Sheet thử rồi làm lại G1), vì chúng chỉ là bản gộp, nguồn gốc vẫn còn nguyên ở landing và CRM.
+
+**Anh nói "OK G4" (và đã làm Bước 0) thì em mới hướng dẫn bấm.** Chưa có chữ "OK G4" thì anh không bấm Gộp ngay.
 1. Menu **Master_Data → Gộp ngay**. Hộp thoại ghi "Đã gộp" kèm số đếm.
 2. **G4, kiểm `Master_Data (thử)`:**
    - `KhachHang`: một dòng một khách, mã `KH-000001`, `KH-000002`..., SĐT dạng `0xxxxxxxxx`, `NguonGoc` = Landing (hoặc CRM / Landing+CRM), `DongYNhanTin` = `Có` với khách landing có ô đồng ý, `Chưa rõ` với khách CRM.
@@ -95,7 +112,7 @@ Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân b
    - Cột **A..L** là cột hệ thống: `MaKhach, SDT, HoTen, NgayCapNhat, NguonGoc, DuAnQuanTam, NhuCau, CanXem, PTTT, DongYNhanTin, TrangThaiCRM, TrangThaiChamSoc`. Cột **M** để trống. Từ cột **N** (tiêu đề "Ghi chú của anh") là cột **của anh**, hệ thống không bao giờ ghi vào; thêm cột bên phải N thoải mái.
    - Hai cột `TrangThaiCRM` (K) và `TrangThaiChamSoc` (L) hệ thống **chỉ điền khi ô còn trống**; anh gõ vào đó thì không bị ghi đè. Thay đổi trạng thái làm **sau này** ở `KhachHang` **không chảy** sang `Master_<mã>`: cột trạng thái của `KhachHang` chỉ là lần điền đầu. Vì vậy hãy **cập nhật trạng thái ở `Master_<mã>`** (nơi anh làm việc hằng ngày). *(Anh đã chốt 11/11/2026: trạng thái cập nhật ở riêng từng dự án.)* Các cột A..J được cập nhật theo `KhachHang` mỗi lần chạy.
    - Khách quan tâm hai dự án có mặt ở cả hai Sheet, cùng `MaKhach`.
-   - Kiểm: khách đúng dự án chưa, ai thiếu, ai thừa. **Anh nói "OK G5".** Từ đó, Sheet thử dùng luôn làm bản thật: đổi tên bỏ chữ "(thử)" (id không đổi nên `CauHinh` vẫn đúng). Muốn trỏ sang Sheet khác thì sửa `masterSheetId` rồi bấm **Gộp ngay**. **Chuyển sang dữ liệu thật:** ở tab `CauHinh`, đổi `landingSheetId` từ bản `Landing (thử)` sang id Sheet thật "Bcons - Khach quan tam Messenger" (sheet thật phải có cột S `Đã gộp`, xem G2 bước 7); lần **Gộp ngay** kế tiếp sẽ gộp các dòng thật chưa có dấu ở cột S, khách trùng SĐT với bản thử thì gộp vào dòng đã có.
+   - Kiểm: khách đúng dự án chưa, ai thiếu, ai thừa. **Anh nói "OK G5".** Từ đó, Sheet thử dùng luôn làm bản thật: đổi tên bỏ chữ "(thử)" (id không đổi nên `CauHinh` vẫn đúng). Muốn trỏ sang Sheet khác thì sửa `masterSheetId` rồi bấm **Gộp ngay**. Vì G4 đã chạy trên Sheet landing thật, không còn bước "chuyển sang dữ liệu thật" riêng. Sheet landing thật phải có cột S `Đã gộp` (xem G2 bước 7).
 
 ## G6. Bật lịch tự chạy
 1. Menu **Master_Data → Cài lịch tự động**. Có thể hiện hộp xin quyền (Google gọi là tạo trigger); cho phép như G1. Hộp thoại báo: "Đã cài lịch: gộp mỗi 15 phút, tin tóm tắt khoảng 8-9 giờ mỗi ngày."
@@ -120,6 +137,7 @@ Mở tab **NhapCRM** (có sau lần ghi đầu). Cột tối thiểu, đúng ti�
 Tab **ChuaPhanDuAn**: **chỉ gõ cột `GanDuAn`** (các cột khác do hệ thống điền; chữ anh gõ vào một ô còn trống thì được giữ, nhưng khách được chuyển sang `Master_<mã>` thì cả dòng bị xóa, nên đừng dùng chỗ này để lưu ghi chú). Gõ mã dự án vào cột **GanDuAn** của khách. Lần chạy sau, khách được thêm dự án đó vào `DuAnQuanTam`, chép sang `Master_<mã>` và dòng biến mất khỏi `ChuaPhanDuAn`. Mã phải có trong tab `CauHinh` (có `masterSheetId`), nếu không khách vẫn nằm lại.
 
 ### Khách xin rút lại
+*(Phạm vi anh chốt 11/11/2026: hệ thống tự xóa ở `KhachHang` và `Master_<mã>`; các nơi khác anh xóa tay theo danh sách dưới đây; chỉ SĐT (không tên) giữ trong `TuChoi` để không nhắn lại. Khách đã rút lại mà điền lại form: hướng xử lý đang **chờ pháp chế**, xem NOTES.md; hiện hệ thống vẫn xóa lại dữ liệu cá nhân của người đó.)*
 Hai cách, kết quả như nhau:
 - Thêm SĐT khách vào cột **SDT** của tab **TuChoi** (cột A, các cột LyDo, NgayGhi tùy anh điền).
 - Hoặc gõ `Không` vào cột `DongYNhanTin` của khách ở `KhachHang`; hệ thống tự ghi SĐT đó vào `TuChoi` (LyDo "Rút lại (cột)").

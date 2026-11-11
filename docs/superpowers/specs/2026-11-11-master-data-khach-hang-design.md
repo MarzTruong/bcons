@@ -180,4 +180,7 @@ Anh đồng ý bốn điểm (11/11/2026):
 4. **Khách đã rút lại mà điền lại form: vẫn lưu dữ liệu, không nhắn.** Hiện code xóa dữ liệu cá nhân khi gặp SĐT trong `TuChoi`. Hướng đề xuất: lần điền mới vẫn được lưu thành một bản ghi ở `KhachHang` nhưng gắn "đã rút lại, không nhắn"; **không** đưa vào `Master_<mã>` và không dùng làm đồng ý mới cho tới khi anh xóa dòng của họ khỏi `TuChoi`. Điểm này đụng luật bảo vệ dữ liệu cá nhân (lưu lại dữ liệu của người đã yêu cầu xóa), cần anh xác nhận với pháp chế trước khi làm.
 5. **Khách landing cũ chưa có mã dự án:** nằm lại trong `KhachHang` với `DuAnQuanTam` để trống, **không** đưa vào tab `ChuaPhanDuAn` (bỏ việc đưa nhóm này sang tab đó). Anh gán mã sau ngay trong `KhachHang` khi có thông tin. Tab `ChuaPhanDuAn` chỉ giữ cho khách mới có dự án rỗng nhưng tự gán được (cột `GanDuAn`); anh có thể dặn bỏ hẳn tab này.
 
-Còn chờ anh: phạm vi xóa bản sao ở Landing/NhapCRM khi khách yêu cầu xóa; cổng G4 (lần ghi thật đầu tiên) chạy trên bản sao hay Sheet thật.
+6. **Phạm vi xóa khi khách yêu cầu xóa:** hệ thống tự xóa ở `KhachHang` và `Master_<mã>`; các nơi khác (tab Landing, `NhapCRM`, Telegram, Masterfile `.xlsx`, CRM công ty) anh xóa tay theo danh sách trong hướng dẫn; SĐT (chỉ SĐT, không tên) giữ riêng trong `TuChoi` để không nhắn lại.
+7. **Cổng G4 chạy trên Sheet landing thật** (anh chọn). Vì vậy hướng dẫn có **Bước 0 bắt buộc** tạo bản sao lưu, liệt kê chính xác cột bị ghi (cột `Đã gộp` của landing, các tab mới) và cách quay lại; vẫn dừng chờ anh nói "OK G4".
+
+**Việc CHỜ PHÁP CHẾ:** điểm 4 (lưu lại bản ghi của người đã rút lại). Anh chưa xác nhận với pháp chế. Cho tới khi có xác nhận, **không sửa** hành vi hiện tại (xóa dữ liệu cá nhân khi SĐT nằm trong `TuChoi`); chỉ soạn kế hoạch riêng cho điểm 3 và 4.
