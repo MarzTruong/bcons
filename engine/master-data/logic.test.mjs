@@ -1052,34 +1052,102 @@ test("Task3 (d)(h)(k): tuChoiMap_ — loại trống/lạ -> Rút lại; 'Xóa' 
   const H = ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"];
   const m = (rows) => plain(ctx.tuChoiMap_([H, ...rows]));
   const D = "2026-11-10T00:00:00.000Z";
-  assert.deepEqual(m([["0981234567", "", D, "", ""]]), { "0981234567": { loai: "Rút lại", ngayGhi: D } });
-  for (const v of ["lạ", "Xoá luôn đi", "Xóa vĩnh viễn", "Rút lại", "rut lai", "?"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"].loai, "Rút lại", v);
-  for (const v of ["Xóa", "XÓA", "xoa", " Xóa ", "Xóa".normalize("NFD"), "x-ó-a", "XOA​"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"].loai, "Xóa", v);
-  // trùng SĐT: Xóa thắng dù đứng trước hay sau; ngày = lớn nhất hợp lệ
+  assert.deepEqual(m([["0981234567", "", D, "", ""]]), { "0981234567": [{ loai: "Rút lại", ngayGhi: D }] });
+  for (const v of ["lạ", "Xoá luôn đi", "Xóa vĩnh viễn", "Rút lại", "rut lai", "?"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"][0].loai, "Rút lại", v);
+  for (const v of ["Xóa", "XÓA", "xoa", " Xóa ", "Xóa".normalize("NFD"), "x-ó-a", "XOA​"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"][0].loai, "Xóa", v);
+  // trùng SĐT: mỗi dòng giữ riêng (không gộp loại/ngày), theo thứ tự dòng
   const A = "2026-11-05T00:00:00.000Z", B = "2026-11-15T00:00:00.000Z";
-  for (const rows of [[["0981234567", "", A, "Xóa", ""], ["+84 98 123 4567", "", B, "Rút lại", ""]], [["0981234567", "", B, "Rút lại", ""], [981234567, "", A, "Xóa", ""]]]) {
-    assert.deepEqual(m(rows)["0981234567"], { loai: "Xóa", ngayGhi: B });
-  }
+  assert.deepEqual(m([["0981234567", "", A, "Xóa", ""], ["+84 98 123 4567", "", B, "Rút lại", ""]])["0981234567"], [{ loai: "Xóa", ngayGhi: A }, { loai: "Rút lại", ngayGhi: B }]);
+  assert.deepEqual(m([["0981234567", "", B, "Rút lại", ""], [981234567, "", A, "Xóa", ""]])["0981234567"], [{ loai: "Rút lại", ngayGhi: B }, { loai: "Xóa", ngayGhi: A }]);
   // nhiều dạng SĐT cùng ra một khóa; không có khóa thừa
   const forms = ["+84 98 123 4567", 981234567, "98.123.4567", "(+84) 981 234 567"];
   for (const f of forms) assert.deepEqual(Object.keys(m([[f, "", D, "", ""]])), ["0981234567"], String(f));
 });
 
-test("Task3 (e): tuChoiMap_ — NgayGhi rác/trống = '' (chưa biết, không bao giờ 'rất cũ'); Date của Sheets đọc được; có dòng chưa biết thì cả SĐT chưa biết", () => {
+test("Task3 (e): tuChoiMap_ — NgayGhi rác/trống = '' (chưa biết, không bao giờ 'rất cũ'); Date của Sheets đọc được; mỗi dòng giữ ngày riêng (dòng rác = chưa biết)", () => {
   const H = ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"];
   const m = (rows) => plain(ctx.tuChoiMap_([H, ...rows]));
-  for (const g of ["", "mai", "05/11/2026", "2026-11-05", "9999", "2026-13-45T00:00:00.000Z", null]) assert.equal(m([["0981234567", "", g, "", ""]])["0981234567"].ngayGhi, "", String(g));
-  assert.equal(m([["0981234567", "", new Date("2026-11-10T00:00:00.000Z"), "", ""]])["0981234567"].ngayGhi, "2026-11-10T00:00:00.000Z");
-  assert.equal(m([["0981234567", "", "2026-11-10T00:00:00.000Z", "", ""], ["0981234567", "", "mai", "", ""]])["0981234567"].ngayGhi, "");
+  for (const g of ["", "mai", "05-11-2026", "31/02/2026", "9999", "2026-13-45T00:00:00.000Z", null]) assert.equal(m([["0981234567", "", g, "", ""]])["0981234567"][0].ngayGhi, "", String(g));
+  assert.equal(m([["0981234567", "", new Date("2026-11-10T00:00:00.000Z"), "", ""]])["0981234567"][0].ngayGhi, "2026-11-10T00:00:00.000Z");
+  assert.deepEqual(m([["0981234567", "", "2026-11-10T00:00:00.000Z", "", ""], ["0981234567", "", "mai", "", ""]])["0981234567"].map((e) => e.ngayGhi), ["2026-11-10T00:00:00.000Z", ""]);
 });
 
 test("Task3: tuChoiMap_ — không có dòng tiêu đề thì theo thứ tự cột chuẩn; thiếu cột LoaiYeuCau (tab cũ) -> Rút lại; SĐT sai bị bỏ; đầu vào rác không ném", () => {
   const D = "2026-11-10T00:00:00.000Z";
-  assert.deepEqual(plain(ctx.tuChoiMap_([["0981234567", "", D, "Xóa"]])), { "0981234567": { loai: "Xóa", ngayGhi: D } });
-  assert.deepEqual(plain(ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi"], ["0981234567", "x", D]])), { "0981234567": { loai: "Rút lại", ngayGhi: D } });
+  assert.deepEqual(plain(ctx.tuChoiMap_([["0981234567", "", D, "Xóa"]])), { "0981234567": [{ loai: "Xóa", ngayGhi: D }] });
+  assert.deepEqual(plain(ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi"], ["0981234567", "x", D]])), { "0981234567": [{ loai: "Rút lại", ngayGhi: D }] });
   assert.deepEqual(plain(ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi"], ["abc", "", D], ["", "", D], [null, 5]])), {});
   assert.deepEqual(plain(ctx.tuChoiMap_(null)), {});
   assert.deepEqual(plain(ctx.tuChoiMap_([])), {});
   // cột đảo thứ tự: theo TÊN cột
-  assert.deepEqual(plain(ctx.tuChoiMap_([["LoaiYeuCau", "NgayGhi", "SDT"], ["Xóa", D, "0981234567"]])), { "0981234567": { loai: "Xóa", ngayGhi: D } });
+  assert.deepEqual(plain(ctx.tuChoiMap_([["LoaiYeuCau", "NgayGhi", "SDT"], ["Xóa", D, "0981234567"]])), { "0981234567": [{ loai: "Xóa", ngayGhi: D }] });
+});
+
+// ---- Review Task 3: xét từng dòng TuChoi, ngày chỉ có ngày, loại lạ ----
+const rowsOf = (...r) => ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi", "LoaiYeuCau"], ...r]);
+const evT = (iso) => ({ DongYNhanTin: "Có", DongYDuAn: "bcons-sora", DongYBangChung: "bcons-sora: " + `Có (${iso}, mẫu v1-2026-11-06, https://x.pages.dev/)` });
+
+test("Review 1: xét TỪNG dòng — Xóa 05/11 bị đồng ý 10/11 mở, Rút lại 12/11 còn hiệu lực -> rutLai (KHÔNG xoa), dich giữ", () => {
+  const map = rowsOf([T3_P, "", "2026-11-05T00:00:00.000Z", "Xóa"], [T3_P, "", "2026-11-12T00:00:00.000Z", "Rút lại"]);
+  const d = t3d(t3rec(evT("2026-11-10T03:00:00.000Z")), map);
+  assert.deepEqual(d, { xoa: false, rutLai: true, dich: ["bcons-sora", "bcons-newsky"], lyDo: "rutlai" });
+});
+
+test("Review 1: Xóa cũ đã bị mở + Rút lại KHÔNG ngày -> rutLai; thứ tự dòng không đổi kết quả; cả hai còn hiệu lực -> Xóa thắng", () => {
+  const rows = [[T3_P, "", "2026-11-05T00:00:00.000Z", "Xóa"], [T3_P, "", "", "Rút lại"]];
+  for (const r of [rows, rows.slice().reverse()]) {
+    assert.equal(t3d(t3rec(evT("2026-11-10T03:00:00.000Z")), rowsOf(...r)).rutLai, true);
+    assert.equal(t3d(t3rec(evT("2026-11-10T03:00:00.000Z")), rowsOf(...r)).xoa, false);
+    assert.equal(t3d(t3rec(), rowsOf(...r)).xoa, true);
+  }
+  assert.equal(t3d(t3rec(evT("2026-11-10T03:00:00.000Z")), rowsOf([T3_P, "", "2026-11-05T00:00:00.000Z", "Xóa"], [T3_P, "", "2026-11-12T00:00:00.000Z", "Xóa"])).xoa, true);
+  assert.deepEqual(t3d(t3rec(evT("2026-11-13T03:00:00.000Z")), rowsOf([T3_P, "", "2026-11-05T00:00:00.000Z", "Xóa"], [T3_P, "", "2026-11-12T00:00:00.000Z", "Rút lại"])), { xoa: false, rutLai: false, dich: ["bcons-sora", "bcons-newsky"], lyDo: "" });
+});
+
+test("Review 2: ngayGhiNorm_ — 0 giờ VN (T17:00:00.000Z) là CUỐI ngày VN; chuỗi 'YYYY-MM-DD', 'DD/MM/YYYY' cũng vậy; dấu hệ thống giữ nguyên; ngày sai -> ''", () => {
+  const n = (v) => ctx.ngayGhiNorm_(v);
+  assert.equal(n("2026-11-10T17:00:00.000Z"), "2026-11-11T17:00:00.000Z");
+  assert.equal(n(new Date("2026-11-10T17:00:00.000Z")), "2026-11-11T17:00:00.000Z");
+  assert.equal(n("2026-11-11"), "2026-11-11T17:00:00.000Z");
+  assert.equal(n("11/11/2026"), "2026-11-11T17:00:00.000Z");
+  assert.equal(n("1/2/2026"), "2026-02-01T17:00:00.000Z");
+  assert.equal(n("2026-11-11T01:00:00.000Z"), "2026-11-11T01:00:00.000Z");
+  assert.equal(n("2026-11-10T00:00:00.000Z"), "2026-11-10T00:00:00.000Z");
+  for (const bad of ["", "mai", "31/02/2026", "2026-13-01", "2026-02-30", null, undefined, "11-11-2026"]) assert.equal(n(bad), "", String(bad));
+});
+
+test("Review 2: NgayGhi chỉ có ngày — đồng ý CÙNG ngày VN (sớm hơn trong ngày) không mở; đồng ý ngày sau thì mở", () => {
+  const sameDay = t3rec(evT("2026-11-11T01:00:00.000Z"));
+  for (const cell of [new Date("2026-11-10T17:00:00.000Z"), "2026-11-11", "11/11/2026"]) {
+    assert.equal(t3d(sameDay, rowsOf([T3_P, "", cell, "Rút lại"])).rutLai, true, String(cell));
+    assert.equal(t3d(sameDay, rowsOf([T3_P, "", cell, "Xóa"])).xoa, true, String(cell));
+    assert.equal(t3d(sameDay, rowsOf([T3_P, "", cell, "Xóa"])).rutLai, false);
+  }
+  const nextDay = t3rec(evT("2026-11-12T01:00:00.000Z"));
+  assert.deepEqual(t3d(nextDay, rowsOf([T3_P, "", new Date("2026-11-10T17:00:00.000Z"), "Rút lại"])), { xoa: false, rutLai: false, dich: ["bcons-sora", "bcons-newsky"], lyDo: "" });
+  assert.equal(t3d(sameDay, rowsOf([T3_P, "", "2026-11-11T00:30:00.000Z", "Rút lại"])).rutLai, false);
+});
+
+test("Review 5: loaiLa_ — chỉ chữ khác trống mà không phải Xóa/Rút lại; vẫn gấp về 'Rút lại'", () => {
+  for (const v of ["Xóa dữ liệu", "xóa hết", "delete", "?", "Rút lại luôn"]) {
+    assert.equal(ctx.loaiLa_(v), true, v);
+    assert.equal(ctx.loaiYeuCau_(v), "Rút lại", v);
+  }
+  for (const v of ["", "  ", null, undefined, "Xóa", "XÓA", "xoa", "Rút lại", "rut lai", " RÚT LẠI "]) assert.equal(ctx.loaiLa_(v), false, String(v));
+});
+
+test("Review 6: tuChoiMap_ đầu vào không phải mảng thì ném lỗi; dòng không phải mảng cũng ném", () => {
+  for (const bad of ["0981234567", 5, true, {}, new Set(["0981234567"])]) assert.throws(() => ctx.tuChoiMap_(bad), /tuChoi/, String(bad));
+  assert.throws(() => ctx.tuChoiMap_([["SDT"], "0981234567"]), /tuChoi/);
+});
+
+test("Review 4: rutLaiTuChoi_ — ngày = mới nhất trong các dòng Rút lại còn hiệu lực; có dòng chưa biết ngày -> ''; Xóa còn hiệu lực -> không", () => {
+  const f = (rec, map) => plain(ctx.rutLaiTuChoi_(rec, map, T3_NOW));
+  const two = rowsOf([T3_P, "", "2026-11-05T00:00:00.000Z", "Rút lại"], [T3_P, "", "2026-11-12T00:00:00.000Z", "Rút lại"]);
+  assert.deepEqual(f(t3rec(), two), { co: true, ngay: "2026-11-12T00:00:00.000Z" });
+  assert.deepEqual(f(t3rec(evT("2026-11-10T03:00:00.000Z")), two), { co: true, ngay: "2026-11-12T00:00:00.000Z" });
+  assert.deepEqual(f(t3rec(), rowsOf([T3_P, "", "", "Rút lại"], [T3_P, "", "2026-11-12T00:00:00.000Z", "Rút lại"])), { co: true, ngay: "" });
+  assert.deepEqual(f(t3rec(), rowsOf([T3_P, "", "2026-11-12T00:00:00.000Z", "Xóa"])), { co: false, ngay: "" });
+  assert.deepEqual(f(t3rec(), {}), { co: false, ngay: "" });
+  assert.deepEqual(f(t3rec(evT("2026-11-13T03:00:00.000Z")), two), { co: false, ngay: "" });
 });

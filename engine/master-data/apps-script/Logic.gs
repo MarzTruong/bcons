@@ -307,22 +307,36 @@ function tuChoiPhones_(tuChoi) {
   return out;
 }
 
-/** Gộp hai mục TuChoi của cùng một SĐT: 'Xóa' thắng 'Rút lại'; ngày = lớn nhất trong các ngày hợp lệ,
- *  nhưng một ngày chưa biết ('' ) làm cả mục chưa biết (fail closed: không bằng chứng nào mở lại được). */
-function gopMucTuChoi_(a, b) {
-  if (!a) return b;
-  var ngay = a.ngayGhi === '' || b.ngayGhi === '' ? '' : (a.ngayGhi > b.ngayGhi ? a.ngayGhi : b.ngayGhi);
-  return { loai: a.loai === 'Xóa' || b.loai === 'Xóa' ? 'Xóa' : 'Rút lại', ngayGhi: ngay };
-}
-
 /** Loại yêu cầu từ ô LoaiYeuCau: đúng 'Xóa' (sau gấp chữ: hoa/thường, dấu, khoảng trắng) -> 'Xóa'; trống hoặc lạ -> 'Rút lại'. */
 function loaiYeuCau_(v) {
   return foldText_(v) === 'xoa' ? 'Xóa' : 'Rút lại';
 }
 
-/** Bản đồ TuChoi: {[SĐT chuẩn hóa]: {loai: 'Rút lại'|'Xóa', ngayGhi: ISO hoặc ''}}.
+/** Ô LoaiYeuCau có chữ nhưng không phải 'Xóa' hay 'Rút lại' (sau gấp chữ)? Vẫn được ghi nhận là 'Rút lại' (an toàn), nhưng Sheets.gs báo ở tab Loi. */
+function loaiLa_(v) {
+  var f = foldText_(v);
+  return s_(v) !== '' && f !== 'xoa' && f !== 'rutlai';
+}
+
+/** NgayGhi -> ISO hoặc '' (chưa biết). Sheets trả ngày gõ tay là 0 giờ địa phương (Asia/Ho_Chi_Minh = UTC+7, tức T17:00:00.000Z của hôm trước):
+ *  coi là CUỐI ngày Việt Nam đó (+24 giờ) để đồng ý cùng ngày, sớm hơn trong ngày, không mở lại được. Cũng nhận 'YYYY-MM-DD' và 'DD/MM/YYYY' (cuối ngày VN).
+ *  Dấu thời điểm hệ thống ghi (nowIso, không đúng 0 giờ VN) giữ nguyên. */
+function ngayGhiNorm_(v) {
+  var str = s_(v);
+  var iso = isoOrEmpty_(str);
+  if (iso) return /T17:00:00\.000Z$/.test(iso) ? new Date(Date.parse(iso) + 86400000).toISOString() : iso;
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(str), y, mo, d;
+  if (m) { y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else if ((m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(str))) { d = +m[1]; mo = +m[2]; y = +m[3]; }
+  else return '';
+  var t = new Date(Date.UTC(y, mo - 1, d, 17));
+  return t.getUTCFullYear() === y && t.getUTCMonth() === mo - 1 && t.getUTCDate() === d ? t.toISOString() : '';
+}
+
+/** Bản đồ TuChoi theo TỪNG DÒNG: {[SĐT chuẩn hóa]: [{loai: 'Rút lại'|'Xóa', ngayGhi: ISO hoặc ''}, ...]} theo thứ tự dòng.
+ *  TuChoi chỉ thêm dòng, một SĐT có thể có nhiều dòng; mỗi dòng được xét riêng (decideDestinations_), không gộp loại/ngày theo SĐT.
  *  rows = mảng các dòng, có hoặc không dòng tiêu đề đầu (nhận ra bằng ô 'SDT'); cột theo TÊN (không tiêu đề: SDT, LyDo, NgayGhi, LoaiYeuCau).
- *  ngayGhi '' = chưa biết (trống hoặc rác): người gọi phải coi là "vừa rút lại, chặn mọi thứ", không bao giờ là "rất cũ".
+ *  ngayGhi '' = chưa biết (trống hoặc rác): coi là "vừa rút lại, chặn mọi thứ", không bao giờ là "rất cũ".
  *  SĐT sai dạng bị bỏ (Sheets.gs báo ở tab Loi). Dạng đầu vào lạ -> ném lỗi (fail closed). */
 function tuChoiMap_(rows) {
   var out = {};
@@ -345,30 +359,31 @@ function tuChoiMap_(rows) {
     var at = function (k) { return ix[k] < 0 || ix[k] >= row.length ? '' : row[ix[k]]; };
     var p = normalizePhone_(typeof at('sdt') === 'number' ? at('sdt') : s_(at('sdt')));
     if (!p) continue;
-    var muc = { loai: loaiYeuCau_(at('loaiyeucau')), ngayGhi: isoOrEmpty_(s_(at('ngayghi'))) };
-    out[p] = gopMucTuChoi_(out[p], muc);
+    (out[p] = out[p] || []).push({ loai: loaiYeuCau_(at('loaiyeucau')), ngayGhi: ngayGhiNorm_(at('ngayghi')) });
   }
   return out;
 }
 
-/** Mục TuChoi của một SĐT từ mọi dạng tuChoi. Bản đồ {sdt: {loai, ngayGhi}} -> mục đó; dạng cũ (mảng/Set/Map/chuỗi/object giá trị khác)
- *  -> 'Rút lại' chưa biết ngày (chặn, không mở lại được). Dạng lạ -> ném lỗi, kể cả khi khách không có SĐT. */
+/** Các mục TuChoi của một SĐT (mảng, có thể rỗng) từ mọi dạng tuChoi. Bản đồ {sdt: [mục] | mục} -> các mục đó (ngayGhi đã chuẩn hóa, không chuẩn hóa lần hai);
+ *  dạng cũ (mảng/Set/Map/chuỗi/object giá trị khác) -> một mục 'Rút lại' chưa biết ngày (chặn, không mở lại được). Dạng lạ -> ném lỗi, kể cả khi khách không có SĐT. */
 function mucTuChoi_(tuChoi, phone) {
-  var muc = null;
+  var out = [];
   var plainObj = tuChoi != null && typeof tuChoi === 'object' && Object.prototype.toString.call(tuChoi) === '[object Object]';
   if (plainObj) {
+    var one = function (v) { return { loai: loaiYeuCau_(v && v.loai), ngayGhi: isoOrEmpty_(s_(v && v.ngayGhi)) }; };
     Object.keys(tuChoi).forEach(function (k) {
       var kp = normalizePhone_(k);
       var v = tuChoi[k];
       if (!kp || kp !== phone) return;
-      var m = v != null && typeof v === 'object' ? { loai: loaiYeuCau_(v.loai), ngayGhi: isoOrEmpty_(s_(v.ngayGhi)) } : { loai: 'Rút lại', ngayGhi: '' };
-      muc = gopMucTuChoi_(muc, m);
+      if (Array.isArray(v)) v.forEach(function (e) { out.push(one(e)); });
+      else if (v != null && typeof v === 'object') out.push(one(v));
+      else out.push({ loai: 'Rút lại', ngayGhi: '' });
     });
-    return muc;
+    return out;
   }
-  if (phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0) return { loai: 'Rút lại', ngayGhi: '' };
+  if (phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0) return [{ loai: 'Rút lại', ngayGhi: '' }];
   if (!phone) tuChoiPhones_(tuChoi); // vẫn kiểm dạng để báo lỗi sớm
-  return null;
+  return out;
 }
 
 /** Hàng có bằng chứng đồng ý MỚI HƠN nghiêm ngặt mốc `limit` (ISO; '' = chưa biết -> không bao giờ)? Cùng quy tắc với mergeCustomer_:
@@ -391,12 +406,11 @@ function decideDestinations_(rec, tuChoi, projectCodes, nowIso) {
   rec = rec || {};
   var now = nowIso === undefined ? new Date().toISOString() : nowIso;
   var phone = normalizePhone_(rec.SDT);
-  var muc = mucTuChoi_(tuChoi, phone);
   var xoa = false, rutLai = false, lyDo = '';
-  if (muc && !coDongYMoiHon_(rec, muc.ngayGhi, now)) {
-    if (muc.loai === 'Xóa') { xoa = true; lyDo = 'xoa'; }
-    else { rutLai = true; lyDo = 'rutlai'; }
-  }
+  // Mỗi dòng TuChoi được xét riêng: CÒN HIỆU LỰC khi không có đồng ý nào mới hơn nghiêm ngặt NgayGhi của chính dòng đó. 'Xóa' còn hiệu lực thắng 'Rút lại'.
+  var hieuLuc = mucTuChoi_(tuChoi, phone).filter(function (e) { return !coDongYMoiHon_(rec, e.ngayGhi, now); });
+  if (hieuLuc.some(function (e) { return e.loai === 'Xóa'; })) { xoa = true; lyDo = 'xoa'; }
+  else if (hieuLuc.length) { rutLai = true; lyDo = 'rutlai'; }
   if (!xoa && !rutLai) {
     var f = foldText_(rec.DongYNhanTin);
     if (f === 'khong') { rutLai = true; lyDo = 'khong'; }
@@ -418,4 +432,15 @@ function decideDestinations_(rec, tuChoi, projectCodes, nowIso) {
     });
   }
   return { xoa: xoa, rutLai: rutLai, dich: dich, lyDo: lyDo };
+}
+
+/** Rút lại theo TuChoi còn hiệu lực của khách: {co: có dòng 'Rút lại' còn hiệu lực (và không có 'Xóa' còn hiệu lực), ngay: NgayGhi mới nhất trong các dòng đó, hoặc '' nếu có dòng chưa biết ngày (chưa đóng dấu)}. */
+function rutLaiTuChoi_(rec, tuChoi, nowIso) {
+  rec = rec || {};
+  var now = nowIso === undefined ? new Date().toISOString() : nowIso;
+  var hieuLuc = mucTuChoi_(tuChoi, normalizePhone_(rec.SDT)).filter(function (e) { return !coDongYMoiHon_(rec, e.ngayGhi, now); });
+  if (!hieuLuc.length || hieuLuc.some(function (e) { return e.loai === 'Xóa'; })) return { co: false, ngay: '' };
+  var ngay = '';
+  if (!hieuLuc.some(function (e) { return e.ngayGhi === ''; })) hieuLuc.forEach(function (e) { if (e.ngayGhi > ngay) ngay = e.ngayGhi; });
+  return { co: true, ngay: ngay };
 }
