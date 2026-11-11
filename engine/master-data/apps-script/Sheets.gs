@@ -694,54 +694,84 @@ function markCell_(kh, st, r, col, value) {
 // Tin Telegram, NhatKy, hộp thoại và Logger chỉ chứa số đếm và mã loại lỗi, không bao giờ tên/SĐT, không nguyên văn thông báo lỗi.
 
 var BAO_LOI_LAP_MS_ = 6 * 3600 * 1000; // cùng một loại lỗi chỉ báo lại sau 6 giờ (lịch 15 phút sẽ không spam)
-var BAO_LOI_KEY_ = 'MD_BAO_LOI_CUOI';
+var BAO_LOI_SACH_MS_ = 3600 * 1000; // lỗi phải vắng ít nhất 1 giờ thì cờ chống lặp mới được xóa (chống lỗi chập chờn)
+var CHAY_TOI_DA_MS_ = 270000; // Apps Script giới hạn 6 phút mỗi lần chạy; quá 4,5 phút thì không bắt đầu bước tiếp
+var BAO_LOI_KEY_ = 'MD_BAO_LOI_CUOI'; // 'khóa|ms' của tin báo lỗi gửi thành công gần nhất
+var BAO_LOI_SACH_KEY_ = 'MD_BAO_LOI_SACH_TU'; // ms của lần chạy sạch đầu tiên sau lỗi
+var NHIP_KEY_ = 'MD_NHIP_NGAY'; // ngày VN của dòng "nhịp" gần nhất trong NhatKy
+var CHAY_CUOI_KEY_ = 'MD_CHAY_CUOI'; // ms của lần chạy gần nhất (không tính chạy thử, lần bị bỏ qua)
+var NHIP_GHI_CHU_ = 'nhịp: đang chạy, không có gì mới';
 var VN_OFFSET_MS_ = 7 * 3600 * 1000; // Asia/Ho_Chi_Minh = UTC+7, không có giờ mùa hè
 
-/** Phân loại lỗi thành mã cố định (không bao giờ đưa nguyên văn thông báo vào NhatKy/Telegram vì có thể chứa ID Sheet). */
+/** Phân loại lỗi thành mã cố định (không bao giờ đưa nguyên văn thông báo vào NhatKy/Telegram vì có thể chứa ID Sheet). Thứ tự kiểm quan trọng. */
 function errorClass_(err) {
   var msg = err && err.message != null ? String(err.message) : String(err == null ? '' : err);
-  if (/lock|khóa/i.test(msg)) return 'LOI_KHOA';
-  if (/Không mở được|openById|Unexpected error|permission|quyền|Requested entity|not found/i.test(msg)) return 'LOI_DOC_SHEET';
+  if (/\block\b|Lock timeout|khóa/i.test(msg)) return 'LOI_KHOA';
+  if (/Authorization is required|do not have permission to call/i.test(msg)) return 'LOI_QUYEN';
+  if (/timed out|Exceeded maximum execution time/i.test(msg)) return 'LOI_HET_GIO';
+  if (/too many times|quota|Service invoked/i.test(msg)) return 'LOI_HAN_MUC';
+  if (/Range not found/i.test(msg)) return 'LOI_TAB';
+  if (/Không mở được|openById|Unexpected error|failed while accessing|permission|quyền|Requested entity|not found/i.test(msg)) return 'LOI_DOC_SHEET';
   if (/(^|[^a-z])tab([^a-z]|$)|cột/i.test(msg)) return 'LOI_TAB';
   return 'LOI_KHAC';
 }
 
-/** Gửi một tin Telegram (token, chat id ở Script Properties, giống Code.gs). Thiếu thuộc tính thì bỏ qua; mọi lỗi gửi đều nuốt, không bao giờ ném, không ghi token ra đâu. */
+/** Gửi một tin Telegram (token, chat id ở Script Properties, giống Code.gs). Trả true CHỈ khi Telegram trả đúng 200 (muteHttpExceptions nên 401/429/5xx không ném). Thiếu thuộc tính thì bỏ qua; mọi lỗi gửi đều nuốt, không bao giờ ném, không ghi token ra đâu. */
 function sendTelegram_(text) {
   try {
     var props = PropertiesService.getScriptProperties();
     var token = String(props.getProperty('TELEGRAM_BOT_TOKEN') || '').trim();
     var chat = String(props.getProperty('TELEGRAM_CHAT_ID') || '').trim();
     if (!token || !chat) return false;
-    UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+    var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
       method: 'post', contentType: 'application/json', muteHttpExceptions: true,
       payload: JSON.stringify({ chat_id: chat, text: String(text).slice(0, 4000) })
     });
-    return true;
+    return !!res && res.getResponseCode() === 200;
   } catch (e) {
     return false;
   }
 }
 
-/** Báo lỗi: chỉ loại lỗi và số dòng. Cùng loại trong 6 giờ chỉ báo một lần. now (tùy chọn) cho test. */
-function baoLoi_(loai, soDong, now) {
+/** Báo lỗi: chỉ loại lỗi và số dòng. Cùng `khoa` (mặc định = loai; LOI_MASTER dùng khóa theo loại, không theo danh sách mã) trong 6 giờ chỉ báo một lần.
+ *  Cờ chống lặp chỉ đặt khi Telegram nhận (200), nên gửi hỏng thì lần lỗi sau thử lại. now cho test. */
+function baoLoi_(loai, soDong, now, khoa) {
   var ms = (now || new Date()).getTime();
+  khoa = khoa || loai;
   try {
     var props = PropertiesService.getScriptProperties();
     var last = String(props.getProperty(BAO_LOI_KEY_) || '');
     var cut = last.lastIndexOf('|');
-    if (cut > 0 && last.slice(0, cut) === String(loai) && ms - Number(last.slice(cut + 1)) < BAO_LOI_LAP_MS_ && ms >= Number(last.slice(cut + 1))) return false;
+    if (cut > 0 && last.slice(0, cut) === String(khoa)) {
+      var delta = ms - Number(last.slice(cut + 1));
+      if (delta >= 0 && delta < BAO_LOI_LAP_MS_) return false;
+    }
     if (!sendTelegram_('⚠️ Master_Data: ' + loai + ' (' + (soDong || 0) + ' dòng). Xem tab NhatKy.')) return false;
-    props.setProperty(BAO_LOI_KEY_, loai + '|' + ms);
+    props.setProperty(BAO_LOI_KEY_, khoa + '|' + ms);
     return true;
   } catch (e) {
     return false;
   }
 }
 
-/** Xóa dấu "đã báo" sau một lần chạy tốt, để lỗi quay lại được báo ngay. */
-function xoaDauBaoLoi_() {
-  try { PropertiesService.getScriptProperties().deleteProperty(BAO_LOI_KEY_); } catch (e) { /* bỏ qua */ }
+/** Lần chạy sạch: bắt đầu đếm thời gian vắng lỗi; đủ 1 giờ mới xóa cờ chống lặp (lỗi chập chờn không được báo lại). */
+function ghiNhanSach_(ms) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    if (!props.getProperty(BAO_LOI_KEY_)) return;
+    var tu = Number(props.getProperty(BAO_LOI_SACH_KEY_));
+    if (!(tu > 0) || ms < tu) {
+      props.setProperty(BAO_LOI_SACH_KEY_, String(ms));
+    } else if (ms - tu >= BAO_LOI_SACH_MS_) {
+      props.deleteProperty(BAO_LOI_KEY_);
+      props.deleteProperty(BAO_LOI_SACH_KEY_);
+    }
+  } catch (e) { /* bỏ qua */ }
+}
+
+/** Có lỗi: đặt lại mốc "sạch từ". */
+function ghiNhanLoi_() {
+  try { PropertiesService.getScriptProperties().deleteProperty(BAO_LOI_SACH_KEY_); } catch (e) { /* bỏ qua */ }
 }
 
 /** Thêm MỘT dòng vào NhatKy: [giờ ISO, nguồn, số dòng đọc, khách mới, gộp trùng, lỗi, ghi chú]. entry: {now, nguon, doc, moi, trung, loi, ghiChu}. Chỉ số, không tên/SĐT. */
@@ -756,19 +786,26 @@ function ghiNhatKy_(ss, entry) {
   sh.getRange(at, 1, 1, 7).setValues([[(entry.now || new Date()).toISOString(), entry.nguon, entry.doc || 0, entry.moi || 0, entry.trung || 0, entry.loi || 0, entry.ghiChu || '']]);
 }
 
+/** Mã dự án an toàn để đưa vào tin Telegram: chỉ mã đúng dạng (chữ thường, số, gạch ngang), còn lại thành 'mã lạ' (không để tên người gõ nhầm ở CauHinh lọt ra). ChuaPhanDuAn là tên tab nội bộ. */
 function maDuAnAnToan_(list) {
-  return (list || []).map(function (c) { return String(c).replace(/[^A-Za-z0-9_\-]/g, ''); }).filter(function (c) { return c; }).join(', ');
+  return (list || []).map(function (c) {
+    c = String(c);
+    return c === 'ChuaPhanDuAn' || /^[a-z][a-z0-9-]{2,39}$/.test(c) ? c : 'mã lạ';
+  }).join(', ');
 }
 
-/** Chạy cả ba bước (landing, NhapCRM, phân bổ). opts: {dryRun, now, source}. Trả {landing, crm, phanBo, loi, skipped?}.
+/** Chạy cả ba bước (landing, NhapCRM, phân bổ). opts: {dryRun, now, source, clock}. Trả {landing, crm, phanBo, loi, skipped?}.
  *  Giữ khóa script một lần suốt lần chạy (tryLock 1 giây); lần chạy chồng thoát lặng lẽ với skipped:true. Ba bước nhận lockHeld nên không xin khóa lại (không bế tắc).
  *  Lỗi ở bước nào thì dừng, ghi một dòng NhatKy với mã lỗi, báo Telegram một tin, trả mã ở loi (không ném, để trigger không tự thử lại dồn dập).
- *  dryRun: không ghi NhatKy, không Telegram, không ghi gì. */
+ *  Quá 270 giây giữa các bước thì dừng sạch (LOI_HET_GIO), không bắt đầu bước tiếp (Apps Script giết ở 6 phút).
+ *  dryRun: không ghi NhatKy, không Telegram, không ghi gì. clock: hàm trả ms (tiêm để test, mặc định đồng hồ thật). */
 function chayTatCa_(opts) {
   opts = opts || {};
   var dryRun = !!opts.dryRun;
   var now = opts.now || new Date();
   var nguon = dryRun ? 'Chạy thử' : (opts.source || 'Tự động');
+  var clock = opts.clock || function () { return new Date().getTime(); };
+  var batDau = clock();
   var res = { landing: undefined, crm: undefined, phanBo: undefined, loi: '' };
   var lock = LockService.getScriptLock();
   var held = false;
@@ -779,17 +816,23 @@ function chayTatCa_(opts) {
       return res;
     }
     var o = { dryRun: dryRun, now: now, lockHeld: true };
-    res.landing = gopLanding_(o);
-    res.crm = gopNhapCRM_(o);
-    res.phanBo = phanBo_(o);
-    if (res.phanBo.masterLoi && res.phanBo.masterLoi.length) res.loi = 'LOI_MASTER';
+    var steps = [['landing', gopLanding_], ['crm', gopNhapCRM_], ['phanBo', phanBo_]];
+    for (var i = 0; i < steps.length; i++) {
+      if (i > 0 && clock() - batDau > CHAY_TOI_DA_MS_) {
+        res.loi = 'LOI_HET_GIO';
+        break;
+      }
+      res[steps[i][0]] = steps[i][1](o);
+    }
+    if (!res.loi && res.phanBo.masterLoi && res.phanBo.masterLoi.length) res.loi = 'LOI_MASTER';
   } catch (e) {
     res.loi = errorClass_(e);
   }
   try {
-    if (held && !dryRun) ghiVaBao_(res, nguon, now);
+    if (held && !dryRun) ghiVaBao_(res, nguon, now, clock() - batDau);
   } catch (e2) {
     res.loi = errorClass_(e2);
+    ghiNhanLoi_();
     baoLoi_(res.loi, 0, now);
   } finally {
     if (held) {
@@ -799,19 +842,45 @@ function chayTatCa_(opts) {
   return res;
 }
 
-/** Ghi NhatKy và báo Telegram cho một lần chạy (không dryRun). Ném lỗi nếu ghi NhatKy hỏng; người gọi xử lý. */
-function ghiVaBao_(res, nguon, now) {
+/** Lần chạy "rảnh": không lỗi và mọi số đếm bằng 0 (kể cả khách chuyển vào dự án). */
+function chayRanh_(res) {
+  if (res.loi) return false;
+  var L = res.landing, C = res.crm, P = res.phanBo;
+  if (!L || !C || !P) return false;
+  var vao = 0;
+  Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
+  return [L.doc, L.moi, L.trung, L.loi, C.doc, C.moi, C.trung, C.loi, P.chan, P.lyDo.tuchoi, P.lyDo.khong, P.chua, vao].every(function (n) { return !n; });
+}
+
+/** Ghi NhatKy và báo Telegram cho một lần chạy (không dryRun). Lần chạy rảnh không ghi, trừ một dòng "nhịp" mỗi ngày VN. Ném lỗi nếu ghi NhatKy hỏng; người gọi xử lý. */
+function ghiVaBao_(res, nguon, now, ms) {
+  var props = PropertiesService.getScriptProperties();
   var L = res.landing || { doc: 0, moi: 0, trung: 0, loi: 0 };
   var C = res.crm || { doc: 0, moi: 0, trung: 0, loi: 0 };
-  var P = res.phanBo || { chua: 0, chan: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [] };
+  var P = res.phanBo || { chua: 0, chan: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], dayVao: {} };
   var masterLoi = P.masterLoi || [];
-  var ghiChu = 'chua=' + P.chua + ' chan=' + P.chan + ' tuchoi=' + P.lyDo.tuchoi + ' khong=' + P.lyDo.khong;
-  if (res.loi) ghiChu += ' ' + res.loi;
+  var vao = 0;
+  Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
   var loiSo = L.loi + C.loi + masterLoi.length + (res.loi && res.loi !== 'LOI_MASTER' ? 1 : 0);
-  ghiNhatKy_(SpreadsheetApp.getActiveSpreadsheet(), { now: now, nguon: nguon, doc: L.doc + C.doc, moi: L.moi + C.moi, trung: L.trung + C.trung, loi: loiSo, ghiChu: ghiChu });
-  if (!res.loi) xoaDauBaoLoi_();
-  else if (res.loi === 'LOI_MASTER') baoLoi_('LOI_MASTER ' + maDuAnAnToan_(masterLoi), masterLoi.length, now);
-  else baoLoi_(res.loi, loiSo, now);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (chayRanh_(res)) {
+    var homNay = ngayVN_(now);
+    if (String(props.getProperty(NHIP_KEY_) || '') !== homNay) {
+      ghiNhatKy_(ss, { now: now, nguon: nguon, doc: 0, moi: 0, trung: 0, loi: 0, ghiChu: NHIP_GHI_CHU_ });
+      props.setProperty(NHIP_KEY_, homNay);
+    }
+  } else {
+    var ghiChu = 'chua=' + P.chua + ' chan=' + P.chan + ' tuchoi=' + P.lyDo.tuchoi + ' khong=' + P.lyDo.khong + ' vao=' + vao + ' ms=' + Math.max(0, Math.round(ms || 0));
+    if (res.loi) ghiChu += ' ' + res.loi;
+    ghiNhatKy_(ss, { now: now, nguon: nguon, doc: L.doc + C.doc, moi: L.moi + C.moi, trung: L.trung + C.trung, loi: loiSo, ghiChu: ghiChu });
+  }
+  props.setProperty(CHAY_CUOI_KEY_, String(now.getTime()));
+  if (!res.loi) ghiNhanSach_(now.getTime());
+  else {
+    ghiNhanLoi_();
+    if (res.loi === 'LOI_MASTER') baoLoi_('LOI_MASTER ' + maDuAnAnToan_(masterLoi), masterLoi.length, now, 'LOI_MASTER');
+    else baoLoi_(res.loi, loiSo, now);
+  }
 }
 
 /** Lấy phần ngày (yyyy-mm-dd) theo giờ Việt Nam từ Date hoặc chuỗi ISO; không hiểu được thì ''. */
@@ -865,18 +934,25 @@ function baoCaoNgay_(opts) {
   if (nguon.Khac) parts.push('Khác ' + nguon.Khac);
   var text = '📊 Master_Data hôm qua: ' + moi + ' khách mới' + (parts.length ? ' (' + parts.join(', ') + ')' : '') +
     '. Chưa phân dự án: ' + demDong_(master, 'ChuaPhanDuAn') + '. Dòng lỗi: ' + demDong_(master, 'Loi') + '. Rút lại: ' + rutLai + '.';
+  var cuoi = Number(PropertiesService.getScriptProperties().getProperty(CHAY_CUOI_KEY_));
+  if (cuoi > 0) text += ' Lần chạy cuối: ' + Math.max(0, Math.floor((now.getTime() - cuoi) / 60000)) + ' phút trước.';
   sendTelegram_(text);
   return text;
 }
 
-/** Cài lịch tự chạy (an toàn khi chạy nhiều lần): xóa trigger cũ của hai hàm này rồi tạo lại: mỗi 15 phút gộp, 8:00 mỗi ngày báo cáo. Trigger khác giữ nguyên. */
+/** Cài lịch tự chạy (an toàn khi chạy nhiều lần): tạo trigger MỚI trước, rồi mới xóa cái cũ trùng hàm, nên tạo lỗi thì lịch cũ còn nguyên. Mỗi 15 phút gộp; tin tóm tắt chạy khoảng 8-9 giờ mỗi ngày (Apps Script tự chọn phút ngẫu nhiên trong giờ). Trigger khác giữ nguyên. */
 function caiLich_() {
   var mine = ['chayTatCaTuDong', 'baoCaoNgayTuDong'];
-  ScriptApp.getProjectTriggers().forEach(function (t) {
-    if (mine.indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);
-  });
-  ScriptApp.newTrigger('chayTatCaTuDong').timeBased().everyMinutes(15).create();
-  ScriptApp.newTrigger('baoCaoNgayTuDong').timeBased().atHour(8).everyDays(1).create();
+  var cu = ScriptApp.getProjectTriggers().filter(function (t) { return mine.indexOf(t.getHandlerFunction()) >= 0; });
+  var moi = [];
+  try {
+    moi.push(ScriptApp.newTrigger('chayTatCaTuDong').timeBased().everyMinutes(15).create());
+    moi.push(ScriptApp.newTrigger('baoCaoNgayTuDong').timeBased().atHour(8).everyDays(1).create());
+  } catch (e) {
+    moi.forEach(function (t) { try { ScriptApp.deleteTrigger(t); } catch (e2) { /* bỏ qua */ } });
+    throw e;
+  }
+  cu.forEach(function (t) { ScriptApp.deleteTrigger(t); });
 }
 
 // ---- Điểm vào của trigger và menu (tên không có "_" để chọn được ở menu/trigger) ----
@@ -916,7 +992,7 @@ function chayThu() {
 
 function caiLichTuDong() {
   caiLich_();
-  SpreadsheetApp.getUi().alert('Đã cài lịch: gộp mỗi 15 phút, tin tóm tắt lúc 8:00 mỗi ngày.');
+  SpreadsheetApp.getUi().alert('Đã cài lịch: gộp mỗi 15 phút, tin tóm tắt khoảng 8-9 giờ mỗi ngày.');
 }
 
 function onOpen() {

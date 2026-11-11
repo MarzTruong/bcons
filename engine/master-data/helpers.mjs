@@ -23,7 +23,7 @@ export const plain = (x) => (x === undefined ? undefined : JSON.parse(JSON.strin
 // hooks.waitLockError = true làm waitLock ném lỗi.
 export function fakeSheets(spec = {}) {
   const calls = { fetch: [], lock: [], writes: [], openById: [] };
-  const hooks = { onWrite: null, onRead: null, waitLockError: false, lockBusy: false, fetchError: false, fetchCode: 200 };
+  const hooks = { onWrite: null, onRead: null, waitLockError: false, lockBusy: false, triggerFail: null, fetchError: false, fetchCode: 200 };
   const props = { ...(spec.props || {}) };
   let lockHeld = false;
   const ui = { menus: [], alerts: [] };
@@ -247,6 +247,7 @@ export function fakeSheets(spec = {}) {
             },
           }),
           create() {
+            if (hooks.triggerFail === fn) throw new Error("Không tạo được trigger");
             triggers.push(t);
             return t;
           },

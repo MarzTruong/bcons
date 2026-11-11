@@ -1163,7 +1163,7 @@ test("chayTatCa_: đúng một dòng NhatKy: giờ ISO, nguồn, số đọc, m�
   assert.equal(moi, r.landing.moi + r.crm.moi);
   assert.equal(trung, r.landing.trung + r.crm.trung);
   assert.equal(loi, r.landing.loi + r.crm.loi + r.phanBo.masterLoi.length);
-  assert.match(String(ghiChu), /^chua=\d+ chan=\d+ tuchoi=\d+ khong=\d+$/);
+  assert.match(String(ghiChu), /^chua=\d+ chan=\d+ tuchoi=\d+ khong=\d+ vao=\d+ ms=\d+$/);
 });
 
 test("chayTatCa_: nguồn 'Gộp ngay' được ghi đúng; mặc định 'Tự động'", () => {
@@ -1259,7 +1259,6 @@ test("errorClass_: ánh xạ thông báo lỗi sang mã cố định, lỗi lạ
   assert.equal(c(new Error("Sheet landing X không có tab Landing.")), "LOI_TAB");
   assert.equal(c(new Error("Không lấy được khóa")), "LOI_KHOA");
   assert.equal(c(new Error("Lock timeout: Could not obtain lock after 10000 milliseconds")), "LOI_KHOA");
-  assert.equal(c(new Error("Service invoked too many times")), "LOI_KHAC");
   assert.equal(c("chuỗi"), "LOI_KHAC");
   assert.equal(c(null), "LOI_KHAC");
   assert.equal(c(undefined), "LOI_KHAC");
@@ -1359,22 +1358,83 @@ test("báo lỗi lặp: cùng loại lỗi trong 6 giờ chỉ gửi một tin; 
   assert.equal(F.calls.fetch.length, 2);
 });
 
-test("báo lỗi lặp: lỗi đổi loại thì gửi ngay; chạy thành công xong rồi lỗi lại thì gửi lại", () => {
+test("báo lỗi lặp: lỗi đổi loại thì gửi ngay; sạch >= 1 giờ rồi lỗi lại thì gửi lại", () => {
   const { F, ctx } = full();
   const at = (min) => ({ now: new Date(NOW.getTime() + min * 60000) });
   F.hooks.onRead = () => { throw new Error("Lock timeout"); };
   assert.equal(runAll(ctx, at(0)).loi, "LOI_KHOA");
   assert.equal(F.calls.fetch.length, 1);
   F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
-  assert.equal(runAll(ctx, at(1)).loi, "LOI_KHAC");
+  assert.equal(runAll(ctx, at(1)).loi, "LOI_HAN_MUC");
   assert.equal(F.calls.fetch.length, 2);
   runAll(ctx, at(2));
   assert.equal(F.calls.fetch.length, 2, "cùng loại, chưa đủ 6 giờ");
   F.hooks.onRead = null;
   assert.equal(runAll(ctx, at(3)).loi, "");
+  assert.equal(runAll(ctx, at(70)).loi, ""); // đã sạch >= 1 giờ kể từ lần sạch đầu
   F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
-  runAll(ctx, at(4));
-  assert.equal(F.calls.fetch.length, 3, "sau một lần chạy tốt, lỗi lại phải báo lại");
+  runAll(ctx, at(71));
+  assert.equal(F.calls.fetch.length, 3, "sạch đủ lâu rồi lỗi lại phải báo lại");
+});
+
+test("báo lỗi chập chờn: lỗi, ổn, lỗi, ổn trong vòng một giờ -> chỉ MỘT tin; lỗi quay lại thì mốc 'sạch' bị đặt lại", () => {
+  const { F, ctx } = full();
+  const at = (min) => ({ now: new Date(NOW.getTime() + min * 60000) });
+  const bad = () => { F.hooks.onRead = () => { throw new Error("Service invoked too many times"); }; };
+  const good = () => { F.hooks.onRead = null; };
+  bad(); runAll(ctx, at(0));
+  good(); runAll(ctx, at(15));
+  bad(); runAll(ctx, at(30));
+  good(); runAll(ctx, at(45));
+  bad(); runAll(ctx, at(60));
+  assert.equal(F.calls.fetch.length, 1);
+  // lỗi tại phút 60 đã đặt lại mốc sạch: sạch phút 75 và 120 (chỉ 45 phút) chưa đủ xóa, lỗi phút 121 vẫn bị nén
+  good(); runAll(ctx, at(75)); runAll(ctx, at(120));
+  bad(); runAll(ctx, at(121));
+  assert.equal(F.calls.fetch.length, 1);
+});
+
+test("báo lỗi lặp: khóa chống lặp theo loại, không theo danh sách mã dự án (LOI_MASTER đổi mã vẫn một tin)", () => {
+  const { F, ctx } = full();
+  ctx.baoLoi_("LOI_MASTER bcons-aaa, bcons-bbb", 2, NOW, "LOI_MASTER");
+  ctx.baoLoi_("LOI_MASTER bcons-aaa", 1, new Date(NOW.getTime() + 60000), "LOI_MASTER");
+  assert.equal(F.calls.fetch.length, 1);
+});
+
+test("LOI_MASTER qua chayTatCa_: tập mã hỏng thay đổi giữa hai lần chạy vẫn chỉ một tin", () => {
+  const khach = [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Trần Thị Crm", DongYNhanTin: "Không", DuAnQuanTam: "bcons-newsky" })];
+  const cau = [CAU_HINH, ["bcons-newsky", "L1", "M1"], ["bcons-aaa", "", "M2"], ["bcons-bbb", "", "M3"]];
+  const { F, ctx } = full({ khach, landingRows: [], crmRows: [], cauHinh: cau, byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  assert.deepEqual(runAll(ctx).phanBo.masterLoi, ["bcons-aaa", "bcons-bbb"]);
+  F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("CauHinh").getRange(4, 3, 1, 1).setValues([["M1"]]);
+  assert.deepEqual(runAll(ctx, { now: new Date(NOW.getTime() + 15 * 60000) }).phanBo.masterLoi, ["bcons-aaa"]);
+  assert.equal(F.calls.fetch.length, 1);
+});
+
+test("Telegram trả 401/429/500 (muteHttpExceptions không ném): KHÔNG đặt cờ chống lặp, lần lỗi sau thử gửi lại; 200 thì đặt cờ", () => {
+  for (const code of [401, 429, 500, 400, 302]) {
+    const { F, ctx } = full({ landingId: SECRET_ID, byId: { M1: {} } });
+    F.hooks.fetchCode = code;
+    runAll(ctx);
+    assert.equal(F.props.MD_BAO_LOI_CUOI, undefined, "mã " + code);
+    runAll(ctx, { now: new Date(NOW.getTime() + 60000) });
+    assert.equal(F.calls.fetch.length, 2, "mã " + code);
+    F.hooks.fetchCode = 200;
+    runAll(ctx, { now: new Date(NOW.getTime() + 120000) });
+    assert.match(F.props.MD_BAO_LOI_CUOI, /^LOI_DOC_SHEET\|\d+$/);
+    assert.equal(F.calls.fetch.length, 3);
+    runAll(ctx, { now: new Date(NOW.getTime() + 180000) });
+    assert.equal(F.calls.fetch.length, 3, "đã gửi được thì nén");
+  }
+});
+
+test("sendTelegram_: chỉ true khi mã trả về đúng 200", () => {
+  const { F, ctx } = full();
+  assert.equal(ctx.sendTelegram_("x"), true);
+  for (const c of [201, 204, 401, 500]) {
+    F.hooks.fetchCode = c;
+    assert.equal(ctx.sendTelegram_("x"), false, String(c));
+  }
 });
 
 test("hai lần chạy chồng: lần hai (gọi lại lúc lần một đang đọc) thoát lặng lẽ skipped:true, không ghi, không báo", () => {
@@ -1420,7 +1480,7 @@ test("khóa luôn được nhả (thành công và khi lỗi), và lần chạy 
 
 test("ghi NhatKy hỏng giữa chừng không ném ra ngoài chayTatCa_: trả LOI_KHAC và báo một tin", () => {
   const { F, ctx } = full();
-  F.hooks.onWrite = (i) => { if (i.sheet === "NhatKy" && i.method === "setValues" && i.row > 1) throw new Error("quota"); };
+  F.hooks.onWrite = (i) => { if (i.sheet === "NhatKy" && i.method === "setValues" && i.row > 1) throw new Error("hỏng bất ngờ"); };
   const r = runAll(ctx);
   assert.equal(r.loi, "LOI_KHAC");
   assert.equal(tgTexts(F).length, 1);
@@ -1507,7 +1567,7 @@ test("hàm điểm vào của trigger tồn tại", () => {
 
 test("baoCaoNgayTuDong: lỗi khi đọc -> báo loại lỗi, không ném", () => {
   const { F, ctx } = full();
-  F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
+  F.hooks.onRead = () => { throw new Error("Boom"); };
   assert.doesNotThrow(() => ctx.baoCaoNgayTuDong());
   const t = tgTexts(F);
   assert.equal(t.length, 1);
@@ -1603,4 +1663,217 @@ test("baoLoi_: kho thuộc tính script hỏng (ném lỗi) cũng không làm n�
   ctx.PropertiesService = { getScriptProperties: () => { throw new Error("hỏng"); } };
   assert.doesNotThrow(() => ctx.baoLoi_("LOI_KHAC", 1));
   assert.doesNotThrow(() => ctx.sendTelegram_("x"));
+});
+
+// ---------------- Task 9 (sửa theo review) ----------------
+const days = (n) => new Date(NOW.getTime() + n * 86400000);
+const idleFull = () => full({ landingRows: [], crmRows: [], khach: [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Khach Cu", DongYNhanTin: "Có", DuAnQuanTam: "bcons-newsky" })], byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+
+test("chạy rảnh (không có gì): không ghi NhatKy, trừ một dòng nhịp mỗi ngày giờ VN", () => {
+  const { F, ctx } = idleFull();
+  runAll(ctx); // lần đầu có phân bổ khách vào M1 -> không rảnh
+  const rows0 = nhatKy(F).length;
+  const r1 = runAll(ctx, { now: new Date(NOW.getTime() + 15 * 60000) });
+  assert.equal(r1.loi, "");
+  const nk = nhatKy(F);
+  assert.equal(nk.length, rows0 + 1, "nhịp đầu tiên trong ngày");
+  assert.equal(nk[nk.length - 1][6], "nhịp: đang chạy, không có gì mới");
+  assert.deepEqual(nk[nk.length - 1].slice(2, 6), [0, 0, 0, 0]);
+  runAll(ctx, { now: new Date(NOW.getTime() + 30 * 60000) });
+  runAll(ctx, { now: new Date(NOW.getTime() + 45 * 60000) });
+  assert.equal(nhatKy(F).length, rows0 + 1, "cùng ngày VN chỉ một dòng nhịp");
+  // 11/11 08:00 VN; +16h = 12/11 00:00 VN: ngày mới
+  runAll(ctx, { now: new Date(NOW.getTime() + 16 * 3600 * 1000) });
+  assert.equal(nhatKy(F).length, rows0 + 2, "sang ngày VN mới có thêm một dòng nhịp");
+  runAll(ctx, { now: new Date(NOW.getTime() + 16 * 3600 * 1000 + 60000) });
+  assert.equal(nhatKy(F).length, rows0 + 2);
+  assert.equal(F.props.MD_NHIP_NGAY, "2026-11-12");
+});
+
+test("ngày nhịp tính theo giờ Việt Nam, không theo UTC: 16:59Z và 17:00Z (cùng ngày UTC) là hai ngày VN", () => {
+  const { F, ctx } = idleFull();
+  runAll(ctx, { now: new Date("2026-11-10T00:00:00.000Z") });
+  const n0 = nhatKy(F).length;
+  runAll(ctx, { now: new Date("2026-11-10T16:59:00.000Z") });
+  assert.equal(nhatKy(F).length, n0 + 1); // 10/11 23:59 VN, nhịp của 10/11 (khác ngày của lần chạy đầu? cùng 10/11)
+  runAll(ctx, { now: new Date("2026-11-10T17:00:00.000Z") });
+  assert.equal(nhatKy(F).length, n0 + 2); // 11/11 00:00 VN
+});
+
+test("lần chạy chỉ chuyển khách (dayVao > 0) KHÔNG phải rảnh: luôn ghi NhatKy với vao=", () => {
+  const { F, ctx } = idleFull();
+  const r = runAll(ctx);
+  assert.ok(r.phanBo.dayVao["bcons-newsky"] > 0);
+  assert.equal(r.landing.doc + r.crm.doc, 0);
+  const nk = nhatKy(F);
+  assert.equal(nk.length, 2);
+  assert.match(nk[1][6], /vao=1 /);
+  assert.notEqual(nk[1][6], "nhịp: đang chạy, không có gì mới");
+});
+
+test("mỗi mục làm lần chạy thành không rảnh: đọc, mới, trùng, lỗi, chặn, chưa phân, tuchoi, khong", () => {
+  // landing có một dòng lỗi (loi) và một mới
+  let e = full({ landingRows: [leadRow({ ten: "Ten A", sdt: "0900000005", badPhone: "12345" })], crmRows: [] });
+  runAll(e.ctx);
+  const n = nhatKy(e.F).length;
+  assert.equal(n, 2);
+  // sau lần đầu, các lần sau rảnh: chỉ nhịp
+  e = idleFull();
+  runAll(e.ctx); runAll(e.ctx, { now: new Date(NOW.getTime() + 60000) });
+  const base = nhatKy(e.F).length;
+  // rút lại -> chan > 0
+  e.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang").getRange(2, KHACH_COLS.indexOf("DongYNhanTin") + 1, 1, 1).setValues([["Không"]]);
+  const r = runAll(e.ctx, { now: new Date(NOW.getTime() + 120000) });
+  assert.ok(r.phanBo.chan >= 1);
+  assert.equal(nhatKy(e.F).length, base + 1);
+  assert.match(nhatKy(e.F)[base][6], /khong=1/);
+});
+
+test("MD_CHAY_CUOI được ghi mỗi lần chạy (kể cả rảnh, lỗi), không ghi khi dryRun hoặc bị bỏ qua", () => {
+  const { F, ctx } = idleFull();
+  runAll(ctx, { now: new Date(NOW.getTime() + 1000) });
+  assert.equal(F.props.MD_CHAY_CUOI, String(NOW.getTime() + 1000));
+  runAll(ctx, { now: new Date(NOW.getTime() + 2000) }); // rảnh
+  assert.equal(F.props.MD_CHAY_CUOI, String(NOW.getTime() + 2000));
+  runAll(ctx, { now: new Date(NOW.getTime() + 3000), dryRun: true });
+  assert.equal(F.props.MD_CHAY_CUOI, String(NOW.getTime() + 2000));
+  F.hooks.lockBusy = true;
+  runAll(ctx, { now: new Date(NOW.getTime() + 4000) });
+  assert.equal(F.props.MD_CHAY_CUOI, String(NOW.getTime() + 2000));
+  F.hooks.lockBusy = false;
+  const bad = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  runAll(bad.ctx, { now: new Date(NOW.getTime() + 5000) });
+  assert.equal(bad.F.props.MD_CHAY_CUOI, String(NOW.getTime() + 5000));
+});
+
+test("ghi chú NhatKy có ms= (thời gian chạy theo đồng hồ chèn vào)", () => {
+  const { F, ctx } = full();
+  let t = 1000;
+  runAll(ctx, { clock: () => (t += 250) });
+  assert.match(nhatKy(F)[1][6], / ms=\d+$/);
+  assert.ok(Number(/ms=(\d+)/.exec(nhatKy(F)[1][6])[1]) >= 250);
+});
+
+test("baoCaoNgay_: thêm 'Lần chạy cuối: N phút trước' từ MD_CHAY_CUOI; thiếu thì bỏ câu", () => {
+  const { F, ctx } = baoCaoFixture();
+  assert.ok(!ctx.baoCaoNgay_({ now: NOW }).includes("Lần chạy cuối"));
+  F.props.MD_CHAY_CUOI = String(NOW.getTime() - 7 * 60000 - 20000);
+  assert.ok(ctx.baoCaoNgay_({ now: NOW }).endsWith(" Lần chạy cuối: 7 phút trước."));
+  F.props.MD_CHAY_CUOI = String(NOW.getTime() + 5000); // đồng hồ lệch
+  assert.ok(ctx.baoCaoNgay_({ now: NOW }).endsWith(" Lần chạy cuối: 0 phút trước."));
+  F.props.MD_CHAY_CUOI = "rác";
+  assert.ok(!ctx.baoCaoNgay_({ now: NOW }).includes("Lần chạy cuối"));
+});
+
+test("errorClass_: bảng thông báo kiểu thật -> mã", () => {
+  const { ctx } = full();
+  const T = [
+    ["Exception: Authorization is required to perform that action.", "LOI_QUYEN"],
+    ["Exception: You do not have permission to call SpreadsheetApp.openById. Required permissions: https://www.googleapis.com/auth/spreadsheets", "LOI_QUYEN"],
+    ["Exception: You do not have permission to access the requested document.", "LOI_DOC_SHEET"],
+    ["Exception: Requested entity was not found.", "LOI_DOC_SHEET"],
+    ["Exception: Unexpected error while getting the method or property openById on object SpreadsheetApp.", "LOI_DOC_SHEET"],
+    ["Không mở được Sheet: abc", "LOI_DOC_SHEET"],
+    ["Exception: Service Spreadsheets failed while accessing document with id 1AbC.", "LOI_DOC_SHEET"],
+    ["Exception: Range not found", "LOI_TAB"],
+    ["Tab NhapCRM thiếu cột DaGop.", "LOI_TAB"],
+    ["Exception: Lock timeout: Could not obtain lock after 10000 milliseconds.", "LOI_KHOA"],
+    ["Không lấy được khóa", "LOI_KHOA"],
+    ["Exception: Service invoked too many times for one day: urlfetch.", "LOI_HAN_MUC"],
+    ["Exception: Service invoked too many times in a short time: exec qps. Try Utilities.sleep(1000) between calls.", "LOI_HAN_MUC"],
+    ["Exception: Quota exceeded for this service", "LOI_HAN_MUC"],
+    ["Exception: Service Spreadsheets timed out while accessing document with id 1AbC", "LOI_HET_GIO"],
+    ["Exceeded maximum execution time", "LOI_HET_GIO"],
+    ["TypeError: Cannot read properties of undefined (reading 'getRange')", "LOI_KHAC"],
+    ["Block", "LOI_KHAC"],
+    ["Sheet 1BlockedXyz bất ngờ", "LOI_KHAC"],
+  ];
+  for (const [m, want] of T) assert.equal(ctx.errorClass_(new Error(m)), want, m);
+  assert.equal(ctx.errorClass_(new TypeError("x is not a function")), "LOI_KHAC");
+});
+
+test("giới hạn thời gian: quá 270000 ms giữa các bước -> dừng, không chạy bước tiếp, NhatKy có LOI_HET_GIO, một tin", () => {
+  const mk = (seq) => { let i = 0; return () => seq[Math.min(i++, seq.length - 1)]; };
+  // sau bước 1
+  let e = full();
+  let r = runAll(e.ctx, { clock: mk([0, 270001]) });
+  assert.equal(r.loi, "LOI_HET_GIO");
+  assert.ok(r.landing);
+  assert.equal(r.crm, undefined);
+  assert.equal(r.phanBo, undefined);
+  assert.equal(e.F.values(null, "KhachHang").length, 3, "bước 2 không ghi khách CRM (chỉ khách mới của landing)");
+  assert.match(nhatKy(e.F)[1][6], /LOI_HET_GIO/);
+  assert.equal(tgTexts(e.F).length, 1);
+  assert.match(tgTexts(e.F)[0], /LOI_HET_GIO/);
+  // sau bước 2: bước 3 không chạy
+  e = full();
+  r = runAll(e.ctx, { clock: mk([0, 100, 400000]) });
+  assert.equal(r.loi, "LOI_HET_GIO");
+  assert.ok(r.crm);
+  assert.equal(r.phanBo, undefined);
+  assert.ok(!e.F.calls.openById.includes("M1"));
+  // đúng 270000 chưa quá
+  e = full();
+  r = runAll(e.ctx, { clock: mk([0, 270000, 270000, 270000]) });
+  assert.equal(r.loi, "");
+  assert.ok(r.phanBo);
+});
+
+test("giới hạn thời gian: dryRun không ghi NhatKy, không báo", () => {
+  const { F, ctx } = full();
+  let i = 0;
+  const r = runAll(ctx, { dryRun: true, clock: () => (i++ === 0 ? 0 : 999999) });
+  assert.equal(r.loi, "LOI_HET_GIO");
+  assert.equal(F.calls.fetch.length, 0);
+  assert.equal(F.values(null, "NhatKy"), null);
+});
+
+test("caiLich_: tạo trigger mới TRƯỚC rồi xóa cũ; newTrigger lỗi thì trigger cũ còn nguyên và không để sót trigger mới", () => {
+  for (const failFn of ["chayTatCaTuDong", "baoCaoNgayTuDong"]) {
+    const { F, ctx } = full();
+    ctx.ScriptApp.newTrigger("chayTatCaTuDong").timeBased().everyMinutes(30).create();
+    ctx.ScriptApp.newTrigger("baoCaoNgayTuDong").timeBased().atHour(3).everyDays(1).create();
+    const olds = F.triggers.slice();
+    F.hooks.triggerFail = failFn;
+    assert.throws(() => ctx.caiLich_());
+    assert.equal(F.triggers.length, 2, failFn);
+    assert.deepEqual(F.triggers.map((t) => t.id), olds.map((t) => t.id), failFn);
+    F.hooks.triggerFail = null;
+    ctx.caiLich_();
+    assert.equal(F.triggers.length, 2);
+    assert.ok(F.triggers.every((t) => !olds.includes(t)));
+  }
+});
+
+test("caiLichTuDong: lời báo nói tin tóm tắt khoảng 8-9 giờ", () => {
+  const e = full();
+  e.ctx.caiLichTuDong();
+  assert.match(e.F.ui.alerts[0], /khoảng 8-9 giờ/);
+});
+
+test("mã dự án trong tin báo: chỉ mã đúng dạng ^[a-z][a-z0-9-]{2,39}$; còn lại hiện 'mã lạ'", () => {
+  const { ctx } = full();
+  assert.equal(ctx.maDuAnAnToan_(["bcons-central-park", "Nguyen Van A", "0981234567", "ab", "a".repeat(41), "bcons-newsky", "ChuaPhanDuAn"]), "bcons-central-park, mã lạ, mã lạ, mã lạ, mã lạ, bcons-newsky, ChuaPhanDuAn");
+  assert.equal(ctx.maDuAnAnToan_(["abc"]), "abc");
+  assert.equal(ctx.maDuAnAnToan_(["a" + "b".repeat(39)]), "a" + "b".repeat(39));
+});
+
+test("mã dự án lạ gõ ở CauHinh (tên người) không tới được Telegram", () => {
+  const khach = [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Trần Thị Crm", DongYNhanTin: "Không", DuAnQuanTam: "bcons-newsky" })];
+  const cau = [CAU_HINH, ["bcons-newsky", "L1", "M1"], ["Nguyễn Văn Kín", "", "M2"]];
+  const { F, ctx } = full({ khach, landingRows: [], crmRows: [], cauHinh: cau, byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  const r = runAll(ctx);
+  assert.equal(r.loi, "LOI_MASTER");
+  assert.ok(!tgTexts(F)[0].includes("Nguyễn"));
+  assert.match(tgTexts(F)[0], /mã lạ/);
+});
+
+test("lần chạy chỉ đưa khách vào ChuaPhanDuAn (chua > 0, vao = 0) không phải rảnh", () => {
+  const { F, ctx } = full({ landingRows: [], crmRows: [], khach: [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Khach Cu", DuAnQuanTam: "" })], byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  const r = runAll(ctx);
+  assert.equal(r.phanBo.chua, 1);
+  assert.equal(r.phanBo.dayVao["bcons-newsky"], 0);
+  assert.equal(nhatKy(F).length, 2);
+  assert.match(nhatKy(F)[1][6], /^chua=1 .* vao=0 /);
+  assert.notEqual(nhatKy(F)[1][6], "nhịp: đang chạy, không có gì mới");
 });
