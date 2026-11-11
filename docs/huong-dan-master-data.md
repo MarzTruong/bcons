@@ -1,6 +1,6 @@
 # Master_Data: kho khách tập trung, cài và thử từng cổng
 
-> **Trạng thái:** code đã dựng và test trên máy em (11/11/2026), **chưa cài lên Sheet thật nào**. Anh đi lần lượt G1 đến G6, mỗi cổng xong thì nhắn em "OK" hoặc "Dừng". Thiết kế: `superpowers/specs/2026-11-11-master-data-khach-hang-design.md`.
+> **Trạng thái:** code đã dựng và test trên máy em (11/11/2026), gồm cả đồng ý theo từng dự án và rút lại giữ hồ sơ, **chưa cài lên Sheet thật nào**. Anh đi lần lượt G1 đến G6, mỗi cổng xong thì nhắn em "OK" hoặc "Dừng". Thiết kế: `superpowers/specs/2026-11-11-master-data-khach-hang-design.md`.
 
 ## Đây là gì
 Khách nằm ở nhiều nơi: tab Landing của Google Sheet, CRM công ty, Masterfile từng dự án. Master_Data là **một Google Sheet riêng tư** gom hết về một chỗ, mỗi khách đúng một dòng (khóa là SĐT), rồi chép sang một Sheet nhỏ `Master_<mã dự án>` cho từng dự án.
@@ -9,8 +9,8 @@ Luồng, nói bằng lời:
 1. Khách điền landing, vào tab Landing như hiện nay (Telegram vẫn báo như cũ).
 2. Cứ 15 phút, Master_Data tự đọc các dòng Landing chưa gộp (cột **Đã gộp** trống), chuẩn hóa SĐT, gộp khách trùng.
 3. Khách CRM thì anh gõ tay vào tab `NhapCRM`, hệ thống gộp chung.
-4. Mỗi khách được chép (một chiều, không ghi ngược) sang tab `KhachTuMaster` của `Master_<mã>` đúng dự án họ quan tâm. Chưa rõ dự án thì vào tab `ChuaPhanDuAn` để anh gán.
-5. Khách xin rút lại thì anh ghi SĐT vào tab `TuChoi`; lần chạy sau hệ thống xóa khách khỏi mọi `Master_<mã>` và xóa thông tin cá nhân ở `KhachHang`.
+4. Mỗi khách được chép (một chiều, không ghi ngược) sang tab `KhachTuMaster` của `Master_<mã>` đúng dự án họ quan tâm. Khách chưa có mã dự án thì nằm lại ở `KhachHang`, anh gõ mã vào ô `DuAnQuanTam` của khách đó là xong.
+5. Đồng ý nhận tin được lưu **theo từng dự án**. Khách xin rút lại thì anh ghi vào tab `TuChoi`: loại `Rút lại` (mặc định) chỉ đổi trạng thái thành "Đã rút lại" và giữ hồ sơ, loại `Xóa` mới xóa dữ liệu. Khách rút lại mà điền lại form thì hệ thống tự mở nhắn lại cho đúng dự án họ vừa đồng ý.
 
 Hệ thống chạy trên máy chủ Google (Apps Script, đoạn chương trình nhỏ gắn vào Sheet, như macro Excel nhưng chạy trên mạng), không cần máy anh mở.
 
@@ -34,10 +34,10 @@ Thuật ngữ dùng trong bài: **Sheet id** = đoạn chữ dài giữa `/d/` v
    - `maDuAn`: mã dự án như `bcons-central-park`, `bcons-newsky` (chữ thường, gạch ngang, đúng mã trong `du-an/`).
    - `landingSheetId`: Sheet id của Sheet có tab **Landing** mà landing dự án đó ghi vào. **Anh đã chọn (11/11/2026) chạy G4 trên Sheet thật, nên điền id Sheet thật "Bcons - Khach quan tam Messenger"** (chỉ điền sau khi xong G2; trước G4 phải làm **Bước 0** bên dưới). G3 "Chạy thử" chỉ đọc, không ghi gì vào Sheet thật. Muốn an toàn hơn thì điền tạm id bản sao `Landing (thử)` (anh tạo ở G2 bước 1) cho tới khi qua G5. Central Park và Newsky dùng chung một Sheet landing, nên hai dòng điền cùng một id (hệ thống tự bỏ trùng, không đọc hai lần). Dự án nào landing không ghi vào Sheet nào thì để trống ô này.
    - Nhớ: bấm **Gộp ngay** sẽ ghi mã khách `KH-...` (hoặc `LOI`) vào cột S **Đã gộp** của Sheet landing nào đang có trong `CauHinh`. Muốn làm lại từ đầu thì xóa cột S của Sheet landing đó (khách khớp theo SĐT nên không bị nhân đôi).
-   - `masterSheetId`: Sheet id của `Master_<mã> (thử)` dự án đó. Để trống thì dự án đó không được phân bổ và khách của nó rơi vào `ChuaPhanDuAn`.
+   - `masterSheetId`: Sheet id của `Master_<mã> (thử)` dự án đó. Để trống thì dự án đó không được phân bổ (khách vẫn ở `KhachHang`, không mất).
    - Cách lấy Sheet id: mở Sheet đó, nhìn thanh địa chỉ `https://docs.google.com/spreadsheets/d/`**`1AbC...xyz`**`/edit`, chép đoạn in đậm.
    - Phải có ít nhất một `landingSheetId`, nếu không lần chạy báo lỗi `LOI_TAB`.
-10. Các tab còn lại (`KhachHang`, `NhapCRM`, `Loi`, `ChuaPhanDuAn`, `TuChoi`, `NhatKy`) tự được tạo ở lần **ghi** đầu tiên (G4). Ở "Chạy thử" thì chúng chưa cần có.
+10. Các tab còn lại (`KhachHang`, `NhapCRM`, `Loi`, `TuChoi`, `NhatKy`) tự được tạo ở lần **ghi** đầu tiên (G4). Ở "Chạy thử" thì chúng chưa cần có.
 
 **Cấp quyền lần đầu:** lần đầu bấm một mục trong menu Master_Data, Google hỏi quyền. Chọn tài khoản của anh. Có thể hiện màn **"Google chưa xác minh ứng dụng này" (Google hasn't verified this app)**: bình thường vì đây là script anh tự dán, không phải ứng dụng công khai. Bấm **Nâng cao (Advanced)** → **Đi tới ... (không an toàn) (Go to ... (unsafe))** → **Cho phép (Allow)**. Xong thì bấm lại mục menu vừa rồi (lần đầu có thể chỉ cấp quyền chứ chưa chạy). Cách hiện màn này giống Bước 2 của landing; riêng script Master_Data chưa kiểm trên Google thật.
 
@@ -53,14 +53,14 @@ Bản `Code.gs` mới của landing thêm hai cột cuối: **Dự án** (cột 
 6. Nếu tab Landing của bản sao còn tiêu đề cũ 17 cột: script **tự sửa hàng tiêu đề ở lần khách kế tiếp** (thêm `Dự án`, `Đã gộp`). Anh muốn chắc ngay thì gõ tay `Dự án` vào ô R1 và `Đã gộp` vào ô S1.
 7. **Anh nói "OK G2"** thì mới làm bước thật: trong Sheet thật, Apps Script → dán đè `Code.gs` mới → Lưu → **Triển khai → Quản lý bản triển khai (Manage deployments) → ✏️ → Phiên bản: Phiên bản mới (New version) → Triển khai**. **Không** tạo "Bản triển khai mới" (sẽ ra link khác, landing không gửi tới được); link `/exec` phải giữ nguyên. Sau đó gõ `Dự án` vào R1 và `Đã gộp` vào S1 của Sheet thật (nếu chưa có), vì G3 cần cột `Đã gộp` có sẵn.
 8. Lưu ý: mã dự án trong landing đã được đẩy lên GitHub; Cloudflare sẽ gửi `duAn` sau lần build kế tiếp của trang (trước đó dòng mới vẫn có thể thiếu mã). Newsky đã gửi mã dự án từ trước.
-9. Khách **đến trước lúc thay `Code.gs` ở bước 7** có cột `Dự án` trống nên sẽ hiện ở `ChuaPhanDuAn`: anh gõ `GanDuAn` cho từng người đó. (Có nên để em tự đoán dự án cho khách cũ hay không là quyết định của anh, em chưa làm.)
+9. Khách **đến trước lúc thay `Code.gs` ở bước 7** có cột `Dự án` trống, nên sau khi gộp họ nằm ở `KhachHang` với ô `DuAnQuanTam` trống và `DongYNhanTin` = `Chưa rõ` (chưa biết họ đồng ý cho dự án nào, nên chưa nhắn được). Anh gõ mã dự án (vd `bcons-central-park`) vào ô `DuAnQuanTam` của từng người đó để họ được chép sang `Master_<mã>` đúng dự án; muốn nhắn họ thì cần họ đồng ý lại qua form. (Có nên để em tự đoán dự án cho khách cũ hay không là quyết định của anh, em chưa làm.)
 
 ## G3. Chạy thử, không ghi gì
 1. Mở `Master_Data (thử)` → menu **Master_Data → Chạy thử (không ghi)**. Chờ hộp thoại (vài giây đến một phút).
 2. Đọc hộp thoại:
    - **Landing: đọc / mới / trùng / lỗi**: đọc = số dòng Landing chưa gộp; mới = khách chưa có trong KhachHang; trùng = khách cùng SĐT với người đã có (hoặc xuất hiện hai lần trong cùng lượt); lỗi = SĐT sai dạng.
    - **CRM: đọc / mới / trùng / lỗi**: như trên, với tab NhapCRM (chưa có tab thì đọc 0).
-   - **Phân bổ: vào dự án / chưa phân (chua) / rút lại (chan) / Master lỗi**: vào dự án = số lượt khách được thêm mới hoặc cập nhật vào các `Master_<mã>` (một khách ở hai dự án tính hai lượt; khách đã có mà có thay đổi cũng tính); chưa phân = số vào `ChuaPhanDuAn`; rút lại = số dòng khách sẽ bị xóa vì nằm trong `TuChoi` hoặc bị gõ `Không`.
+   - **Phân bổ: vào dự án / chưa có mã dự án / rút lại / đồng ý lại / xóa / Master lỗi**: vào dự án = số lượt khách được thêm mới hoặc cập nhật vào các `Master_<mã>` (một khách ở hai dự án tính hai lượt; khách đã có mà có thay đổi cũng tính); chưa có mã dự án = số khách ở `KhachHang` có SĐT mà ô `DuAnQuanTam` trống hoặc không có mã hợp lệ (họ chỉ nằm yên ở `KhachHang`, không bị mất); rút lại = số khách **mới** được đổi sang "Đã rút lại" (hồ sơ giữ nguyên); đồng ý lại = số khách đã rút lại mà vừa điền lại form nên được mở nhắn lại; xóa = số khách bị xóa dữ liệu vì dòng `TuChoi` loại `Xóa`.
    - **Lưu ý:** chạy thử không ghi gì nên bước Phân bổ chỉ nhìn các khách **đã có sẵn** trong `KhachHang`. Lần đầu, `KhachHang` còn trống nên Phân bổ sẽ là 0; đó là bình thường, số thật xuất hiện sau khi ghi (G4).
 3. Anh so với đời thực: số **mới** của Landing có khớp số dòng thật trong tab Landing chưa có chữ ở cột Đã gộp (với trường hợp SĐT trùng nhau thì mới nhỏ hơn đọc); số **lỗi** thì mở tab Landing xem các SĐT sai. Số khách CRM thì so với danh sách anh gõ ở NhapCRM nếu đã gõ.
 4. Nếu dòng cuối hộp thoại có `Lỗi: LOI_...`, xem bảng dưới.
@@ -72,9 +72,10 @@ Bản `Code.gs` mới của landing thêm hai cột cuối: **Dự án** (cột 
 | `LOI_DOC_SHEET` | Không mở được một Sheet (sai id, không có quyền, bị xóa) | Kiểm lại id trong `CauHinh`, tài khoản của anh phải mở được Sheet đó |
 | `LOI_TAB` | Thiếu tab hoặc thiếu cột (vd tab Landing không có cột `Đã gộp`, NhapCRM thiếu cột, `CauHinh` thiếu), **hoặc tab `KhachTuMaster` của một `Master_<mã>` có tiêu đề sai/không mở được** (cột A..L phải đúng chữ như ở G1) | Thêm hoặc sửa tiêu đề cột đúng chữ |
 | `LOI_DONG` | Một lần chạy có **từ 5 dòng khách trở lên** bị lỗi (SĐT sai ở Landing + NhapCRM); ít hơn 5 thì chỉ ghi tab `Loi`, không báo Telegram | Mở tab `Loi`, sửa SĐT ở nguồn, xóa chữ `LOI` để thử lại |
+| `LOI_TUCHOI` | Có một dòng sai trong tab `TuChoi`: SĐT gõ sai dạng, hoặc `NgayGhi` ở tương lai (quá một ngày sau hôm nay). Báo ngay từ dòng đầu tiên vì đây là yêu cầu của khách. Dòng đó **chưa có tác dụng** cho tới khi sửa | Mở tab `Loi` xem số dòng của `TuChoi`, sửa SĐT hoặc ngày. Loại yêu cầu lạ và `Không rõ` chỉ ghi ở `Loi`, không báo Telegram |
 | `LOI_HAN_MUC` | Chạm hạn mức của Google | Chờ rồi chạy lại |
 | `LOI_HET_GIO` | Lần chạy quá lâu, dừng sạch giữa chừng | Chạy lại, lần sau làm tiếp phần còn lại |
-| `LOI_MASTER` | Một `Master_<mã>` không mở được hoặc không xóa được dòng (chỉ báo khi có khách rút lại) | Kiểm id và tiêu đề tab `KhachTuMaster` của dự án đó; `KhachHang` được giữ nguyên, lần sau làm lại |
+| `LOI_MASTER` | Một `Master_<mã>` không mở được lúc phân bổ, hoặc không xóa được dòng khi có yêu cầu `Xóa`. Khi đó hệ thống không chép khách mới sang dự án đó; việc rút lại vẫn được đánh dấu ở `KhachHang` và ở các Master mở được | Kiểm id và tiêu đề tab `KhachTuMaster` của dự án đó; lần sau hệ thống tự làm tiếp |
 | `LOI_KHAC` | Lỗi chưa phân loại | Gửi em mã lỗi và việc anh vừa làm |
 
 Các mã này em phân loại dựa vào chữ trong thông báo lỗi của Google, **chưa kiểm với dịch vụ Google thật**: có thể một lỗi rơi nhầm vào `LOI_KHAC` hoặc mã gần nghĩa. Hộp thoại và tin Telegram chỉ ghi mã, không ghi tên hay SĐT; khi gặp lỗi lạ, anh mở Apps Script → **Thực thi (Executions)** (chưa kiểm tên nút trên giao diện thật), bấm vào lần chạy bị đỏ và **chụp màn hình gửi em**; nguyên nhân thật nằm ở đó (chuỗi giống SĐT đã được che). Nếu lịch tự chạy không khởi động được (ví dụ quyền hết hạn), Google còn gửi email báo lỗi vào tài khoản của anh.
@@ -91,7 +92,7 @@ Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân b
 
 **Hệ thống sẽ ghi những gì khi bấm Gộp ngay:**
 - Trong **Sheet landing thật**: chỉ ghi vào **cột S `Đã gộp`** của các dòng khách chưa có chữ ở cột đó (điền mã `KH-...` hoặc `LOI`). **Không sửa** tên, SĐT hay cột nào khác, và không xóa dòng nào.
-- Trong **`Master_Data`**: tạo các tab còn thiếu (`KhachHang`, `NhapCRM`, `Loi`, `ChuaPhanDuAn`, `TuChoi`, `NhatKy`) và ghi khách vào đó.
+- Trong **`Master_Data`**: tạo các tab còn thiếu (`KhachHang`, `NhapCRM`, `Loi`, `TuChoi`, `NhatKy`) và ghi khách vào đó.
 - Trong **`Master_<mã>`**: tạo tab `KhachTuMaster` và thêm khách (cột A..L).
 - Telegram: chỉ gửi tin khi có lỗi (không kèm tên/SĐT).
 
@@ -102,24 +103,25 @@ Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân b
 **Anh nói "OK G4" (và đã làm Bước 0) thì em mới hướng dẫn bấm.** Chưa có chữ "OK G4" thì anh không bấm Gộp ngay.
 1. Menu **Master_Data → Gộp ngay**. Hộp thoại ghi "Đã gộp" kèm số đếm.
 2. **G4, kiểm `Master_Data (thử)`:**
-   - `KhachHang`: một dòng một khách, mã `KH-000001`, `KH-000002`..., SĐT dạng `0xxxxxxxxx`, `NguonGoc` = Landing (hoặc CRM / Landing+CRM), `DongYNhanTin` = `Có` với khách landing có ô đồng ý, `Chưa rõ` với khách CRM.
+   - `KhachHang`: một dòng một khách, mã `KH-000001`, `KH-000002`..., SĐT dạng `0xxxxxxxxx`, `NguonGoc` = Landing (hoặc CRM / Landing+CRM), `DongYNhanTin` = `Có` với khách landing có ô đồng ý và có mã dự án, `Chưa rõ` với khách CRM và khách landing cũ chưa có mã dự án. Hai cột cuối `DongYDuAn` (các dự án khách đã đồng ý) và `NgayRutLai` (ngày khách rút lại, nếu có).
    - `Loi`: các dòng SĐT sai (thời gian, nguồn, số dòng, lý do). Sửa SĐT ở nguồn thì không tự thử lại; dòng đã bị đánh dấu `LOI` ở cột **Đã gộp** (Landing) hoặc **DaGop** (NhapCRM) **không được thử lại cho đến khi anh xóa chữ `LOI` đó** (xóa xong lần chạy sau đọc lại).
    - Tab Landing: cột `Đã gộp` điền mã `KH-...` (hoặc `LOI`). **Đừng sửa cột này bằng tay** trừ khi muốn đọc lại một dòng.
-   - `ChuaPhanDuAn`: khách chưa có dự án hợp lệ (kèm cột `GanDuAn` ở cuối).
+   - Khách chưa có mã dự án vẫn ở `KhachHang` với ô `DuAnQuanTam` trống; số này hiện ở hộp thoại ("chưa có mã dự án") và tin Telegram hằng ngày.
    - `NhatKy`: có một dòng cho lần chạy (xem G6).
    - So số khách với CRM và Landing, như yêu cầu của cổng G4. **Anh nói "OK G4".**
 3. **G5, kiểm vài khách ở `Master_<mã> (thử)`**, tab `KhachTuMaster`:
    - Cột **A..L** là cột hệ thống: `MaKhach, SDT, HoTen, NgayCapNhat, NguonGoc, DuAnQuanTam, NhuCau, CanXem, PTTT, DongYNhanTin, TrangThaiCRM, TrangThaiChamSoc`. Cột **M** để trống. Từ cột **N** (tiêu đề "Ghi chú của anh") là cột **của anh**, hệ thống không bao giờ ghi vào; thêm cột bên phải N thoải mái.
    - Hai cột `TrangThaiCRM` (K) và `TrangThaiChamSoc` (L) hệ thống **chỉ điền khi ô còn trống**; anh gõ vào đó thì không bị ghi đè. Thay đổi trạng thái làm **sau này** ở `KhachHang` **không chảy** sang `Master_<mã>`: cột trạng thái của `KhachHang` chỉ là lần điền đầu. Vì vậy hãy **cập nhật trạng thái ở `Master_<mã>`** (nơi anh làm việc hằng ngày). *(Anh đã chốt 11/11/2026: trạng thái cập nhật ở riêng từng dự án.)* Các cột A..J được cập nhật theo `KhachHang` mỗi lần chạy.
    - Khách quan tâm hai dự án có mặt ở cả hai Sheet, cùng `MaKhach`.
+   - Cột `DongYNhanTin` (J) ở mỗi `Master_<mã>` nói về **đúng dự án đó**: `Có` = được nhắn về dự án này; `Chưa rõ` = chưa có đồng ý hợp lệ cho dự án này (ví dụ khách chỉ đồng ý Newsky thì ở `Master_<Central Park>` hiện `Chưa rõ`); `Đã rút lại` = khách đã rút lại, không nhắn. **Chỉ nhắn những dòng hiện `Có`.** Khách anh gõ tay ở `NhapCRM` không có bằng chứng đồng ý nên luôn là `Chưa rõ`. Cột này là cột hệ thống, hệ thống cập nhật mỗi lần chạy, anh đừng sửa tay.
    - Kiểm: khách đúng dự án chưa, ai thiếu, ai thừa. **Anh nói "OK G5".** Từ đó, Sheet thử dùng luôn làm bản thật: đổi tên bỏ chữ "(thử)" (id không đổi nên `CauHinh` vẫn đúng). Muốn trỏ sang Sheet khác thì sửa `masterSheetId` rồi bấm **Gộp ngay**. Vì G4 đã chạy trên Sheet landing thật, không còn bước "chuyển sang dữ liệu thật" riêng. Sheet landing thật phải có cột S `Đã gộp` (xem G2 bước 7).
 
 ## G6. Bật lịch tự chạy
 1. Menu **Master_Data → Cài lịch tự động**. Có thể hiện hộp xin quyền (Google gọi là tạo trigger); cho phép như G1. Hộp thoại báo: "Đã cài lịch: gộp mỗi 15 phút, tin tóm tắt khoảng 8-9 giờ mỗi ngày."
 2. Hai lịch được tạo: `chayTatCaTuDong` mỗi 15 phút (gộp + phân bổ) và `baoCaoNgayTuDong` mỗi ngày trong khung 8 đến 9 giờ sáng (Apps Script tự chọn phút, nên không đúng 8:00). Bấm menu này nhiều lần không nhân đôi lịch.
 3. Xem hoặc tắt lịch: Apps Script → biểu tượng đồng hồ **Trình kích hoạt (Triggers)** ở thanh bên trái → thấy hai dòng → bấm dấu ba chấm ⋮ cuối dòng → **Xóa trình kích hoạt (Delete trigger)**. Xóa cả hai là dừng hẳn tự chạy; menu **Gộp ngay** vẫn dùng được.
-4. **Tin Telegram hằng ngày** (chỉ số, không tên, không SĐT): số khách mới hôm qua theo nguồn, số dòng ở `ChuaPhanDuAn`, số dòng ở `Loi`, số khách rút lại hôm qua, và "**Lần chạy cuối: N phút trước**" = lần chạy gần nhất, **mọi lần chạy đều tính** (kể cả lần rảnh không ghi NhatKy và lần bấm Gộp ngay); Chạy thử và lần bị bỏ qua vì khóa bận không tính. Nếu số này lớn hơn khoảng 30 phút thì lịch đang không chạy: vào Trình kích hoạt xem. Muốn thử tin này ngay: Apps Script → chọn hàm `baoCaoNgayTuDong` ở thanh trên → ▶ Chạy.
-5. **Tab `NhatKy`:** cột `Thời gian | Nguồn | Số dòng đọc | Khách mới | Gộp trùng | Lỗi | Ghi chú`. Mỗi lần chạy có việc (có khách mới, trùng, lỗi, rút lại...) thì ghi **một dòng**. Lần chạy "rảnh" (không có gì mới, không lỗi) **không ghi**, trừ một dòng "nhịp: đang chạy, không có gì mới" mỗi ngày để anh biết hệ thống còn sống. Cột Ghi chú có `chua=` (vào ChuaPhanDuAn), `chan=` (rút lại), `tuchoi=` / `khong=` (rút lại vì TuChoi / vì gõ Không), `vao=` (chép sang dự án), `ms=` (mất bao nhiêu mili giây), và mã lỗi nếu có. Có lỗi thì Telegram báo một tin `⚠️ Master_Data: <mã lỗi> (<n> dòng). Xem tab NhatKy.`; cùng loại lỗi chỉ báo lại sau 6 giờ. Lỗi từng dòng khách (SĐT sai) chỉ báo Telegram khi **từ 5 dòng trở lên** trong một lần chạy (mã `LOI_DONG`); ít hơn thì anh xem tab `Loi`.
+4. **Tin Telegram hằng ngày** (chỉ số, không tên, không SĐT): số khách mới hôm qua theo nguồn, "Chưa có mã dự án: N" (khách ở `KhachHang` chưa có mã dự án hợp lệ), "Dòng lỗi: N" (số dòng ở `Loi`), "Rút lại hôm qua: N" (khách có ngày rút lại rơi vào hôm qua), "Điền lại hôm qua: N" (khách rút lại mà điền lại form hôm qua, đếm theo cột `DaDongYLai` của `TuChoi`), và "**Lần chạy cuối: N phút trước**" = lần chạy gần nhất, **mọi lần chạy đều tính** (kể cả lần rảnh không ghi NhatKy và lần bấm Gộp ngay); Chạy thử và lần bị bỏ qua vì khóa bận không tính. Nếu số này lớn hơn khoảng 30 phút thì lịch đang không chạy: vào Trình kích hoạt xem. Muốn thử tin này ngay: Apps Script → chọn hàm `baoCaoNgayTuDong` ở thanh trên → ▶ Chạy.
+5. **Tab `NhatKy`:** cột `Thời gian | Nguồn | Số dòng đọc | Khách mới | Gộp trùng | Lỗi | Ghi chú`. Mỗi lần chạy có việc (có khách mới, trùng, lỗi, rút lại, điền lại, xóa...) thì ghi **một dòng**. Lần chạy "rảnh" (không có gì mới, không lỗi) **không ghi**, trừ một dòng "nhịp: đang chạy, không có gì mới" mỗi ngày để anh biết hệ thống còn sống. Cột Ghi chú có `rutlai=` (khách mới được đổi sang Đã rút lại), `dongylai=` (khách điền lại form, được mở nhắn lại), `xoa=` (khách bị xóa dữ liệu), `tuchoi=` / `khong=` (trong số bị xóa: vì dòng `TuChoi` / vì lần xóa dở còn lại), `vao=` (chép sang dự án), `ms=` (mất bao nhiêu mili giây), và mã lỗi nếu có. Chỉ có "chưa có mã dự án" thì lần chạy vẫn tính là rảnh (không ghi dòng mới). Có lỗi thì Telegram báo một tin `⚠️ Master_Data: <mã lỗi> (<n> dòng). Xem tab NhatKy.`; cùng loại lỗi chỉ báo lại sau 6 giờ. Lỗi từng dòng khách (SĐT sai) chỉ báo Telegram khi **từ 5 dòng trở lên** trong một lần chạy (mã `LOI_DONG`); ít hơn thì anh xem tab `Loi`.
 
 ---
 
@@ -127,29 +129,34 @@ Menu chỉ có **Gộp ngay**, chạy cả ba bước (landing, NhapCRM, phân b
 
 ### Nhập khách CRM
 Mở tab **NhapCRM** (có sau lần ghi đầu). Cột tối thiểu, đúng tiêu đề này: `HoTen | SDT | DuAnQuanTam | TrangThaiCRM | DaGop`. **Để trống cột `DaGop`**; hệ thống tự điền.
-- `DuAnQuanTam` phải là **mã dự án** như `bcons-central-park` (nhiều dự án thì ngăn bằng dấu `;`). Gõ chữ thường như "Central Park" thì bị bỏ, khách đó vào `ChuaPhanDuAn`.
+- `DuAnQuanTam` phải là **mã dự án** như `bcons-central-park` (nhiều dự án thì ngăn bằng dấu `;`). Gõ chữ thường như "Central Park" thì không được nhận là mã, khách đó ở lại `KhachHang` như khách chưa có mã dự án.
 - SĐT gõ kiểu nào cũng được (`098.123.4567`, `+84 98 123 4567`). Cột đã đặt dạng chữ để giữ số 0 đầu.
 - Sau khi gộp, `DaGop` hiện **mã khách** `KH-...` (đã vào) hoặc **`LOI`** (SĐT sai, đã ghi ở tab `Loi`, không thử lại cho đến khi anh xóa chữ `LOI` sau khi sửa SĐT).
 - Dòng đã `DaGop` thì sửa tiếp ở NhapCRM **không** có tác dụng. Muốn đổi trạng thái khách đã có, sửa ở tab `KhachTuMaster` của `Master_<mã>` (nơi anh làm việc hằng ngày); trạng thái ở `KhachHang` chỉ được dùng cho lần điền đầu và không chảy sang `Master_<mã>` về sau. *(Anh chưa chốt nơi sửa trạng thái.)* Đừng gõ khách trực tiếp vào `KhachHang`: dòng không có mã `KH-...` bị bỏ qua; khách mới gõ ở `NhapCRM`.
 - Khách CRM có `DongYNhanTin` = **Chưa rõ**.
 
-### Khách chưa rõ dự án
-Tab **ChuaPhanDuAn**: **chỉ gõ cột `GanDuAn`** (các cột khác do hệ thống điền; chữ anh gõ vào một ô còn trống thì được giữ, nhưng khách được chuyển sang `Master_<mã>` thì cả dòng bị xóa, nên đừng dùng chỗ này để lưu ghi chú). Gõ mã dự án vào cột **GanDuAn** của khách. Lần chạy sau, khách được thêm dự án đó vào `DuAnQuanTam`, chép sang `Master_<mã>` và dòng biến mất khỏi `ChuaPhanDuAn`. Mã phải có trong tab `CauHinh` (có `masterSheetId`), nếu không khách vẫn nằm lại.
+### Khách chưa có mã dự án
+Không còn tab riêng cho nhóm này. Khách chưa có mã dự án (ví dụ khách landing cũ, trước G2, cột `Dự án` trống) **nằm lại trong `KhachHang`** với ô `DuAnQuanTam` trống, `DongYNhanTin` = `Chưa rõ`. Họ chưa được chép sang `Master_<mã>` nào. Muốn đưa họ vào một dự án: mở `KhachHang`, **gõ mã dự án** (ví dụ `bcons-central-park`; nhiều dự án thì ngăn bằng `;`) vào ô `DuAnQuanTam` của khách đó. Lần chạy sau (tối đa 15 phút, hoặc bấm Gộp ngay) khách được chép sang `Master_<mã>` đó, với trạng thái đồng ý `Chưa rõ` vì chưa có tick đồng ý cho dự án; mã phải có trong tab `CauHinh` (có `masterSheetId`), nếu không khách vẫn ở yên. Số khách chưa có mã hiện ở hộp thoại và tin hằng ngày.
 
 ### Khách xin rút lại
-*(Phạm vi anh chốt 11/11/2026: hệ thống tự xóa ở `KhachHang` và `Master_<mã>`; các nơi khác anh xóa tay theo danh sách dưới đây; chỉ SĐT (không tên) giữ trong `TuChoi` để không nhắn lại. Khách đã rút lại mà điền lại form: pháp chế đã xác nhận (11/11/2026) là chỉ đổi trạng thái và nhắn lại được; **code chưa làm theo**, hiện hệ thống vẫn xóa dữ liệu cá nhân của người trong `TuChoi`, nên **chưa dùng tab `TuChoi` cho khách thật** cho tới khi kế hoạch mới làm xong.)*
-Hai cách, kết quả như nhau:
-- Thêm SĐT khách vào cột **SDT** của tab **TuChoi** (cột A, các cột LyDo, NgayGhi tùy anh điền).
-- Hoặc gõ `Không` vào cột `DongYNhanTin` của khách ở `KhachHang`; hệ thống tự ghi SĐT đó vào `TuChoi` (LyDo "Rút lại (cột)").
+*(Anh chốt 11/11/2026, pháp chế đã xác nhận cùng ngày: rút lại đồng ý thì chỉ đổi trạng thái và **vẫn giữ hồ sơ**; điền lại form thì được nhắn lại; xóa dữ liệu là việc riêng.)* Có hai loại yêu cầu, ghi ở tab **TuChoi**, cột: `SDT | LyDo | NgayGhi | LoaiYeuCau | DaDongYLai`. Tab tự được tạo đủ 5 cột; nếu anh lỡ tạo bản cũ 3 cột (`SDT | LyDo | NgayGhi`) thì hệ thống tự thêm hai tiêu đề còn thiếu, dữ liệu cũ giữ nguyên.
 
-Ghi `NgayGhi` (cột C của `TuChoi`) là **ngày hôm nay** khi anh tự gõ dòng; tin tóm tắt hằng ngày đếm "Rút lại" theo cột này. Dòng hệ thống tự ghi thì đã có ngày. SĐT trong `TuChoi` gõ sai dạng (thiếu số, có chữ) thì không chặn được ai: hệ thống ghi một dòng vào tab `Loi` (nguồn "Rút lại", chỉ có số dòng của `TuChoi`, không ghi SĐT) và báo trong `NhatKy`; anh sửa lại SĐT cho đúng.
+**1. Rút lại (mặc định)** - khách không muốn nhận tin nữa.
+- Hệ thống đổi khách sang **Đã rút lại**: ở `KhachHang` (kèm ngày ở cột `NgayRutLai`) và ở ô `DongYNhanTin` của mọi dòng khách đó trong các `Master_<mã>`. Hồ sơ **giữ nguyên**, không xóa gì, và rút lại áp dụng cho cả khách (mọi dự án), nên khách này không nhận tin dự án nào.
+- Cách ghi: gõ SĐT vào cột `SDT` của `TuChoi` (cột A). Các cột khác tùy chọn:
+  - `LoaiYeuCau` để trống hoặc ghi `Rút lại` đều là loại Rút lại. Ghi chữ lạ (ví dụ "xóa hết") cũng được coi là Rút lại cho an toàn, kèm một dòng ở tab `Loi` nhắc ghi đúng `Rút lại` hoặc `Xóa`.
+  - `NgayGhi`: **để trống được**, hệ thống tự điền ngày ở lần chạy kế tiếp. Muốn tự gõ ngày cũng được; ngày không kèm giờ được tính đến **hết ngày đó** (giờ Việt Nam), nên khách điền lại form trong cùng ngày vẫn chưa được mở nhắn lại. Ngày ở tương lai (quá một ngày sau hôm nay) bị coi là gõ sai: ghi ở `Loi`, báo `LOI_TUCHOI`.
+  - `DaDongYLai`: hệ thống điền, anh không gõ.
+- Cách thứ hai: gõ đúng chữ `Không` vào ô `DongYNhanTin` của khách ở `KhachHang`. Hệ thống tự đổi chữ đó thành `Đã rút lại` và ghi ngày rút lại. Cách này **không** tạo dòng trong `TuChoi`. Giá trị bắt đầu bằng "không" nhưng không đúng chữ `Không` (ví dụ "Không rõ", "Không biết") thì **không** rút lại ai: coi như `Chưa rõ`, ghi một dòng vào tab `Loi` ("ghi đúng Không để rút lại") mỗi lần chạy cho đến khi anh sửa.
+- Không nhắn khách nào hiện `Đã rút lại` ở cột `DongYNhanTin`.
 
-Lần chạy sau (tối đa 15 phút, hoặc bấm Gộp ngay), danh sách việc khi có yêu cầu xóa dữ liệu của một khách:
+**Điền lại form (mở nhắn lại).** Khách đã rút lại mà sau đó điền landing lần nữa, có tick đồng ý **mới hơn** ngày rút lại: hệ thống đổi khách về `Có` cho **đúng dự án của lần điền đó** và khách được nhắn lại về dự án ấy; các dự án khác khách từng đồng ý trước kia **không** tự mở lại (muốn nhắn dự án khác thì khách phải đồng ý cho dự án đó). Dòng `TuChoi` vẫn nằm đó, cột `DaDongYLai` được điền ngày đồng ý mới (không xóa dòng). Đồng ý cũ hơn ngày rút lại (ví dụ hệ thống đọc lại dòng landing cũ) **không** mở lại gì.
+
+**2. Xóa** - khách yêu cầu xóa dữ liệu (khác với chỉ ngừng nhận tin). Ghi `Xóa` ở cột `LoaiYeuCau`. Lần chạy sau (tối đa 15 phút, hoặc bấm Gộp ngay), hệ thống làm các việc dưới đây. Danh sách này **chỉ áp dụng cho loại Xóa**; với loại Rút lại không có gì bị xóa.
 
 **Hệ thống tự xóa:**
-- Ở `KhachHang`: SĐT, họ tên, nhu cầu, căn xem, bằng chứng đồng ý, nguồn chi tiết, PTTT, người chăm sóc; `GhiChu` thành "Rút lại", `DongYNhanTin` = `Không`.
+- Ở `KhachHang`: SĐT, họ tên, nhu cầu, căn xem, bằng chứng đồng ý, dự án đã đồng ý, nguồn chi tiết, PTTT, người chăm sóc; `GhiChu` thành "Rút lại", `DongYNhanTin` = `Đã rút lại`. Mã khách `KH-...` giữ lại.
 - Mọi dòng của khách trong tab `KhachTuMaster` của **mọi** `Master_<mã>` (kể cả ghi chú anh gõ ở cột N trở đi của dòng đó).
-- Dòng của khách ở `ChuaPhanDuAn`.
 
 **Anh vẫn phải tự xóa tay** (các bản sao này nằm ngoài hệ thống, em không với tới):
 - Dòng của khách ở tab **Landing** (có tên + SĐT, và mã `KH-...` ở cột Đã gộp).
@@ -158,12 +165,22 @@ Lần chạy sau (tối đa 15 phút, hoặc bấm Gộp ngay), danh sách việ
 - Dòng đã chép dán vào file Masterfile `.xlsx`.
 - Bản ghi trong CRM của công ty.
 
-SĐT chỉ còn ở `TuChoi` (để tiếp tục chặn): khách điền landing lại cũng bị xóa ở lần chạy sau. Vì các bản sao tay ở trên có thể còn SĐT, hãy xóa hết khi nhận yêu cầu. Muốn cho một người được nhận lại, **anh phải tự xóa dòng của họ trong `TuChoi`**; thông tin cá nhân cũ đã xóa nên khách phải điền lại.
+Chỉ SĐT (không tên) còn lại ở `TuChoi`. Vì các bản sao tay ở trên có thể còn SĐT, hãy xóa hết khi nhận yêu cầu. Khách loại Xóa mà điền landing lại với tick đồng ý mới thì tạo hồ sơ mới, có đồng ý mới; từ đó nhắn được như khách mới. Nếu dòng `TuChoi` loại Xóa nằm lại, nó không xóa hồ sơ mới đó (đồng ý mới hơn ngày ghi).
 
-Nếu anh gõ ở `DongYNhanTin` một giá trị bắt đầu bằng "không" nhưng không đúng chữ `Không` (ví dụ "Không rõ", "Không biết"), hệ thống **không** rút lại khách đó, coi như `Chưa rõ`, và ghi một dòng vào tab `Loi` ("ghi đúng Không để rút lại") mỗi lần chạy cho đến khi anh sửa. Muốn rút lại thì ghi đúng `Không`.
+Khi dòng `TuChoi` có SĐT gõ sai dạng (thiếu số, có chữ) thì không áp dụng cho ai: hệ thống ghi một dòng vào tab `Loi` (nguồn "Rút lại", chỉ có số dòng của `TuChoi`, không ghi SĐT), báo Telegram `LOI_TUCHOI` và `NhatKy`; anh sửa lại SĐT cho đúng. Mỗi dòng sai chỉ ghi `Loi` một lần.
+
+Hạn chế đã biết: nếu cùng lúc một hồ sơ bị `Xóa` và anh đang gõ `Không` ở chính hồ sơ đó, hồ sơ mới điền lại sau đó chỉ biết ngày của dòng `Xóa`, không biết ngày gõ `Không`.
+
+### Cột DongYNhanTin ở Master_<mã>
+Mỗi dòng khách ở `Master_<mã>` có cột `DongYNhanTin` (cột J) tính **riêng cho dự án đó**:
+- **Có** = được nhắn về dự án này (khách đã tick đồng ý cho đúng dự án này và chưa rút lại).
+- **Chưa rõ** = chưa có đồng ý hợp lệ cho dự án này (ví dụ chỉ đồng ý dự án khác, hoặc khách do anh gõ ở `NhapCRM`, hoặc khách landing cũ chưa có mã).
+- **Đã rút lại** = khách đã rút lại, không nhắn.
+
+Chỉ nhắn các dòng hiện **Có**.
 
 ### Quy tắc
-1. Chỉ nhắn hàng loạt khách có `DongYNhanTin` = **Có**. Khách CRM (`Chưa rõ`) chỉ gọi hoặc nhắn tư vấn từng người.
+1. Chỉ nhắn hàng loạt khách có `DongYNhanTin` = **Có** ở `Master_<mã>` của dự án đang nhắn. Khách CRM (`Chưa rõ`) chỉ gọi hoặc nhắn tư vấn từng người.
 2. Không dùng Zalo hay Facebook cá nhân để nhắn hàng loạt.
 3. Không chia sẻ Master_Data hay Master_<mã> bằng đường liên kết; chỉ tài khoản của anh.
 4. Dữ liệu khách không bao giờ vào repo hay chat với em; nếu cần em kiểm, anh chỉ cần nói số lượng và mã lỗi.
@@ -179,7 +196,7 @@ Nếu anh gõ ở `DongYNhanTin` một giá trị bắt đầu bằng "không" n
 | `LOI_DOC_SHEET` | Sai Sheet id, hoặc tài khoản anh không mở được Sheet đó |
 | Telegram không báo gì | Kiểm `TELEGRAM_BOT_TOKEN` và `TELEGRAM_CHAT_ID` trong Script Properties của **dự án Master_Data**; hệ thống không báo lỗi khi thiếu |
 | Khách landing không thấy trong KhachHang | Xem cột `Đã gộp` ở dòng đó: trống = chưa chạy; `KH-...` = đã gộp; `LOI` = SĐT sai |
-| Khách nằm ở `ChuaPhanDuAn` | Cột R "Dự án" của dòng landing trống hoặc `khong-ro`, hoặc mã không có trong `CauHinh`: gõ `GanDuAn` |
+| Khách không thấy ở `Master_<mã>` | Xem `KhachHang`: ô `DuAnQuanTam` trống hoặc không phải mã (cột R "Dự án" của dòng landing trống, `khong-ro`, hoặc mã không có trong `CauHinh`): gõ mã dự án vào ô `DuAnQuanTam` |
 | Số 0 đầu SĐT mất | Hệ thống tự sửa số 9 chữ số về `0...`; nếu vẫn sai, SĐT đó sẽ vào tab `Loi` |
 | Dòng `LOI` không tự thử lại | Đúng thiết kế; sửa SĐT rồi xóa chữ `LOI` ở cột Đã gộp / DaGop |
 | Muốn dừng tất cả | Apps Script → Trình kích hoạt (đồng hồ) → xóa hai trigger |

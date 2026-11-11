@@ -1,6 +1,6 @@
 # Master_Data: đồng ý theo dự án, rút lại giữ hồ sơ — Implementation Plan
 
-> **Trạng thái:** Nháp, chờ anh duyệt (11/11/2026). Chưa có code. Kế hoạch này sửa phần đã dựng ở `docs/superpowers/plans/2026-11-11-master-data-khach-hang.md`.
+> **Trạng thái:** Task 1–5 đã dựng và test xanh trên máy (11/11/2026), chưa cài lên Sheet thật nào; chờ anh duyệt cổng G1–G6. Kế hoạch này sửa phần đã dựng ở `docs/superpowers/plans/2026-11-11-master-data-khach-hang.md`.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 

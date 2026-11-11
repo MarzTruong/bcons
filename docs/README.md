@@ -24,8 +24,8 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | `superpowers/specs/2026-11-05-bcons-automation-pipeline-design.md` | Thiết kế tổng. Còn: kế hoạch 04, giai đoạn 2–3 |
 | `superpowers/specs/2026-11-11-phieu-tinh-design.md` | Phiếu tính gửi khách (PNG + PDF): thiết kế đã duyệt 11/11/2026; UI/UX giao AGY |
 | `superpowers/plans/2026-11-11-phieu-tinh.md` | Kế hoạch thực hiện phiếu tính (8 task), Task 1–7 xong, Task 8 chờ template AGY |
-| `superpowers/specs/2026-11-11-master-data-khach-hang-design.md` | Thiết kế kho khách tập trung Master_Data. Đã duyệt 11/11/2026. Code đã dựng và test trên máy (chưa cài lên Sheet thật, chờ cổng G1–G6) |
-| `superpowers/plans/2026-11-11-master-data-dong-y-theo-du-an.md` | Kế hoạch đổi sang đồng ý theo dự án, rút lại giữ hồ sơ (5 task). Chưa làm, chờ anh duyệt |
+| `superpowers/specs/2026-11-11-master-data-khach-hang-design.md` | Thiết kế kho khách tập trung Master_Data. Đã duyệt 11/11/2026. Code đã dựng và test trên máy, gồm đồng ý theo dự án và rút lại giữ hồ sơ (mục 16; chưa cài lên Sheet thật, chờ cổng G1–G6) |
+| `superpowers/plans/2026-11-11-master-data-dong-y-theo-du-an.md` | Kế hoạch đổi sang đồng ý theo dự án, rút lại giữ hồ sơ (5 task). Task 1–5 xong trên máy (11/11/2026), chờ anh duyệt cổng G1–G6 |
 | `superpowers/plans/2026-11-11-master-data-khach-hang.md` | Kế hoạch dựng Master_Data (10 task). Task 1–10 xong trên máy (11/11/2026), chờ anh duyệt cổng G1–G6 |
 | `superpowers/specs/2026-11-04-bcons-video-pipeline-design.md` | Đã xong (lịch sử) |
 | `superpowers/plans/2026-11-04-bcons-video-pipeline.md` | Đã xong (lịch sử) |
