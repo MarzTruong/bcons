@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Phiếu tính</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+@page{size:A4;margin:14mm}
+*{box-sizing:border-box;margin:0}
+body{width:540px;background:#f3f2ee;color:#231f20;font:400 14px/1.5 'Be Vietnam Pro',system-ui,sans-serif;padding:32px 30px 26px}
+.hi{font-size:13px;color:#6b6760;margin-bottom:12px}
+.lead{font:400 25px/1.28 'Source Serif 4',Georgia,serif;margin-bottom:10px}.lead b{font-weight:600;color:#2447f9}
+.lead2{font-size:13.5px;color:#4b4741;margin-bottom:18px}
+.card{border-top:1px solid #231f20;padding-top:10px}.card .t{font-weight:600;font-size:13.5px;margin-bottom:6px}.card .t span{font-weight:400;color:#6b6760}
+table{width:100%;border-collapse:collapse}td{padding:7px 0;vertical-align:baseline;border-bottom:1px solid #dcd9d1}
+td.w{width:132px;font-size:12px;color:#6b6760;padding-right:8px}td.l{font-size:13.5px}
+td.a{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.nganhang td.a,tr.nganhang td.l{color:#2447f9}
+.price{font-size:12.5px;color:#6b6760;margin-top:12px}.note{font-size:11.5px;color:#6b6760;margin-top:4px}
+.foot{display:flex;gap:14px;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid #231f20;font-size:12.5px}
+.foot .qr,.foot svg{width:66px;height:66px;flex:none}.foot span{color:#6b6760;font-size:11.5px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="application/json" id="phieu-data">__PHIEU_DATA__</script>
+<script>
+(function () {
+  var P = JSON.parse(document.getElementById("phieu-data").textContent);
+  var nf = new Intl.NumberFormat("vi-VN");
+  var d = function (n) { return nf.format(Math.round(n)); };
+  var tr = function (n) { return nf.format(Math.round(n / 1e6)) + " triệu"; };
+  var ty = function (n) { return (n / 1e9).toFixed(2).replace(".", ",") + " tỷ"; };
+  var tien = function (n) { return n >= 1e9 ? ty(n) : tr(n); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+  var c = P.can, t = P.tong, vay = P.vay;
+  var mo = c.loai + " · " + String(c.dtTimTuong).replace(".", ",") + " m² tim tường" + (c.dtThongThuy ? " (" + String(c.dtThongThuy).replace(".", ",") + " thông thủy)" : "") + (c.tang ? " · tầng " + c.tang : "") + (c.thap ? ", tháp " + c.thap : "");
+  var h = '<div class="hi">Em gửi ' + esc(P.khach.xungHo) + " bảng tính " + esc(P.duAn.ten) + ", căn " + esc(c.ma) + ": " + esc(mo) + ".</div>";
+  h += '<div class="lead">' + esc(P.khach.xungHo.charAt(0).toUpperCase() + P.khach.xungHo.slice(1)) + " chuẩn bị khoảng <b>" + tien(t.tuCoTruocBanGiao) + "</b> trước khi nhận nhà." +
+    (vay ? " Ngân hàng giải ngân <b>" + ty(vay.soTien) + "</b>, đến" : " Đến") + " bàn giao nộp thêm " + ty(t.banGiao) + ".</div>";
+  if (vay) h += '<div class="lead2">Trả góp ước tính khoảng ' + tien(vay.traGopThang) + "/tháng" + (P.pttt.coTranLai ? " (lãi trần 6,9%/năm theo điều kiện của CĐT trong thời gian áp trần)" : "") + ".</div>";
+  h += '<div class="card"><div class="t">' + esc(P.pttt.ten) + " <span>" + esc(P.pttt.ghiChu) + "</span></div><table>";
+  P.dot.forEach(function (x) { h += '<tr class="' + x.loai + '"><td class="w">' + esc(x.thoiDiem) + '</td><td class="l">' + esc(x.nhan) + '</td><td class="a">' + d(x.soTien) + "</td></tr>"; });
+  h += "</table></div>";
+  h += '<div class="price">Giá ' + ty(P.gia.chuaVat) + " chưa VAT, " + ty(P.gia.coVat) + " có VAT. Phí bảo trì 2% (" + tr(P.gia.phiBaoTri) + ") đóng thêm khi nhận nhà.</div>";
+  if (vay) h += '<div class="note">Lãi vay ' + String(vay.lai).replace(".", ",") + "%/năm, " + vay.namVay + " năm là giả định; lãi thực tế theo ngân hàng lúc vay.</div>";
+  h += '<div class="foot">' + (P.lienHe.qrSvg ? '<div class="qr">' + P.lienHe.qrSvg + "</div>" : "") + "<div><b>" + esc(P.lienHe.ten) + "</b><br>Bcons PS Land<br><span>Quét mã để tự tính căn khác. Nhắn Zalo cho em khi cần chỉnh số.</span></div></div>";
+  document.getElementById("app").innerHTML = h;
+  document.documentElement.dataset.ready = "1";
+})();
+</script>
+</body>
+</html>
