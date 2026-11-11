@@ -32,6 +32,7 @@
     "typescript": "5.9.3"
   },
   "scripts": {
+    "phieu": "node scripts/phieu.mjs",
     "dev": "node scripts/with-env.mjs remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
