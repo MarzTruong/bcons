@@ -169,7 +169,7 @@ export function renderPolicy(data, project) {
 <p><b>Dữ liệu thu thập:</b> họ tên, số điện thoại/Zalo, nhu cầu, căn hộ và phương thức thanh toán anh/chị chọn trên trang.</p>
 <p><b>Mục đích:</b> liên hệ tư vấn về dự án ${esc(project.ten)} và gửi bảng tính anh/chị yêu cầu. Không dùng cho mục đích khác, không bán hay chia sẻ cho bên khác.</p>
 <p><b>Nơi lưu và công cụ xử lý:</b> dữ liệu được lưu trong Google Sheets (Google) và thông báo cho tư vấn viên qua Telegram; máy chủ của các dịch vụ này có thể đặt ngoài Việt Nam. Ngoài các dịch vụ kỹ thuật đó, không bên nào khác nhận dữ liệu.</p>
-<p><b>Thời gian lưu:</b> đến khi anh/chị yêu cầu xóa, hoặc tối đa 24 tháng kể từ lần liên hệ gần nhất.</p>
+<p><b>Thời gian lưu:</b> đến khi anh/chị rút lại sự đồng ý hoặc yêu cầu xóa.</p>
 <p><b>Quyền của anh/chị:</b> xem, sửa, rút lại đồng ý, yêu cầu ngừng liên hệ và xóa dữ liệu bất cứ lúc nào bằng cách ${esc(d.kenhNgung)}${data.fanpageUrl ? ` (<a href="${esc(data.fanpageUrl)}">mở fanpage</a>)` : ""}.</p>
 <p>Chính sách này áp dụng theo quy định pháp luật Việt Nam về bảo vệ dữ liệu cá nhân. Mẫu ô đồng ý: v1-2026-11-06.</p>
 <p><a href="index.html">Quay lại trang chính</a></p>
