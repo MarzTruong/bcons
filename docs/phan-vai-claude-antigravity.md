@@ -1,29 +1,20 @@
 # Phân vai Claude Code và Antigravity (AGY) trên cùng repo
 
-> Anh chốt 09–10/11/2026. Mục tiêu: hai công cụ cùng phục vụ repo `MarzTruong/bcons` mà không giẫm chân nhau. Hướng dẫn chi tiết cho AGY nằm ở `agy/README.md`.
+> Anh chốt 09–11/2026 (theo báo cáo đề xuất vận hành của AGY). Mục đích: cả hai cùng phục vụ repo `MarzTruong/bcons` không giẫm chân nhau, và chia quota để Claude không chạm giới hạn tuần.
 
 ## Nguyên tắc
-1. **AGY chỉ đọc repo:** không commit, không push, không sửa hay viết code/tài liệu trong repo.
-2. **Chỉ Claude Code (và bot Telegram `/duyet`, `/gemini` trên máy anh) ghi vào `main`.**
-3. **AGY bàn giao qua Drive:** `Bcons/agy/den-claude/<ngày>-<loại>-<chủ đề>/ket-qua.md` (mẫu ở `agy/mau/`). Không ghi được Drive thì anh tải Artifact gửi vào chat Claude.
-4. **AGY chạy trên PC trong bản sao riêng `E:\Claude\bcons-agy`** (anh chốt 10/11/2026): không có `.env`/`data/`/`anh/`, quyền push tắt, `git pull` đầu mỗi việc. Claude chạy cloud nên chỉ đọc được thành phẩm trên Drive.
-5. **Claude đối chiếu rồi mới đưa vào repo:** audit 09/11 có 2 phát hiện sai, báo cáo vận hành có nhiều chỗ lệch; số liệu AGY thu thập luôn qua cổng 1 (mở lại từng link).
+1. **AGY chỉ đọc repo** (bản sao `E:\Claude\bcons-agy`, `git pull` đầu việc), không commit, không push, không sửa file. Kết quả để ở Drive `Bcons/agy/den-claude/`.
+2. **Chỉ Claude Code (và bot Telegram `/duyet`, `/gemini`) ghi vào `main`.**
+3. **Claude là lõi hệ thống:** engine, Remotion, bot, Git, quy tắc cứng. Claude kiểm nội dung (số liệu, link, quy tắc cứng) và code của AGY, báo anh; không nhận xét UX/UI.
+4. Skill, workflow, nhiệm vụ của AGY do anh tạo và giao trực tiếp trong Antigravity; không nằm trong repo.
 
-## Thế mạnh và việc giao
-| Việc | AGY làm | Claude làm |
+## Thế mạnh
+| Việc | AGY | Claude |
 |---|---|---|
-| Nghiên cứu thị trường có nguồn | Tìm báo chính thống, bảng 6 cột (`/nghien-cuu`) | Cổng 1: kiểm từng link, loại số sai, viết kịch bản/spec/caption |
-| Kiểm toán độc lập (bảo mật, rớt lead, số liệu, pháp lý) | Báo cáo có file:dòng (`/kiem-toan`) | Đối chiếu, `phan-hoi.md`, sửa phần đúng (lưu ở `kiem-toan/`) |
-| Thiết kế giao diện | Bản mẫu HTML + ảnh chụp, ≥ 2 phương án (`/thiet-ke`) | Chụp ảnh cho anh chọn; được chọn thì tích hợp `engine/landing`, chạy test, gắn công thức `calc.mjs` |
-| Content creator: bài Zalo từ kịch bản video | Một bài Zalo cho mỗi video dựa trên `kich-ban.md`, bảng nguồn, `spec.json` (`/zalo`) | Lưu `video/<tên>/zalo.md`, kiểm quy tắc cứng, anh duyệt |
-| Caption Facebook/TikTok từ kịch bản | không | Claude viết ở `caption.md` (`## Facebook`, `## TikTok`) |
-| Video Remotion, giọng ElevenLabs, render | không | Claude + bot |
-| Sửa `engine/`, bot, test, commit, `NOTES.md` | không | Claude |
-| Đăng bài, nhắn khách | không | Anh duyệt rồi đăng (Metricool/Zalo OA) |
+| UI/UX, landing, bản mẫu | thiết kế cùng anh | kiểm số liệu, công thức, code; được anh chọn mới tích hợp `engine/landing`, chạy test |
+| Cào tin thị trường thời gian thực | bảng 6 cột có link gốc | cổng 1: mở lại link, loại số sai |
+| Kiểm toán độc lập (bảo mật, rớt lead, pháp lý) | báo cáo có file:dòng | đối chiếu từng mã, sửa phần đúng |
+| Video Remotion, giọng, bot, Git, caption | không | Claude + bot |
 
 ## Lệnh tắt
-- Trong Claude Code: `/agy-giao <loại> <chủ đề>` (soạn nhiệm vụ cho AGY), `/agy-doc [thư mục]` (đọc kết quả AGY và xử lý).
-- Trong Antigravity: `/nghien-cuu`, `/kiem-toan`, `/thiet-ke`, `/zalo` (workflow ở `.agents/workflows/`; skill ở `.agents/skills/`; luật ở `.agents/rules/bcons.md`).
-
-## Việc anh làm
-Giao việc cho AGY bằng lệnh tắt hoặc dán đoạn Claude đưa; khi AGY báo xong thì gõ `/agy-doc` cho Claude. Muốn AGY rà soát định kỳ: gõ `/kiem-toan` cho AGY, rồi `/agy-doc` cho Claude.
+`/agy-doc [thư mục]` trong Claude Code: đọc kết quả AGY ở Drive, kiểm nội dung và code, lưu biên bản vào `kiem-toan/`.

@@ -5,4 +5,4 @@ Antigravity (AGY) chỉ đọc repo, **không ghi vào repo**. AGY đặt báo c
 2. đối chiếu từng mã phát hiện với code, ghi `phan-hoi.md` (đúng / sai / một phần, commit đã sửa);
 3. sửa các phát hiện đúng, theo cổng duyệt.
 
-Lần rà soát sau, AGY đọc các `phan-hoi.md` ở đây để không báo lại phát hiện đã đóng. Mẫu báo cáo: `agy/mau/kiem-toan.md`.
+Lần rà soát sau, AGY có thể đọc các `phan-hoi.md` ở đây để không báo lại phát hiện đã đóng.

@@ -27,7 +27,7 @@ Zalo là nền tảng thứ ba viết từ kịch bản video, bên cạnh Faceb
 - **Mỗi video một bài Zalo** ở `du-an/<mã>/video/<tên>/zalo.md` (frontmatter `status`, `kenh: [zalo]`, phần `## Zalo`). Để file riêng, không nhét vào `caption.md`, vì sửa `caption.md` làm mất dấu duyệt của Facebook/TikTok (video 1–7 đã duyệt và lên lịch). `npm run check:caption -- <tên>` kiểm cả `zalo.md` (SĐT, cụm cấm, VAT + phí bảo trì); bot `/xem <tên>` hiện bài Zalo.
 - Cùng số liệu và cùng nguồn với video và caption FB/TikTok, nhưng không chép nguyên văn. Giọng gần gũi như nhắn tin: xưng "em", gọi "anh chị", đoạn ngắn, khoảng 400–900 ký tự, ít icon (không làm gạch đầu dòng), một lời mời cụ thể (nhắn Zalo, đặt lịch xem nhà mẫu).
 - **Không** dùng Zalo cá nhân nhắn hàng loạt. Tin chủ động chỉ gửi khách đã đồng ý nhận tin, qua Zalo OA/ZNS (`CLAUDE.md` mục "Tin nhắn hàng loạt").
-- Bản nháp do Antigravity viết (skill `bcons-content-zalo`) vẫn qua kiểm quy tắc cứng và anh duyệt trước khi đăng.
+- Bản nháp do Antigravity viết vẫn qua kiểm quy tắc cứng và anh duyệt trước khi đăng.
 
 ## Bản có icon (anh hỏi 10/11/2026)
 Icon không tự nó là "AI slop": FB/TikTok/Zalo đều quen có icon. Slop là icon rập khuôn: làm gạch đầu dòng, ✅🔥💥🚀 chồng lên nhau, bài nào cũng 📍 địa chỉ. Vì vậy **mỗi bài có hai bản để anh chọn**:

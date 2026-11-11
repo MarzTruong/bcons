@@ -15,3 +15,6 @@ Nguồn: Drive `agy/den-claude/2026-11-10-thiet-ke-landing-v2/` (`ket-qua.md`, `
 
 ## Câu hỏi anh còn nợ (từ lần trước)
 Ảnh nhà mẫu B4 có phải nhà mẫu thật; số CĐT và "60 tiện ích"; "48 tháng" ở PTTT 03/04 (nguồn CĐT ghi "tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao").
+
+## Kết luận (11/11/2026)
+Anh không chọn phương án nào (A hay B). Không tích hợp vào `engine/landing`, landing hiện tại giữ nguyên.
