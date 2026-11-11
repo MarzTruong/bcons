@@ -1,0 +1,86 @@
+{
+ "can": {
+  "ma": "A18-09",
+  "loai": "2PN-2WC",
+  "thap": "Orchid (A)",
+  "tang": 18,
+  "tim": 62.02,
+  "tt": 56.91,
+  "P": 4066746600
+ },
+ "r": {
+  "key": "03",
+  "P": 4066746600,
+  "V": 406674660,
+  "G": 4473421260,
+  "fee": 81334932,
+  "rows": [
+   {
+    "l": "Ký thỏa thuận đăng ký",
+    "p": 5,
+    "k": "tt",
+    "w": "Khi ký thỏa thuận",
+    "amt": 203337330,
+    "bank": false
+   },
+   {
+    "l": "Ký hợp đồng mua bán",
+    "p": 5,
+    "k": "hdmb",
+    "w": "Khi ký HĐMB",
+    "amt": 244004796,
+    "bank": false
+   },
+   {
+    "l": "Ngân hàng giải ngân",
+    "p": 50,
+    "k": "loan",
+    "w": "7 ngày sau HĐMB",
+    "amt": 2236710630,
+    "bank": true
+   },
+   {
+    "l": "Đợt 4",
+    "p": 5,
+    "k": "mid",
+    "w": "2 tháng sau HĐMB",
+    "amt": 223671063,
+    "bank": false
+   },
+   {
+    "l": "Đợt 5",
+    "p": 5,
+    "k": "mid",
+    "w": "4 tháng sau HĐMB",
+    "amt": 223671063,
+    "bank": false
+   },
+   {
+    "l": "Thông báo bàn giao căn hộ",
+    "p": 25,
+    "k": "handover",
+    "w": "Dự kiến Quý II/2029",
+    "amt": 1138689048,
+    "bank": false
+   },
+   {
+    "l": "Thông báo bàn giao sổ hồng",
+    "p": 5,
+    "k": "so",
+    "w": "Theo thông báo của CĐT",
+    "amt": 203337330,
+    "bank": false
+   }
+  ],
+  "ownBefore": 894684252,
+  "loan": 2236710630,
+  "handover": 1138689048,
+  "so": 203337330
+ },
+ "lai": 9.5,
+ "nam": 20,
+ "tra": 20849077.363817647,
+ "total": 4473421260,
+ "ten": "Minh",
+ "ngay": "11/11/2026"
+}
