@@ -21,8 +21,12 @@ Nguồn: tài liệu CĐT và sàn trên Drive `Bcons/data/bcons-newsky/tai-lieu
 - Thông báo 213/TB-BPS ghi "594 sản phẩm" (mốc bốc thăm), chưa rõ là phần đang mở bán hay tổng; không nhầm với tổng 1.565. (Báo cáo môi trường cũ ghi 1.632 căn cho tên cũ Tecco City: không dùng.)
 - Bàn giao: **dự kiến Quý II/2028** (thông báo PTTT; anh xác nhận 11/11/2026). Quyết định 3759 ghi hoàn thành dự án đưa vào hoạt động Quý I/2029 (xây dựng Quý III/2025 – Quý IV/2028): đó là mốc hoàn thành toàn dự án, không dùng khi nói với khách về bàn giao căn hộ.
 
+- Tiến độ: slide training ghi "đã có GPXD, khởi công tháng 10/2025"; slide kick-off 11/12/2025 ghi "mới khởi công trong T12/2025". Dùng mốc khởi công tháng 10/2025 (tài liệu mới hơn), hỏi anh nếu cần mốc chốt.
+- 79 tiện ích; loại căn (slide): 2PN-1WC 47 m², 2PN-2WC 55–74 m², 3PN-2WC 72–81 m², 3PN-3WC 94–99 m². Các mẫu A1, A2, A2a, A3, B1–B8, C1, C2.
+- Giỏ hàng chung (GHC, tab DS_CĂN 11/11/2026): 200 căn tháp B đang trống (B1 100 căn, B2 100 căn). Anh báo tháp A và các căn còn lại đã bán hết hoặc LOCK.
+
 ## Hạ tầng và metro (lưu ý quan trọng, anh dặn 11/11/2026)
-Cập nhật mới nhất của Chính phủ: **tuyến metro không còn chạy trên trục Quốc lộ 13**, đã dời ra sau. Không dùng metro số 2 dọc QL13 làm điểm bán của Newsky. Báo cáo nghiên cứu AGY ngày 11/11/2026 (Metro Thủ Dầu Một – TP.HCM dọc QL13) đã lỗi thời ở phần này; số QL13 mở rộng 6→8 làn vẫn là dự án đường riêng. Cần nguồn chính thống ghi rõ tuyến mới trước khi nhắc metro.
+Cập nhật mới nhất của Chính phủ: **tuyến metro không còn chạy trên trục Quốc lộ 13**, đã dời ra sau. Không dùng metro số 2 dọc QL13 làm điểm bán của Newsky. Báo cáo nghiên cứu AGY ngày 11/11/2026 (Metro Thủ Dầu Một – TP.HCM dọc QL13) đã lỗi thời ở phần này; số QL13 mở rộng 6→8 làn vẫn là dự án đường riêng. Cần nguồn chính thống ghi rõ tuyến mới trước khi nhắc metro. Slide kick-off và training (12/2025, 2026) vẫn ghi "metro số 2 ngang dự án, ga cách 100 m", "QL13 mở rộng 10 làn" và bảng "tăng trưởng giá" các dự án dọc Metro 1, "cơ hội duy nhất để x2 giá trị tài sản": **không dùng** (lỗi thời và vi phạm quy tắc không hứa tăng giá).
 
 ## Phương thức thanh toán (số thứ tự của CĐT, đợt tính theo % giá căn; thuế VAT và phí bảo trì 2% ghi bên dưới)
 Chi tiết: `nguon/pttt-cdt.json`.
@@ -34,9 +38,10 @@ Chi tiết: `nguon/pttt-cdt.json`.
 ## Ngân hàng liên kết cho vay
 MB (độc quyền gói trần 6,9%), OCB, BIDV, Public Bank, ACB, Vietcombank, TPBank, Vietinbank, Shinhan. CĐT chỉ nhận hồ sơ vay tại các ngân hàng và chi nhánh trong danh sách. (Danh bạ cán bộ ngân hàng không chép vào repo.)
 
-## Chính sách của sàn
+## Chính sách của sàn (công khai cho khách)
 - Thông báo 213/TB-BPS (06/11/2026): quà tặng bốc thăm 1 xe Toyota Camry 2.0 cho khách của hệ thống Bcons PS có thỏa thuận quyền chọn thành công từ 06/11/2026; chỉ bốc thăm khi dự án đạt tối thiểu 95%/594 sản phẩm (565) đến hết 30/06/2027; phải thanh toán đủ, ký HĐMB đúng hạn, có mặt trực tiếp nhận. Hỏi anh trước khi nhắc trong nội dung.
-- Chính sách hoa hồng (193TB, 206TB): nội bộ, **không chép vào repo** (cũng chưa nhập vào Master File Newsky).
+- Quà tặng giao dịch thành công (191/TB-BPS, thay 122/TB-BPS): 01 chỉ vàng SBJ/giao dịch (trao 30–45 ngày sau ký HĐMB); 50 giao dịch sớm nhất voucher 30 triệu, 50 giao dịch tiếp theo 20 triệu; áp dụng cho quyền chọn thành công từ 06/10/2026 và thanh toán đúng hạn 07 ngày. Hỏi anh trước khi nhắc trong nội dung.
+- Chính sách hoa hồng/hỗ trợ bổ sung (193TB, 206TB) và thưởng nóng: nội bộ, **không chép vào repo**; đã nhập vào Master File Newsky trên Drive.
 
 ## Lịch mở bán
 Chưa có.
@@ -54,4 +59,4 @@ Nguồn: file CĐT "06102026 FILE CHECK GIÁ THÁP B - BCONS NEWSKY" (200 căn t
 Chiết khấu so với giá PTTT 09: PTTT 08 là 5,65%, PTTT 10 là 2,15%. Tình trạng từng căn (trống, cọc, LOCK) cập nhật theo giỏ hàng chung, chưa đưa vào đây.
 
 ## Còn thiếu, cần anh
-Tình trạng khởi công; lịch mở bán; tên kênh Facebook; thông tin trong 2 file lớn (slide kick-off 155 MB, training 85 MB): connector Drive trả về rỗng, cần anh gửi nội dung chữ hoặc ảnh các trang chính.
+Lịch mở bán và các đợt; tên kênh Facebook; bảng giá tháp A (anh báo đã bán hết hoặc LOCK); tên đơn vị cọc của anh trên GHC Newsky.
