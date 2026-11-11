@@ -210,6 +210,9 @@ function flushKhach_(kh, st) {
     kh.sheet.getRange(minRow + 1, minCol + 1, span.length, maxCol - minCol + 1).setValues(span);
     return;
   }
+  // Cột bên phải ghi TRƯỚC (NgayRutLai, DongYDuAn trước DongYNhanTin): chết giữa chừng thì không bao giờ có 'Đã rút lại' mà thiếu ngày rút lại
+  // (lượt sau sẽ đóng dấu bằng NgayCapNhat cũ và để đồng ý mới hơn sống lại).
+  runs.sort(function (a, b) { return b.col - a.col; });
   runs.forEach(function (run) {
     var vals = run.rows.map(function (ri) { return [kh.data[ri][run.col]]; });
     kh.sheet.getRange(run.rows[0] + 1, run.col + 1, vals.length, 1).setValues(vals);
@@ -709,6 +712,12 @@ function phanBoLocked_(dryRun, nowIso) {
   // NgayRutLai được nâng lên tới ngày mọi dòng TuChoi đã biết (dòng chưa biết ngày = now, ổn định ngay trong lượt này) rồi mới suy ra đồng ý.
   var items = [];
   var daLa = [];
+  var stampPhones = {};
+  tcFull.stamp.forEach(function (rowNo) {
+    var iSdt = tcFull.vals[0].map(function (h) { return hdr_(h); }).indexOf('SDT');
+    var p = iSdt < 0 ? '' : normalizePhone_(s_(tcFull.vals[rowNo - 1][iSdt]));
+    if (p) stampPhones[p] = true;
+  });
   for (var r = 1; r < kh.data.length; r++) {
     var row = kh.data[r];
     if (rowBlank_(row)) continue;
@@ -729,13 +738,14 @@ function phanBoLocked_(dryRun, nowIso) {
     var canon = obj, decRec = obj;
     if (phone) {
       var wTc = '';
+      var curRut = s_(obj.NgayRutLai);
+      var curRutIso = isoOrEmpty_(curRut);
       (Object.prototype.hasOwnProperty.call(tuChoi, phone) ? tuChoi[phone] : []).forEach(function (e) {
-        var d = e.ngayGhi || nowIso; // dòng chưa biết ngày sẽ được đóng dấu now: tính ngay từ lượt này
+        // Dòng chưa biết ngày sẽ được đóng dấu now: tính ngay từ lượt này. Dòng ngày tương lai (không đóng dấu): giữ mốc đang có (hoặc now nếu chưa có), không đẩy mỗi lượt.
+        var d = e.ngayGhi || (stampPhones[phone] ? nowIso : (curRutIso || nowIso));
         if (d > wTc) wTc = d;
       });
       var o1 = Object.assign({}, obj);
-      var curRut = s_(obj.NgayRutLai);
-      var curRutIso = isoOrEmpty_(curRut);
       if (wTc && (curRut === '' || (curRutIso && curRutIso < wTc))) o1.NgayRutLai = wTc; // ô rác thì giữ nguyên (mốc vô hạn); không bao giờ hạ ngày
       var m = mergeCustomer_(o1, {}, nowIso);
       canon = Object.assign({}, obj, { DongYNhanTin: m.DongYNhanTin, DongYDuAn: m.DongYDuAn, NgayRutLai: m.NgayRutLai });
@@ -897,15 +907,11 @@ function phanBoLocked_(dryRun, nowIso) {
     flushDests_(dests, !failedCodes.length); // cập nhật trạng thái ở các Master mở được; KhachHang giữ dữ liệu cá nhân (xóa dở)
     return out;
   }
-  if (!purgeItems.length) {
-    flushDests_(dests, true); // rút lại/đồng ý lại: trạng thái ở Master ghi NGAY sau dấu ở KhachHang (cùng giai đoạn ghi)
-    return out;
-  }
   purgeItems.forEach(function (it) {
     PURGE_CLEAR_.forEach(function (c) { markKhach_(kh, st, it.r, c, ''); });
     markCell_(kh, st, it.r, 'NgayCapNhat', nowIso);
   });
-  if (kh.sheet) flushKhach_(kh, st);
+  if (kh.sheet) flushKhach_(kh, st); // không có xóa thì không có ô nào để ghi: trạng thái Master (rút lại/đồng ý lại) ghi NGAY sau dấu ở KhachHang
   flushDests_(dests, true);
   return out;
 }
@@ -1073,6 +1079,10 @@ function chayTatCa_(opts) {
     if (!res.loi && res.phanBo.masterLoi && res.phanBo.masterLoi.length) res.loi = 'LOI_MASTER';
   } catch (e) {
     res.loi = errorClass_(e);
+    if (res.loi === 'LOI_MASTER') { // phanBo_ ném 'Master <mã>, <mã> không mở được': chỉ lấy mã dự án (maDuAnAnToan_ lọc lại khi đưa vào tin)
+      var mm = /^Master (.+?) không mở được/.exec(String(e && e.message));
+      if (mm) res.masterLoiThrow = mm[1].split(', ');
+    }
     logLoiGoc_(e);
   }
   try {
@@ -1106,7 +1116,7 @@ function ghiVaBao_(res, nguon, now, ms) {
   var L = res.landing || { doc: 0, moi: 0, trung: 0, loi: 0 };
   var C = res.crm || { doc: 0, moi: 0, trung: 0, loi: 0 };
   var P = res.phanBo || { rutLai: 0, dongYLai: 0, xoa: 0, lyDo: { tuchoi: 0, khong: 0 }, masterLoi: [], dayVao: {} };
-  var masterLoi = P.masterLoi || [];
+  var masterLoi = (P.masterLoi && P.masterLoi.length) ? P.masterLoi : (res.masterLoiThrow || []);
   var vao = 0;
   Object.keys(P.dayVao || {}).forEach(function (k) { vao += P.dayVao[k]; });
   var loiSo = L.loi + C.loi + (P.tuChoiLoi || 0) + masterLoi.length + (res.loi && res.loi !== 'LOI_MASTER' ? 1 : 0);
@@ -1124,10 +1134,14 @@ function ghiVaBao_(res, nguon, now, ms) {
   }
   props.setProperty(CHAY_CUOI_KEY_, String(now.getTime()));
   var loiDong = L.loi + C.loi >= LOI_DONG_NGUONG_; // nhiều dòng khách hỏng cùng một lần: báo một tin (cùng khóa chống lặp 6 giờ)
-  if (!res.loi && !loiDong) ghiNhanSach_(now.getTime());
+  var loiTuChoi = P.tuChoiLoi || 0; // dòng TuChoi lỗi MỚI ghi ở Loi lần này: một yêu cầu rút lại gõ sai phải hiện ra
+  if (!res.loi && !loiDong && !loiTuChoi) ghiNhanSach_(now.getTime());
   else {
     ghiNhanLoi_();
-    if (!res.loi) baoLoi_('LOI_DONG', L.loi + C.loi, now);
+    if (!res.loi) {
+      if (loiDong) baoLoi_('LOI_DONG', L.loi + C.loi, now);
+      if (loiTuChoi) baoLoi_('LOI_TUCHOI', loiTuChoi, now);
+    }
     else if (res.loi === 'LOI_MASTER') baoLoi_('LOI_MASTER ' + maDuAnAnToan_(masterLoi), masterLoi.length, now, 'LOI_MASTER');
     else baoLoi_(res.loi, loiSo, now);
   }
