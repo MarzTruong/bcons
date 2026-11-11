@@ -67,9 +67,14 @@ function validateLead_(p) {
     nam: num_(p.nam, 0, 35),
     nguon: String(p.nguon || '').replace(/[^\w.\-]/g, '').slice(0, 60) || 'khong-ro',
     trang: clean_(p.trang, 200),
-    duAn: /^[a-z0-9-]{3,40}$/.test(String(p.duAn || '')) ? String(p.duAn) : 'khong-ro',
+    duAn: typeof p.duAn === 'string' && /^[a-z][a-z0-9-]{2,39}$/.test(p.duAn) ? p.duAn : 'khong-ro',
   };
   return { ok: true, phone: phone, lead: lead };
+}
+
+/** Tab Landing tạo trước khi có cột 'Dự án'/'Đã gộp' chỉ có 17 cột tiêu đề: cần ghi lại hàng tiêu đề (17 cột đầu không đổi). */
+function needsHeaderRepair_(lastColumn) {
+  return Number(lastColumn) < HEADERS.length;
 }
 
 function money_(n) {
@@ -150,6 +155,7 @@ function doPost(e) {
       var ss = SpreadsheetApp.getActiveSpreadsheet();
       var sh = ss.getSheetByName(SHEET_TAB) || ss.insertSheet(SHEET_TAB);
       if (sh.getLastRow() === 0) sh.appendRow(HEADERS);
+      else if (needsHeaderRepair_(sh.getLastColumn())) sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]); // tab cũ 17 cột: bổ sung tiêu đề 'Dự án', 'Đã gộp'
       sh.appendRow(rowFor_(v.lead, new Date()));
       cache.put(key, '1', 120); // chỉ đánh dấu sau khi đã ghi được
       count = Number(cache.get('leads_10m') || 0) + 1;

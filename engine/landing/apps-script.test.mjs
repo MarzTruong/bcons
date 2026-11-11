@@ -100,3 +100,17 @@ test("duAn: giữ mã dự án đúng dạng, còn lại về khong-ro; hàng kh
   assert.equal(row[ctx.HEADERS.indexOf("Dự án")], "bcons-central-park");
   assert.equal(row[ctx.HEADERS.indexOf("Đã gộp")], "");
 });
+
+test("duAn: chỉ nhận chuỗi mã dự án bắt đầu bằng chữ cái; kiểu lạ, hoa, xuống dòng, 41 ký tự đều về khong-ro", () => {
+  for (const bad of ["Bcons-Central", "abc\n", " abc", "abc ", "a".repeat(41), ["abc"], 123, true, "<abc>", "1-2-26", "-12", "ab"]) {
+    assert.equal(ctx.validateLead_({ ...lead, duAn: bad }).lead.duAn, "khong-ro", String(bad));
+  }
+  assert.equal(ctx.validateLead_({ ...lead, duAn: "bcons-newsky" }).lead.duAn, "bcons-newsky");
+  assert.equal(ctx.validateLead_({ ...lead, duAn: "a".repeat(40) }).lead.duAn, "a".repeat(40));
+});
+
+test("needsHeaderRepair_: tab cũ 17 cột cần ghi lại tiêu đề, tab đủ 19 cột thì không", () => {
+  assert.equal(ctx.needsHeaderRepair_(17), true);
+  assert.equal(ctx.needsHeaderRepair_(ctx.HEADERS.length), false);
+  assert.equal(ctx.needsHeaderRepair_(25), false);
+});
