@@ -68,7 +68,8 @@ function parseLandingRow_(headers, row) {
   rec.PTTT = cell_(get('PTTT'));
   // Đồng ý chỉ tính cho đúng dự án của dòng; không có dự án hoặc bằng chứng hỏng thì 'Chưa rõ' (khách vẫn được lưu).
   var maDongY = duAn.split(';')[0]; // ô Dự án nhiều mã: chỉ gắn đồng ý cho mã đầu (bảo thủ)
-  var coDongY = coBangChung && maDongY !== '';
+  // ' || ' là dấu ngăn các đoạn bằng chứng; bằng chứng chứa nó (vd. URL trang do client gửi) là không hợp lệ.
+  var coDongY = coBangChung && dongYRaw.indexOf(' || ') < 0 && maDongY !== '';
   rec.DongYNhanTin = coDongY ? 'Có' : 'Chưa rõ';
   rec.DongYDuAn = coDongY ? maDongY : '';
   rec.DongYBangChung = coDongY ? maDongY + ': ' + dongY : '';
@@ -89,7 +90,7 @@ function ngayDongY_(evidence) {
 /** Bằng chứng hợp lệ ở dạng cũ (không mã) hoặc dạng mới: các đoạn '<mã>: <bằng chứng>' ngăn ' || ', đoạn nào cũng đúng khuôn. */
 function bangChungHopLe_(e) {
   e = String(e == null ? '' : e);
-  if (hasConsentEvidence_(e)) return true;
+  if (hasConsentEvidence_(e)) return e.indexOf(' || ') < 0;
   var parts = e.split(' || ');
   for (var i = 0; i < parts.length; i++) {
     var m = /^([a-z][a-z0-9-]{2,39}): ([\s\S]*)$/.exec(parts[i]);
@@ -103,7 +104,7 @@ function coTheNhan_(rec, maDuAn) {
   if (!rec || typeof maDuAn !== 'string') return false;
   var ma = maDuAn.trim().toLowerCase();
   if (!ma) return false;
-  if (s_(rec.DongYNhanTin) === 'Đã rút lại') return false;
+  if (s_(rec.DongYNhanTin) !== 'Có') return false; // fail closed: chỉ đúng 'Có' mới nhắn được
   var list = String(rec.DongYDuAn == null ? '' : rec.DongYDuAn).toLowerCase().split(';');
   for (var i = 0; i < list.length; i++) if (list[i].trim() === ma) return true;
   return false;

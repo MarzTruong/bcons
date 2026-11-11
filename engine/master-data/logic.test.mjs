@@ -562,3 +562,57 @@ test("mergeCustomer_ (chuyển tiếp Task 1): bằng chứng gắn mã nhưng h
   const two = "bcons-newsky: " + CONSENT + " || bcons-central-park: " + CONSENT;
   assert.equal(merge(mk({}), mk({ DongYNhanTin: "Có", DongYBangChung: two })).DongYNhanTin, "Có");
 });
+
+// ---- Task 1 review: fail closed ----
+test("coTheNhan_: chỉ true khi DongYNhanTin đúng 'Có' (sau trim); mọi giá trị khác false dù mã có trong DongYDuAn", () => {
+  const rec = (v) => ({ DongYDuAn: "abc", DongYNhanTin: v });
+  for (const v of ["Không", "Không ", "Chưa rõ", "", "có", "CÓ", "Đã rút lại", "Có (x)", undefined, null, 1, true]) {
+    assert.equal(ctx.coTheNhan_(rec(v), "abc"), false, JSON.stringify(v));
+  }
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc" }, "abc"), false, "thiếu DongYNhanTin");
+  assert.equal(ctx.coTheNhan_(rec("Có"), "abc"), true);
+  assert.equal(ctx.coTheNhan_(rec(" Có "), "abc"), true, "ô Sheets có thể dính khoảng trắng");
+  // hồ sơ đã rút lại/xóa mà DongYDuAn chưa được xóa: không bao giờ nhắn được
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc;def", DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-10T00:00:00.000Z" }, "def"), false);
+});
+
+test("coTheNhan_: mã rỗng/không phải chuỗi -> false (không khớp mục rỗng của DongYDuAn)", () => {
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "", DongYNhanTin: "Có" }, ""), false);
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc", DongYNhanTin: "Có" }, ""), false);
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc;", DongYNhanTin: "Có" }, ""), false);
+  assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc", DongYNhanTin: "Có" }, "  "), false);
+  for (const m of [undefined, null, 5, {}, ["abc"]]) assert.equal(ctx.coTheNhan_({ DongYDuAn: "abc", DongYNhanTin: "Có" }, m), false, String(m));
+});
+
+test("parseLandingRow_: bằng chứng chứa ' || ' hoặc xuống dòng -> không hợp lệ (Chưa rõ, DongYDuAn rỗng)", () => {
+  for (const ev of [
+    "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/?a= || bcons-central-park: Có (2026-11-06T03:15:00.000Z, mẫu v1, x))",
+    "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, a || b)",
+    "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, a\nb)",
+    "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, a\rb)",
+  ]) {
+    const r = plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Đồng ý nhận tin": ev }))).rec;
+    assert.equal(r.DongYNhanTin, "Chưa rõ", JSON.stringify(ev));
+    assert.equal(r.DongYDuAn, "", JSON.stringify(ev));
+    assert.equal(r.DongYBangChung, "", JSON.stringify(ev));
+  }
+});
+
+test("mergeCustomer_ (chuyển tiếp): bằng chứng cũ không mã chứa ' || ' cũng không hợp lệ", () => {
+  const ev = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, a || b)";
+  const r = merge(mk({}), mk({ DongYNhanTin: "Có", DongYBangChung: ev }));
+  assert.deepEqual([r.DongYNhanTin, r.DongYBangChung], ["Chưa rõ", ""]);
+});
+
+test("parseLandingRow_: ô Dự án nhiều mã -> đồng ý chỉ cho mã hợp lệ đầu tiên, bất kể thứ tự; mã đầu không hợp lệ bị bỏ", () => {
+  const p = (v) => plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Dự án": v }))).rec;
+  const ab = p("bcons-aaa;bcons-bbb"), ba = p("bcons-bbb;bcons-aaa");
+  assert.equal(ab.DongYDuAn, "bcons-aaa");
+  assert.equal(ba.DongYDuAn, "bcons-bbb");
+  assert.equal(ctx.coTheNhan_(ab, "bcons-bbb"), false);
+  assert.equal(ctx.coTheNhan_(ba, "bcons-aaa"), false);
+  const sk = p("khong-ro;bcons-bbb;bcons-aaa");
+  assert.equal(sk.DongYDuAn, "bcons-bbb");
+  assert.equal(ctx.coTheNhan_(sk, "bcons-aaa"), false);
+  assert.equal(ctx.coTheNhan_(sk, "khong-ro"), false);
+});
