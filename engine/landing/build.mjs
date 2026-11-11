@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readProjectConfig, sharedDir, takeProjectFlag } from "../remotion/scripts/project.mjs";
 import { renderPage, renderPolicy } from "./page.mjs";
+import { loadCdt, planFromJson } from "./plans-json.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const TYPES = ["Studio", "1PN-1WC", "2PN-1WC", "2PN-2WC", "3PN-2WC"];
@@ -51,7 +52,44 @@ function findPriceCsv(projDir, ma) {
   return cands.find((p) => fs.existsSync(p)) ?? cands[0];
 }
 
+/** Landing dựng sẵn (thiết kế AGY) trong du-an/<mã>/landing/index.html: nhúng lịch đợt từ nguon/pttt-cdt.json, chép lõi tính calc.js. */
+export function buildStatic(projDir, outRoot, { draft = false } = {}) {
+  const project = readProjectConfig(projDir);
+  const dir = path.join(projDir, "landing");
+  const data = JSON.parse(fs.readFileSync(path.join(dir, "landing.json"), "utf8"));
+  const errs = [];
+  if (!data.dongY?.vaiTro?.trim()) errs.push("Thiếu bên giữ dữ liệu trong ô đồng ý (dongY.vaiTro)");
+  if (!draft && !/^https:\/\/script\.google\.com\//.test(data.formUrl ?? "")) errs.push("Chưa có link nhận form (formUrl, link Web App của Apps Script)");
+  for (const f of ["index.html", "chinh-sach.html", "client.js"]) if (!fs.existsSync(path.join(dir, f))) errs.push(`Thiếu landing/${f}`);
+  if (PHONE_RE.test(JSON.stringify({ ...data, formUrl: undefined }))) errs.push("landing.json có số điện thoại");
+  const cdt = loadCdt(projDir);
+  const plans = {};
+  try {
+    for (const k of data.pttt ?? []) plans[k] = planFromJson(cdt, k);
+  } catch (e) {
+    errs.push(e.message);
+  }
+  if (!Object.keys(plans).length) errs.push("landing.json thiếu danh sách pttt");
+  if (errs.length) throw new Error(`Chưa đăng được landing:\n- ${errs.join("\n- ")}`);
+  const html = fs.readFileSync(path.join(dir, "index.html"), "utf8");
+  if (html.split("__DATA__").length !== 2) throw new Error("landing/index.html phải có đúng một chuỗi __DATA__");
+  const payload = JSON.stringify({ formUrl: data.formUrl, macDinh: data.macDinh, loaiCan: data.loaiCan, plans }).replace(/</g, "\\u003c");
+  const out = path.join(outRoot, project.ma);
+  fs.rmSync(out, { recursive: true, force: true });
+  fs.mkdirSync(out, { recursive: true });
+  fs.writeFileSync(path.join(out, "index.html"), html.replace("__DATA__", () => payload));
+  fs.copyFileSync(path.join(dir, "chinh-sach.html"), path.join(out, "chinh-sach.html"));
+  fs.copyFileSync(path.join(dir, "client.js"), path.join(out, "client.js"));
+  fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
+  if (fs.existsSync(path.join(dir, "assets"))) fs.cpSync(path.join(dir, "assets"), path.join(out, "assets"), { recursive: true });
+  const qr = project.watermark?.link ? "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n" : "";
+  fs.writeFileSync(path.join(out, "_redirects"), qr);
+  fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");
+  return out;
+}
+
 export function buildLanding(projDir, outRoot, { draft = false } = {}) {
+  if (fs.existsSync(path.join(projDir, "landing", "index.html"))) return buildStatic(projDir, outRoot, { draft });
   const project = readProjectConfig(projDir);
   const data = JSON.parse(fs.readFileSync(path.join(projDir, "landing", "landing.json"), "utf8"));
   const errs = [...checkLanding(data, { draft }), ...checkStillForSale(data, findPriceCsv(projDir, project.ma))];

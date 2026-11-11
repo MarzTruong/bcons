@@ -1,0 +1,14 @@
+{
+  "formUrl": "",
+  "dongY": { "vaiTro": "Tuấn Trương (Bcons PS)" },
+  "laiGiaDinh": 9.5,
+  "namGiaDinh": 20,
+  "macDinh": "09",
+  "pttt": ["09", "08", "10"],
+  "loaiCan": {
+    "2pn1wc": { "label": "2PN – 1WC", "min": 2560, "max": 2700, "def": 2600 },
+    "2pn2wc": { "label": "2PN – 2WC", "min": 2750, "max": 3500, "def": 3000 },
+    "3pn2wc": { "label": "3PN – 2WC", "min": 3870, "max": 4720, "def": 4100 },
+    "3pn3wc": { "label": "3PN – 3WC", "min": 4280, "max": 4590, "def": 4400 }
+  }
+}
