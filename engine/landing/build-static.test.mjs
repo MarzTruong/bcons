@@ -62,5 +62,16 @@ test("client.js là module hợp lệ và dùng calc.js của engine", () => {
 });
 
 test("thiếu formUrl thì không đăng được (chỉ bản nháp được xuất)", () => {
-  assert.throws(() => buildLanding(PROJ, out), /formUrl/);
+  const tam = fs.mkdtempSync(path.join(os.tmpdir(), "np-"));
+  fs.cpSync(PROJ, tam, { recursive: true, filter: (f) => !f.includes(`${path.sep}assets`) && !f.includes(`${path.sep}video`) });
+  const f = path.join(tam, "landing", "landing.json");
+  fs.writeFileSync(f, JSON.stringify({ ...JSON.parse(fs.readFileSync(f, "utf8")), formUrl: "" }));
+  assert.throws(() => buildLanding(tam, out), /formUrl/);
+  assert.ok(buildLanding(tam, out, { draft: true }));
+});
+
+test("bản đăng thật có formUrl Apps Script và trang gửi kèm duAn", () => {
+  const d = buildLanding(PROJ, out);
+  assert.match(fs.readFileSync(path.join(d, "index.html"), "utf8"), /https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec/);
+  assert.match(client, /duAn: D\.duAn|duAn: "bcons-newsky"/);
 });
