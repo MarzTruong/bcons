@@ -27,11 +27,14 @@ function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
   const videos = [];
   const execs = [];
   const sent = [];
+  const docs = [];
+  const phieuCalls = [];
   let statusCalls = 0;
   const tg = {
     sendMessage: async (_c, text, extra) => said.push({ text, extra }),
     sendVideo: async (_c, file, caption) => videos.push({ file, caption }),
     sendPhotos: async (_c, files, caption) => videos.push({ files, caption }),
+    sendDocument: async (_c, file, caption) => docs.push({ file, caption }),
     answerCallback: async () => {},
   };
   const exec = async (cmd, args) => {
@@ -52,8 +55,13 @@ function setup({ claude, gitStatus = "", gitStatusAfter } = {}) {
     now: () => T0,
     startedAt: T0,
     cancel: () => true,
+    chayPhieu: async (a) => {
+      phieuCalls.push(a);
+      if (a.ma === "A18-09") throw new Error("Không lập phiếu: căn A18-09 đã cọc (đã bán).");
+      return { png: "/x/" + a.ma + ".png", ...(a.pdf ? { pdf: "/x/" + a.ma + ".pdf" } : {}), cao: 1600 };
+    },
   });
-  return { bot, said, videos, execs, sent, projDir, outDir, repoRoot };
+  return { bot, said, videos, execs, sent, docs, phieuCalls, projDir, outDir, repoRoot };
 }
 
 test("người lạ nhắn thì bỏ qua, không trả lời", async () => {
@@ -425,4 +433,32 @@ test("/xem <tên> icon gửi bản caption có icon (caption-icon.md); /xem thư
   await s3.bot.handleUpdate(msg("/xem a icon"));
   await new Promise((r) => setTimeout(r, 30));
   assert.ok(s3.said.some((m) => /chưa có bản icon/i.test(m.text)));
+});
+
+test("/phieu <mã> <PTTT> pdf → dựng phiếu, gửi PNG + PDF dạng tệp để anh chuyển Zalo", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/phieu A21-26 03 pdf"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(s.phieuCalls[0].ma, "A21-26");
+  assert.equal(s.phieuCalls[0].pttt, "03");
+  assert.equal(s.phieuCalls[0].projDir, s.projDir);
+  assert.deepEqual(s.docs.map((d) => d.file), ["/x/A21-26.png", "/x/A21-26.pdf"]);
+});
+
+test("lệnh bấm được từ tin báo khách /phieu_B1p3_01_09_9p5_20 dựng đúng căn B1.3-01", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/phieu_B1p3_01_09_9p5_20"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.deepEqual([s.phieuCalls[0].ma, s.phieuCalls[0].pttt, s.phieuCalls[0].lai, s.phieuCalls[0].nam], ["B1.3-01", "09", 9.5, 20]);
+  assert.equal(s.docs.length, 1);
+});
+
+test("/phieu: căn đã cọc → báo lý do, không gửi tệp; sai cú pháp → hướng dẫn", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(msg("/phieu A18-09 03"));
+  await new Promise((r) => setTimeout(r, 20));
+  assert.ok(s.said.some((m) => /Không lập phiếu: căn A18-09 đã cọc/.test(m.text)));
+  assert.equal(s.docs.length, 0);
+  await s.bot.handleUpdate(msg("/phieu"));
+  assert.ok(s.said.some((m) => /Cú pháp: \/phieu/.test(m.text)));
 });

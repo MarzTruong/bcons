@@ -32,6 +32,15 @@ export function createTg(token, fetchFn = fetch) {
       form.set("video", new Blob([fs.readFileSync(file)], { type: "video/mp4" }), path.basename(file));
       return call("sendVideo", form);
     },
+    /** Gửi tệp nguyên bản (không nén như ảnh): phiếu tính PNG/PDF để anh lưu và chuyển Zalo. */
+    async sendDocument(chatId, file, caption = "") {
+      const form = new FormData();
+      form.set("chat_id", String(chatId));
+      if (caption) form.set("caption", caption.slice(0, 1000));
+      const type = /\.pdf$/i.test(file) ? "application/pdf" : "image/png";
+      form.set("document", new Blob([fs.readFileSync(file)], { type }), path.basename(file));
+      return call("sendDocument", form);
+    },
     /** Gửi 2–10 ảnh thành một album (storyboard), chú thích ở ảnh đầu. */
     async sendPhotos(chatId, files, caption = "") {
       const form = new FormData();

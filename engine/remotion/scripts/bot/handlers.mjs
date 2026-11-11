@@ -6,6 +6,7 @@ import { approvalState, duyetCaption, duyetVideo } from "../caption-cli.mjs";
 import { parseCaption } from "../caption.mjs";
 import { videoPaths } from "../project.mjs";
 import { buttons } from "./tg.mjs";
+import { chayPhieu as chayPhieuThat, parseLenhPhieu } from "../phieu.mjs";
 import { HELP, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
@@ -237,6 +238,26 @@ export function createBot(deps) {
       rows.push([{ text: `Giữ trên ${switcher.self}`, callback_data: "may:" }]);
       return say(`Bot đang chạy trên ${switcher.self}. Chuyển sang máy nào?`, { reply_markup: { inline_keyboard: rows } });
     },
+    phieu(words) {
+      let a;
+      try {
+        a = parseLenhPhieu((words ?? []).join(" "));
+      } catch (e) {
+        return say(e.message);
+      }
+      return enqueue(`phiếu ${a.ma}`, async () => {
+        await say(`Đang dựng phiếu tính căn ${a.ma} (PTTT ${a.pttt})...`);
+        try {
+          const r = await (deps.chayPhieu ?? chayPhieuThat)({ ...a, projDir });
+          const ten = r.png.split(/[\\/]/).pop();
+          await tg.sendDocument(chatId, r.png, `Phiếu tính ${a.ma} – PTTT ${a.pttt}. Lưu ảnh này rồi gửi khách qua Zalo.`);
+          if (r.pdf) await tg.sendDocument(chatId, r.pdf, `Bản PDF ${ten.replace(/\.png$/, "")}`);
+          if (r.canhBao) await say(r.canhBao);
+        } catch (e) {
+          await say(e.message);
+        }
+      });
+    },
     kiemgia() {
       return enqueue("kiểm Master File", async () => {
         await say("Đang kiểm Master File theo 5 thông báo PTTT của CĐT...");
@@ -449,6 +470,8 @@ export function createBot(deps) {
     }
     const c = parseCommand(text);
     if (!c.cmd) return claudeTask(c.text);
+    // Lệnh bấm được trong tin báo khách: /phieu_<mã>_<PTTT>_<lãi>_<năm> (Telegram không cho dấu '-' và '.').
+    if (/^phieu_\w+$/.test(c.cmd)) return commands.phieu([`/${c.cmd}`, ...c.args]);
     const fn = commands[c.cmd];
     if (!fn) return say(`Không có lệnh /${c.cmd}.\n\n${HELP}`);
     if (VIDEO_CMDS.has(c.cmd)) {

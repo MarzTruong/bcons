@@ -13,6 +13,7 @@ export const HELP = [
   "/render <số> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
   "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để tick chọn 1, nhiều hoặc tất cả video.)",
   "/sfx – tạo hiệu ứng âm thanh còn thiếu trong kho 11 kiểu (tốn ít credit, hỏi trước)",
+  "/phieu <mã căn> <PTTT> – dựng phiếu tính (ảnh PNG, thêm chữ pdf nếu cần) để anh gửi khách qua Zalo",
   "/kiemgia – kiểm giá từng căn trong Master File theo tài liệu PTTT của CĐT",
   "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",
   "/baocao – chọn lại báo cáo Gemini cũ để làm video",
