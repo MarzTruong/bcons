@@ -307,30 +307,115 @@ function tuChoiPhones_(tuChoi) {
   return out;
 }
 
-/** Quyết định đích phân bổ của một khách (spec mục 7, 9). Rút lại luôn thắng (fail closed).
- *  tuChoi: mảng/Set/Map/object/chuỗi SĐT (mọi dạng); projectCodes: mảng mã dự án có tab Master_<mã>.
- *  Trả {chan, chua, dich, lyDo}; lyDo = 'tuchoi' | 'khong' | '' (chỉ khi chan).
- *  'Chưa rõ' không bị chặn ở đây (chỉ không nhắn hàng loạt). Không sửa đầu vào. */
-function decideDestinations_(rec, tuChoi, projectCodes) {
+/** Gộp hai mục TuChoi của cùng một SĐT: 'Xóa' thắng 'Rút lại'; ngày = lớn nhất trong các ngày hợp lệ,
+ *  nhưng một ngày chưa biết ('' ) làm cả mục chưa biết (fail closed: không bằng chứng nào mở lại được). */
+function gopMucTuChoi_(a, b) {
+  if (!a) return b;
+  var ngay = a.ngayGhi === '' || b.ngayGhi === '' ? '' : (a.ngayGhi > b.ngayGhi ? a.ngayGhi : b.ngayGhi);
+  return { loai: a.loai === 'Xóa' || b.loai === 'Xóa' ? 'Xóa' : 'Rút lại', ngayGhi: ngay };
+}
+
+/** Loại yêu cầu từ ô LoaiYeuCau: đúng 'Xóa' (sau gấp chữ: hoa/thường, dấu, khoảng trắng) -> 'Xóa'; trống hoặc lạ -> 'Rút lại'. */
+function loaiYeuCau_(v) {
+  return foldText_(v) === 'xoa' ? 'Xóa' : 'Rút lại';
+}
+
+/** Bản đồ TuChoi: {[SĐT chuẩn hóa]: {loai: 'Rút lại'|'Xóa', ngayGhi: ISO hoặc ''}}.
+ *  rows = mảng các dòng, có hoặc không dòng tiêu đề đầu (nhận ra bằng ô 'SDT'); cột theo TÊN (không tiêu đề: SDT, LyDo, NgayGhi, LoaiYeuCau).
+ *  ngayGhi '' = chưa biết (trống hoặc rác): người gọi phải coi là "vừa rút lại, chặn mọi thứ", không bao giờ là "rất cũ".
+ *  SĐT sai dạng bị bỏ (Sheets.gs báo ở tab Loi). Dạng đầu vào lạ -> ném lỗi (fail closed). */
+function tuChoiMap_(rows) {
+  var out = {};
+  if (rows == null) return out;
+  if (!Array.isArray(rows)) throw new Error('tuChoi: dạng không hỗ trợ');
+  var ix = { sdt: 0, lydo: 1, ngayghi: 2, loaiyeucau: 3 };
+  var start = 0;
+  if (rows.length && Array.isArray(rows[0]) && rows[0].some(function (h) { return foldText_(h) === 'sdt'; })) {
+    ix = { sdt: -1, lydo: -1, ngayghi: -1, loaiyeucau: -1 };
+    rows[0].forEach(function (h, j) {
+      var f = foldText_(h);
+      if (f in ix && ix[f] < 0) ix[f] = j;
+    });
+    start = 1;
+  }
+  for (var r = start; r < rows.length; r++) {
+    var row = rows[r];
+    if (row == null) continue;
+    if (!Array.isArray(row)) throw new Error('tuChoi: dạng không hỗ trợ');
+    var at = function (k) { return ix[k] < 0 || ix[k] >= row.length ? '' : row[ix[k]]; };
+    var p = normalizePhone_(typeof at('sdt') === 'number' ? at('sdt') : s_(at('sdt')));
+    if (!p) continue;
+    var muc = { loai: loaiYeuCau_(at('loaiyeucau')), ngayGhi: isoOrEmpty_(s_(at('ngayghi'))) };
+    out[p] = gopMucTuChoi_(out[p], muc);
+  }
+  return out;
+}
+
+/** Mục TuChoi của một SĐT từ mọi dạng tuChoi. Bản đồ {sdt: {loai, ngayGhi}} -> mục đó; dạng cũ (mảng/Set/Map/chuỗi/object giá trị khác)
+ *  -> 'Rút lại' chưa biết ngày (chặn, không mở lại được). Dạng lạ -> ném lỗi, kể cả khi khách không có SĐT. */
+function mucTuChoi_(tuChoi, phone) {
+  var muc = null;
+  var plainObj = tuChoi != null && typeof tuChoi === 'object' && Object.prototype.toString.call(tuChoi) === '[object Object]';
+  if (plainObj) {
+    Object.keys(tuChoi).forEach(function (k) {
+      var kp = normalizePhone_(k);
+      var v = tuChoi[k];
+      if (!kp || kp !== phone) return;
+      var m = v != null && typeof v === 'object' ? { loai: loaiYeuCau_(v.loai), ngayGhi: isoOrEmpty_(s_(v.ngayGhi)) } : { loai: 'Rút lại', ngayGhi: '' };
+      muc = gopMucTuChoi_(muc, m);
+    });
+    return muc;
+  }
+  if (phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0) return { loai: 'Rút lại', ngayGhi: '' };
+  if (!phone) tuChoiPhones_(tuChoi); // vẫn kiểm dạng để báo lỗi sớm
+  return null;
+}
+
+/** Hàng có bằng chứng đồng ý MỚI HƠN nghiêm ngặt mốc `limit` (ISO; '' = chưa biết -> không bao giờ)? Cùng quy tắc với mergeCustomer_:
+ *  chỉ đoạn '<mã>: Có (...)' hợp lệ và mã nằm trong DongYDuAn; ngày ở tương lai (> now + 5 phút) bị bỏ; bằng nhau KHÔNG tính. */
+function coDongYMoiHon_(rec, limit, nowIso) {
+  var lim = isoOrEmpty_(limit);
+  if (!lim) return false;
+  var listed = codesOnly_(rec.DongYDuAn).split(';');
+  return doanConHieuLuc_(segmentsOf_(rec.DongYBangChung, nowIso), lim).some(function (g) { return listed.indexOf(g.ma) >= 0; });
+}
+
+/** Quyết định đích phân bổ của một khách (spec mục 7, 9, 16).
+ *  tuChoi: bản đồ từ tuChoiMap_ (hoặc mọi dạng cũ: mảng/Set/Map/object/chuỗi SĐT, coi như 'Rút lại' chưa rõ ngày); projectCodes: mã dự án có tab Master_<mã>;
+ *  nowIso (tùy chọn, mặc định bây giờ): để bỏ bằng chứng ghi ngày ở tương lai.
+ *  Trả {xoa, rutLai, dich, lyDo}: lyDo = 'xoa' | 'rutlai' (TuChoi 'Rút lại') | 'khong' (cột DongYNhanTin gõ 'Không' hoặc 'Đã rút lại') | ''.
+ *  xoa: mục 'Xóa' và không có đồng ý mới hơn NgayGhi (dich []). rutLai: mục 'Rút lại' hoặc trạng thái đã rút, không có đồng ý mới hơn; dich VẪN tính (hồ sơ được giữ).
+ *  Đồng ý mới hơn NgayGhi mở cả hai. 'Không' gõ tay không bị bằng chứng cũ trong hàng mở ra. 'Không rõ' và chữ lạ không phải rút lại.
+ *  Không có SĐT -> dich []. Khách DuAnQuanTam rỗng -> dich [] và không bị cờ nào (cứ ở KhachHang). Không sửa đầu vào. */
+function decideDestinations_(rec, tuChoi, projectCodes, nowIso) {
   rec = rec || {};
+  var now = nowIso === undefined ? new Date().toISOString() : nowIso;
   var phone = normalizePhone_(rec.SDT);
-  var blocked = phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0;
-  var lyDo = blocked ? 'tuchoi' : (dongYKieu_(rec.DongYNhanTin) === 'khong' ? 'khong' : '');
-  if (!phone && !lyDo) tuChoiPhones_(tuChoi); // vẫn kiểm dạng tuChoi để báo lỗi sớm
-  if (lyDo) return { chan: true, chua: false, dich: [], lyDo: lyDo };
-  if (!phone) return { chan: false, chua: true, dich: [], lyDo: '' };
-  var known = Array.isArray(projectCodes) ? projectCodes : [];
-  var seen = [];
+  var muc = mucTuChoi_(tuChoi, phone);
+  var xoa = false, rutLai = false, lyDo = '';
+  if (muc && !coDongYMoiHon_(rec, muc.ngayGhi, now)) {
+    if (muc.loai === 'Xóa') { xoa = true; lyDo = 'xoa'; }
+    else { rutLai = true; lyDo = 'rutlai'; }
+  }
+  if (!xoa && !rutLai) {
+    var f = foldText_(rec.DongYNhanTin);
+    if (f === 'khong') { rutLai = true; lyDo = 'khong'; }
+    else if (f === 'darutlai' && !coDongYMoiHon_(rec, s_(rec.NgayRutLai), now)) { rutLai = true; lyDo = 'khong'; }
+  }
   var dich = [];
-  codesOnly_(rec.DuAnQuanTam).split(';').forEach(function (c) {
-    if (!c || seen.indexOf(c) >= 0) return;
-    for (var i = 0; i < known.length; i++) {
-      if (typeof known[i] === 'string' && known[i].trim().toLowerCase() === c) {
-        seen.push(c);
-        dich.push(known[i].trim());
-        return;
+  if (phone && !xoa) {
+    var known = Array.isArray(projectCodes) ? projectCodes : [];
+    var seen = [];
+    codesOnly_(rec.DuAnQuanTam).split(';').forEach(function (c) {
+      if (!c || seen.indexOf(c) >= 0) return;
+      for (var i = 0; i < known.length; i++) {
+        if (typeof known[i] === 'string' && known[i].trim().toLowerCase() === c) {
+          seen.push(c);
+          dich.push(known[i].trim());
+          return;
+        }
       }
-    }
-  });
-  return { chan: false, chua: dich.length === 0, dich: dich, lyDo: '' };
+    });
+  }
+  return { xoa: xoa, rutLai: rutLai, dich: dich, lyDo: lyDo };
 }

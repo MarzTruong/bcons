@@ -347,40 +347,40 @@ const decide = (rec, tc, pc = PROJ) => plain(ctx.decideDestinations_(rec, tc, pc
 
 test("decideDestinations_: hai dự án → dich có cả hai, đúng thứ tự", () => {
   assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora;bcons-newsky" }, new Set()),
-    { chan: false, chua: false, dich: ["bcons-sora", "bcons-newsky"], lyDo: "" });
+    { xoa: false, rutLai: false, dich: ["bcons-sora", "bcons-newsky"], lyDo: "" });
 });
 
-test("decideDestinations_: DuAnQuanTam rỗng → chưa phân dự án", () => {
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "" }, new Set()), { chan: false, chua: true, dich: [], lyDo: "" });
+test("decideDestinations_: DuAnQuanTam rỗng → dich [], không cờ nào", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "" }, new Set()), { xoa: false, rutLai: false, dich: [], lyDo: "" });
 });
 
-test("decideDestinations_: chỉ mã lạ → chưa; lẫn mã lạ → chỉ giữ mã biết", () => {
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc" }, []), { chan: false, chua: true, dich: [], lyDo: "" });
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc;bcons-sora" }, []), { chan: false, chua: false, dich: ["bcons-sora"], lyDo: "" });
+test("decideDestinations_: chỉ mã lạ → dich rỗng; lẫn mã lạ → chỉ giữ mã biết", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc" }, []), { xoa: false, rutLai: false, dich: [], lyDo: "" });
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc;bcons-sora" }, []), { xoa: false, rutLai: false, dich: ["bcons-sora"], lyDo: "" });
 });
 
 test("decideDestinations_: trùng mã chỉ tính một lần", () => {
   assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora;bcons-sora" }).dich, ["bcons-sora"]);
 });
 
-test("decideDestinations_: SĐT trong TuChoi (Set, mảng, khác dạng) → chặn", () => {
+test("decideDestinations_: SĐT trong TuChoi dạng cũ (Set, mảng, khác dạng) → rút lại chưa rõ ngày (dich vẫn tính)", () => {
   const rec = { SDT: "0981234567", DuAnQuanTam: "bcons-sora" };
-  const want = { chan: true, chua: false, dich: [], lyDo: "tuchoi" };
+  const want = { xoa: false, rutLai: true, dich: ["bcons-sora"], lyDo: "rutlai" };
   assert.deepEqual(decide(rec, new Set(["0981234567"])), want);
   assert.deepEqual(decide(rec, ["0981234567"]), want);
   assert.deepEqual(decide(rec, new Set(["+84 98 123 4567"])), want);
-  assert.deepEqual(decide(rec, ["0912345678"]).chan, false);
+  assert.deepEqual(decide(rec, ["0912345678"]).rutLai, false);
 });
 
-test("decideDestinations_: DongYNhanTin 'Không' → chặn; 'Chưa rõ' không chặn", () => {
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Không" }, new Set()), { chan: true, chua: false, dich: [], lyDo: "khong" });
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Chưa rõ" }, new Set()), { chan: false, chua: false, dich: ["bcons-sora"], lyDo: "" });
+test("decideDestinations_: DongYNhanTin 'Không' → rutLai (dich vẫn tính); 'Chưa rõ' không", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Không" }, new Set()), { xoa: false, rutLai: true, dich: ["bcons-sora"], lyDo: "khong" });
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Chưa rõ" }, new Set()), { xoa: false, rutLai: false, dich: ["bcons-sora"], lyDo: "" });
 });
 
 test("decideDestinations_: tuChoi undefined, projectCodes rỗng, SĐT sai", () => {
-  assert.equal(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined).chan, false);
-  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined, []), { chan: false, chua: true, dich: [], lyDo: "" });
-  assert.deepEqual(decide({ SDT: "abc", DuAnQuanTam: "bcons-sora" }, ["abc"]), { chan: false, chua: true, dich: [], lyDo: "" });
+  assert.equal(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined).rutLai, false);
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined, []), { xoa: false, rutLai: false, dich: [], lyDo: "" });
+  assert.deepEqual(decide({ SDT: "abc", DuAnQuanTam: "bcons-sora" }, ["abc"]), { xoa: false, rutLai: false, dich: [], lyDo: "" });
 });
 
 test("decideDestinations_: không sửa đầu vào", () => {
@@ -396,16 +396,16 @@ const R = { SDT: "0981234567", DuAnQuanTam: "bcons-sora" };
 test("decideDestinations_: 'Không' nhận mọi biến thể (fail closed)", () => {
   for (const v of ["không", "KHÔNG", "Khong", "Không.", "Không".normalize("NFD"), "Không\u200b", " Không ", "K-hông"]) {
     const r = decide({ ...R, DongYNhanTin: v }, []);
-    assert.equal(r.chan, true, JSON.stringify(v));
+    assert.equal(r.rutLai, true, JSON.stringify(v));
     assert.equal(r.lyDo, "khong");
   }
-  for (const v of ["Chưa rõ", "", "Có", undefined]) assert.equal(decide({ ...R, DongYNhanTin: v }, []).chan, false, String(v));
+  for (const v of ["Chưa rõ", "", "Có", undefined]) assert.equal(decide({ ...R, DongYNhanTin: v }, []).rutLai, false, String(v));
 });
 
 test("decideDestinations_: chỉ đúng 'Không' mới rút lại; 'Không rõ', 'Không biết' KHÔNG chặn (L1)", () => {
   for (const v of ["Không rõ", "không biết", "Khong ro", "Không chắc", "Không muốn nhận tin nhưng gọi được"]) {
     const r = decide({ ...R, DongYNhanTin: v }, []);
-    assert.equal(r.chan, false, v);
+    assert.equal(r.rutLai, false, v);
     assert.equal(r.lyDo, "", v);
     assert.deepEqual(r.dich, ["bcons-sora"], v);
   }
@@ -417,14 +417,14 @@ test("dongYKieu_: khong (đúng) / la (bắt đầu bằng khong nhưng không �
   for (const v of ["Có", "Chưa rõ", "", null, undefined, "Biết rồi"]) assert.equal(ctx.dongYKieu_(v), "", String(v));
 });
 
-test("decideDestinations_: tuChoi mọi dạng đều chặn", () => {
+test("decideDestinations_: tuChoi mọi dạng cũ đều rút lại", () => {
   const P = "0981234567";
   for (const t of [[P], new Set([P]), new Map([[P, 1]]), { [P]: true }, P, `0912345678\n${P}`, `0912345678, ${P}`, `0912345678;${P}`, `0912345678 ${P}`]) {
-    assert.equal(decide(R, t).chan, true, JSON.stringify([...(t instanceof Set ? t : [])]) + String(t));
-    assert.equal(decide(R, t).lyDo, "tuchoi");
+    assert.equal(decide(R, t).rutLai, true, JSON.stringify([...(t instanceof Set ? t : [])]) + String(t));
+    assert.equal(decide(R, t).lyDo, "rutlai");
   }
-  assert.equal(decide(R, null).chan, false);
-  assert.equal(decide(R, "").chan, false);
+  assert.equal(decide(R, null).rutLai, false);
+  assert.equal(decide(R, "").rutLai, false);
 });
 
 test("decideDestinations_: tuChoi dạng lạ thì ném lỗi", () => {
@@ -432,14 +432,14 @@ test("decideDestinations_: tuChoi dạng lạ thì ném lỗi", () => {
 });
 
 test("decideDestinations_: phần tử rác trong tuChoi bị bỏ qua, không chặn tất cả", () => {
-  assert.equal(decide(R, [null, "", {}, NaN, undefined, "abc"]).chan, false);
-  assert.equal(decide(R, new Set([null, "", NaN])).chan, false);
-  assert.equal(decide(R, [null, "0981234567"]).chan, true);
+  assert.equal(decide(R, [null, "", {}, NaN, undefined, "abc"]).rutLai, false);
+  assert.equal(decide(R, new Set([null, "", NaN])).rutLai, false);
+  assert.equal(decide(R, [null, "0981234567"]).rutLai, true);
 });
 
-test("decideDestinations_: projectCodes không phải mảng → không ném, chua", () => {
+test("decideDestinations_: projectCodes không phải mảng → không ném, dich rỗng", () => {
   for (const pc of ["bcons-sora", { a: 1 }, new Set(["bcons-sora"]), null, undefined]) {
-    assert.deepEqual(plain(ctx.decideDestinations_(R, [], pc)), { chan: false, chua: true, dich: [], lyDo: "" });
+    assert.deepEqual(plain(ctx.decideDestinations_(R, [], pc)), { xoa: false, rutLai: false, dich: [], lyDo: "" });
   }
 });
 
@@ -542,10 +542,10 @@ test("mergeCustomer_ (chuyển tiếp Task 1): bằng chứng gắn mã dự án
   assert.equal(w.NgayRutLai, "2026-11-10T00:00:00.000Z");
 });
 
-test("decideDestinations_ (chuyển tiếp Task 1): 'Đã rút lại' bị chặn như 'Không' (fail closed)", () => {
+test("decideDestinations_ (chuyển tiếp Task 1): 'Đã rút lại' không ngày vẫn là rút lại (fail closed), dich vẫn tính", () => {
   const d = plain(ctx.decideDestinations_({ SDT: "0981234567", DongYNhanTin: "Đã rút lại", DuAnQuanTam: "bcons-newsky" }, [], ["bcons-newsky"]));
-  assert.equal(d.chan, true);
-  assert.deepEqual(d.dich, []);
+  assert.equal(d.rutLai, true);
+  assert.deepEqual(d.dich, ["bcons-newsky"]);
 });
 
 test("parseLandingRow_: ô Dự án có nhiều mã -> đồng ý chỉ gắn mã đầu tiên (bảo thủ), DuAnQuanTam giữ đủ", () => {
@@ -934,4 +934,152 @@ test("fix C: 'Không' gõ khi bằng chứng mới hơn ngày rút nhưng nằm 
   const r = plain(ctx.mergeCustomer_(ex, mk({}), now));
   assert.deepEqual([r.DongYNhanTin, r.DongYDuAn], ["Đã rút lại", ""]);
   assert.equal(r.NgayRutLai, "2026-11-15T00:02:00.000Z");
+});
+
+// ---- Task 3: tuChoiMap_ và decideDestinations_ mới (xoa / rutLai / dich / lyDo) ----
+const T3_NOW = "2026-11-20T00:00:00.000Z";
+const T3_P = "0981234567";
+const T3_EV = "2026-11-12T03:15:00.000Z"; // evAt("2026-11-12") ghi đúng giờ này
+const t3rec = (o = {}) => ({ SDT: T3_P, DuAnQuanTam: "bcons-sora;bcons-newsky", DongYNhanTin: "Chưa rõ", ...o });
+const t3consent = (page = "bcons-sora", d = "2026-11-12") => ({ DongYNhanTin: "Có", DongYDuAn: page, DongYBangChung: page + ": " + evAt(d) });
+const t3d = (rec, map, pc = PROJ) => plain(ctx.decideDestinations_(rec, map, pc, T3_NOW));
+const entry = (loai, ngayGhi = "2026-11-10T00:00:00.000Z") => ({ [T3_P]: { loai, ngayGhi } });
+
+test("Task3 (a): loại 'Rút lại' -> rutLai, dich vẫn đủ dự án (hồ sơ được giữ)", () => {
+  assert.deepEqual(t3d(t3rec(), entry("Rút lại")), { xoa: false, rutLai: true, dich: ["bcons-sora", "bcons-newsky"], lyDo: "rutlai" });
+});
+
+test("Task3 (b): loại 'Xóa' -> xoa, dich rỗng; kết quả không còn chan/chua", () => {
+  const d = t3d(t3rec(), entry("Xóa"));
+  assert.deepEqual(d, { xoa: true, rutLai: false, dich: [], lyDo: "xoa" });
+  assert.ok(!("chan" in d) && !("chua" in d));
+});
+
+test("Task3 (c): bằng chứng đồng ý mới hơn NgayGhi mở cả hai; bằng nhau KHÔNG mở; cũ hơn KHÔNG mở", () => {
+  for (const loai of ["Rút lại", "Xóa"]) {
+    const rec = t3rec(t3consent());
+    const lifted = t3d(rec, entry(loai, "2026-11-12T03:14:59.999Z"));
+    assert.equal(lifted.xoa, false, loai);
+    assert.equal(lifted.rutLai, false, loai);
+    assert.equal(lifted.lyDo, "", loai);
+    assert.deepEqual(lifted.dich, ["bcons-sora", "bcons-newsky"], loai);
+    for (const g of [T3_EV, "2026-11-12T03:15:00.001Z", "2026-11-13T00:00:00.000Z"]) {
+      const blocked = t3d(rec, entry(loai, g));
+      assert.equal(loai === "Xóa" ? blocked.xoa : blocked.rutLai, true, loai + g);
+    }
+  }
+});
+
+test("Task3 (c): bằng chứng ghi ngày ở tương lai (> now + 5 phút) không mở khóa; NgayGhi chưa biết ('') chặn mọi thứ", () => {
+  const future = t3rec(t3consent("bcons-sora", "2026-12-30"));
+  assert.equal(t3d(future, entry("Rút lại")).rutLai, true);
+  assert.equal(t3d(future, entry("Xóa")).xoa, true);
+  const unknown = t3rec(t3consent());
+  assert.equal(t3d(unknown, entry("Rút lại", "")).rutLai, true);
+  assert.equal(t3d(unknown, entry("Xóa", "")).xoa, true);
+});
+
+test("Task3 (c): bằng chứng của dự án không nằm trong DongYDuAn, hoặc bằng chứng hỏng, không mở khóa", () => {
+  const notListed = t3rec({ DongYNhanTin: "Có", DongYDuAn: "bcons-newsky", DongYBangChung: "bcons-sora: " + evAt("2026-11-12") });
+  assert.equal(t3d(notListed, entry("Rút lại")).rutLai, true);
+  const junk = t3rec({ DongYNhanTin: "Có", DongYDuAn: "bcons-sora", DongYBangChung: "bcons-sora: zzz" });
+  assert.equal(t3d(junk, entry("Xóa")).xoa, true);
+  const legacy = t3rec({ DongYNhanTin: "Có", DongYDuAn: "bcons-sora", DongYBangChung: evAt("2026-11-12") }); // cũ, không mã
+  assert.equal(t3d(legacy, entry("Rút lại")).rutLai, true);
+});
+
+test("Task3 (c): đồng ý mới cho dự án khác cũng mở (rút lại là cả khách, đồng ý mới là mở cho dự án đó)", () => {
+  const r = t3d(t3rec(t3consent("bcons-newsky")), entry("Rút lại"));
+  assert.equal(r.rutLai, false);
+});
+
+test("Task3 (i): gõ đúng 'Không' -> rutLai lyDo 'khong', dich vẫn đủ; 'Không rõ' không phải; 'Đã rút lại' không ngày -> rutLai", () => {
+  const k = t3d(t3rec({ DongYNhanTin: "Không" }), {});
+  assert.deepEqual(k, { xoa: false, rutLai: true, dich: ["bcons-sora", "bcons-newsky"], lyDo: "khong" });
+  for (const v of ["không", "KHÔNG", " Khong ", "Không."]) assert.equal(t3d(t3rec({ DongYNhanTin: v }), {}).rutLai, true, v);
+  for (const v of ["Không rõ", "Không biết", "Chưa rõ", "Có", ""]) {
+    const r = t3d(t3rec({ DongYNhanTin: v }), {});
+    assert.equal(r.rutLai, false, v);
+    assert.equal(r.xoa, false, v);
+    assert.equal(r.lyDo, "", v);
+  }
+  assert.equal(t3d(t3rec({ DongYNhanTin: "Đã rút lại" }), {}).rutLai, true);
+});
+
+test("Task3: 'Không' gõ tay không bị bằng chứng cũ trong hàng mở khóa; 'Đã rút lại' có NgayRutLai và bằng chứng mới hơn thì mở", () => {
+  const typed = t3rec({ ...t3consent(), DongYNhanTin: "Không", NgayRutLai: "2026-11-01T00:00:00.000Z" });
+  assert.equal(t3d(typed, {}).rutLai, true);
+  const sys = t3rec({ ...t3consent(), DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-01T00:00:00.000Z" });
+  assert.equal(t3d(sys, {}).rutLai, false);
+  const sysOld = t3rec({ ...t3consent(), DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-15T00:00:00.000Z" });
+  assert.equal(t3d(sysOld, {}).rutLai, true);
+  const garbage = t3rec({ ...t3consent(), DongYNhanTin: "Đã rút lại", NgayRutLai: "mai" });
+  assert.equal(t3d(garbage, {}).rutLai, true);
+});
+
+test("Task3 (j): DuAnQuanTam rỗng -> dich [], không cờ chua, không bị coi là rút lại/xóa", () => {
+  const d = t3d(t3rec({ DuAnQuanTam: "" }), {});
+  assert.deepEqual(d, { xoa: false, rutLai: false, dich: [], lyDo: "" });
+  assert.deepEqual(t3d(t3rec({ DuAnQuanTam: "xyz-abc" }), {}), { xoa: false, rutLai: false, dich: [], lyDo: "" });
+});
+
+test("Task3: SĐT sai hoặc rỗng -> không xoa/rutLai theo bản đồ, dich []; vẫn ném lỗi với tuChoi dạng lạ", () => {
+  assert.deepEqual(t3d({ SDT: "abc", DuAnQuanTam: "bcons-sora" }, entry("Xóa")), { xoa: false, rutLai: false, dich: [], lyDo: "" });
+  for (const t of [123, true, () => 1]) assert.throws(() => ctx.decideDestinations_(t3rec(), t, PROJ, T3_NOW), /tuChoi/);
+  for (const t of [123, true]) assert.throws(() => ctx.decideDestinations_({ SDT: "abc" }, t, PROJ, T3_NOW), /tuChoi/);
+});
+
+test("Task3: dạng cũ (mảng/Set/chuỗi SĐT) = rút lại chưa rõ ngày, chặn mọi thứ, không mở được; entry lạ trong bản đồ -> Rút lại", () => {
+  for (const t of [[T3_P], new Set([T3_P]), T3_P, new Map([[T3_P, 1]]), { [T3_P]: true }]) {
+    const r = t3d(t3rec(t3consent()), t);
+    assert.equal(r.rutLai, true, String(t));
+    assert.equal(r.xoa, false);
+  }
+  assert.equal(t3d(t3rec(), { [T3_P]: { loai: "lạ", ngayGhi: "" } }).rutLai, true);
+  assert.equal(t3d(t3rec(), { [T3_P]: { loai: "xoa", ngayGhi: "" } }).xoa, true);
+  assert.equal(t3d(t3rec(), { "+84 98 123 4567": { loai: "Xóa", ngayGhi: "2026-11-10T00:00:00.000Z" } }).xoa, true);
+});
+
+test("Task3: dich theo DuAnQuanTam y như cũ (thứ tự, cách viết cấu hình, trùng, mã lạ) và không sửa đầu vào", () => {
+  assert.deepEqual(t3d(t3rec({ DuAnQuanTam: "xyz-abc;bcons-sora;BCONS-SORA;bcons-newsky" }), {}, ["Bcons-Sora", "bcons-newsky"]).dich, ["Bcons-Sora", "bcons-newsky"]);
+  const rec = t3rec(), map = entry("Rút lại"), pc = PROJ.slice();
+  const snap = JSON.stringify([rec, map, pc]);
+  ctx.decideDestinations_(rec, map, pc, T3_NOW);
+  assert.equal(JSON.stringify([rec, map, pc]), snap);
+});
+
+test("Task3 (d)(h)(k): tuChoiMap_ — loại trống/lạ -> Rút lại; 'Xóa' khớp sau gấp chữ; trùng SĐT Xóa thắng; mọi dạng SĐT", () => {
+  const H = ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"];
+  const m = (rows) => plain(ctx.tuChoiMap_([H, ...rows]));
+  const D = "2026-11-10T00:00:00.000Z";
+  assert.deepEqual(m([["0981234567", "", D, "", ""]]), { "0981234567": { loai: "Rút lại", ngayGhi: D } });
+  for (const v of ["lạ", "Xoá luôn đi", "Xóa vĩnh viễn", "Rút lại", "rut lai", "?"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"].loai, "Rút lại", v);
+  for (const v of ["Xóa", "XÓA", "xoa", " Xóa ", "Xóa".normalize("NFD"), "x-ó-a", "XOA​"]) assert.equal(m([["0981234567", "", D, v, ""]])["0981234567"].loai, "Xóa", v);
+  // trùng SĐT: Xóa thắng dù đứng trước hay sau; ngày = lớn nhất hợp lệ
+  const A = "2026-11-05T00:00:00.000Z", B = "2026-11-15T00:00:00.000Z";
+  for (const rows of [[["0981234567", "", A, "Xóa", ""], ["+84 98 123 4567", "", B, "Rút lại", ""]], [["0981234567", "", B, "Rút lại", ""], [981234567, "", A, "Xóa", ""]]]) {
+    assert.deepEqual(m(rows)["0981234567"], { loai: "Xóa", ngayGhi: B });
+  }
+  // nhiều dạng SĐT cùng ra một khóa; không có khóa thừa
+  const forms = ["+84 98 123 4567", 981234567, "98.123.4567", "(+84) 981 234 567"];
+  for (const f of forms) assert.deepEqual(Object.keys(m([[f, "", D, "", ""]])), ["0981234567"], String(f));
+});
+
+test("Task3 (e): tuChoiMap_ — NgayGhi rác/trống = '' (chưa biết, không bao giờ 'rất cũ'); Date của Sheets đọc được; có dòng chưa biết thì cả SĐT chưa biết", () => {
+  const H = ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"];
+  const m = (rows) => plain(ctx.tuChoiMap_([H, ...rows]));
+  for (const g of ["", "mai", "05/11/2026", "2026-11-05", "9999", "2026-13-45T00:00:00.000Z", null]) assert.equal(m([["0981234567", "", g, "", ""]])["0981234567"].ngayGhi, "", String(g));
+  assert.equal(m([["0981234567", "", new Date("2026-11-10T00:00:00.000Z"), "", ""]])["0981234567"].ngayGhi, "2026-11-10T00:00:00.000Z");
+  assert.equal(m([["0981234567", "", "2026-11-10T00:00:00.000Z", "", ""], ["0981234567", "", "mai", "", ""]])["0981234567"].ngayGhi, "");
+});
+
+test("Task3: tuChoiMap_ — không có dòng tiêu đề thì theo thứ tự cột chuẩn; thiếu cột LoaiYeuCau (tab cũ) -> Rút lại; SĐT sai bị bỏ; đầu vào rác không ném", () => {
+  const D = "2026-11-10T00:00:00.000Z";
+  assert.deepEqual(plain(ctx.tuChoiMap_([["0981234567", "", D, "Xóa"]])), { "0981234567": { loai: "Xóa", ngayGhi: D } });
+  assert.deepEqual(plain(ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi"], ["0981234567", "x", D]])), { "0981234567": { loai: "Rút lại", ngayGhi: D } });
+  assert.deepEqual(plain(ctx.tuChoiMap_([["SDT", "LyDo", "NgayGhi"], ["abc", "", D], ["", "", D], [null, 5]])), {});
+  assert.deepEqual(plain(ctx.tuChoiMap_(null)), {});
+  assert.deepEqual(plain(ctx.tuChoiMap_([])), {});
+  // cột đảo thứ tự: theo TÊN cột
+  assert.deepEqual(plain(ctx.tuChoiMap_([["LoaiYeuCau", "NgayGhi", "SDT"], ["Xóa", D, "0981234567"]])), { "0981234567": { loai: "Xóa", ngayGhi: D } });
 });
