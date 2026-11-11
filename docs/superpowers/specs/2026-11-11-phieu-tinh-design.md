@@ -1,6 +1,6 @@
 # Phiếu tính gửi khách (PNG + PDF): thiết kế
 
-> **Trạng thái:** Chưa làm (thiết kế chờ anh duyệt, 11/11/2026). Ảnh mẫu A/B/C đã gửi anh; UI/UX giao cho Antigravity (AGY), Claude kiểm UX, làm engine.
+> **Trạng thái:** Chưa làm (anh duyệt thiết kế 11/11/2026; kế hoạch: `docs/superpowers/plans/2026-11-11-phieu-tinh.md`). Ảnh mẫu A/B/C đã gửi anh; UI/UX giao cho Antigravity (AGY), Claude kiểm UX, làm engine.
 
 ## Mục tiêu
 Khách để lại thông tin trên landing, hoặc nhắn tin xin bảng giá (TikTok, fanpage, Zalo), nhận **một phiếu tính 1 trang cho đúng căn và PTTT khách chọn**: ảnh PNG gửi thẳng vào khung chat Zalo; thêm PDF khi khách cần gửi cho người khác xem. Phiếu là công cụ chốt bước kế tiếp (hẹn xem nhà mẫu, nhắn số vốn), không phải bảng giá cả dự án.
