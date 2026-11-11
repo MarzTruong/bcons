@@ -88,7 +88,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Thanh toán giãn, không vay (giá đã trừ 8,5%)"
     },
     "02": {
       "so": "06/TB-BPTH",
@@ -132,7 +133,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Vay 50%, CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng (giá niêm yết)"
     },
     "03": {
       "so": "07/TB-BPTH",
@@ -188,7 +190,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Vay 50%, lãi trần 6,9%/năm theo điều kiện của CĐT (không chiết khấu)"
     },
     "04": {
       "so": "09/TB-DTTH",
@@ -258,7 +261,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Vay 3 đợt, lãi trần 6,9%/năm theo điều kiện của CĐT (giá trừ 2,45%)"
     },
     "05": {
       "so": "10/TB-ĐTTH",
@@ -328,7 +332,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Vay 3 đợt, CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng (giá trừ 2,45%, không có trần 6,9%)"
     }
   }
 }

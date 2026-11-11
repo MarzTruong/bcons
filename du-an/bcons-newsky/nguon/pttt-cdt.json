@@ -7,6 +7,78 @@
     "banGiaoDuKien": "Quý II/2028"
   },
   "pttt": {
+    "10": {
+      "so": "31/TB-SHQT",
+      "ngay": "05/10/2026",
+      "chietKhau": 0.0215,
+      "chietKhauTheoGia": "09",
+      "tranLai": null,
+      "dot": [
+        5,
+        5,
+        10,
+        5,
+        20,
+        5,
+        20,
+        25,
+        5
+      ],
+      "vay": [
+        3,
+        5,
+        7
+      ],
+      "ghiChu": "Vay 10% + 20% + 20% (đợt 3, 5, 7); CĐT hỗ trợ lãi và ân hạn gốc tối đa 18 tháng. Chiết khấu 2,15% theo giá PTTT 09. Chỉ khách cá nhân, gói cố định tối đa 18 tháng. Không có trần 6,9%.",
+      "dotChiTiet": [
+        {
+          "l": "Ký hợp đồng đặt cọc",
+          "w": "Khi ký hợp đồng đặt cọc",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 1",
+          "w": "7 ngày sau HĐMB",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 4",
+          "w": "5 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 2",
+          "w": "7 ngày sau đợt 4",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 6",
+          "w": "10 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 3",
+          "w": "7 ngày sau đợt 6",
+          "k": "loan"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2028",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ],
+      "tomTat": "Vay 3 đợt (10% + 20% + 20%), CĐT hỗ trợ lãi và ân hạn gốc tối đa 18 tháng"
+    },
     "08": {
       "so": "29/TB-SHQT",
       "ngay": "05/10/2026",
@@ -89,7 +161,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
+      ],
+      "tomTat": "Thanh toán giãn 12 đợt, không vay"
     },
     "09": {
       "so": "30/TB-SHQT",
@@ -145,78 +218,8 @@
           "w": "Theo thông báo của CĐT",
           "k": "so"
         }
-      ]
-    },
-    "10": {
-      "so": "31/TB-SHQT",
-      "ngay": "05/10/2026",
-      "chietKhau": 0.0215,
-      "chietKhauTheoGia": "09",
-      "tranLai": null,
-      "dot": [
-        5,
-        5,
-        10,
-        5,
-        20,
-        5,
-        20,
-        25,
-        5
       ],
-      "vay": [
-        3,
-        5,
-        7
-      ],
-      "ghiChu": "Vay 10% + 20% + 20% (đợt 3, 5, 7); CĐT hỗ trợ lãi và ân hạn gốc tối đa 18 tháng. Chiết khấu 2,15% theo giá PTTT 09. Chỉ khách cá nhân, gói cố định tối đa 18 tháng. Không có trần 6,9%.",
-      "dotChiTiet": [
-        {
-          "l": "Ký hợp đồng đặt cọc",
-          "w": "Khi ký hợp đồng đặt cọc",
-          "k": "tt"
-        },
-        {
-          "l": "Ký hợp đồng mua bán",
-          "w": "Khi ký HĐMB",
-          "k": "hdmb"
-        },
-        {
-          "l": "Ngân hàng giải ngân lần 1",
-          "w": "7 ngày sau HĐMB",
-          "k": "loan"
-        },
-        {
-          "l": "Đợt 4",
-          "w": "5 tháng sau HĐMB",
-          "k": "mid"
-        },
-        {
-          "l": "Ngân hàng giải ngân lần 2",
-          "w": "7 ngày sau đợt 4",
-          "k": "loan"
-        },
-        {
-          "l": "Đợt 6",
-          "w": "10 tháng sau HĐMB",
-          "k": "mid"
-        },
-        {
-          "l": "Ngân hàng giải ngân lần 3",
-          "w": "7 ngày sau đợt 6",
-          "k": "loan"
-        },
-        {
-          "l": "Thông báo bàn giao căn hộ",
-          "w": "Dự kiến Quý II/2028",
-          "k": "handover"
-        },
-        {
-          "l": "Thông báo bàn giao sổ hồng",
-          "w": "Theo thông báo của CĐT",
-          "k": "so"
-        }
-      ]
+      "tomTat": "Vay 50%, lãi trần 6,9%/năm theo điều kiện của CĐT"
     }
   }
 }
