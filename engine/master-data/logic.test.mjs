@@ -164,3 +164,28 @@ test("parseLandingRow_: dòng rỗng -> ok:false", () => {
   assert.equal(plain(ctx.parseLandingRow_(HEADERS, [])).ok, false);
   assert.equal(plain(ctx.parseLandingRow_(HEADERS, HEADERS.map(() => ""))).ok, false);
 });
+
+test("parseLandingRow_: chỉ coi là đã đồng ý khi đúng khuôn bằng chứng của Code.gs", () => {
+  const H = ["SĐT", "Họ tên", "Đồng ý nhận tin"];
+  const one = (v) => ctx.parseLandingRow_(H, ["0981234567", "Khách Mẫu", v]).rec;
+  for (const bad of [" Có (x)", "\u00a0Có (x)", "Có (", "Có (=1+1)", "Có (x)\nđ", "Có (2026-11-06T03:15:00.000Z, mẫu v1, x)\n", true, 1, new Date(0)]) {
+    assert.equal(one(bad).DongYNhanTin, "Chưa rõ", String(bad));
+    assert.equal(one(bad).DongYBangChung, "");
+  }
+  const real = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
+  assert.equal(one(real).DongYNhanTin, "Có");
+  assert.equal(one(real).DongYBangChung, real);
+  assert.equal(one("Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, )").DongYNhanTin, "Có", "trang rỗng vẫn đúng khuôn");
+});
+
+test("parseLandingRow_: Dự án chỉ giữ mã hợp lệ; Thời gian chỉ nhận ISO; không lọt công thức", () => {
+  const H = ["SĐT", "Dự án", "Thời gian"];
+  const p = (da, tg) => ctx.parseLandingRow_(H, ["0981234567", da, tg]).rec;
+  assert.equal(p("=HYPERLINK(1)", "=1+1").DuAnQuanTam, "");
+  assert.equal(p("=HYPERLINK(1)", "=1+1").NgayTao, "");
+  assert.equal(p("Khong-ro", "").DuAnQuanTam, "");
+  assert.equal(p("Bcons-Newsky; bcons-central-park;bcons-newsky", "").DuAnQuanTam, "bcons-newsky;bcons-central-park");
+  assert.equal(p("", 46000.5).NgayTao, "");
+  assert.equal(p("", "2026-11-06T03:15:00.000Z").NgayTao, "2026-11-06T03:15:00.000Z");
+  assert.equal(p("", new Date("2026-11-06T03:15:00.000Z")).NgayTao, "2026-11-06T03:15:00.000Z");
+});

@@ -20,6 +20,22 @@ function cell_(v) {
 }
 
 /** Đọc một dòng Sheet landing thành bản ghi khách. Ánh xạ theo TÊN cột, không theo vị trí. */
+/** Giữ lại các mã dự án đúng dạng (a-z, 0-9, gạch ngang; bắt đầu bằng chữ), bỏ 'khong-ro' và mọi thứ lạ; ngăn bằng ';'. */
+function codesOnly_(v) {
+  var out = [];
+  String(v || '').toLowerCase().split(';').forEach(function (c) {
+    c = c.trim();
+    if (/^[a-z][a-z0-9-]{2,39}$/.test(c) && c !== 'khong-ro' && out.indexOf(c) < 0) out.push(c);
+  });
+  return out.join(';');
+}
+
+/** Chuỗi ISO hợp lệ (năm 4 chữ số) hoặc ''. Nhận chuỗi ngày/giờ đã đọc từ Sheet. */
+function isoOrEmpty_(v) {
+  var m = /^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/.test(String(v || '')) ? Date.parse(v) : NaN;
+  return isNaN(m) ? '' : new Date(m).toISOString();
+}
+
 function parseLandingRow_(headers, row) {
   var get = function (name) {
     var i = headers.indexOf(name);
@@ -33,15 +49,18 @@ function parseLandingRow_(headers, row) {
   var rec = {};
   for (var k = 0; k < KHACH_COLS.length; k++) rec[KHACH_COLS[k]] = '';
   var can = [get('Căn xem'), get('Loại căn')].filter(function (x) { return x; }).join(' · ');
-  var duAn = get('Dự án');
-  var dongY = get('Đồng ý nhận tin');
-  var coBangChung = dongY.indexOf('Có (') === 0;
+  var duAn = codesOnly_(get('Dự án'));
+  var iDongY = headers.indexOf('Đồng ý nhận tin');
+  var dongYRaw = iDongY < 0 || iDongY >= row.length || typeof row[iDongY] !== 'string' ? '' : row[iDongY];
+  // Bằng chứng đồng ý phải đúng khuôn Code.gs ghi: Có (<ISO>, mẫu <phiên bản>, <trang>), không cắt khoảng trắng.
+  var coBangChung = /^Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, [^\n\r]*\)$/.test(dongYRaw);
+  var dongY = dongYRaw;
   rec.SDT = sdt;
   rec.HoTen = cell_(get('Họ tên'));
-  rec.NgayTao = get('Thời gian');
+  rec.NgayTao = isoOrEmpty_(get('Thời gian'));
   rec.NguonGoc = 'Landing';
   rec.NguonChiTiet = cell_(get('Nguồn'));
-  rec.DuAnQuanTam = duAn === 'khong-ro' ? '' : duAn;
+  rec.DuAnQuanTam = duAn;
   rec.NhuCau = cell_(get('Nhu cầu'));
   rec.CanXem = cell_(can);
   rec.PTTT = cell_(get('PTTT'));
