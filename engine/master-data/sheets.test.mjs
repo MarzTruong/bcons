@@ -167,9 +167,9 @@ test("gopLanding_: chết sau khi ghi KhachHang, trước khi đánh dấu; ch�
   };
   assert.throws(() => T.ctx.gopLanding_({ dryRun: false, now: NOW }), /chết giả lập/);
   assert.deepEqual(T.F.calls.lock, ["wait", "release"], "khóa luôn được nhả");
-  assert.equal(T.F.values(null, "KhachHang").length, 3, "khách đầu đã ghi");
+  assert.equal(T.F.values(null, "KhachHang").length, 4, "khách đã ghi trước khi đánh dấu");
   const r = plain(T.ctx.gopLanding_({ dryRun: false, now: NOW }));
-  assert.deepEqual(r, { doc: 2, moi: 1, trung: 1, loi: 0 });
+  assert.deepEqual(r, { doc: 2, moi: 0, trung: 2, loi: 0 });
   const kh = T.F.values(null, "KhachHang");
   assert.equal(kh.length, 4);
   assert.deepEqual(kh.slice(1).map((x) => x[0]), ["KH-000001", "KH-000002", "KH-000003"]);
@@ -263,4 +263,95 @@ test("gopLanding_: Sheet landing thiếu cột 'Đã gộp' -> lỗi, không ghi
 test("gopLanding_: dòng trống hoàn toàn không tính", () => {
   const T = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: PHONES[1] }), HEADERS.map(() => ""), HEADERS.map(() => "  ")] });
   assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 1, moi: 1, trung: 0, loi: 0 });
+});
+
+test("gopLanding_: hai dòng cùng một SĐT mới trong một lần chạy -> 1 mới, 1 trùng, một dòng KhachHang, cùng MaKhach", () => {
+  const T = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: PHONES[1] }), leadRow({ ten: NAMES[3], sdt: PHONES[1], duAn: "bcons-central-park" })] });
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 2, moi: 1, trung: 1, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 3);
+  assert.equal(kh[2][KHACH_COLS.indexOf("HoTen")], NAMES[1]);
+  assert.equal(kh[2][KHACH_COLS.indexOf("DuAnQuanTam")], "bcons-newsky;bcons-central-park");
+  const ld = T.F.values("L1", "Landing");
+  const iGop = HEADERS.indexOf("Đã gộp");
+  assert.deepEqual([ld[1][iGop], ld[2][iGop]], ["KH-000002", "KH-000002"]);
+  // dryRun cho cùng số đếm
+  const D = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: PHONES[1] }), leadRow({ ten: NAMES[3], sdt: PHONES[1] })] });
+  assert.deepEqual(plain(D.ctx.gopLanding_({ dryRun: true, now: NOW })), { doc: 2, moi: 1, trung: 1, loi: 0 });
+});
+
+test("gopLanding_: 200 khách mới chỉ tốn số lần ghi hằng số (không tỉ lệ theo số dòng)", () => {
+  const rows = [];
+  for (let i = 0; i < 200; i++) rows.push(leadRow({ ten: "Khach " + i, sdt: "09123" + String(10000 + i) }));
+  rows.push(leadRow({ ten: "Khach Xau", sdt: PHONES[2], badPhone: "12345" }));
+  const T = setup({ landingRows: rows });
+  T.ctx.ensureTabs_(T.F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  T.F.calls.writes.length = 0;
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 201, moi: 200, trung: 0, loi: 1 });
+  assert.ok(T.F.calls.writes.length <= 12, "số lần ghi: " + T.F.calls.writes.length);
+  assert.equal(T.F.values(null, "KhachHang").length, 202);
+  assert.equal(T.F.values(null, "Loi").length, 2);
+  const marks = T.F.values("L1", "Landing").slice(1).map((r) => r[HEADERS.indexOf("Đã gộp")]);
+  assert.equal(marks.filter((m) => /^KH-/.test(m)).length, 200);
+  assert.equal(marks[200], "LOI");
+});
+
+test("gopLanding_: gộp khách có sẵn chỉ ghi ô KHACH_COLS thật sự đổi; cột thêm bên phải của anh không bị đụng", () => {
+  const ex = existingCustomer();
+  const T = setup({ landingRows: [leadRow({ ten: "Ten Khac", sdt: PHONES[0] })] });
+  T.ctx.ensureTabs_(T.F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  // thêm cột riêng của anh (cột 18, 19) vào tab KhachHang
+  const sh = T.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang");
+  sh.getRange(1, 18, 2, 2).setValues([["Anh1", "Anh2"], ["=A2&B2", "ghi chú"]]);
+  T.F.calls.writes.length = 0;
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 1, moi: 0, trung: 1, loi: 0 });
+  const khWrites = T.F.calls.writes.filter((w) => w.owner === "MASTER" && w.sheet === "KhachHang" && w.method === "setValues");
+  assert.ok(khWrites.length >= 1);
+  for (const w of khWrites) assert.ok(w.col + w.nc - 1 <= 17, "ghi vào cột ngoài KHACH_COLS: " + JSON.stringify(w));
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh[1][KHACH_COLS.indexOf("NgayCapNhat")], NOW.toISOString());
+  assert.equal(kh[1][17], "=A2&B2");
+  // không ô nào khác ngoài NguonGoc/DongYNhanTin... bị ghi vô cớ: HoTen, MaKhach, SDT không nằm trong vùng ghi
+  for (const col of [1, 2, 3]) assert.ok(!khWrites.some((w) => col >= w.col && col < w.col + w.nc), "cột " + col + " bị ghi");
+  assert.ok(ex.length === 17);
+});
+
+test("gopLanding_: NgayTao/NgayCapNhat đọc về là Date (Sheets đổi chuỗi ISO) vẫn gộp bình thường", () => {
+  const T = setup({ landingRows: [leadRow({ ten: "Ten Khac", sdt: PHONES[0] }), leadRow({ ten: NAMES[1], sdt: PHONES[1] })] });
+  T.ctx.gopLanding_({ dryRun: false, now: NOW });
+  const raw = T.F.SpreadsheetApp.getActiveSpreadsheet().getSheetByName("KhachHang").getRange(3, 4, 1, 2).getValues()[0];
+  assert.ok(Object.prototype.toString.call(raw[0]) === "[object Date]" && Object.prototype.toString.call(raw[1]) === "[object Date]");
+  // lần hai: landing mới trùng khách đã có ngày dạng Date
+  const sh = T.F.SpreadsheetApp.getActiveSpreadsheet();
+  const L = T.F.SpreadsheetApp.openById("L1").getSheetByName("Landing");
+  L.appendRow(leadRow({ ten: "Ten Khac Nua", sdt: PHONES[1] }));
+  const NOW2 = new Date("2026-11-12T01:00:00.000Z");
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW2 })), { doc: 1, moi: 0, trung: 1, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh[2][KHACH_COLS.indexOf("NgayTao")], "2026-11-10T03:00:00.000Z");
+  assert.equal(kh[2][KHACH_COLS.indexOf("NgayCapNhat")], NOW2.toISOString());
+  assert.equal(kh[2][KHACH_COLS.indexOf("HoTen")], NAMES[1]);
+  assert.ok(sh);
+});
+
+test("gopLanding_: dòng mới nằm ngoài vùng đã định dạng vẫn giữ số 0 đầu (SĐT 11 số)", () => {
+  const filler = [];
+  for (let i = 0; i < 1200; i++) {
+    const r = KHACH_COLS.map(() => "");
+    r[0] = "KH-" + String(i + 2).padStart(6, "0");
+    filler.push(r);
+  }
+  const T = setup({ landingRows: [leadRow({ ten: NAMES[1], sdt: "02838123456" })] });
+  const spec2 = fakeSheets({ master: { CauHinh: [CAU_HINH, ["bcons-newsky", "L1", "M1"]], KhachHang: [KHACH_COLS, existingCustomer(), ...filler] }, byId: { L1: { Landing: [HEADERS, leadRow({ ten: NAMES[1], sdt: "02838123456" })] } } });
+  Object.assign(T.ctx, { SpreadsheetApp: spec2.SpreadsheetApp, LockService: spec2.LockService });
+  assert.deepEqual(plain(T.ctx.gopLanding_({ dryRun: false, now: NOW })), { doc: 1, moi: 1, trung: 0, loi: 0 });
+  const kh = spec2.values(null, "KhachHang");
+  assert.equal(kh.length, 1202 + 1);
+  assert.strictEqual(kh[1202][1], "02838123456");
+  assert.equal(kh[1202][0], "KH-001202");
+});
+
+test("gopLanding_: thiếu tab Landing -> lỗi nêu landingSheetId", () => {
+  const T = setup({ landingRows: [], extraById: { L1: { Khac: [["x"]] } } });
+  assert.throws(() => T.ctx.gopLanding_({ dryRun: false, now: NOW }), /L1/);
 });

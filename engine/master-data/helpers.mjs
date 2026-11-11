@@ -15,8 +15,10 @@ export const plain = (x) => (x === undefined ? undefined : JSON.parse(JSON.strin
 
 // ---- Sheet giả trong bộ nhớ (chỉ mô phỏng đúng phần API mà Sheets.gs dùng) ----
 // spec: { masterId?, master: {Tab: [[...]]}, byId: {id: {Tab: [[...]]}}, props?: {KEY: 'giá trị'} }
-// Quirk của Google Sheets được mô phỏng: ô KHÔNG định dạng văn bản ('@') mà ghi chuỗi giống số
-// ("0981234567") thì getValues trả về SỐ (mất số 0 đầu). Cột định dạng '@' giữ nguyên chuỗi.
+// Quirk của Google Sheets được mô phỏng (theo TỪNG Ô): ô KHÔNG định dạng văn bản ('@') mà ghi
+// chuỗi giống số ("0981234567") thì getValues trả về SỐ (mất số 0 đầu); chuỗi ISO ngày giờ thành Date;
+// "TRUE"/"FALSE" thành boolean. Ô định dạng '@' giữ nguyên chuỗi.
+// calls.writes ghi mỗi lần ghi kèm vùng (row, col, nr, nc) để test kiểm số lần gọi và ô nào bị đụng.
 // Móc thử: hooks.onWrite(info) gọi trước mỗi lần ghi (ném lỗi để giả lập chết giữa chừng);
 // hooks.waitLockError = true làm waitLock ném lỗi.
 export function fakeSheets(spec = {}) {
@@ -25,11 +27,18 @@ export function fakeSheets(spec = {}) {
   const looksNumeric = (v) => typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v);
 
   function makeSheet(owner, name, rows) {
-    const sh = { name, data: structuredClone(rows || []), textCols: new Set() };
+    const sh = { name, data: structuredClone(rows || []), textCells: new Set() };
     const width = () => sh.data.reduce((m, r) => Math.max(m, r.length), 0);
-    const coerce = (c0, v) => (!sh.textCols.has(c0) && looksNumeric(v) ? Number(v) : v);
-    const fire = (method, row, col, values) => {
-      calls.writes.push({ owner, sheet: name, method, row, col });
+    const coerce = (r0, c0, v) => {
+      if (typeof v !== "string" || sh.textCells.has(r0 + "," + c0)) return v;
+      if (looksNumeric(v)) return Number(v);
+      if (/^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/.test(v) && !isNaN(Date.parse(v))) return new Date(Date.parse(v));
+      if (v === "TRUE") return true;
+      if (v === "FALSE") return false;
+      return v;
+    };
+    const fire = (method, row, col, values, nr, nc) => {
+      calls.writes.push({ owner, sheet: name, method, row, col, nr, nc });
       if (hooks.onWrite) hooks.onWrite({ owner, sheet: name, method, row, col, values });
     };
     const lastRow = () => {
@@ -59,24 +68,28 @@ export function fakeSheets(spec = {}) {
           },
           setValues(vals) {
             if (vals.length !== nr || vals.some((v) => v.length !== nc)) throw new Error("setValues: sai kích thước vùng");
-            fire("setValues", r, c, vals);
+            fire("setValues", r, c, vals, nr, nc);
             for (let i = 0; i < nr; i++) {
               while (sh.data.length < r + i) sh.data.push([]);
               const row = sh.data[r - 1 + i];
               while (row.length < c - 1 + nc) row.push("");
-              for (let j = 0; j < nc; j++) row[c - 1 + j] = coerce(c - 1 + j, vals[i][j]);
+              for (let j = 0; j < nc; j++) row[c - 1 + j] = coerce(r - 1 + i, c - 1 + j, vals[i][j]);
             }
           },
           setNumberFormat(fmt) {
-            fire("setNumberFormat", r, c, fmt);
-            for (let j = 0; j < nc; j++) (fmt === "@" ? sh.textCols.add(c - 1 + j) : sh.textCols.delete(c - 1 + j));
+            fire("setNumberFormat", r, c, fmt, nr, nc);
+            for (let i = 0; i < nr; i++)
+              for (let j = 0; j < nc; j++) {
+                const k = r - 1 + i + "," + (c - 1 + j);
+                fmt === "@" ? sh.textCells.add(k) : sh.textCells.delete(k);
+              }
           },
         };
       },
       appendRow(arr) {
-        fire("appendRow", lastRow() + 1, 1, [arr]);
-        const row = arr.map((v, j) => coerce(j, v));
+        fire("appendRow", lastRow() + 1, 1, [arr], 1, arr.length);
         sh.data.length = lastRow();
+        const row = arr.map((v, j) => coerce(sh.data.length, j, v));
         sh.data.push(row);
       },
     };
@@ -149,7 +162,7 @@ export function fakeSheets(spec = {}) {
     /** Ảnh chụp toàn bộ trạng thái (tên tab, ô, định dạng cột) để so sánh trước/sau. */
     snapshot() {
       return JSON.stringify(
-        all().map((ss) => [ss.owner, [...ss.sheets.values()].map((s) => [s.name, s.data, [...s.textCols].sort()])]),
+        all().map((ss) => [ss.owner, [...ss.sheets.values()].map((s) => [s.name, s.data, [...s.textCells].sort()])]),
       );
     },
   };

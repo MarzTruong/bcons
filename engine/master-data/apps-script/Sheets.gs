@@ -119,67 +119,107 @@ function gopLandingLocked_(dryRun, nowIso) {
   var sources = [];
   ids.forEach(function (id) {
     var lsh = SpreadsheetApp.openById(id).getSheetByName('Landing');
-    if (!lsh) throw new Error('Sheet landing không có tab Landing.');
+    if (!lsh) throw new Error('Sheet landing ' + id + ' không có tab Landing.');
     var values = lsh.getLastRow() >= 1 ? lsh.getDataRange().getValues() : [];
     if (!values.length) return;
     var headers = values[0].map(function (h) { return String(h).trim(); });
     var iGop = headers.indexOf('Đã gộp');
-    if (iGop < 0) throw new Error('Thiếu cột Đã gộp trong tab Landing.');
-    sources.push({ sheet: lsh, values: values, headers: headers, iGop: iGop });
+    if (iGop < 0) throw new Error('Thiếu cột Đã gộp trong tab Landing ' + id + '.');
+    sources.push({ sheet: lsh, values: values, headers: headers, iGop: iGop, marks: {} });
   });
   ensureTabs_(master, dryRun);
   var kh = readKhach_(master);
-  var loiSheet = dryRun ? null : master.getSheetByName('Loi');
   var out = { doc: 0, moi: 0, trung: 0, loi: 0 };
+  var origLen = kh.data.length; // dòng có chỉ số >= origLen là khách mới của lần chạy này
+  var dirty = {}; // chỉ số dòng cũ -> {chỉ số cột: true}
+  var loiRows = [];
 
+  // Bước 1: tính hết trong bộ nhớ, chưa ghi gì.
   sources.forEach(function (src) {
-    var lsh = src.sheet, values = src.values, headers = src.headers, iGop = src.iGop;
-    for (var r = 1; r < values.length; r++) {
-      var row = values[r];
+    for (var r = 1; r < src.values.length; r++) {
+      var row = src.values[r];
       if (rowBlank_(row)) continue;
-      if (String(row[iGop] == null ? '' : row[iGop]).trim() !== '') continue;
+      if (String(row[src.iGop] == null ? '' : row[src.iGop]).trim() !== '') continue;
       out.doc++;
-      var mark = function (text) {
-        if (!dryRun) lsh.getRange(r + 1, iGop + 1, 1, 1).setValues([[text]]);
-      };
-      var parsed = parseLandingRow_(headers, row);
+      var parsed = parseLandingRow_(src.headers, row);
       if (!parsed.ok) {
-        if (!dryRun) {
-          loiSheet.appendRow([nowIso, 'Landing', r + 1, parsed.lyDo]);
-          mark('LOI');
-        }
+        loiRows.push([nowIso, 'Landing', r + 1, parsed.lyDo]);
+        src.marks[r] = 'LOI';
         out.loi++;
         continue;
       }
       var rec = parsed.rec;
       var at = kh.byPhone[rec.SDT];
-      var ma;
       if (at !== undefined) {
         var merged = mergeCustomer_(khachObj_(kh, kh.data[at]), rec, nowIso);
         if (!String(merged.MaKhach || '').trim()) {
           merged.MaKhach = nextMaKhach_(kh.maList);
           kh.maList.push(merged.MaKhach);
         }
-        var newRow = khachRow_(kh, kh.data[at], merged);
-        if (!dryRun) kh.sheet.getRange(at + 1, 1, 1, newRow.length).setValues([newRow]);
-        kh.data[at] = newRow;
-        ma = merged.MaKhach;
+        var cur = kh.data[at];
+        while (cur.length < kh.headers.length) cur.push('');
+        KHACH_COLS.forEach(function (c) {
+          var ci = kh.idx[c];
+          if (ci < 0) return;
+          if (s_(cur[ci]) === s_(merged[c])) return;
+          cur[ci] = c === 'MaKhach' ? String(merged[c]) : cell_(merged[c]);
+          if (at < origLen) (dirty[at] = dirty[at] || {})[ci] = true;
+        });
+        src.marks[r] = merged.MaKhach;
         out.trung++;
       } else {
         rec.MaKhach = nextMaKhach_(kh.maList);
         rec.NgayTao = rec.NgayTao || nowIso;
         rec.NgayCapNhat = nowIso;
-        var addRow = khachRow_(kh, null, rec);
-        if (!dryRun) kh.sheet.appendRow(addRow);
-        kh.data.push(addRow);
+        kh.data.push(khachRow_(kh, null, rec));
         kh.byPhone[rec.SDT] = kh.data.length - 1;
         kh.maList.push(rec.MaKhach);
-        ma = rec.MaKhach;
+        src.marks[r] = rec.MaKhach;
         out.moi++;
       }
-      // Chỉ đánh dấu sau khi KhachHang đã ghi xong; chết giữa chừng thì lần sau khớp theo SĐT, không nhân đôi.
-      mark(ma);
     }
+  });
+  if (dryRun) return out;
+
+  // Bước 2: ghi theo lô. Thứ tự: KhachHang trước, đánh dấu 'Đã gộp' sau cùng
+  // (chết giữa chừng thì lần sau khớp theo SĐT, không nhân đôi).
+  // (a) khách mới: một lần ghi vào vùng ngay sau dữ liệu, SĐT đặt định dạng văn bản trước.
+  var newRows = kh.data.slice(origLen);
+  if (newRows.length) {
+    var width = 0;
+    KHACH_COLS.forEach(function (c) { if (kh.idx[c] + 1 > width) width = kh.idx[c] + 1; });
+    var block = newRows.map(function (rw) { return rw.slice(0, width); });
+    kh.sheet.getRange(origLen + 1, kh.idx.SDT + 1, block.length, 1).setNumberFormat('@');
+    kh.sheet.getRange(origLen + 1, 1, block.length, width).setValues(block);
+  }
+  // (b) khách cũ: chỉ các ô đổi, gom các dòng liền nhau của cùng một cột.
+  var perCol = {};
+  Object.keys(dirty).forEach(function (rk) {
+    Object.keys(dirty[rk]).forEach(function (ck) { (perCol[ck] = perCol[ck] || []).push(Number(rk)); });
+  });
+  Object.keys(perCol).forEach(function (ck) {
+    var rows = perCol[ck].sort(function (a, b) { return a - b; });
+    var start = 0;
+    for (var k = 1; k <= rows.length; k++) {
+      if (k < rows.length && rows[k] === rows[k - 1] + 1) continue;
+      var block2 = rows.slice(start, k).map(function (ri) { return [kh.data[ri][Number(ck)]]; });
+      kh.sheet.getRange(rows[start] + 1, Number(ck) + 1, block2.length, 1).setValues(block2);
+      start = k;
+    }
+  });
+  // (c) dòng lỗi: một lần ghi.
+  if (loiRows.length) {
+    var loiSheet = master.getSheetByName('Loi');
+    loiSheet.getRange(loiSheet.getLastRow() + 1, 1, loiRows.length, 4).setValues(loiRows);
+  }
+  // (d) đánh dấu 'Đã gộp': mỗi Sheet landing một lần ghi cả đoạn cột, ô không đổi ghi lại đúng giá trị cũ.
+  sources.forEach(function (src) {
+    if (!Object.keys(src.marks).length) return;
+    var col = [];
+    for (var r = 1; r < src.values.length; r++) {
+      col.push([r in src.marks ? src.marks[r] : (src.values[r][src.iGop] == null ? '' : src.values[r][src.iGop])]);
+    }
+    src.sheet.getRange(2, src.iGop + 1, col.length, 1).setValues(col);
   });
   return out;
 }
