@@ -55,7 +55,8 @@ function validateLead_(p) {
     canLoai: LOAI.indexOf(p.canLoai) >= 0 ? p.canLoai : 'Không rõ',
     canMoTa: clean_(p.canMoTa, 80),
     dt: num_(p.dt, 20, 200),
-    pttt: /^PTTT 0[1-5]$/.test(p.pttt) ? p.pttt : 'Không rõ',
+    canMa: /^[A-Z0-9.\-]{3,14}$/.test(String(p.canMa || '').toUpperCase()) ? String(p.canMa).toUpperCase() : '',
+    pttt: /^PTTT (0[1-9]|10)$/.test(p.pttt) ? p.pttt : 'Không rõ',
     giaChuaVat: num_(p.giaChuaVat, 1e9, 2e10),
     giaCoVat: num_(p.giaCoVat, 1e9, 2.2e10),
     phiBaoTri: num_(p.phiBaoTri, 1e7, 5e8),
@@ -79,7 +80,15 @@ function trieu_(n) {
 }
 
 /** Tin báo khách mới gửi anh (l = lead đã làm sạch). */
+/** Lệnh bấm được cho bot: /phieu_<mã: '-'→'_', '.'→'p'>_<PTTT 2 chữ số>_<lãi: '.'→'p'>_<năm>. Telegram chỉ nhận chữ, số, gạch dưới. Không có mã/PTTT/lãi hoặc mã có chữ P thì không tạo. */
+function lenhPhieu_(l) {
+  if (!l.canMa || /P/.test(l.canMa) || !/^PTTT \d\d$/.test(l.pttt) || !l.lai || !l.nam) return '';
+  var ma = l.canMa.replace(/-/g, '_').replace(/\./g, 'p');
+  return '/phieu_' + ma + '_' + l.pttt.slice(-2) + '_' + String(l.lai).replace('.', 'p') + '_' + l.nam;
+}
+
 function formatTelegram_(l) {
+  var lenh = lenhPhieu_(l);
   return [
     '🔥 KHÁCH MỚI – landing Bcons Central Park',
     'Tên: ' + l.ten + ' · SĐT/Zalo: ' + l.phone,
@@ -87,8 +96,9 @@ function formatTelegram_(l) {
     'Xem: ' + l.canLoai + ' ' + l.dt + 'm² (' + l.canMoTa + ') · ' + l.pttt,
     'Tự có đến nhận nhà: ' + money_(l.tuCo) + (l.vay ? ' · vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng (giả định ' + l.lai + '%/' + l.nam + ' năm)' : ' · không vay'),
     'Nguồn: ' + l.nguon,
+    lenh ? 'Dựng phiếu tính: ' + lenh : '',
     'Đã tick đồng ý nhận tin. Kiểm tra căn còn bán trước khi báo giá. Tin Zalo soạn sẵn ở tin kế tiếp.',
-  ].join('\n');
+  ].filter(function (x) { return x !== ''; }).join('\n');
 }
 
 /** Tin Zalo soạn sẵn để anh chép gửi khách: giá cả 2 kiểu, các đợt đã gồm VAT, phí bảo trì riêng, ghi rõ ước tính. */

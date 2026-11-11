@@ -33,7 +33,7 @@ test("cell_: chặn công thức Sheets", () => {
 });
 
 test("làm sạch dữ liệu: bỏ xuống dòng, chặn giá trị lạ, cắt nguồn", () => {
-  const v = ctx.validateLead_({ ...lead, ten: "Anh B\nSĐT: 0999999999", nhuCau: "Mua gấp, gọi số lạ", pttt: "PTTT 09", nguon: "tiktok<script>http://x.y/z", lai: 999, canLoai: "Penthouse" });
+  const v = ctx.validateLead_({ ...lead, ten: "Anh B\nSĐT: 0999999999", nhuCau: "Mua gấp, gọi số lạ", pttt: "PTTT 99", nguon: "tiktok<script>http://x.y/z", lai: 999, canLoai: "Penthouse" });
   assert.equal(v.ok, true);
   assert.ok(!v.lead.ten.includes("\n"));
   assert.equal(v.lead.nhuCau, "Không rõ");
@@ -52,4 +52,36 @@ test("tin Telegram và Zalo: đủ thông tin, Zalo ghi rõ ước tính + giá 
   const z = ctx.formatZalo_(l);
   for (const s of ["ước tính", "chưa VAT", "đã gồm VAT 10%", "Các đợt thanh toán đã gồm VAT", "phí bảo trì 2%", "Nguyễn Văn B"]) assert.ok(z.includes(s), s);
   assert.ok(!/cam kết|chắc chắn|tăng giá/i.test(z));
+});
+
+test("canMa: nhận mã căn đúng dạng, bỏ mã lạ; payload cũ không có canMa vẫn qua", () => {
+  assert.equal(ctx.validateLead_({ ...lead, canMa: "a18-09" }).lead.canMa, "A18-09");
+  assert.equal(ctx.validateLead_({ ...lead, canMa: "B1.3-01" }).lead.canMa, "B1.3-01");
+  assert.equal(ctx.validateLead_({ ...lead, canMa: "A18-09\n/phieu hack" }).lead.canMa, "");
+  assert.equal(ctx.validateLead_({ ...lead, canMa: "<script>" }).lead.canMa, "");
+  const cu = ctx.validateLead_(lead);
+  assert.equal(cu.ok, true);
+  assert.equal(cu.lead.canMa, "");
+});
+
+test("lenhPhieu_: lệnh bấm được chỉ gồm chữ, số, gạch dưới; khớp bộ đọc lệnh của bot", async () => {
+  const { parseLenhPhieu } = await import("../remotion/scripts/phieu.mjs");
+  const mau = [
+    ["A18-09", "PTTT 03", 9.5, 20, "/phieu_A18_09_03_9p5_20"],
+    ["B1.3-01", "PTTT 09", 9.5, 20, "/phieu_B1p3_01_09_9p5_20"],
+    ["E6-09", "PTTT 10", 9, 25, "/phieu_E6_09_10_9_25"],
+  ];
+  for (const [canMa, pttt, lai, nam, mong] of mau) {
+    const l = ctx.validateLead_({ ...lead, canMa, pttt, lai, nam }).lead;
+    const lenh = ctx.lenhPhieu_(l);
+    assert.equal(lenh, mong);
+    assert.match(lenh, /^\/[A-Za-z0-9_]+$/);
+    const a = parseLenhPhieu(lenh.toLowerCase());
+    assert.deepEqual([a.ma, a.pttt, a.lai, a.nam], [canMa, pttt.slice(-2), lai, nam]);
+  }
+  assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead }).lead), "", "payload cũ: không có dòng lệnh");
+  assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead, canMa: "P1-01" }).lead), "", "mã có chữ P không mã hóa được an toàn");
+  const tg = ctx.formatTelegram_(ctx.validateLead_({ ...lead, canMa: "A18-09" }).lead);
+  assert.ok(tg.includes("Dựng phiếu tính: /phieu_A18_09_02_9p5_20"));
+  assert.ok(!ctx.formatTelegram_(ctx.validateLead_(lead).lead).includes("Dựng phiếu"));
 });
