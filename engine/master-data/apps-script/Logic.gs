@@ -128,3 +128,26 @@ function mergeCustomer_(existing, incoming, nowIso) {
   out.NgayCapNhat = nowIso;
   return out;
 }
+
+/** Quyết định đích phân bổ của một khách (spec mục 7, 9).
+ *  tuChoi: Set hoặc mảng SĐT (mọi dạng); projectCodes: mã dự án có tab Master_<mã>.
+ *  chan: khách từ chối hoặc DongYNhanTin='Không' → không vào tab nào.
+ *  'Chưa rõ' không bị chặn ở đây (chỉ không nhắn hàng loạt). Không sửa đầu vào. */
+function decideDestinations_(rec, tuChoi, projectCodes) {
+  rec = rec || {};
+  var phone = normalizePhone_(rec.SDT);
+  var blocked = false;
+  if (phone && tuChoi && typeof tuChoi.forEach === 'function') {
+    tuChoi.forEach(function (v) { if (normalizePhone_(v) === phone) blocked = true; });
+  }
+  if (blocked || String(rec.DongYNhanTin == null ? '' : rec.DongYNhanTin).trim() === 'Không') {
+    return { chan: true, chua: false, dich: [] };
+  }
+  if (!phone) return { chan: false, chua: true, dich: [] };
+  var known = (projectCodes || []).map(function (c) { return String(c).toLowerCase(); });
+  var dich = [];
+  codesOnly_(rec.DuAnQuanTam).split(';').forEach(function (c) {
+    if (c && known.indexOf(c) >= 0 && dich.indexOf(c) < 0) dich.push(c);
+  });
+  return { chan: false, chua: dich.length === 0, dich: dich };
+}

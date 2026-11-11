@@ -330,3 +330,53 @@ test("mergeCustomer_: NguonGoc đủ 25 tổ hợp", () => {
     assert.equal(merge(mk({ NguonGoc: x }), mk({ NguonGoc: y })).NguonGoc, want, `${x}|${y}`);
   }
 });
+
+// ---- decideDestinations_ ----
+const PROJ = ["bcons-newsky", "bcons-sora", "bcons-central-park"];
+const decide = (rec, tc, pc = PROJ) => plain(ctx.decideDestinations_(rec, tc, pc));
+
+test("decideDestinations_: hai dự án → dich có cả hai, đúng thứ tự", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora;bcons-newsky" }, new Set()),
+    { chan: false, chua: false, dich: ["bcons-sora", "bcons-newsky"] });
+});
+
+test("decideDestinations_: DuAnQuanTam rỗng → chưa phân dự án", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "" }, new Set()), { chan: false, chua: true, dich: [] });
+});
+
+test("decideDestinations_: chỉ mã lạ → chưa; lẫn mã lạ → chỉ giữ mã biết", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc" }, []), { chan: false, chua: true, dich: [] });
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "xyz-abc;bcons-sora" }, []), { chan: false, chua: false, dich: ["bcons-sora"] });
+});
+
+test("decideDestinations_: trùng mã chỉ tính một lần", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora;bcons-sora" }).dich, ["bcons-sora"]);
+});
+
+test("decideDestinations_: SĐT trong TuChoi (Set, mảng, khác dạng) → chặn", () => {
+  const rec = { SDT: "0981234567", DuAnQuanTam: "bcons-sora" };
+  const want = { chan: true, chua: false, dich: [] };
+  assert.deepEqual(decide(rec, new Set(["0981234567"])), want);
+  assert.deepEqual(decide(rec, ["0981234567"]), want);
+  assert.deepEqual(decide(rec, new Set(["+84 98 123 4567"])), want);
+  assert.deepEqual(decide(rec, ["0912345678"]).chan, false);
+});
+
+test("decideDestinations_: DongYNhanTin 'Không' → chặn; 'Chưa rõ' không chặn", () => {
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Không" }, new Set()), { chan: true, chua: false, dich: [] });
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora", DongYNhanTin: "Chưa rõ" }, new Set()), { chan: false, chua: false, dich: ["bcons-sora"] });
+});
+
+test("decideDestinations_: tuChoi undefined, projectCodes rỗng, SĐT sai", () => {
+  assert.equal(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined).chan, false);
+  assert.deepEqual(decide({ SDT: "0981234567", DuAnQuanTam: "bcons-sora" }, undefined, []), { chan: false, chua: true, dich: [] });
+  assert.deepEqual(decide({ SDT: "abc", DuAnQuanTam: "bcons-sora" }, ["abc"]), { chan: false, chua: true, dich: [] });
+});
+
+test("decideDestinations_: không sửa đầu vào", () => {
+  const rec = { SDT: "0981234567", DuAnQuanTam: "bcons-sora;x" };
+  const tc = ["0981234567"], pc = PROJ.slice();
+  const r0 = JSON.stringify([rec, tc, pc]);
+  ctx.decideDestinations_(rec, tc, pc);
+  assert.equal(JSON.stringify([rec, tc, pc]), r0);
+});
