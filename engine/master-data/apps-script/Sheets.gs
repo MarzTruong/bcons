@@ -1029,11 +1029,11 @@ function ghiNhatKy_(ss, entry) {
   sh.getRange(at, 1, 1, 7).setValues([[(entry.now || new Date()).toISOString(), entry.nguon, entry.doc || 0, entry.moi || 0, entry.trung || 0, entry.loi || 0, entry.ghiChu || '']]);
 }
 
-/** Mã dự án an toàn để đưa vào tin Telegram: chỉ mã đúng dạng (chữ thường, số, gạch ngang), còn lại thành 'mã lạ' (không để tên người gõ nhầm ở CauHinh lọt ra). ChuaPhanDuAn là tên tab nội bộ. */
+/** Mã dự án an toàn để đưa vào tin Telegram: chỉ mã đúng dạng (chữ thường, số, gạch ngang), còn lại thành 'mã lạ' (không để tên người gõ nhầm ở CauHinh lọt ra). */
 function maDuAnAnToan_(list) {
   return (list || []).map(function (c) {
     c = String(c);
-    return c === 'ChuaPhanDuAn' || /^[a-z][a-z0-9-]{2,39}$/.test(c) ? c : 'mã lạ';
+    return /^[a-z][a-z0-9-]{2,39}$/.test(c) ? c : 'mã lạ';
   }).join(', ');
 }
 
@@ -1172,32 +1172,43 @@ function baoCaoNgay_(opts) {
   var master = SpreadsheetApp.getActiveSpreadsheet();
   var nguon = { Landing: 0, CRM: 0, Khac: 0 };
   var moi = 0;
+  var chuaCoMa = 0; // cùng định nghĩa với chuaCoDuAn của phanBo_: có SĐT hoặc MaKhach mà DuAnQuanTam không có mã hợp lệ
+  var rutLai = 0; // khách có NgayRutLai rơi vào hôm qua
   var kh = master.getSheetByName('KhachHang');
   if (kh && kh.getLastRow() >= 2) {
     var vals = kh.getDataRange().getValues();
     var headers = vals[0].map(function (h) { return hdr_(h); });
     var iTao = headers.indexOf('NgayTao');
     var iNguon = headers.indexOf('NguonGoc');
-    for (var r = 1; r < vals.length && iTao >= 0; r++) {
-      if (ngayVN_(vals[r][iTao]) !== homQua) continue;
-      moi++;
-      var g = iNguon >= 0 ? String(vals[r][iNguon] == null ? '' : vals[r][iNguon]).trim() : '';
-      nguon[g === 'Landing' || g === 'CRM' ? g : 'Khac']++;
+    var iSdt = headers.indexOf('SDT');
+    var iMa = headers.indexOf('MaKhach');
+    var iDa = headers.indexOf('DuAnQuanTam');
+    var iRut = headers.indexOf('NgayRutLai');
+    for (var r = 1; r < vals.length; r++) {
+      if (iTao >= 0 && ngayVN_(vals[r][iTao]) === homQua) {
+        moi++;
+        var g = iNguon >= 0 ? String(vals[r][iNguon] == null ? '' : vals[r][iNguon]).trim() : '';
+        nguon[g === 'Landing' || g === 'CRM' ? g : 'Khac']++;
+      }
+      var coSdt = iSdt >= 0 && normalizePhone_(vals[r][iSdt]);
+      var coMa = iMa >= 0 && s_(vals[r][iMa]);
+      if ((coSdt || coMa) && (iDa < 0 || codesOnly_(vals[r][iDa]) === '')) chuaCoMa++;
+      if (iRut >= 0 && ngayVN_(vals[r][iRut]) === homQua) rutLai++;
     }
   }
-  var rutLai = 0;
+  var dongYLai = 0; // dòng TuChoi có DaDongYLai rơi vào hôm qua
   var tc = master.getSheetByName('TuChoi');
   if (tc && tc.getLastRow() >= 2) {
     var tv = tc.getDataRange().getValues();
-    var iNgay = tv[0].map(function (h) { return hdr_(h); }).indexOf('NgayGhi');
-    for (var k = 1; k < tv.length && iNgay >= 0; k++) if (ngayVN_(tv[k][iNgay]) === homQua) rutLai++;
+    var iLai = tv[0].map(function (h) { return hdr_(h); }).indexOf('DaDongYLai');
+    for (var k = 1; k < tv.length && iLai >= 0; k++) if (ngayVN_(tv[k][iLai]) === homQua) dongYLai++;
   }
   var parts = [];
   if (nguon.Landing) parts.push('Landing ' + nguon.Landing);
   if (nguon.CRM) parts.push('CRM ' + nguon.CRM);
   if (nguon.Khac) parts.push('Khác ' + nguon.Khac);
   var text = '📊 Master_Data hôm qua: ' + moi + ' khách mới' + (parts.length ? ' (' + parts.join(', ') + ')' : '') +
-    '. Chưa phân dự án: ' + demDong_(master, 'ChuaPhanDuAn') + '. Dòng lỗi: ' + demDong_(master, 'Loi') + '. Rút lại: ' + rutLai + '.';
+    '. Chưa có mã dự án: ' + chuaCoMa + '. Dòng lỗi: ' + demDong_(master, 'Loi') + '. Rút lại hôm qua: ' + rutLai + '. Điền lại hôm qua: ' + dongYLai + '.';
   var cuoi = Number(PropertiesService.getScriptProperties().getProperty(CHAY_CUOI_KEY_));
   if (cuoi > 0) text += ' Lần chạy cuối: ' + Math.max(0, Math.floor((now.getTime() - cuoi) / 60000)) + ' phút trước.';
   sendTelegram_(text);

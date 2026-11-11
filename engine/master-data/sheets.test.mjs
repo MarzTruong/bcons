@@ -1559,23 +1559,29 @@ test("baoCaoNgayTuDong: lỗi khi đọc -> báo loại lỗi, không ném", () 
 });
 
 // baoCaoNgay_: hôm qua theo giờ Asia/Ho_Chi_Minh (UTC+7). NOW = 11/11 08:00 giờ VN, nên "hôm qua" = 10/11.
-const khAt = (ngayTao, nguon, i) => khRow({ MaKhach: pad(i), SDT: "09000000" + String(10 + i), NgayTao: ngayTao, NguonGoc: nguon });
+const khAt = (ngayTao, nguon, i, extra = {}) => khRow({ MaKhach: pad(i), SDT: "09000000" + String(10 + i), NgayTao: ngayTao, NguonGoc: nguon, DuAnQuanTam: "bcons-central-park", ...extra });
 function baoCaoFixture(asDate = false) {
   const d = (iso) => (asDate ? new Date(iso) : iso);
   return full({
     khach: [
-      khAt(d("2026-11-09T16:59:59.000Z"), "Landing", 1), // 09/11 23:59:59 VN: không tính
-      khAt(d("2026-11-09T17:00:00.000Z"), "Landing", 2), // 10/11 00:00:00 VN: tính
-      khAt(d("2026-11-10T09:00:00.000Z"), "CRM", 3), // tính
-      khAt(d("2026-11-10T16:59:59.000Z"), "Landing", 4), // 10/11 23:59:59 VN: tính
-      khAt(d("2026-11-10T17:00:00.000Z"), "CRM", 5), // 11/11 00:00 VN: không tính
-      khAt("không phải ngày", "Landing", 6), // rác: không tính, không ném
-      khAt(d("2026-11-10T10:00:00.000Z"), "Nguồn lạ Khách A", 7), // tính vào Khác, không in nguồn lạ
+      khAt(d("2026-11-09T16:59:59.000Z"), "Landing", 1, { NgayRutLai: d("2026-11-09T16:59:59.000Z") }), // 09/11 23:59:59 VN: không tính (cả rút lại)
+      khAt(d("2026-11-09T17:00:00.000Z"), "Landing", 2, { DongYNhanTin: "Đã rút lại", NgayRutLai: d("2026-11-09T17:00:00.000Z") }), // 10/11 00:00:00 VN: tính; rút lại hôm qua: tính
+      khAt(d("2026-11-10T09:00:00.000Z"), "CRM", 3, { DuAnQuanTam: "" }), // tính; chưa có mã dự án
+      khAt(d("2026-11-10T16:59:59.000Z"), "Landing", 4, { DongYNhanTin: "Đã rút lại", NgayRutLai: d("2026-11-10T16:59:59.000Z") }), // 10/11 23:59:59 VN: tính; rút lại hôm qua: tính
+      khAt(d("2026-11-10T17:00:00.000Z"), "CRM", 5, { NgayRutLai: d("2026-11-10T17:00:00.000Z") }), // 11/11 00:00 VN: không tính
+      khAt("không phải ngày", "Landing", 6, { DuAnQuanTam: "Central Park", NgayRutLai: "rác" }), // rác: không tính, không ném; mã lạ = chưa có mã hợp lệ
+      khAt(d("2026-11-10T10:00:00.000Z"), "Nguồn lạ Khách A", 7, { DuAnQuanTam: "" }), // tính vào Khác, không in nguồn lạ; chưa có mã dự án
+      khRow({ MaKhach: "", SDT: "", DuAnQuanTam: "" }), // dòng không SĐT không mã: không đếm
     ],
     masterExtra: {
-      ChuaPhanDuAn: [[...KHACH_COLS, "GanDuAn"], khRow({ MaKhach: pad(8) }), khRow({ MaKhach: pad(9) }), new Array(KHACH_COLS.length + 1).fill("")],
+      ChuaPhanDuAn: [[...KHACH_COLS, "GanDuAn"], khRow({ MaKhach: pad(8) }), khRow({ MaKhach: pad(9) })], // tab đã bỏ, còn sót: không được đọc
       Loi: [["Thời gian", "Nguồn", "Dòng", "Lý do"], ["2026-11-10T01:00:00.000Z", "Landing", 3, "SĐT không hợp lệ"]],
-      TuChoi: [["SDT", "LyDo", "NgayGhi"], ["0900000099", "x", d("2026-11-10T03:00:00.000Z")], ["0900000098", "x", d("2026-11-09T03:00:00.000Z")]],
+      TuChoi: [
+        ["SDT", "LyDo", "NgayGhi", "LoaiYeuCau", "DaDongYLai"],
+        ["0900000099", "x", d("2026-11-10T03:00:00.000Z"), "Rút lại", d("2026-11-10T05:00:00.000Z")], // điền lại hôm qua: tính
+        ["0900000098", "x", d("2026-11-09T03:00:00.000Z"), "Rút lại", d("2026-11-09T03:00:00.000Z")], // điền lại hôm kia: không
+        ["0900000097", "x", d("2026-11-10T03:00:00.000Z"), "Rút lại", ""], // chưa điền lại: không
+      ],
     },
   });
 }
@@ -1583,8 +1589,12 @@ test("baoCaoNgay_: đếm đúng quanh nửa đêm Asia/Ho_Chi_Minh, theo nguồ
   for (const asDate of [false, true]) {
     const { F, ctx } = baoCaoFixture(asDate);
     const before = F.snapshot();
+    const reads = [];
+    F.hooks.onRead = (i) => reads.push(i.sheet);
     const text = ctx.baoCaoNgay_({ now: NOW });
-    assert.equal(text, "📊 Master_Data hôm qua: 4 khách mới (Landing 2, CRM 1, Khác 1). Chưa phân dự án: 2. Dòng lỗi: 1. Rút lại: 1.", String(asDate));
+    assert.ok(!reads.includes("ChuaPhanDuAn"), "không đọc tab đã bỏ");
+    assert.ok(!/KH-|0900000/.test(text), "không tên/SĐT/mã khách");
+    assert.equal(text, "📊 Master_Data hôm qua: 4 khách mới (Landing 2, CRM 1, Khác 1). Chưa có mã dự án: 3. Dòng lỗi: 1. Rút lại hôm qua: 2. Điền lại hôm qua: 1.", String(asDate));
     assert.deepEqual(tgTexts(F), [text]);
     assert.equal(F.snapshot(), before, "chỉ đọc");
     assert.equal(F.calls.writes.length, 0);
@@ -1606,7 +1616,7 @@ test("baoCaoNgay_: không có tab nào -> toàn số 0, không ném; thiếu thu
   const ctx = loadGs([LOGIC, SHEETS]);
   Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp, Logger: { log() {} } });
   const text = ctx.baoCaoNgay_({ now: NOW });
-  assert.equal(text, "📊 Master_Data hôm qua: 0 khách mới. Chưa phân dự án: 0. Dòng lỗi: 0. Rút lại: 0.");
+  assert.equal(text, "📊 Master_Data hôm qua: 0 khách mới. Chưa có mã dự án: 0. Dòng lỗi: 0. Rút lại hôm qua: 0. Điền lại hôm qua: 0.");
   assert.equal(F.calls.fetch.length, 0);
 });
 
@@ -1838,7 +1848,7 @@ test("caiLichTuDong: lời báo nói tin tóm tắt khoảng 8-9 giờ", () => {
 
 test("mã dự án trong tin báo: chỉ mã đúng dạng ^[a-z][a-z0-9-]{2,39}$; còn lại hiện 'mã lạ'", () => {
   const { ctx } = full();
-  assert.equal(ctx.maDuAnAnToan_(["bcons-central-park", "Nguyen Van A", "0981234567", "ab", "a".repeat(41), "bcons-newsky", "ChuaPhanDuAn"]), "bcons-central-park, mã lạ, mã lạ, mã lạ, mã lạ, bcons-newsky, ChuaPhanDuAn");
+  assert.equal(ctx.maDuAnAnToan_(["bcons-central-park", "Nguyen Van A", "0981234567", "ab", "a".repeat(41), "bcons-newsky", "ChuaPhanDuAn"]), "bcons-central-park, mã lạ, mã lạ, mã lạ, mã lạ, bcons-newsky, mã lạ");
   assert.equal(ctx.maDuAnAnToan_(["abc"]), "abc");
   assert.equal(ctx.maDuAnAnToan_(["a" + "b".repeat(39)]), "a" + "b".repeat(39));
 });
