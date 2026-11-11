@@ -345,3 +345,277 @@ function gopNhapCRMLocked_(dryRun, nowIso) {
   markColumn_(crm, values, ix.DaGop, marks);
   return out;
 }
+
+/** Cột hệ thống ở tab KhachTuMaster của Master_<mã>: A..L. Cột M để trống, từ N trở đi là của anh và KHÔNG BAO GIỜ bị ghi. */
+var KHACH_TU_MASTER_COLS = ['MaKhach', 'SDT', 'HoTen', 'NgayCapNhat', 'NguonGoc', 'DuAnQuanTam', 'NhuCau', 'CanXem', 'PTTT', 'DongYNhanTin', 'TrangThaiCRM', 'TrangThaiChamSoc'];
+/** Khi rút lại: các cột chứa dữ liệu cá nhân bị xóa ở KhachHang. */
+var PURGE_CLEAR_ = ['SDT', 'HoTen', 'NhuCau', 'CanXem', 'DongYBangChung'];
+
+/** Phân bổ KhachHang sang Master_<mã> (KhachTuMaster) và ChuaPhanDuAn; xử lý rút lại (fail closed).
+ *  Trả {dayVao: {mã: số khách thêm hoặc đổi}, chua: số dòng ChuaPhanDuAn thêm hoặc đổi, chan: số khách vừa bị xóa, lyDo: {tuchoi, khong}}.
+ *  Tính hết trong bộ nhớ (kể cả quyết định cho mọi khách) rồi mới ghi; lỗi ở bước tính thì không ghi gì. dryRun: không ghi gì. */
+function phanBo_(opts) {
+  opts = opts || {};
+  var dryRun = !!opts.dryRun;
+  var nowIso = (opts.now || new Date()).toISOString();
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    return phanBoLocked_(dryRun, nowIso);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/** Dự án có masterSheetId: [{code, id}], bỏ dòng thiếu maDuAn/masterSheetId và mã trùng. */
+function projectsFromCfg_(cfg) {
+  var vals = cfg.getLastRow() >= 1 ? cfg.getDataRange().getValues() : [];
+  var hd = vals.length ? vals[0].map(function (h) { return String(h).trim(); }) : [];
+  var iCode = hd.indexOf('maDuAn'), iId = hd.indexOf('masterSheetId');
+  if (iCode < 0 || iId < 0) throw new Error('Tab CauHinh thiếu cột maDuAn hoặc masterSheetId.');
+  var out = [];
+  for (var r = 1; r < vals.length; r++) {
+    var code = s_(vals[r][iCode]), id = s_(vals[r][iId]);
+    if (!code || !id) continue;
+    if (out.some(function (p) { return p.code === code; })) continue;
+    out.push({ code: code, id: id });
+  }
+  return out;
+}
+
+/** SĐT trong tab TuChoi (cột SDT), chỉ ô không rỗng. Thiếu tab = rỗng. */
+function readTuChoi_(master) {
+  var sh = master.getSheetByName('TuChoi');
+  var vals = sh && sh.getLastRow() >= 1 ? sh.getDataRange().getValues() : [];
+  if (!vals.length) return [];
+  var i = vals[0].map(function (h) { return String(h).trim(); }).indexOf('SDT');
+  if (i < 0) throw new Error('Tab TuChoi thiếu cột SDT.');
+  var out = [];
+  for (var r = 1; r < vals.length; r++) {
+    var v = s_(vals[r][i]);
+    if (v) out.push(v);
+  }
+  return out;
+}
+
+/** Đọc một tab đích thành cấu trúc giống readKhach_ để dùng lại flushKhach_. cols = các cột hệ thống (theo thứ tự); width > 0: chỉ đọc cột A..width. */
+function loadDest_(ss, name, cols, width, label) {
+  var sh = ss.getSheetByName(name);
+  var P = { ss: ss, name: name, sheet: sh, created: !sh, headerEmpty: false, label: label };
+  var def = cols.slice();
+  var data;
+  if (sh && sh.getLastRow() >= 1) {
+    data = width ? sh.getRange(1, 1, sh.getLastRow(), width).getValues() : sh.getDataRange().getValues();
+    data = data.map(function (r) { return r.slice(); });
+  } else {
+    if (sh) P.headerEmpty = true;
+    data = [def];
+  }
+  P.data = data;
+  P.headers = data[0].map(function (h) { return String(h).trim(); });
+  if (!P.created && !P.headerEmpty && width) {
+    for (var k = 0; k < width; k++) {
+      if (P.headers[k] !== cols[k]) throw new Error('Tab ' + name + ' (' + label + ') có tiêu đề cột ' + (k + 1) + ' sai, cần "' + cols[k] + '".');
+    }
+  }
+  P.idx = {};
+  KHACH_COLS.forEach(function (c) { P.idx[c] = P.headers.indexOf(c); });
+  if (P.idx.MaKhach < 0 || P.idx.SDT < 0) throw new Error('Tab ' + name + ' (' + label + ') thiếu cột MaKhach hoặc SDT.');
+  P.iGan = P.headers.indexOf('GanDuAn');
+  P.sys = cols;
+  P.delRows = [];
+  return P;
+}
+
+function indexByMa_(P) {
+  P.byMa = {};
+  for (var r = 1; r < P.data.length; r++) {
+    var ma = s_(P.data[r][P.idx.MaKhach]);
+    if (ma && !(ma in P.byMa)) P.byMa[ma] = r;
+  }
+}
+
+/** Xóa (trong bộ nhớ) các dòng của khách rút lại: khớp MaKhach hoặc SĐT. Ghi nhớ số dòng thật để xóa sau (từ dưới lên). */
+function planPurge_(P, purgeMa, purgePhone) {
+  var keep = [P.data[0]];
+  for (var r = 1; r < P.data.length; r++) {
+    var row = P.data[r];
+    var ma = s_(row[P.idx.MaKhach]);
+    var ph = normalizePhone_(row[P.idx.SDT]);
+    if ((ma && purgeMa[ma]) || (ph && purgePhone[ph])) P.delRows.push(r + 1);
+    else keep.push(row);
+  }
+  P.data = keep;
+}
+
+/** Thêm hoặc cập nhật một khách vào đích (chỉ các cột hệ thống đang có). Trả true nếu có thêm/đổi. */
+function upsertDest_(P, obj, phone) {
+  var at = P.byMa[s_(obj.MaKhach)];
+  var changed = false;
+  var vals = {};
+  P.sys.forEach(function (c) { vals[c] = c === 'SDT' ? phone : (c === 'NgayCapNhat' ? s_(obj[c]) : obj[c]); });
+  var write = function (c) { return c === 'MaKhach' ? String(vals[c]) : cell_(vals[c]); };
+  if (at !== undefined) {
+    var cur = P.data[at];
+    P.sys.forEach(function (c) {
+      var ci = P.idx[c];
+      if (ci < 0 || c === 'MaKhach') return;
+      var cv = s_(cur[ci]);
+      if (cv === s_(vals[c]) || cv === s_(write(c))) return;
+      while (cur.length <= ci) cur.push('');
+      cur[ci] = write(c);
+      changed = true;
+      if (at < P.origLen) (P.dirty[at] = P.dirty[at] || {})[ci] = true;
+    });
+    return changed;
+  }
+  var row = [];
+  while (row.length < P.headers.length) row.push('');
+  P.sys.forEach(function (c) { if (P.idx[c] >= 0) row[P.idx[c]] = write(c); });
+  P.data.push(row);
+  P.byMa[s_(obj.MaKhach)] = P.data.length - 1;
+  return true;
+}
+
+function deleteRowsDesc_(sheet, rows) {
+  rows.slice().sort(function (a, b) { return b - a; }).forEach(function (n) { sheet.deleteRow(n); });
+}
+
+function phanBoLocked_(dryRun, nowIso) {
+  var master = SpreadsheetApp.getActiveSpreadsheet();
+  var cfg = master.getSheetByName('CauHinh');
+  if (!cfg) throw new Error('Thiếu tab CauHinh trong Master_Data.');
+  var projects = projectsFromCfg_(cfg);
+  var codes = projects.map(function (p) { return p.code; });
+  var tuChoi = readTuChoi_(master);
+  var kh = readKhach_(master);
+  var st = newKhachState_(kh);
+  var chuaCols = KHACH_COLS;
+  var chuaP = loadDest_(master, 'ChuaPhanDuAn', chuaCols, 0, 'Master_Data');
+  chuaP.kind = 'chua';
+  // Mở và kiểm hết các Master_<mã> trước khi ghi: một Sheet hỏng thì không ghi gì (kể cả xóa).
+  var byId = {};
+  var dests = [];
+  projects.forEach(function (p) {
+    if (!byId[p.id]) {
+      byId[p.id] = loadDest_(SpreadsheetApp.openById(p.id), 'KhachTuMaster', KHACH_TU_MASTER_COLS, KHACH_TU_MASTER_COLS.length, p.code);
+      dests.push(byId[p.id]);
+    }
+  });
+  var out = { dayVao: {}, chua: 0, chan: 0, lyDo: { tuchoi: 0, khong: 0 } };
+  codes.forEach(function (c) { out.dayVao[c] = 0; });
+  var chuaGan = {};
+  indexByMa_(chuaP);
+  Object.keys(chuaP.byMa).forEach(function (ma) {
+    if (chuaP.iGan >= 0) chuaGan[ma] = s_(chuaP.data[chuaP.byMa[ma]][chuaP.iGan]);
+  });
+
+  // Bước 1: quyết định cho mọi khách (chưa ghi gì; decideDestinations_ ném lỗi thì dừng cả lần chạy).
+  var purgeMa = {}, purgePhone = {}, purgeRows = [];
+  var allocs = [];
+  var chuaList = [];
+  var nonChua = {};
+  for (var r = 1; r < kh.data.length; r++) {
+    var row = kh.data[r];
+    var obj = khachObj_(kh, row);
+    var ma = s_(obj.MaKhach);
+    if (!ma) continue;
+    var phone = normalizePhone_(obj.SDT);
+    var optOut = foldText_(obj.DongYNhanTin).indexOf('khong') === 0;
+    var leftover = PURGE_CLEAR_.some(function (c) { return s_(obj[c]) !== ''; });
+    if (!phone && !(optOut && leftover)) continue; // đã rút lại từ trước, hoặc không có SĐT: không động tới
+    var d = decideDestinations_(obj, tuChoi, codes);
+    if (!d.chan && chuaGan[ma]) {
+      var valid = codesOnly_(chuaGan[ma]).split(';').filter(function (c) {
+        return c && codes.some(function (k) { return k.trim().toLowerCase() === c; });
+      }).join(';');
+      if (valid) {
+        var merged = unionList_(obj.DuAnQuanTam, valid);
+        if (merged !== codesOnly_(obj.DuAnQuanTam)) {
+          markCell_(kh, st, r, 'DuAnQuanTam', merged);
+          obj.DuAnQuanTam = merged;
+          d = decideDestinations_(obj, tuChoi, codes);
+        }
+      }
+    }
+    if (d.chan) {
+      if (kh.idx.DongYNhanTin < 0) throw new Error('Tab KhachHang thiếu cột DongYNhanTin, không ghi nhận được việc rút lại.');
+      purgeMa[ma] = true;
+      if (phone) purgePhone[phone] = true;
+      purgeRows.push(r);
+      out.chan++;
+      out.lyDo[d.lyDo === 'tuchoi' ? 'tuchoi' : 'khong']++;
+      continue;
+    }
+    if (d.chua) chuaList.push({ obj: obj, phone: phone });
+    else {
+      nonChua[ma] = true;
+      allocs.push({ obj: obj, phone: phone, dich: d.dich });
+    }
+  }
+  purgeRows.forEach(function (r) {
+    markCell_(kh, st, r, 'DongYNhanTin', 'Không');
+    PURGE_CLEAR_.forEach(function (c) { markCell_(kh, st, r, c, ''); });
+    markCell_(kh, st, r, 'NgayCapNhat', nowIso);
+    if (kh.idx.GhiChu >= 0 && s_(kh.data[r][kh.idx.GhiChu]) === '') markCell_(kh, st, r, 'GhiChu', 'Rút lại');
+  });
+
+  // Bước 2: dựng thay đổi cho từng đích trong bộ nhớ.
+  dests.concat([chuaP]).forEach(function (P) {
+    planPurge_(P, purgeMa, purgePhone);
+    P.origLen = P.data.length;
+    P.dirty = {};
+    indexByMa_(P);
+  });
+  allocs.forEach(function (a) {
+    var seen = {};
+    a.dich.forEach(function (code) {
+      var p = projects.filter(function (x) { return x.code === code; })[0];
+      if (!p || seen[p.id + code]) return;
+      seen[p.id + code] = true;
+      if (upsertDest_(byId[p.id], a.obj, a.phone)) out.dayVao[code]++;
+    });
+  });
+  chuaList.forEach(function (c) {
+    if (upsertDest_(chuaP, c.obj, c.phone)) out.chua++;
+  });
+  var chuaAlloc = [];
+  for (var cr = 1; cr < chuaP.data.length; cr++) {
+    var cma = s_(chuaP.data[cr][chuaP.idx.MaKhach]);
+    if (cma && nonChua[cma]) chuaAlloc.push(cr + 1);
+  }
+  if (dryRun) return out;
+
+  // Bước 3: ghi. Xóa dữ liệu rút lại trước, ghi nhận ở KhachHang sau (chết giữa chừng thì lần sau làm lại),
+  // thêm/đổi sau cùng, gỡ khỏi ChuaPhanDuAn (đã phân bổ) cuối cùng.
+  ensureTabs_(master, false, []); // chỉ tab mới tạo được định dạng; tab cũ giữ nguyên (lần chạy không đổi gì thì không ghi gì)
+  chuaP.sheet = master.getSheetByName('ChuaPhanDuAn');
+  dests.forEach(function (P) {
+    if (P.sheet && P.delRows.length) deleteRowsDesc_(P.sheet, P.delRows);
+  });
+  if (chuaP.sheet && chuaP.delRows.length) deleteRowsDesc_(chuaP.sheet, chuaP.delRows);
+  if (kh.sheet) flushKhach_(kh, st);
+  dests.forEach(function (P) {
+    if (!P.sheet) {
+      P.sheet = P.ss.insertSheet('KhachTuMaster');
+      P.sheet.getRange(1, 1, 1, KHACH_TU_MASTER_COLS.length + 2).setValues([KHACH_TU_MASTER_COLS.concat(['', 'Ghi chú của anh'])]);
+    } else if (P.headerEmpty) {
+      P.sheet.getRange(1, 1, 1, KHACH_TU_MASTER_COLS.length).setValues([KHACH_TU_MASTER_COLS]);
+    }
+    flushKhach_(P, { origLen: P.origLen, dirty: P.dirty });
+  });
+  flushKhach_(chuaP, { origLen: chuaP.origLen, dirty: chuaP.dirty });
+  if (chuaAlloc.length) deleteRowsDesc_(chuaP.sheet, chuaAlloc);
+  return out;
+}
+
+/** Đặt giá trị một ô của KhachHang trong bộ nhớ và đánh dấu để ghi (chỉ khi đổi). */
+function markCell_(kh, st, r, col, value) {
+  var ci = kh.idx[col];
+  if (ci < 0) return;
+  var row = kh.data[r];
+  while (row.length <= ci) row.push('');
+  if (s_(row[ci]) === s_(value)) return;
+  row[ci] = value;
+  (st.dirty[r] = st.dirty[r] || {})[ci] = true;
+}

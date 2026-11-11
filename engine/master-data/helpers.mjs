@@ -59,6 +59,18 @@ export function fakeSheets(spec = {}) {
         if (after < 1 || after > sh.maxRows || n < 1) throw new Error("insertRowsAfter: tham số sai");
         sh.maxRows += n;
       },
+      deleteRow(n) {
+        fire("deleteRow", n, 1, null, 1, 1);
+        if (n < 1 || n > sh.maxRows) throw new Error("deleteRow: dòng ngoài lưới");
+        if (n <= sh.data.length) sh.data.splice(n - 1, 1);
+        const moved = new Set();
+        for (const k of sh.textCells) {
+          const [r0, c0] = k.split(",").map(Number);
+          if (r0 + 1 === n) continue;
+          moved.add(r0 + 1 > n ? r0 - 1 + "," + c0 : k);
+        }
+        sh.textCells = moved;
+      },
       getDataRange() {
         return { getValues: () => api.getRange(1, 1, Math.max(lastRow(), 0), width()).getValues() };
       },
