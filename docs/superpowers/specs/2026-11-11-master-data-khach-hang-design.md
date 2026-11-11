@@ -1,4 +1,4 @@
-> **Trạng thái:** Đã duyệt (anh duyệt 11/11/2026, chốt: dùng `Master_<mã>`, không đặt thời hạn giữ dữ liệu). Code đã dựng và test xanh trên máy (11/11/2026, commit `89c5abc` đến `69655f5`), **chưa cài lên Sheet thật nào**. Tiếp theo: anh duyệt lần lượt cổng G1–G6 theo `docs/huong-dan-master-data.md`.
+> **Trạng thái:** Đã duyệt (anh duyệt 11/11/2026, chốt: dùng `Master_<mã>`, không đặt thời hạn giữ dữ liệu). Code đã dựng và test xanh trên máy (11/11/2026, commit `89c5abc` đến `69655f5`), **chưa cài lên Sheet thật nào**. Tiếp theo: anh duyệt lần lượt cổng G1–G6 theo `docs/huong-dan-master-data.md`. **Mục 16 thay thế các chỗ cũ nói rút lại là xóa và tab `ChuaPhanDuAn`.**
 
 # Thiết kế: Master_Data, kho khách hàng tập trung (11/11/2026)
 
@@ -26,7 +26,7 @@ Cần **một kho duy nhất** (Master_Data) để: không trùng, không sót, 
 - Dữ liệu khách (tên, SĐT, nhu cầu, thu nhập) vào repo, log chung, hoặc tin nhắn Telegram dài.
 - Ghi đè phần chăm sóc anh đã nhập tay.
 - Khách vào Masterfile của dự án họ không quan tâm.
-- Khách đã rút lại sự đồng ý vẫn nằm trong danh sách được nhắn.
+- Khách đã rút lại sự đồng ý (`Đã rút lại`) hoặc chưa có đồng ý cho đúng dự án vẫn nằm trong danh sách được nhắn.
 - Ghi lên dữ liệu thật mà chưa thử trên bản sao.
 
 ## 3. Hiện trạng (đã đọc)
@@ -43,7 +43,7 @@ Cần **một kho duy nhất** (Master_Data) để: không trùng, không sót, 
                                                           v
  CRM (anh nhập tay) ───────────────────────────>  MASTER_DATA (Google Sheet riêng tư)
                                                    tab KhachHang  <- một dòng/khách
-                                                   tab ChuaPhanDuAn, TuChoi, NhatKy, CauHinh
+                                                   tab TuChoi, NhatKy, CauHinh, Loi, NhapCRM
                                                           │ (tự động, một chiều)
                               ┌───────────────────────────┴───────────────┐
                               v                                           v
@@ -69,7 +69,7 @@ Google Sheet **riêng tư** (chỉ tài khoản anh), đặt ở Drive `Bcons/da
 | DuAnQuanTam | hệ thống / anh | mã dự án, nhiều thì ngăn bằng `;` (vd `bcons-central-park;bcons-newsky`); trống = chưa rõ |
 | NhuCau | hệ thống / anh | Mua để ở / Mua cho thuê / Tìm hiểu thêm |
 | CanXem, PTTT | hệ thống | từ landing (căn, loại căn, PTTT khách chọn) |
-| DongYNhanTin | hệ thống / anh | `Có`, `Không`, `Chưa rõ`; **không bao giờ tự đổi thành `Có`** khi không có bằng chứng |
+| DongYNhanTin | hệ thống / anh | `Có`, `Chưa rõ`, `Đã rút lại` (anh gõ đúng `Không` để rút lại, hệ thống ghi lại thành `Đã rút lại`; giá trị lạ khác bị chặn nhắn và ghi `Loi`); **không bao giờ tự đổi thành `Có`** khi không có bằng chứng |
 | DongYBangChung | hệ thống | thời điểm, mẫu đồng ý, trang (chép từ cột "Đồng ý nhận tin" của landing) |
 | **TrangThaiCRM** | **anh** | Mới / Đang liên hệ / Quan tâm / Đã gặp / Cọc/Booking/HĐMB / Không QT (theo CRM) |
 | **TrangThaiChamSoc** | **anh** | Chưa chăm / Đã gọi / Hẹn gặp / ... (anh định nghĩa, mục 14) |
@@ -77,8 +77,8 @@ Google Sheet **riêng tư** (chỉ tài khoản anh), đặt ở Drive `Bcons/da
 
 Quy tắc cột: hệ thống chỉ điền hoặc cập nhật cột "hệ thống". Cột "anh" hệ thống chỉ đọc. Cột "hệ thống / anh": hệ thống chỉ điền khi ô đang **trống**, không ghi đè ô đã có chữ.
 
-**Tab `ChuaPhanDuAn`**: khách có `DuAnQuanTam` trống, kèm cột `GanDuAn` để anh chọn. Gán xong, lần chạy sau đưa khách về đúng Masterfile.
-**Tab `TuChoi`**: SĐT đã rút lại sự đồng ý hoặc yêu cầu xóa. Danh sách chặn: mọi bước phân bổ và mọi chiến dịch nhắn phải loại các SĐT này.
+*(Đã bỏ tab `ChuaPhanDuAn`: khách chưa có mã dự án ở lại `KhachHang`, anh gõ mã vào `DuAnQuanTam`; xem mục 16.)*
+**Tab `TuChoi`** (`SDT | LyDo | NgayGhi | LoaiYeuCau | DaDongYLai`): SĐT đã rút lại sự đồng ý (`Rút lại`, giữ hồ sơ) hoặc yêu cầu xóa (`Xóa`). Danh sách chặn: mọi bước phân bổ và mọi chiến dịch nhắn phải loại các SĐT này.
 **Tab `NhatKy`**: mỗi lần chạy một dòng: thời điểm, nguồn, số dòng đọc, số khách mới, số gộp trùng, số đẩy sang từng dự án, số lỗi. **Không ghi tên, SĐT**, chỉ `MaKhach`.
 **Tab `CauHinh`**: danh sách dự án (mã, ID Sheet đích, ID Sheet landing), lịch chạy, hạn giữ dữ liệu.
 
@@ -88,7 +88,7 @@ Quy tắc cột: hệ thống chỉ điền hoặc cập nhật cột "hệ th�
    - `NguonGoc` thành `Landing+CRM` nếu đến từ hai nguồn.
    - `DuAnQuanTam` hợp (union) hai danh sách.
    - Ô trống thì điền; ô đã có chữ thì giữ (ưu tiên giá trị cũ, đặc biệt các cột anh nhập).
-   - `DongYNhanTin`: nếu dòng mới là `Không` hoặc nằm trong `TuChoi`, **thắng** (an toàn pháp lý).
+   - `DongYNhanTin`: nếu dòng mới là `Không`/`Đã rút lại` hoặc nằm trong `TuChoi` mà chưa có đồng ý mới hơn, **thắng** (an toàn pháp lý).
 3. Khách landing điền lại nhiều lần: mỗi lần chỉ bổ sung dự án/căn quan tâm mới, không tạo dòng mới.
 4. Hệ thống **không** tự đoán khớp mờ (tên + 3 số đầu + 3 số cuối kiểu CRM che SĐT), vì anh nhập SĐT đầy đủ.
 
@@ -96,7 +96,7 @@ Quy tắc cột: hệ thống chỉ điền hoặc cập nhật cột "hệ th�
 Anh đồng ý bốn điểm (11/11/2026):
 1. Mỗi khách một dòng duy nhất trong Master_Data, `DuAnQuanTam` có thể nhiều dự án.
 2. Khách quan tâm hai dự án thì **xuất hiện ở cả hai** nơi, cùng `MaKhach`.
-3. Khách chưa rõ dự án vào tab `ChuaPhanDuAn`.
+3. Khách chưa có mã dự án ở lại `KhachHang` (không có tab riêng), anh gõ mã vào `DuAnQuanTam`.
 4. **Một chiều** Master_Data → Masterfile; hệ thống không bao giờ ghi đè phần chăm sóc anh nhập tay trong Masterfile.
 
 **Điểm cần anh chốt (mục 13):** Masterfile hiện là `.xlsx` trên Drive, Google không cho ghi tự động vào file đó. Đề xuất của em (mặc định trong spec):
@@ -117,16 +117,18 @@ Anh đồng ý bốn điểm (11/11/2026):
 - Việc nhập CRM phụ thuộc anh: không nhập thì Master_Data thiếu khách CRM. Báo cáo nhật ký sẽ cho thấy số khách CRM mới theo tuần để anh tự thấy.
 
 ## 9. Bảo mật và pháp lý dữ liệu cá nhân
+> Mục 16 thay thế các chỗ cũ nói rút lại là xóa và tab `ChuaPhanDuAn`: rút lại đồng ý chỉ đổi trạng thái và giữ hồ sơ; chỉ yêu cầu `Xóa` mới xóa dữ liệu.
+
 - Dữ liệu chỉ ở Google Sheet/Drive riêng tư của anh. Không vào repo, không vào log chung. Test dùng dữ liệu ẩn danh hóa (mục 11).
 - Khóa API (Telegram bot token, ID sheet) ở Script Properties của Apps Script, **không dán vào chat hay file**. Lệnh nào cần khóa ở máy cloud thì dùng `request_credential`.
 - Tab `NhatKy` chỉ có số liệu và `MaKhach`. Tin Telegram báo lỗi chỉ ghi loại lỗi và số dòng.
-- Căn cứ: Luật Bảo vệ dữ liệu cá nhân 2025 và Nghị định 356/2025. Cần ghi rõ **mục đích** (tư vấn dự án Bcons), **thời hạn giữ** (anh chốt 11/11/2026: không đặt thời hạn cố định; ghi trên mẫu đồng ý là "cho đến khi khách rút lại sự đồng ý hoặc yêu cầu xóa", nên cách rút lại/xóa dưới đây là bắt buộc phải chạy được), **cách rút lại/xóa** (khách nhắn xin rút → anh thêm SĐT vào tab `TuChoi` → lần chạy sau xóa khỏi các `Master_<mã>`, ẩn thông tin cá nhân ở `KhachHang`). 
-- Chỉ nhắn khách có `DongYNhanTin = Có` và không nằm trong `TuChoi`. Khách CRM nhập tay có `DongYNhanTin = Chưa rõ`; **chưa rõ thì không đưa vào danh sách nhắn hàng loạt**, chỉ để anh gọi/nhắn tư vấn từng người.
+- Căn cứ: Luật Bảo vệ dữ liệu cá nhân 2025 và Nghị định 356/2025. Cần ghi rõ **mục đích** (tư vấn dự án Bcons), **thời hạn giữ** (anh chốt 11/11/2026: không đặt thời hạn cố định; ghi trên mẫu đồng ý là "cho đến khi khách rút lại sự đồng ý hoặc yêu cầu xóa", nên cách rút lại/xóa dưới đây là bắt buộc phải chạy được), **cách rút lại/xóa** (khách nhắn xin rút lại đồng ý → anh thêm SĐT vào tab `TuChoi` loại `Rút lại` → lần chạy sau đổi trạng thái thành `Đã rút lại` và giữ hồ sơ, không nhắn nữa; khách yêu cầu xóa dữ liệu → loại `Xóa` → xóa khỏi các `Master_<mã>` và ẩn thông tin cá nhân ở `KhachHang`). 
+- Chỉ nhắn khách có `DongYNhanTin = Có` ở `Master_<mã>` của đúng dự án đó (không `Đã rút lại`). Khách CRM nhập tay có `DongYNhanTin = Chưa rõ`; **chưa rõ thì không đưa vào danh sách nhắn hàng loạt**, chỉ để anh gọi/nhắn tư vấn từng người.
 - Không dùng Zalo/Facebook cá nhân nhắn hàng loạt.
 
 ## 10. Lịch chạy, báo lỗi, nhật ký
 - Mỗi 15 phút: gộp landing, gộp `NhapCRM`, phân bổ sang các `Master_<mã>`.
-- Hàng ngày 8:00: tin Telegram tóm tắt (số khách mới hôm qua theo nguồn, số trong `ChuaPhanDuAn`, số dòng lỗi). Chỉ số liệu.
+- Hàng ngày 8:00: tin Telegram tóm tắt (số khách mới hôm qua theo nguồn, số khách chưa có mã dự án, số mã dự án không có trong `CauHinh`, số dòng lỗi, số rút lại và điền lại hôm qua). Chỉ số liệu.
 - Lỗi (không đọc được Sheet, hết hạn quyền, dòng lỗi quá ngưỡng): báo Telegram ngay, nội dung chỉ có loại lỗi.
 - Chạy tay: menu "Master_Data" trong chính Sheet ("Gộp ngay"). Lệnh bot `/gopkhach` là việc tùy chọn giai đoạn sau (my call, không đưa vào bản đầu).
 
@@ -159,7 +161,7 @@ Anh đồng ý bốn điểm (11/11/2026):
 ## 14. Quyết định em tự đặt (anh sửa được)
 - Chu kỳ gộp 15 phút, báo cáo hằng ngày 8:00.
 - Tab nhập CRM tên `NhapCRM`, hệ thống gộp vào `KhachHang`.
-- `DongYNhanTin` của khách CRM nhập tay mặc định `Chưa rõ`.
+- `DongYNhanTin` của khách CRM nhập tay mặc định `Chưa rõ`; giá trị lạ anh gõ (ngoài `Có`, `Chưa rõ`, `Đã rút lại`, `Không`) bị coi là chưa đồng ý và ghi `Loi`.
 - SĐT lỗi vào tab `Loi`, không bỏ im lặng.
 - Không khớp mờ theo SĐT che.
 - Lệnh bot `/gopkhach` để giai đoạn sau.
@@ -178,7 +180,7 @@ Anh đồng ý bốn điểm (11/11/2026):
 Đã chốt và **đã làm** trong kế hoạch `docs/superpowers/plans/2026-11-11-master-data-dong-y-theo-du-an.md` (code dựng và test trên máy, chưa cài lên Sheet thật):
 3. **Đồng ý nhận tin theo từng dự án.** `KhachHang` có thêm hai cột cuối: `DongYDuAn` (mã dự án khách đã đồng ý, ngăn `;`) và `NgayRutLai`; `DongYBangChung` lưu mỗi dự án một đoạn `<mã>: Có (...)`. Chỉ nhắn về dự án có trong `DongYDuAn` và chưa rút lại; đồng ý dự án A không mở nhắn dự án B. `DongYNhanTin` ở `KhachHang` là trạng thái chung (`Có` / `Chưa rõ` / `Đã rút lại`); cột cùng tên ở `Master_<mã>` nói riêng về dự án của sheet đó. Rút lại vẫn áp dụng cho cả khách (an toàn hơn), không theo từng dự án.
 4. **Rút lại đồng ý và điền lại form (pháp chế đã xác nhận 11/11/2026):**
-   - Khách **rút lại**: hệ thống đổi trạng thái sang `Đã rút lại` (ghi `NgayRutLai`), **giữ hồ sơ** ở `KhachHang` và `Master_<mã>` để mọi chiến dịch loại họ ra. Gõ đúng `Không` ở `DongYNhanTin` cũng là rút lại (hệ thống ghi lại thành `Đã rút lại`); `Không rõ` không làm gì và được ghi ở `Loi`.
+   - Khách **rút lại**: hệ thống đổi trạng thái sang `Đã rút lại` (ghi `NgayRutLai`), **giữ hồ sơ** ở `KhachHang` và `Master_<mã>` để mọi chiến dịch loại họ ra. Gõ đúng `Không` ở `DongYNhanTin` cũng là rút lại (hệ thống ghi lại thành `Đã rút lại`); mọi giá trị lạ khác (`Không rõ`, `Từ chối`, `No`...) **không** rút lại nhưng cũng **không được nhắn** (Master hiện `Chưa rõ`), chữ của anh giữ nguyên và ghi một dòng `Loi` (báo Telegram `LOI_DONG_Y`).
    - Khách **điền lại form** có tick đồng ý mới hơn ngày rút lại: hệ thống đổi về `Có` **chỉ cho dự án của lần điền đó** và được nhắn lại về dự án ấy; đồng ý các dự án khác không tự mở lại. Dòng `TuChoi` không bị xóa mà điền `DaDongYLai` = ngày đồng ý mới. Đồng ý cũ hơn ngày rút lại không mở lại gì.
    - **Yêu cầu xóa dữ liệu** tách riêng: `TuChoi` có cột `LoaiYeuCau` = `Rút lại` (mặc định, cũng là giá trị cho ô trống hoặc chữ lạ, chữ lạ được ghi ở `Loi`) hoặc `Xóa` (anh đã duyệt thiết kế này); chỉ `Xóa` chạy luồng xóa dữ liệu. Cột `NgayGhi` có thể để trống (hệ thống điền); ngày không kèm giờ tính tới hết ngày đó giờ Việt Nam. Phạm vi xóa ở điểm 6 áp dụng cho `Xóa`.
 5. **Khách landing cũ chưa có mã dự án:** nằm lại trong `KhachHang` với `DuAnQuanTam` trống, `DongYNhanTin` = `Chưa rõ`, **không** có tab `ChuaPhanDuAn` (tab và cột `GanDuAn` đã bỏ). Anh gõ mã dự án vào ô `DuAnQuanTam` ngay trong `KhachHang`. Số khách này hiện ở hộp thoại và tin hằng ngày ("Chưa có mã dự án: N") và không làm lần chạy mất trạng thái rảnh.
