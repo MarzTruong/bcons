@@ -871,18 +871,20 @@ test("fix B: 'Đã rút lại' không ngày -> đóng dấu NgayCapNhat của ex
   assert.equal(r5.NgayRutLai, CU);
 });
 
-test("fix C: 'Không' gõ lặp lại với now tăng dần không đẩy NgayRutLai; rút -> điền lại -> 'Không' lần nữa thì đóng dấu mới", () => {
+test("fix C (đổi có chủ ý ở Review Task 4 C1): 'Không' gõ lại là lần rút mới -> NgayRutLai = now; chạy lại kết quả ('Đã rút lại') thì không đẩy ngày", () => {
   let cur = merge(mk({ DongYNhanTin: "Không", DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-05") }), mk({}));
   assert.equal(cur.NgayRutLai, NOW);
   for (const n of ["2026-11-12T00:00:00.000Z", "2026-11-13T00:00:00.000Z", "2026-12-01T00:00:00.000Z"]) {
     const nx = plain(ctx.mergeCustomer_(cur, mk({ DongYNhanTin: "Không" }), n));
-    assert.equal(nx.NgayRutLai, NOW, n);
+    const want = n > cur.NgayRutLai ? n : cur.NgayRutLai; // max, không bao giờ lùi
+    assert.equal(nx.NgayRutLai, want);
     assert.equal(nx.DongYNhanTin, "Đã rút lại");
-    assert.deepEqual({ ...nx, NgayCapNhat: 0 }, { ...cur, NgayCapNhat: 0 });
+    const rerun = plain(ctx.mergeCustomer_(nx, mk({}), "2026-12-15T00:00:00.000Z"));
+    assert.equal(rerun.NgayRutLai, want, "ô đã là 'Đã rút lại': không đẩy");
     cur = nx;
   }
   const same = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), mk({ DongYNhanTin: "Không" }), "2026-11-20T00:00:00.000Z"));
-  assert.equal(same.NgayRutLai, T10, "đã rút lại, không có bằng chứng mới hơn -> không đẩy");
+  assert.equal(same.NgayRutLai, "2026-11-20T00:00:00.000Z", "'Không' gõ chồng lên 'Đã rút lại' vẫn là lần rút mới");
   // rút -> điền lại -> gõ Không
   const refilled = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), consent("aaa-aaa", "2026-11-12"), "2026-11-12T10:00:00.000Z"));
   assert.equal(refilled.DongYNhanTin, "Có");
@@ -1150,4 +1152,32 @@ test("Review 4: rutLaiTuChoi_ — ngày = mới nhất trong các dòng Rút l�
   assert.deepEqual(f(t3rec(), rowsOf([T3_P, "", "2026-11-12T00:00:00.000Z", "Xóa"])), { co: false, ngay: "" });
   assert.deepEqual(f(t3rec(), {}), { co: false, ngay: "" });
   assert.deepEqual(f(t3rec(evT("2026-11-13T03:00:00.000Z")), two), { co: false, ngay: "" });
+});
+
+// ---- Review Task 4 (C1): 'Không' là chữ chỉ anh gõ (hệ thống ghi 'Đã rút lại') nên mỗi lần thấy là một lần rút MỚI ----
+test("C1 merge: 'Không' gõ (existing hoặc incoming) luôn đóng NgayRutLai = max(ngày hợp lệ hiện có, now, bằng chứng mới nhất); rút lại cũ không còn giữ ngày cũ", () => {
+  const later = "2026-11-20T00:00:00.000Z";
+  const a = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), mk({ DongYNhanTin: "Không" }), later));
+  assert.deepEqual([a.DongYNhanTin, a.NgayRutLai], ["Đã rút lại", later]);
+  const b = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Không", NgayRutLai: T10 }), mk({}), later));
+  assert.deepEqual([b.DongYNhanTin, b.NgayRutLai], ["Đã rút lại", later]);
+  // ngày rút trong tương lai xa không bị hạ
+  const c = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Không", NgayRutLai: "2030-01-01T00:00:00.000Z" }), mk({}), later));
+  assert.equal(c.NgayRutLai, "2030-01-01T00:00:00.000Z");
+  // chạy lại với kết quả (đã là 'Đã rút lại') thì không đẩy ngày
+  const d = plain(ctx.mergeCustomer_(b, mk({}), "2026-11-25T00:00:00.000Z"));
+  assert.equal(d.NgayRutLai, later);
+});
+
+test("C1 merge: một lượt có 'Không' + bằng chứng cũ phát lại + bằng chứng mới (<= now) -> 'Đã rút lại', NgayRutLai >= now; lượt sau không mở lại", () => {
+  const now = "2026-11-11T02:00:00.000Z";
+  const fresh = mk({ DongYNhanTin: "Có", DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-11") }); // 03:15Z? evAt dùng giờ cố định
+  const ex = mk({ DongYNhanTin: "Không", DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-10"), NgayRutLai: T10 });
+  const r1 = plain(ctx.mergeCustomer_(ex, fresh, "2026-11-11T12:00:00.000Z"));
+  assert.equal(r1.DongYNhanTin, "Đã rút lại");
+  assert.ok(r1.NgayRutLai >= "2026-11-11T12:00:00.000Z", r1.NgayRutLai);
+  const r2 = plain(ctx.mergeCustomer_(r1, fresh, "2026-11-11T13:00:00.000Z"));
+  assert.equal(r2.DongYNhanTin, "Đã rút lại");
+  assert.equal(r2.NgayRutLai, r1.NgayRutLai);
+  assert.ok(now);
 });

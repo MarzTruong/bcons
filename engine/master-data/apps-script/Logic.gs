@@ -253,12 +253,13 @@ function mergeCustomer_(existing, incoming, nowIso) {
   if (garbage) {
     rut = garbage;
   } else {
-    // 'Không' gõ tay: là lần rút MỚI (đóng dấu now) chỉ khi chưa có ngày rút, hoặc đã có bằng chứng đồng ý mới hơn ngày rút (điền lại sau lần rút trước).
-    // Đã rút mà không có bằng chứng mới hơn thì giữ nguyên (idempotent, không đẩy ngày). 'Không rõ' và chữ lạ không phải rút lại.
+    // 'Không' gõ tay: luôn là lần rút MỚI (xem dưới). 'Không rõ' và chữ lạ không phải rút lại.
     var kieu = [foldText_(ex.DongYNhanTin), foldText_(inc.DongYNhanTin)];
     if (kieu.indexOf('khong') >= 0) {
-      if (!rut) rut = nowIso;
-      else if (newest > rut) rut = newest > nowIso ? newest : nowIso;
+      // 'Không' là chữ CHỈ anh gõ (hệ thống luôn ghi 'Đã rút lại'), nên mỗi lần thấy là một lần rút MỚI: mốc = max(ngày hợp lệ hiện có, now, bằng chứng mới nhất).
+      // Chạy lại không đẩy ngày vì ô đã được ghi lại thành 'Đã rút lại'.
+      if (!rut || rut < nowIso) rut = nowIso;
+      if (newest > rut) rut = newest;
     } else if (!rut && kieu.indexOf('darutlai') >= 0) {
       // Trạng thái 'Đã rút lại' mà chưa có ngày: lần chạm hàng gần nhất (NgayCapNhat của existing) để bằng chứng mới đến cùng lượt gộp không bị chặn nhầm.
       rut = isoOrEmpty_(s_(ex.NgayCapNhat)) || nowIso;
