@@ -1,6 +1,6 @@
 # Phiếu tính gửi khách (PNG + PDF): kế hoạch thực hiện
 
-> **Trạng thái:** Chưa làm (kế hoạch chờ anh duyệt, 11/11/2026). Thiết kế: `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`.
+> **Trạng thái:** Đang làm (Task 1–7 xong 11/11/2026; Task 8 chờ template AGY và anh duyệt). Thiết kế: `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
