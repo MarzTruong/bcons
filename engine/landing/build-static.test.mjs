@@ -33,7 +33,8 @@ test("nhúng đúng lịch đợt 08/09/10 từ pttt-cdt.json; tính bằng lõi
 });
 
 test("không còn bản đồ Google nhúng, câu tiện ích xung quanh, nhãn 'sau chiết khấu'", () => {
-  assert.ok(!/<iframe/.test(html));
+  assert.ok(!/maps\.google\.com\/maps\?[^"]*output=embed/.test(html), "không nhúng Google Maps");
+  assert.match(html, /<iframe class="map-embed"[^>]*src="https:\/\/www\.openstreetmap\.org\/export\/embed\.html/);
   assert.ok(!/Tiện ích hiện hữu xung quanh/.test(html));
   assert.ok(!/sau chiết khấu/.test(html + client));
   assert.ok(/Giá căn hộ có VAT/.test(client));
@@ -74,4 +75,15 @@ test("bản đăng thật có formUrl Apps Script và trang gửi kèm duAn", ()
   const d = buildLanding(PROJ, out);
   assert.match(fs.readFileSync(path.join(d, "index.html"), "utf8"), /https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec/);
   assert.match(client, /duAn: D\.duAn|duAn: "bcons-newsky"/);
+});
+
+test("anh chỉ lỗi 11/11: bản đồ nhúng, thẳng hàng 2 ô lãi/kỳ hạn, cột 'Bảo trì' không xuống dòng, thẻ pháp lý có PDF, thẻ quà tặng có ảnh", () => {
+  assert.match(html, /\.calc-panel \.form-row \{ align-items: end; \}/);
+  assert.match(html, /\.sched-table td:first-child \{\s*white-space: nowrap;/);
+  assert.equal([...html.matchAll(/class="promo-media"/g)].length, 3);
+  assert.equal([...html.matchAll(/<img src="assets\/promo-[a-z]+\.jpg"/g)].length, 3);
+  const pdfs = [...html.matchAll(/href="(tai-lieu\/[^"]+\.pdf)"/g)].map((m) => m[1]);
+  assert.ok(pdfs.length >= 3, "ít nhất 3 văn bản pháp lý có file");
+  for (const f of pdfs) assert.ok(fs.existsSync(path.join(dir, f)), `thiếu ${f}`);
+  assert.ok(!/Tiện ích hiện hữu xung quanh/.test(html));
 });

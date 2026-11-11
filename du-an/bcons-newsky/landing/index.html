@@ -986,7 +986,72 @@
       .mobile-bar { display: flex; }
       .mobile-bar a, .mobile-bar button { font-size: 12.5px; padding: 0 6px; }
     }
-  </style>
+  .calc-panel .form-row { align-items: end; }
+.sched-table th:first-child,
+.sched-table td:first-child {
+white-space: nowrap;
+width: 78px;
+}
+.sched-table td.r { white-space: nowrap; }
+/* Fix 2: nhúng bản đồ tương tác trực tiếp */
+.map-embed {
+width: 100%;
+height: 350px;
+border: 0;
+display: block;
+background: #E8F0FA;
+}
+/* Fix 3: nút mở văn bản PDF pháp lý */
+.legal-card {
+display: flex;
+flex-direction: column;
+}
+.legal-link {
+margin-top: auto;
+padding-top: 14px;
+}
+.legal-link a {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+color: var(--navy);
+font-size: 13.5px;
+font-weight: 700;
+text-decoration: none;
+border: 1px solid var(--navy);
+padding: 7px 12px;
+border-radius: 4px;
+background: var(--sand);
+transition: background .15s, color .15s;
+}
+.legal-link a:hover {
+background: var(--navy);
+color: #fff;
+}
+/* Fix 4: thêm ảnh minh họa cho thẻ quà tặng giao dịch */
+.promo-card {
+padding: 0;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+}
+.promo-media {
+position: relative;
+margin: 0;
+aspect-ratio: 16 / 9;
+overflow: hidden;
+background: #E8EFF7;
+border-bottom: 1px solid var(--line);
+}
+.promo-media img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+.promo-body {
+padding: 20px 22px 22px;
+}
+</style>
 </head>
 <body>
 
@@ -1122,11 +1187,7 @@
 
       <div class="loc-grid">
         <div class="map-frame">
-          <div class="map-open">
-            <b>Phường Lái Thiêu, TP.HCM</b>
-            <span>Mặt tiền Quốc lộ 13</span>
-            <a class="btn-cta" href="https://www.openstreetmap.org/?mlat=10.890026&amp;mlon=106.703699#map=16/10.890026/106.703699" target="_blank" rel="noopener">Xem vị trí trên bản đồ</a>
-          </div>
+          <iframe class="map-embed" title="Bản đồ vị trí Bcons Newsky tại Quốc lộ 13, Lái Thiêu" src="https://www.openstreetmap.org/export/embed.html?bbox=106.6945%2C10.8835%2C106.7125%2C10.8965&amp;layer=mapnik&amp;marker=10.8900264%2C106.7036990"></iframe>
           <div class="map-bar">
             <span>Tọa độ: 10.890026, 106.703699 · Phường Lái Thiêu, TP.HCM</span>
             <a href="https://maps.google.com/?q=10.890026400573376,106.70369904755647" target="_blank" rel="noopener">Mở Google Maps →</a>
@@ -1383,27 +1444,30 @@
       </div>
 
       <div class="legal-grid">
-        <article class="legal-card">
-          <span class="legal-code">25/08/2021</span>
-          <h3>QĐ 2074/QĐ-UBND</h3>
-          <p>Quyết định chấp thuận chủ trương đầu tư đồng thời chấp thuận nhà đầu tư cho dự án.</p>
-        </article>
-        <article class="legal-card">
-          <span class="legal-code">14/10/2022</span>
-          <h3>QĐ 7052/QĐ-UBND</h3>
-          <p>Phê duyệt quy hoạch chi tiết xây dựng tỷ lệ 1/500 của khu căn hộ chung cư Điểm đến mới.</p>
-        </article>
-        <article class="legal-card">
-          <span class="legal-code">09/10/2024</span>
-          <h3>GPXD 3288/GPXD</h3>
-          <p>Giấy phép xây dựng công trình 2 tháp 29 tầng nổi, 2 tầng hầm trên khu đất 19.779,5 m².</p>
-        </article>
-        <article class="legal-card">
-          <span class="legal-code">20/12/2024</span>
-          <h3>QĐ 3759/QĐ-UBND</h3>
-          <p>Quyết định điều chỉnh chủ trương đầu tư dự án trước khi triển khai thi công thực tế.</p>
-        </article>
-      </div>
+<article class="legal-card">
+<span class="legal-code">25/08/2021</span>
+<h3>QĐ 2074/QĐ-UBND</h3>
+<p>Quyết định chấp thuận chủ trương đầu tư đồng thời chấp thuận nhà đầu tư cho dự án (được dẫn chiếu trong GPXD 3288 &amp; QĐ 3759).</p>
+<div class="legal-link"><a href="tai-lieu/thong-bao-trien-khai.pdf" target="_blank" rel="noopener">Thông báo triển khai (PDF) ↗</a></div>
+</article>
+<article class="legal-card">
+<span class="legal-code">14/10/2022</span>
+<h3>QĐ 7052/QĐ-UBND</h3>
+<p>Phê duyệt quy hoạch chi tiết xây dựng tỷ lệ 1/500 của khu căn hộ chung cư Điểm đến mới.</p>
+</article>
+<article class="legal-card">
+<span class="legal-code">09/10/2024</span>
+<h3>GPXD 3288/GPXD</h3>
+<p>Giấy phép xây dựng công trình 2 tháp 29 tầng nổi, 2 tầng hầm trên khu đất 19.779,5 m².</p>
+<div class="legal-link"><a href="tai-lieu/gpxd-3288.pdf" target="_blank" rel="noopener">Xem văn bản PDF ↗</a></div>
+</article>
+<article class="legal-card">
+<span class="legal-code">20/12/2024</span>
+<h3>QĐ 3759/QĐ-UBND</h3>
+<p>Quyết định điều chỉnh chủ trương đầu tư dự án trước khi triển khai thi công thực tế.</p>
+<div class="legal-link"><a href="tai-lieu/qd-3759-chu-truong.pdf" target="_blank" rel="noopener">Xem văn bản PDF ↗</a></div>
+</article>
+</div>
     </div>
   </section>
 
@@ -1419,22 +1483,40 @@
       </div>
 
       <div class="promo-grid">
-        <article class="promo-card">
-          <span class="promo-tag">Quà tặng vàng</span>
-          <h3>01 chỉ vàng SBJ / giao dịch</h3>
-          <p>Trao tặng sau 30–45 ngày kể từ khi ký hợp đồng mua bán. Áp dụng cho khách hàng có thỏa thuận quyền chọn thành công từ ngày 06/10/2026 và thanh toán đúng hạn 07 ngày.</p>
-        </article>
-        <article class="promo-card">
-          <span class="promo-tag">Ưu đãi giao dịch sớm</span>
-          <h3>Voucher 20 – 30 triệu đồng</h3>
-          <p>Tặng voucher 30 triệu đồng cho 50 giao dịch sớm nhất và voucher 20 triệu đồng cho 50 giao dịch tiếp theo (áp dụng cùng điều kiện thỏa thuận quyền chọn từ 06/10/2026 và thanh toán đúng hạn 07 ngày).</p>
-        </article>
-        <article class="promo-card">
-          <span class="promo-tag">Bốc thăm tri ân</span>
-          <h3>01 xe Toyota Camry 2.0</h3>
-          <p>Dành cho khách hàng Bcons PS có thỏa thuận quyền chọn thành công từ 06/11/2026. Chương trình bốc thăm tổ chức khi dự án đạt tối thiểu 95% trên 594 sản phẩm (565 sản phẩm) đến hết 30/06/2027; khách hàng cần thanh toán đủ, ký HĐMB đúng hạn và có mặt trực tiếp nhận giải.</p>
-        </article>
-      </div>
+<article class="promo-card">
+<figure class="promo-media">
+<img src="assets/promo-gold.jpg" alt="Hình ảnh minh họa quà tặng 01 chỉ vàng SBJ" loading="lazy">
+<span class="illus-tag">Hình ảnh minh họa</span>
+</figure>
+<div class="promo-body">
+<span class="promo-tag">Quà tặng vàng</span>
+<h3>01 chỉ vàng SBJ / giao dịch</h3>
+<p>Trao tặng (vàng SBJ hoặc thương hiệu tương đương) sau 30–45 ngày kể từ khi ký hợp đồng mua bán. Áp dụng cho khách hàng có thỏa thuận quyền chọn thành công từ ngày 06/10/2026 và thanh toán đúng hạn 07 ngày.</p>
+</div>
+</article>
+<article class="promo-card">
+<figure class="promo-media">
+<img src="assets/promo-voucher.jpg" alt="Hình ảnh minh họa voucher ưu đãi giao dịch sớm" loading="lazy">
+<span class="illus-tag">Hình ảnh minh họa</span>
+</figure>
+<div class="promo-body">
+<span class="promo-tag">Ưu đãi giao dịch sớm</span>
+<h3>Voucher 20 – 30 triệu đồng</h3>
+<p>Tặng voucher 30 triệu đồng cho 50 giao dịch sớm nhất và voucher 20 triệu đồng cho 50 giao dịch tiếp theo (áp dụng cùng điều kiện thỏa thuận quyền chọn từ 06/10/2026 và thanh toán đúng hạn 07 ngày).</p>
+</div>
+</article>
+<article class="promo-card">
+<figure class="promo-media">
+<img src="assets/promo-camry.jpg" alt="Hình ảnh minh họa giải bốc thăm 01 xe Toyota Camry 2.0" loading="lazy">
+<span class="illus-tag">Hình ảnh minh họa</span>
+</figure>
+<div class="promo-body">
+<span class="promo-tag">Bốc thăm tri ân</span>
+<h3>01 xe Toyota Camry 2.0</h3>
+<p>Dành cho khách hàng Bcons PS có thỏa thuận quyền chọn thành công từ 06/11/2026. Chương trình bốc thăm tổ chức khi dự án đạt tối thiểu 95% trên 594 sản phẩm (565 sản phẩm) đến hết 30/06/2027; khách hàng cần thanh toán đủ, ký HĐMB đúng hạn và có mặt trực tiếp nhận giải.</p>
+</div>
+</article>
+</div>
     </div>
   </section>
 

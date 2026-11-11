@@ -81,7 +81,7 @@ export function buildStatic(projDir, outRoot, { draft = false } = {}) {
   fs.copyFileSync(path.join(dir, "chinh-sach.html"), path.join(out, "chinh-sach.html"));
   fs.copyFileSync(path.join(dir, "client.js"), path.join(out, "client.js"));
   fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
-  if (fs.existsSync(path.join(dir, "assets"))) fs.cpSync(path.join(dir, "assets"), path.join(out, "assets"), { recursive: true });
+  for (const sub of ["assets", "tai-lieu"]) if (fs.existsSync(path.join(dir, sub))) fs.cpSync(path.join(dir, sub), path.join(out, sub), { recursive: true });
   const qr = project.watermark?.link ? "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n" : "";
   fs.writeFileSync(path.join(out, "_redirects"), qr);
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");
