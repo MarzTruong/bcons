@@ -137,7 +137,7 @@ Mở tab **NhapCRM** (có sau lần ghi đầu). Cột tối thiểu, đúng ti�
 Tab **ChuaPhanDuAn**: **chỉ gõ cột `GanDuAn`** (các cột khác do hệ thống điền; chữ anh gõ vào một ô còn trống thì được giữ, nhưng khách được chuyển sang `Master_<mã>` thì cả dòng bị xóa, nên đừng dùng chỗ này để lưu ghi chú). Gõ mã dự án vào cột **GanDuAn** của khách. Lần chạy sau, khách được thêm dự án đó vào `DuAnQuanTam`, chép sang `Master_<mã>` và dòng biến mất khỏi `ChuaPhanDuAn`. Mã phải có trong tab `CauHinh` (có `masterSheetId`), nếu không khách vẫn nằm lại.
 
 ### Khách xin rút lại
-*(Phạm vi anh chốt 11/11/2026: hệ thống tự xóa ở `KhachHang` và `Master_<mã>`; các nơi khác anh xóa tay theo danh sách dưới đây; chỉ SĐT (không tên) giữ trong `TuChoi` để không nhắn lại. Khách đã rút lại mà điền lại form: hướng xử lý đang **chờ pháp chế**, xem NOTES.md; hiện hệ thống vẫn xóa lại dữ liệu cá nhân của người đó.)*
+*(Phạm vi anh chốt 11/11/2026: hệ thống tự xóa ở `KhachHang` và `Master_<mã>`; các nơi khác anh xóa tay theo danh sách dưới đây; chỉ SĐT (không tên) giữ trong `TuChoi` để không nhắn lại. Khách đã rút lại mà điền lại form: pháp chế đã xác nhận (11/11/2026) là chỉ đổi trạng thái và nhắn lại được; **code chưa làm theo**, hiện hệ thống vẫn xóa dữ liệu cá nhân của người trong `TuChoi`, nên **chưa dùng tab `TuChoi` cho khách thật** cho tới khi kế hoạch mới làm xong.)*
 Hai cách, kết quả như nhau:
 - Thêm SĐT khách vào cột **SDT** của tab **TuChoi** (cột A, các cột LyDo, NgayGhi tùy anh điền).
 - Hoặc gõ `Không` vào cột `DongYNhanTin` của khách ở `KhachHang`; hệ thống tự ghi SĐT đó vào `TuChoi` (LyDo "Rút lại (cột)").
