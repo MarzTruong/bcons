@@ -169,3 +169,15 @@ Anh đồng ý bốn điểm (11/11/2026):
 - Cách đặt `MaKhach` và khóa chống chạy trùng (`LockService`).
 - Chi tiết định dạng ngày, múi giờ `Asia/Ho_Chi_Minh`.
 - Chi tiết khớp cột với Masterfile khi đã đọc dòng tiêu đề.
+
+## 16. Quyết định bổ sung của anh (11/11/2026, sau khi duyệt spec)
+Đã chốt:
+1. **Thời hạn giữ:** không đặt thời hạn (khớp mục 9). Hai trang chính sách của landing đã sửa theo: "đến khi rút lại đồng ý hoặc yêu cầu xóa".
+2. **Nơi cập nhật trạng thái chăm sóc:** ở riêng từng dự án (`Master_<mã>`). Hiện đúng như code: hai cột trạng thái ở `Master_<mã>` chỉ được điền khi còn trống, không bị ghi đè; thay đổi sau này ở `KhachHang` không chảy sang.
+
+Đã chốt hướng, **chưa sửa code** (cần kế hoạch riêng, vì đổi cách lưu):
+3. **Đồng ý nhận tin theo từng dự án.** Hiện `DongYNhanTin` là một giá trị chung cho cả khách. Hướng đề xuất: ghi đồng ý theo mã dự án (danh sách mã dự án mà khách đã tick đồng ý, kèm bằng chứng của từng lần); chỉ nhắn về dự án mà khách đã đồng ý; khách của dự án khác thì chỉ để anh gọi/tư vấn từng người. Rút lại đồng ý (tab `TuChoi`) vẫn áp dụng cho cả khách (an toàn hơn), trừ khi anh dặn rút theo từng dự án.
+4. **Khách đã rút lại mà điền lại form: vẫn lưu dữ liệu, không nhắn.** Hiện code xóa dữ liệu cá nhân khi gặp SĐT trong `TuChoi`. Hướng đề xuất: lần điền mới vẫn được lưu thành một bản ghi ở `KhachHang` nhưng gắn "đã rút lại, không nhắn"; **không** đưa vào `Master_<mã>` và không dùng làm đồng ý mới cho tới khi anh xóa dòng của họ khỏi `TuChoi`. Điểm này đụng luật bảo vệ dữ liệu cá nhân (lưu lại dữ liệu của người đã yêu cầu xóa), cần anh xác nhận với pháp chế trước khi làm.
+5. **Khách landing cũ chưa có mã dự án:** nằm lại trong `KhachHang` với `DuAnQuanTam` để trống, **không** đưa vào tab `ChuaPhanDuAn` (bỏ việc đưa nhóm này sang tab đó). Anh gán mã sau ngay trong `KhachHang` khi có thông tin. Tab `ChuaPhanDuAn` chỉ giữ cho khách mới có dự án rỗng nhưng tự gán được (cột `GanDuAn`); anh có thể dặn bỏ hẳn tab này.
+
+Còn chờ anh: phạm vi xóa bản sao ở Landing/NhapCRM khi khách yêu cầu xóa; cổng G4 (lần ghi thật đầu tiên) chạy trên bản sao hay Sheet thật.
