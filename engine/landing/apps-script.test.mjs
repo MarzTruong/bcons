@@ -114,3 +114,15 @@ test("needsHeaderRepair_: tab cũ 17 cột cần ghi lại tiêu đề, tab đ�
   assert.equal(ctx.needsHeaderRepair_(ctx.HEADERS.length), false);
   assert.equal(ctx.needsHeaderRepair_(25), false);
 });
+
+test("nhiều dự án dùng chung một Apps Script: tin báo và tin Zalo ghi đúng dự án; payload cũ coi là Central Park", () => {
+  const cp = ctx.validateLead_(lead).lead;
+  assert.match(ctx.formatTelegram_(cp), /landing Bcons Central Park/);
+  assert.match(ctx.formatZalo_(cp), /Bcons Central Park \(236 Phan Trung/);
+  const ns = ctx.validateLead_({ ...lead, duAn: "bcons-newsky", pttt: "PTTT 09" }).lead;
+  assert.match(ctx.formatTelegram_(ns), /landing Bcons Newsky/);
+  const z = ctx.formatZalo_(ns);
+  assert.match(z, /dự án Bcons Newsky/);
+  assert.ok(!/Central Park|Phan Trung/.test(z), "không lẫn dự án khác");
+  assert.match(ctx.formatTelegram_(ctx.validateLead_({ ...lead, duAn: "du-an-la" }).lead), /landing Bcons Central Park/);
+});

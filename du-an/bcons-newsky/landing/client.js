@@ -294,7 +294,7 @@ leadForm.addEventListener("submit", async (e) => {
   if (!D.formUrl) return void (formErr.textContent = "Trang đang chạy thử, chưa nhận đăng ký.");
   const { res, rate, years, monthly } = renderCalc();
   const payload = {
-    ten, sdt, nhuCau: $("nhuCau").value, hp_x7: $("hp_x7").value, dongY: true, t: Date.now() - T0,
+    duAn: "bcons-newsky", ten, sdt, nhuCau: $("nhuCau").value, hp_x7: $("hp_x7").value, dongY: true, t: Date.now() - T0,
     canLoai: "Không rõ", canMoTa: UNIT_RANGES[$("calcType").value].label, dt: 0, pttt: D.plans[activePlan].name,
     giaChuaVat: res.P, giaCoVat: res.G, phiBaoTri: res.fee, tuCo: res.ownBefore, vay: res.loan, traGop: Math.round(monthly), lai: rate, nam: years,
     nguon: source(), trang: location.origin + location.pathname,

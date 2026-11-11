@@ -9,6 +9,9 @@ var SHEET_TAB = 'Landing';
 var HEADERS = ['Thời gian', 'Họ tên', 'SĐT', 'Nhu cầu', 'Căn xem', 'Loại căn', 'PTTT', 'Giá chưa VAT', 'Tự có đến nhận nhà', 'Vay', 'Trả góp/tháng (giả định)', 'Lãi giả định %', 'Kỳ hạn năm', 'Nguồn', 'Đồng ý nhận tin', 'Trạng thái chăm sóc', 'Ghi chú', 'Dự án', 'Đã gộp'];
 var NHU_CAU = ['Mua để ở', 'Mua cho thuê', 'Tìm hiểu thêm'];
 var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
+var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '236 Phan Trung, Biên Hòa' }, 'bcons-newsky': { ten: 'Bcons Newsky', diaChi: 'Quốc lộ 13, phường Lái Thiêu, TP.HCM' } };
+/** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
+function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
 var CONSENT_VERSION = 'v1-2026-11-06';
 var MAX_LEADS_10M = 20; // quá số này trong 10 phút: vẫn ghi Sheet nhưng tạm dừng báo Telegram (chống nhồi tin)
 var MIN_FILL_MS = 3000; // điền form nhanh hơn 3 giây: coi là máy tự động
@@ -96,7 +99,7 @@ function lenhPhieu_(l) {
 function formatTelegram_(l) {
   var lenh = lenhPhieu_(l);
   return [
-    '🔥 KHÁCH MỚI – landing Bcons Central Park',
+    '🔥 KHÁCH MỚI – landing ' + duAnInfo_(l).ten,
     'Tên: ' + l.ten + ' · SĐT/Zalo: ' + l.phone,
     'Nhu cầu: ' + l.nhuCau,
     'Xem: ' + l.canLoai + ' ' + l.dt + 'm² (' + l.canMoTa + ') · ' + l.pttt,
@@ -109,7 +112,7 @@ function formatTelegram_(l) {
 
 /** Tin Zalo soạn sẵn để anh chép gửi khách: giá cả 2 kiểu, các đợt đã gồm VAT, phí bảo trì riêng, ghi rõ ước tính. */
 function formatZalo_(l) {
-  var s = 'Chào anh/chị ' + l.ten + ', em là tư vấn viên dự án Bcons Central Park (236 Phan Trung, Biên Hòa). ' +
+  var s = 'Chào anh/chị ' + l.ten + ', em là tư vấn viên dự án ' + duAnInfo_(l).ten + ' (' + duAnInfo_(l).diaChi + '). ' +
     'Em gửi anh/chị bảng tính căn ' + l.canLoai + ' ' + l.dt + 'm² theo ' + l.pttt + ': ' +
     'giá ' + money_(l.giaChuaVat) + ' chưa VAT, ' + money_(l.giaCoVat) + ' đã gồm VAT 10%. ' +
     'Tiền tự có đến lúc nhận nhà khoảng ' + money_(l.tuCo);
