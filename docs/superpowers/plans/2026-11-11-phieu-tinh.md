@@ -51,7 +51,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 1: Tổng quát hóa lõi tính tiền, đọc lịch đợt từ pttt-cdt.json
 
-**Files:** sửa `engine/landing/calc.mjs`, `du-an/bcons-central-park/nguon/pttt-cdt.json`, `du-an/bcons-newsky/nguon/pttt-cdt.json`; mới `engine/landing/plans-json.mjs`, `engine/landing/plans-json.test.mjs`.
+**Files:** sửa `engine/landing/calc.mjs`, `du-an/bcons-central-park/nguon/pttt-cdt.json`, `du-an/bcons-newsky/nguon/pttt-cdt.json`; mới engine/landing/plans-json.mjs, engine/landing/plans-json.test.mjs.
 
 **Interfaces:**
 - Produces trong `calc.mjs`: `calcWith(plan: {rows: {l: string, p: number, k: "tt"|"hdmb"|"mid"|"loan"|"handover"|"so", w: string}[]}, P: number, opts?: {vat?: number, fee?: number}) => {P, V, G, fee, rows: (row & {amt: number, bank: boolean})[], ownBefore, loan, handover, so}`. `calc(key, P)` giữ nguyên chữ ký và kết quả (gọi `calcWith`).
@@ -66,7 +66,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 2: Dựng dữ liệu phiếu (`phieu.json`)
 
-**Files:** mới `engine/landing/phieu/du-lieu.mjs`, `engine/landing/phieu/du-lieu.test.mjs`.
+**Files:** mới engine/landing/phieu/du-lieu.mjs, engine/landing/phieu/du-lieu.test.mjs.
 
 **Interfaces:**
 - Consumes: `planFromJson`, `loadCdt` (Task 1), `calcWith`, `pmt`.
@@ -81,7 +81,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 3: Tìm căn (landing.json hoặc Master File)
 
-**Files:** mới `engine/landing/phieu/can.mjs`, `engine/landing/phieu/can.test.mjs`.
+**Files:** mới engine/landing/phieu/can.mjs, engine/landing/phieu/can.test.mjs.
 
 **Interfaces:**
 - Produces: `timCanMau(projDir: string, ma: string) => CanInfo | null` (từ `landing.json` → `canMau`); `timCotMaster(header: string[]) => {ma: number, gia: Record<string, number>, tinhTrang?: number, tim?: number, thongThuy?: number, pn?: number} | null`; `docCanTuMaster(file: string, ma: string) => Promise<CanInfo | null>` (sheet `GiaTongHop`, tiêu đề ở hàng 4 hoặc tự dò trong 15 hàng đầu, đọc giá trị đã tính của ô công thức); `timMasterFile(projDir: string) => string | null` (`sharedDir("data")/<mã>/gia/MasterFile_*.xlsx`, bỏ file `~$`); `timCan(projDir: string, ma: string) => Promise<CanInfo | null>` (Master File trước, `canMau` sau).
@@ -95,7 +95,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 4: Bộ dựng PNG/PDF và template tạm
 
-**Files:** mới `engine/landing/phieu/render.mjs`, `engine/landing/phieu/render.test.mjs`, `engine/landing/phieu/mau/phieu.html`.
+**Files:** mới engine/landing/phieu/render.mjs, engine/landing/phieu/render.test.mjs, engine/landing/phieu/mau/phieu.html.
 
 **Interfaces:**
 - Hợp đồng template: một file HTML chứa đúng một chuỗi `__PHIEU_DATA__` nằm trong `<script type="application/json" id="phieu-data">`; script của chính template đọc JSON `Phieu` (Task 2), tự điền DOM, rồi đặt `document.documentElement.dataset.ready = "1"`; bề rộng nội dung 540 px; QR tạo trong template từ `lienHe.qrLink` hoặc template nhận sẵn SVG (engine chèn `phieu.lienHe.qrSvg`).
@@ -110,7 +110,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 5: Lệnh `npm run phieu` và bộ đọc lệnh
 
-**Files:** mới `engine/remotion/scripts/phieu.mjs`, `engine/remotion/tests/phieu-cli.test.mjs`; sửa `engine/remotion/package.json` (script `"phieu": "node scripts/phieu.mjs"`).
+**Files:** mới engine/remotion/scripts/phieu.mjs, engine/remotion/tests/phieu-cli.test.mjs; sửa `engine/remotion/package.json` (script `"phieu": "node scripts/phieu.mjs"`).
 
 **Interfaces:**
 - Produces: `parseLenhPhieu(text: string) => {ma: string, pttt: string, lai?: number, nam?: number, ten?: string, pdf: boolean}`; `chayPhieu(args: ReturnType<parseLenhPhieu> & {projDir: string}, deps?: {timCan, render}) => Promise<{png: string, pdf?: string, phieu: Phieu, canhBao?: string}>`.
@@ -152,7 +152,7 @@ du-an/bcons-central-park/nguon/pttt-cdt.json, du-an/bcons-newsky/nguon/pttt-cdt.
 
 ### Task 8: Thay template AGY, kiểm UX, nghiệm thu, tài liệu
 
-**Files:** sửa `engine/landing/phieu/mau/phieu.html`; mới `engine/remotion/scripts/phieu-mau.mjs` (lệnh `npm run phieu:mau`); sửa `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`, `docs/README.md`, `NOTES.md`.
+**Files:** sửa engine/landing/phieu/mau/phieu.html; mới engine/remotion/scripts/phieu-mau.mjs (lệnh `npm run phieu:mau`); sửa `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`, `docs/README.md`, `NOTES.md`.
 
 **Interfaces:**
 - Produces: `npm run phieu:mau` dựng bộ phiếu kiểm UX vào `out/phieu-mau/` và in chiều cao từng ảnh: (1) Central Park A18-09 PTTT 03; (2) Newsky B1.3-01 PTTT 08 (12 đợt); (3) Newsky PTTT 10; (4) Central Park PTTT 01 (không vay); (5) tên khách rất dài; (6) không tên.
