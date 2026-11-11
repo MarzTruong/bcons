@@ -35,10 +35,10 @@
 
 ## File Structure
 - Create `engine/master-data/apps-script/Logic.gs`: hàm thuần (chuẩn hóa, đọc dòng landing, gộp, quyết định đích).
-- Create engine/master-data/apps-script/Sheets.gs: chạy gộp/phân bổ, nhật ký, Telegram, menu, trigger.
+- Create `engine/master-data/apps-script/Sheets.gs`: chạy gộp/phân bổ, nhật ký, Telegram, menu, trigger.
 - Create `engine/master-data/helpers.mjs`: `loadGs(files)` nạp `.gs` vào `vm`; `fakeSheets()` Sheet giả.
 - Create `engine/master-data/fixtures.mjs`: dữ liệu mẫu ẩn danh hóa.
-- Create `engine/master-data/logic.test.mjs`, engine/master-data/sheets.test.mjs.
+- Create `engine/master-data/logic.test.mjs`, `engine/master-data/sheets.test.mjs`.
 - Modify `engine/landing/apps-script/Code.gs`, `engine/landing/apps-script.test.mjs`, `engine/landing/client.js`.
 - Modify `engine/remotion/package.json` (glob test thêm `../master-data/*.test.mjs`).
 - Create docs/huong-dan-master-data.md; modify `docs/README.md`.
@@ -118,7 +118,7 @@
 
 ### Task 6: Gộp landing vào KhachHang (idempotent, có dryRun)
 
-**Files:** Create engine/master-data/apps-script/Sheets.gs; Modify `helpers.mjs` (thêm `fakeSheets()`); Test engine/master-data/sheets.test.mjs
+**Files:** Create `engine/master-data/apps-script/Sheets.gs`; Modify `helpers.mjs` (thêm `fakeSheets()`); Test `engine/master-data/sheets.test.mjs`
 
 **Interfaces:**
 - Consumes: `parseLandingRow_`, `mergeCustomer_`, `KHACH_COLS`.
