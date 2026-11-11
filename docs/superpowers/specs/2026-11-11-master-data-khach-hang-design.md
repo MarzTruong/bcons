@@ -1,4 +1,4 @@
-> **Trạng thái:** Đã duyệt (anh duyệt 11/11/2026, chốt: dùng `Master_<mã>`, không đặt thời hạn giữ dữ liệu). Chưa có code, chưa chạy gì lên hệ thống thật. Tiếp theo: kế hoạch dựng (`writing-plans`).
+> **Trạng thái:** Đã duyệt (anh duyệt 11/11/2026, chốt: dùng `Master_<mã>`, không đặt thời hạn giữ dữ liệu). Code đã dựng và test xanh trên máy (11/11/2026, commit `89c5abc` đến `69655f5`), **chưa cài lên Sheet thật nào**. Tiếp theo: anh duyệt lần lượt cổng G1–G6 theo `docs/huong-dan-master-data.md`.
 
 # Thiết kế: Master_Data, kho khách hàng tập trung (11/11/2026)
 

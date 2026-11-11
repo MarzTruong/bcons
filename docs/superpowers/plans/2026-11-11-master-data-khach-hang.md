@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-> **Trạng thái:** Nháp, chờ anh duyệt (11/11/2026).
+> **Trạng thái:** Task 1–10 đã dựng và test xanh trên máy (11/11/2026, các commit `feat(master-data)` từ `89c5abc` đến `69655f5` cộng commit tài liệu). Chưa cài lên Sheet thật nào; chờ anh duyệt cổng G1–G6 theo `docs/huong-dan-master-data.md`.
 
 **Goal:** Gom khách từ landing (tự động) và CRM (anh nhập tay) về một Google Sheet `Master_Data`, chống trùng theo SĐT, rồi đẩy một chiều về `Master_<mã>` của từng dự án.
 
@@ -41,7 +41,7 @@
 - Create `engine/master-data/logic.test.mjs`, `engine/master-data/sheets.test.mjs`.
 - Modify `engine/landing/apps-script/Code.gs`, `engine/landing/apps-script.test.mjs`, `engine/landing/client.js`.
 - Modify `engine/remotion/package.json` (glob test thêm `../master-data/*.test.mjs`).
-- Create docs/huong-dan-master-data.md; modify `docs/README.md`.
+- Create `docs/huong-dan-master-data.md`; modify `docs/README.md`.
 
 ### Task 1: Khung, trình nạp `.gs`, chuẩn hóa SĐT
 
@@ -173,7 +173,7 @@
 
 ### Task 10: Hướng dẫn cho anh và tài liệu
 
-**Files:** Create docs/huong-dan-master-data.md; Modify `docs/README.md`, `docs/superpowers/specs/2026-11-11-master-data-khach-hang-design.md` (dòng **Trạng thái**), `NOTES.md`
+**Files:** Create `docs/huong-dan-master-data.md`; Modify `docs/README.md`, `docs/superpowers/specs/2026-11-11-master-data-khach-hang-design.md` (dòng **Trạng thái**), `NOTES.md`
 
 **Interfaces:** Hướng dẫn **không có lệnh PowerShell**, theo thứ tự cổng: G1 tạo bản sao Master_Data và `Master_<mã>` thử, dán `Logic.gs` + `Sheets.gs`, điền `CauHinh`; G2 thử landing; G3 bấm "Chạy thử (không ghi)" và đọc số liệu; G4 ghi thật lần đầu; G5 phân bổ thật; G6 chạy `caiLich_`. Có mục "khách xin rút lại": thêm SĐT vào tab `TuChoi`.
 

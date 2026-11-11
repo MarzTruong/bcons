@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 11/11/2026 (phiếu tính + landing Bcons Newsky)
+Cập nhật lần cuối: 11/11/2026 (Master_Data khách hàng, hướng dẫn cài)
 
 ## Đã làm
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
@@ -8,9 +8,9 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 ## Đang làm
 - [x] 11/11/2026 Phiếu tính gửi khách: `/phieu <mã căn> <PTTT> [pdf]` trên bot (PNG 1080 px + PDF), lệnh bấm được `/phieu_...` trong tin báo khách từ landing (Apps Script có dòng "Dựng phiếu tính"), `npm run phieu`, `npm run phieu:mau` (6 phiếu kiểm UX). Lõi tính đọc lịch đợt từ `nguon/pttt-cdt.json` (Central Park và Newsky). Template hiện là bản tạm của em; chờ bản của AGY rồi anh duyệt (spec `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`).
 - [x] 11/11/2026 Landing Bcons Newsky (thiết kế AGY) đã tích hợp vào `du-an/bcons-newsky/landing/`: máy tính dùng lõi `calc.js` có test, form gửi thật về Apps Script, bỏ bản đồ Google nhúng và câu tiện ích chưa có nguồn. Dựng: `npm run landing -- --du-an bcons-newsky` (`--nhap` để xem thử khi chưa có `formUrl`).
+- [ ] 11/11/2026 Master_Data (kho khách tập trung): code Apps Script (`engine/master-data/`) và landing `Code.gs` (thêm cột Dự án, Đã gộp) đã dựng, test xanh trên máy, **chưa cài lên Sheet thật nào**. Anh làm tiếp: đi theo `docs/huong-dan-master-data.md` từ G1 (tạo bản thử), duyệt từng cổng G1–G6 bằng "OK". Anh còn đổi được: tab `TuChoi` chặn SĐT khi khách rút lại, chu kỳ 15 phút, báo cáo 8–9 giờ sáng.
 - [ ] Cần anh: (1) dán lại `engine/landing/apps-script/Code.gs` vào Apps Script landing Central Park rồi đăng lại; (2) landing Newsky đã đăng tại https://bcons-newsky-53r.pages.dev/ (Cloudflare Pages; build `node engine/landing/build.mjs --du-an bcons-newsky`, output `engine/landing/dist/bcons-newsky`); Newsky dùng chung Apps Script và Sheet với Central Park (đã điền `formUrl`, script phân biệt theo cột Dự án); (3) trên bot `/capnhat`, thử `/phieu A21-26 03 pdf`; (4) giao AGY lời giao việc phiếu trong spec; (5) mở Master File Newsky sửa ô D4 thành "Vị trí" nếu muốn.
 - [ ] Landing Newsky chưa có mã căn trong form (máy tính theo khung giá), nên tin báo khách Newsky chưa có dòng lệnh `/phieu_...`; muốn có thì cần ô chọn căn thật. Khung giá 2PN/3PN trong `landing.json` là số AGY đưa, em chưa đối chiếu lại Master File.
-- [ ] `main` đang đỏ ở test docs vì kế hoạch Master_Data (phiên khác) nhắc file chưa tạo; hết đỏ khi phiên đó tạo file hoặc bỏ backtick.
 - [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
 - [ ] Kịch bản video đợt 2 (giới thiệu ngày 29/11/2026) trong `du-an/bcons-central-park/video/dot-2/kich-ban.md`. Bản nháp, chờ anh duyệt.
