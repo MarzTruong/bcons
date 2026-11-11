@@ -4,7 +4,7 @@
  *  Khác Code.gs của landing: số 9 chữ số bắt đầu 3,5,7,8,9 được thêm 0,
  *  vì Google Sheets bỏ số 0 đầu khi đổi ô thành số. */
 function normalizePhone_(s) {
-  var d = String(s == null ? '' : s).replace(/[\s.()\-]/g, '');
+  var d = String(s == null ? '' : s).replace(/^(\s*\+?\s*84\s*)\(0\)/, '$1').replace(/[\s.()\-]/g, '');
   if (/^\+?84\d{9,10}$/.test(d)) d = '0' + d.replace(/^\+?84/, '');
   if (/^[35789]\d{8}$/.test(d)) d = '0' + d;
   return /^0\d{9,10}$/.test(d) ? d : '';
@@ -129,25 +129,58 @@ function mergeCustomer_(existing, incoming, nowIso) {
   return out;
 }
 
-/** Quyết định đích phân bổ của một khách (spec mục 7, 9).
- *  tuChoi: Set hoặc mảng SĐT (mọi dạng); projectCodes: mã dự án có tab Master_<mã>.
- *  chan: khách từ chối hoặc DongYNhanTin='Không' → không vào tab nào.
+/** Gấp chữ về dạng so sánh: bỏ dấu, đ→d, chữ thường, chỉ giữ a-z (bỏ khoảng trắng, dấu câu, ký tự vô hình). */
+function foldText_(v) {
+  return String(v == null ? '' : v).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/đ/g, 'd').replace(/[^a-z]/g, '');
+}
+
+/** Gom SĐT từ chối thành mảng đã chuẩn hóa. Dạng lạ → ném lỗi (không được lặng lẽ bỏ qua). */
+function tuChoiPhones_(tuChoi) {
+  var out = [];
+  function add(v) {
+    if (typeof v !== 'string' && typeof v !== 'number') return;
+    var p = normalizePhone_(v);
+    if (p) out.push(p);
+  }
+  if (tuChoi == null) return out;
+  if (typeof tuChoi === 'string') {
+    tuChoi.split(/[\s,;]+/).forEach(add);
+  } else if (typeof tuChoi !== 'object') {
+    throw new Error('tuChoi: dạng không hỗ trợ');
+  } else if (Object.prototype.toString.call(tuChoi) === '[object Map]') {
+    tuChoi.forEach(function (val, key) { add(key); });
+  } else if (typeof tuChoi.forEach === 'function') {
+    tuChoi.forEach(function (v) { add(v); });
+  } else {
+    Object.keys(tuChoi).forEach(add);
+  }
+  return out;
+}
+
+/** Quyết định đích phân bổ của một khách (spec mục 7, 9). Rút lại luôn thắng (fail closed).
+ *  tuChoi: mảng/Set/Map/object/chuỗi SĐT (mọi dạng); projectCodes: mảng mã dự án có tab Master_<mã>.
+ *  Trả {chan, chua, dich, lyDo}; lyDo = 'tuchoi' | 'khong' | '' (chỉ khi chan).
  *  'Chưa rõ' không bị chặn ở đây (chỉ không nhắn hàng loạt). Không sửa đầu vào. */
 function decideDestinations_(rec, tuChoi, projectCodes) {
   rec = rec || {};
   var phone = normalizePhone_(rec.SDT);
-  var blocked = false;
-  if (phone && tuChoi && typeof tuChoi.forEach === 'function') {
-    tuChoi.forEach(function (v) { if (normalizePhone_(v) === phone) blocked = true; });
-  }
-  if (blocked || String(rec.DongYNhanTin == null ? '' : rec.DongYNhanTin).trim() === 'Không') {
-    return { chan: true, chua: false, dich: [] };
-  }
-  if (!phone) return { chan: false, chua: true, dich: [] };
-  var known = (projectCodes || []).map(function (c) { return String(c).toLowerCase(); });
+  var blocked = phone && tuChoiPhones_(tuChoi).indexOf(phone) >= 0;
+  var lyDo = blocked ? 'tuchoi' : (foldText_(rec.DongYNhanTin).indexOf('khong') === 0 ? 'khong' : '');
+  if (!phone && !lyDo) tuChoiPhones_(tuChoi); // vẫn kiểm dạng tuChoi để báo lỗi sớm
+  if (lyDo) return { chan: true, chua: false, dich: [], lyDo: lyDo };
+  if (!phone) return { chan: false, chua: true, dich: [], lyDo: '' };
+  var known = Array.isArray(projectCodes) ? projectCodes : [];
+  var seen = [];
   var dich = [];
   codesOnly_(rec.DuAnQuanTam).split(';').forEach(function (c) {
-    if (c && known.indexOf(c) >= 0 && dich.indexOf(c) < 0) dich.push(c);
+    if (!c || seen.indexOf(c) >= 0) return;
+    for (var i = 0; i < known.length; i++) {
+      if (typeof known[i] === 'string' && known[i].trim().toLowerCase() === c) {
+        seen.push(c);
+        dich.push(known[i].trim());
+        return;
+      }
+    }
   });
-  return { chan: false, chua: dich.length === 0, dich: dich };
+  return { chan: false, chua: dich.length === 0, dich: dich, lyDo: '' };
 }
