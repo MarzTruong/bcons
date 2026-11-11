@@ -68,3 +68,56 @@ function parseLandingRow_(headers, row) {
   rec.DongYBangChung = coBangChung ? dongY : '';
   return { ok: true, rec: rec };
 }
+
+function s_(v) { return v == null ? '' : String(v); }
+
+/** Hợp hai danh sách ngăn bằng ';': thứ tự cũ trước, bỏ trùng, bỏ rỗng. */
+function unionList_(a, b) {
+  var out = [];
+  (s_(a) + ';' + s_(b)).split(';').forEach(function (x) {
+    x = x.trim();
+    if (x && out.indexOf(x) < 0) out.push(x);
+  });
+  return out.join(';');
+}
+
+function mergeNguon_(a, b) {
+  var toks = [];
+  (s_(a) + '+' + s_(b)).split(/[;+]/).forEach(function (x) {
+    x = x.trim();
+    if (x && toks.indexOf(x) < 0) toks.push(x);
+  });
+  var order = ['Landing', 'CRM'];
+  toks.sort(function (x, y) {
+    var i = order.indexOf(x), j = order.indexOf(y);
+    return (i < 0 ? 99 : i) - (j < 0 ? 99 : j);
+  });
+  return toks.join('+');
+}
+
+/** Đồng ý nhận tin: 'Không' của một bên thắng; 'Có' chỉ giữ/nhận khi bên đó thật sự là 'Có'. */
+function dongYThang_(a, b) {
+  if (a.v === 'Không') return a;
+  if (b.v === 'Không') return { v: 'Không', e: b.e };
+  if (a.v === 'Có') return a;
+  if (b.v === 'Có') return b;
+  return { v: 'Chưa rõ', e: '' };
+}
+
+/** Hợp nhất hai bản ghi khách trùng SĐT (spec mục 6). Trả đối tượng mới, không sửa đầu vào. */
+function mergeCustomer_(existing, incoming, nowIso) {
+  var ex = existing || {}, inc = incoming || {};
+  var out = {};
+  for (var k = 0; k < KHACH_COLS.length; k++) {
+    var c = KHACH_COLS[k];
+    out[c] = s_(ex[c]) !== '' ? s_(ex[c]) : s_(inc[c]);
+  }
+  out.DuAnQuanTam = unionList_(ex.DuAnQuanTam, inc.DuAnQuanTam);
+  out.NguonGoc = mergeNguon_(ex.NguonGoc, inc.NguonGoc);
+  var nt = dongYThang_({ v: s_(ex.DongYNhanTin), e: s_(ex.DongYBangChung) }, { v: s_(inc.DongYNhanTin), e: s_(inc.DongYBangChung) });
+  out.DongYNhanTin = nt.v;
+  out.DongYBangChung = nt.e;
+  out.DongYNhanTin = out.DongYNhanTin === 'Có' || out.DongYNhanTin === 'Không' ? out.DongYNhanTin : 'Chưa rõ';
+  out.NgayCapNhat = nowIso;
+  return out;
+}

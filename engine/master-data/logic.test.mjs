@@ -189,3 +189,84 @@ test("parseLandingRow_: Dự án chỉ giữ mã hợp lệ; Thời gian chỉ n
   assert.equal(p("", "2026-11-06T03:15:00.000Z").NgayTao, "2026-11-06T03:15:00.000Z");
   assert.equal(p("", new Date("2026-11-06T03:15:00.000Z")).NgayTao, "2026-11-06T03:15:00.000Z");
 });
+
+// ---- mergeCustomer_ (Task 4) ----
+const blank = () => Object.fromEntries(ctx.KHACH_COLS.map((c) => [c, ""]));
+const mk = (o) => Object.assign(blank(), o);
+const NOW = "2026-11-11T02:00:00.000Z";
+const MA = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
+const merge = (a, b) => plain(ctx.mergeCustomer_(a, b, NOW));
+
+test("mergeCustomer_: tên anh đã sửa không bị landing ghi đè", () => {
+  const ex = mk({ MaKhach: "KH-000001", SDT: "0981234567", HoTen: "Nguyễn Văn Mẫu", NgayTao: "2026-11-01T00:00:00.000Z" });
+  const inc = mk({ SDT: "0981234567", HoTen: "mau nguyen", NgayTao: "2026-11-09T00:00:00.000Z", NhuCau: "Ở thực" });
+  const r = merge(ex, inc);
+  assert.equal(r.HoTen, "Nguyễn Văn Mẫu");
+  assert.equal(r.MaKhach, "KH-000001");
+  assert.equal(r.NgayTao, "2026-11-01T00:00:00.000Z");
+  assert.equal(r.NhuCau, "Ở thực", "ô trống thì điền");
+  assert.equal(r.NgayCapNhat, NOW);
+  assert.equal(merge(mk({ SDT: "0981234567" }), inc).NgayTao, "2026-11-09T00:00:00.000Z", "NgayTao cũ trống thì lấy mới");
+});
+
+test("mergeCustomer_: Landing rồi CRM (và ngược lại) -> Landing+CRM; dự án hợp không lặp", () => {
+  const land = mk({ NguonGoc: "Landing", DuAnQuanTam: "bcons-newsky;bcons-central-park" });
+  const crm = mk({ NguonGoc: "CRM", DuAnQuanTam: "bcons-central-park;bcons-sora" });
+  const r1 = merge(land, crm);
+  assert.equal(r1.NguonGoc, "Landing+CRM");
+  assert.equal(r1.DuAnQuanTam, "bcons-newsky;bcons-central-park;bcons-sora");
+  assert.equal(merge(crm, land).NguonGoc, "Landing+CRM");
+  assert.equal(merge(crm, land).DuAnQuanTam, "bcons-central-park;bcons-sora;bcons-newsky");
+  assert.equal(merge(land, land).NguonGoc, "Landing");
+  assert.equal(merge(mk({}), crm).NguonGoc, "CRM");
+  assert.equal(merge(land, mk({})).NguonGoc, "Landing");
+  assert.equal(merge(mk({ NguonGoc: "Landing+CRM" }), crm).NguonGoc, "Landing+CRM");
+  assert.equal(merge(mk({ DuAnQuanTam: "a-b-c;;" }), mk({ DuAnQuanTam: ";a-b-c; d-e-f" })).DuAnQuanTam, "a-b-c;d-e-f");
+});
+
+test("mergeCustomer_: Không thắng Có ở cả hai chiều; Chưa rõ + Chưa rõ không thành Có", () => {
+  const co = mk({ DongYNhanTin: "Có", DongYBangChung: MA });
+  const khong = mk({ DongYNhanTin: "Không", DongYBangChung: "Rút lại 2026-11-10" });
+  for (const [a, b] of [[co, khong], [khong, co]]) {
+    const r = merge(a, b);
+    assert.equal(r.DongYNhanTin, "Không");
+    assert.equal(r.DongYBangChung, "Rút lại 2026-11-10");
+  }
+  assert.equal(merge(mk({ DongYNhanTin: "Không" }), co).DongYBangChung, "");
+  const cr = mk({ DongYNhanTin: "Chưa rõ" });
+  const r = merge(cr, cr);
+  assert.equal(r.DongYNhanTin, "Chưa rõ");
+  assert.equal(r.DongYBangChung, "");
+  assert.equal(merge(mk({}), mk({})).DongYNhanTin, "Chưa rõ");
+  const up = merge(cr, co);
+  assert.equal(up.DongYNhanTin, "Có");
+  assert.equal(up.DongYBangChung, MA);
+  const keep = merge(co, mk({ DongYNhanTin: "Có", DongYBangChung: "Có (khác)" }));
+  assert.equal(keep.DongYBangChung, MA, "giữ bằng chứng cũ");
+});
+
+test("mergeCustomer_: cột anh giữ nguyên; cột anh trống thì nhận giá trị mới", () => {
+  const ex = mk({ TrangThaiCRM: "Đã gặp", TrangThaiChamSoc: "Nóng", NguoiChamSoc: "Anh", GhiChu: "Gọi sau 5h", NguonChiTiet: "facebook", PTTT: "PTTT 02" });
+  const inc = mk({ TrangThaiCRM: "Mới", TrangThaiChamSoc: "Lạnh", NguoiChamSoc: "Khác", GhiChu: "x", NguonChiTiet: "tiktok", PTTT: "PTTT 03", CanXem: "A1-05" });
+  const r = merge(ex, inc);
+  for (const k of ["TrangThaiCRM", "TrangThaiChamSoc", "NguoiChamSoc", "GhiChu", "NguonChiTiet", "PTTT"]) assert.equal(r[k], ex[k], k);
+  assert.equal(r.CanXem, "A1-05");
+  const r2 = merge(mk({ TrangThaiCRM: "" }), mk({ TrangThaiCRM: "Đã gọi" }));
+  assert.equal(r2.TrangThaiCRM, "Đã gọi");
+});
+
+test("mergeCustomer_: không sửa đầu vào, kết quả đúng 17 khóa, đầu vào thiếu khóa vẫn chạy", () => {
+  const ex = mk({ HoTen: "A", DuAnQuanTam: "a-b-c" });
+  const inc = mk({ HoTen: "B", DuAnQuanTam: "d-e-f" });
+  const exCopy = JSON.stringify(ex), incCopy = JSON.stringify(inc);
+  const r = ctx.mergeCustomer_(ex, inc, NOW);
+  assert.equal(JSON.stringify(ex), exCopy);
+  assert.equal(JSON.stringify(inc), incCopy);
+  assert.notEqual(r, ex);
+  assert.deepEqual(Object.keys(plain(r)), plain(ctx.KHACH_COLS));
+  const r2 = merge({ SDT: "0981234567", HoTen: undefined }, { HoTen: "B" });
+  assert.deepEqual(Object.keys(r2), plain(ctx.KHACH_COLS));
+  assert.equal(r2.HoTen, "B");
+  assert.equal(r2.SDT, "0981234567");
+  assert.equal(merge({}, {}).DongYNhanTin, "Chưa rõ");
+});
