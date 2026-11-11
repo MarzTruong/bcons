@@ -1,4 +1,4 @@
-> **Trạng thái:** Nháp, chờ anh duyệt (11/11/2026). Chưa có code, chưa chạy gì lên hệ thống thật. Sau khi duyệt: lập kế hoạch dựng (`writing-plans`).
+> **Trạng thái:** Đã duyệt (anh duyệt 11/11/2026, chốt: dùng `Master_<mã>`, không đặt thời hạn giữ dữ liệu). Chưa có code, chưa chạy gì lên hệ thống thật. Tiếp theo: kế hoạch dựng (`writing-plans`).
 
 # Thiết kế: Master_Data, kho khách hàng tập trung (11/11/2026)
 
@@ -71,7 +71,6 @@ Google Sheet **riêng tư** (chỉ tài khoản anh), đặt ở Drive `Bcons/da
 | CanXem, PTTT | hệ thống | từ landing (căn, loại căn, PTTT khách chọn) |
 | DongYNhanTin | hệ thống / anh | `Có`, `Không`, `Chưa rõ`; **không bao giờ tự đổi thành `Có`** khi không có bằng chứng |
 | DongYBangChung | hệ thống | thời điểm, mẫu đồng ý, trang (chép từ cột "Đồng ý nhận tin" của landing) |
-| HanGiu | hệ thống | ngày hết hạn giữ dữ liệu (mục 9) |
 | **TrangThaiCRM** | **anh** | Mới / Đang liên hệ / Quan tâm / Đã gặp / Cọc/Booking/HĐMB / Không QT (theo CRM) |
 | **TrangThaiChamSoc** | **anh** | Chưa chăm / Đã gọi / Hẹn gặp / ... (anh định nghĩa, mục 14) |
 | **NguoiChamSoc**, **GhiChu** | **anh** | |
@@ -121,7 +120,7 @@ Anh đồng ý bốn điểm (11/11/2026):
 - Dữ liệu chỉ ở Google Sheet/Drive riêng tư của anh. Không vào repo, không vào log chung. Test dùng dữ liệu ẩn danh hóa (mục 11).
 - Khóa API (Telegram bot token, ID sheet) ở Script Properties của Apps Script, **không dán vào chat hay file**. Lệnh nào cần khóa ở máy cloud thì dùng `request_credential`.
 - Tab `NhatKy` chỉ có số liệu và `MaKhach`. Tin Telegram báo lỗi chỉ ghi loại lỗi và số dòng.
-- Căn cứ: Luật Bảo vệ dữ liệu cá nhân 2025 và Nghị định 356/2025. Cần ghi rõ **mục đích** (tư vấn dự án Bcons), **thời hạn giữ** (cột `HanGiu`), **cách rút lại/xóa** (khách nhắn xin rút → anh thêm SĐT vào tab `TuChoi` → lần chạy sau xóa khỏi các `Master_<mã>`, ẩn thông tin cá nhân ở `KhachHang`). Mức hạn giữ cụ thể em chưa tự quyết (mục 13).
+- Căn cứ: Luật Bảo vệ dữ liệu cá nhân 2025 và Nghị định 356/2025. Cần ghi rõ **mục đích** (tư vấn dự án Bcons), **thời hạn giữ** (anh chốt 11/11/2026: không đặt thời hạn cố định; ghi trên mẫu đồng ý là "cho đến khi khách rút lại sự đồng ý hoặc yêu cầu xóa", nên cách rút lại/xóa dưới đây là bắt buộc phải chạy được), **cách rút lại/xóa** (khách nhắn xin rút → anh thêm SĐT vào tab `TuChoi` → lần chạy sau xóa khỏi các `Master_<mã>`, ẩn thông tin cá nhân ở `KhachHang`). 
 - Chỉ nhắn khách có `DongYNhanTin = Có` và không nằm trong `TuChoi`. Khách CRM nhập tay có `DongYNhanTin = Chưa rõ`; **chưa rõ thì không đưa vào danh sách nhắn hàng loạt**, chỉ để anh gọi/nhắn tư vấn từng người.
 - Không dùng Zalo/Facebook cá nhân nhắn hàng loạt.
 
@@ -151,8 +150,8 @@ Anh đồng ý bốn điểm (11/11/2026):
 
 ## 13. Việc anh cần làm và điều anh cần chốt
 1. Duyệt spec này (G0).
-2. **Chốt cách nhận khách ở phía dự án** (mục 7): dùng Google Sheet nhỏ `Master_<mã>` song song Masterfile `.xlsx` (đề xuất), hay chuyển hẳn Masterfile sang Google Sheet.
-3. **Chốt hạn giữ dữ liệu** khách (em chưa tự quyết; thường gắn với mục đích tư vấn, cần hỏi bộ phận pháp chế công ty). Em đề xuất đặt tạm 24 tháng kể từ lần liên hệ cuối để làm mặc định có thể đổi.
+2. ~~Cách nhận khách ở phía dự án~~ Đã chốt: dùng Google Sheet nhỏ `Master_<mã>` song song Masterfile `.xlsx`.
+3. ~~Hạn giữ dữ liệu~~ Đã chốt: không đặt thời hạn (giữ đến khi khách rút lại hoặc yêu cầu xóa).
 4. Định nghĩa các giá trị `TrangThaiChamSoc` anh muốn dùng.
 5. Cấp quyền chỉnh sửa cho Apps Script mới trên Master_Data và các Sheet landing (anh bấm "Cho phép" khi em hướng dẫn, không gửi khóa trong chat).
 6. Tạo bản sao Sheet để thử (em hướng dẫn từng bước khi tới G1).
