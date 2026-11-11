@@ -27,7 +27,10 @@ export function fakeSheets(spec = {}) {
   const looksNumeric = (v) => typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v);
 
   function makeSheet(owner, name, rows) {
-    const sh = { name, data: structuredClone(rows || []), textCells: new Set() };
+    const sh = { name, data: structuredClone(rows || []), textCells: new Set(), maxRows: Math.max(1000, (rows || []).length) };
+    const bounds = (r, nr) => {
+      if (r < 1 || r + nr - 1 > sh.maxRows) throw new Error("The coordinates or dimensions of the range are invalid: coordinates outside the dimensions of the sheet");
+    };
     const width = () => sh.data.reduce((m, r) => Math.max(m, r.length), 0);
     const coerce = (r0, c0, v) => {
       if (typeof v !== "string" || sh.textCells.has(r0 + "," + c0)) return v;
@@ -50,7 +53,12 @@ export function fakeSheets(spec = {}) {
       getName: () => name,
       getLastRow: lastRow,
       getLastColumn: () => width(),
-      getMaxRows: () => Math.max(1000, sh.data.length),
+      getMaxRows: () => sh.maxRows,
+      insertRowsAfter(after, n) {
+        fire("insertRowsAfter", after, 1, n, n, 1);
+        if (after < 1 || after > sh.maxRows || n < 1) throw new Error("insertRowsAfter: tham số sai");
+        sh.maxRows += n;
+      },
       getDataRange() {
         return { getValues: () => api.getRange(1, 1, Math.max(lastRow(), 0), width()).getValues() };
       },
@@ -68,6 +76,7 @@ export function fakeSheets(spec = {}) {
           },
           setValues(vals) {
             if (vals.length !== nr || vals.some((v) => v.length !== nc)) throw new Error("setValues: sai kích thước vùng");
+            bounds(r, nr);
             fire("setValues", r, c, vals, nr, nc);
             for (let i = 0; i < nr; i++) {
               while (sh.data.length < r + i) sh.data.push([]);
@@ -77,6 +86,7 @@ export function fakeSheets(spec = {}) {
             }
           },
           setNumberFormat(fmt) {
+            bounds(r, nr);
             fire("setNumberFormat", r, c, fmt, nr, nc);
             for (let i = 0; i < nr; i++)
               for (let j = 0; j < nc; j++) {
@@ -87,6 +97,7 @@ export function fakeSheets(spec = {}) {
         };
       },
       appendRow(arr) {
+        bounds(lastRow() + 1, 1);
         fire("appendRow", lastRow() + 1, 1, [arr], 1, arr.length);
         sh.data.length = lastRow();
         const row = arr.map((v, j) => coerce(sh.data.length, j, v));

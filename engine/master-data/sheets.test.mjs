@@ -527,3 +527,85 @@ test("gopNhapCRM_: 200 dòng CRM mới chỉ tốn số lần ghi hằng số", 
   assert.equal(marks.filter((m) => /^KH-/.test(m)).length, 200);
   assert.equal(marks[200], "LOI");
 });
+
+// ---- Sau review Task 7: số lần ghi, lưới Sheet, tiêu đề, định dạng tên ----
+function bulkCustomer(i, extra) {
+  const r = Object.fromEntries(KHACH_COLS.map((c) => [c, ""]));
+  Object.assign(r, { MaKhach: "KH-" + String(i + 1).padStart(6, "0"), SDT: "09" + String(10000000 + i), HoTen: "Khach " + i, NguonGoc: "Landing", NgayTao: "2026-10-01T00:00:00.000Z", NgayCapNhat: "2026-10-01T00:00:00.000Z", DongYNhanTin: "Chưa rõ" });
+  return KHACH_COLS.map((c) => r[c]).concat(extra === undefined ? [] : [extra]);
+}
+
+test("gopNhapCRM_: 1000 dòng, cứ hai dòng có một khách cũ rải rác -> tổng số lần ghi nhỏ, không đụng cột ngoài KHACH_COLS", () => {
+  const existing = [];
+  for (let i = 0; i < 1000; i++) existing.push(bulkCustomer(i, "=A" + (i + 2)));
+  const crm = [];
+  for (let i = 0; i < 1000; i++) {
+    crm.push(i % 2 === 0 ? ["Ten CRM", "09" + String(10000000 + i), "", "Đã gọi", ""] : ["Khach CRM " + i, "09" + String(20000000 + i), "", "", ""]);
+  }
+  const T = setup({ withKhach: false, masterExtra: { KhachHang: [[...KHACH_COLS, "CotAnh"], ...existing], NhapCRM: [CRM_H, ...crm] } });
+  T.ctx.ensureTabs_(T.F.SpreadsheetApp.getActiveSpreadsheet(), false);
+  T.F.calls.writes.length = 0;
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 1000, moi: 500, trung: 500, loi: 0 });
+  assert.ok(T.F.calls.writes.length <= 12, "số lần ghi: " + T.F.calls.writes.length);
+  for (const w of T.F.calls.writes) if (w.sheet === "KhachHang" && w.method === "setValues") assert.ok(w.col + w.nc - 1 <= KHACH_COLS.length, "ghi ra ngoài KHACH_COLS: cột " + (w.col + w.nc - 1));
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 1501);
+  assert.equal(kh[1][khCol(kh, "TrangThaiCRM")], "Đã gọi");
+  assert.equal(kh[1][khCol(kh, "NguonGoc")], "Landing+CRM");
+  assert.equal(kh[1][khCol(kh, "NgayCapNhat")], NOW.toISOString());
+  assert.equal(kh[2][khCol(kh, "TrangThaiCRM")], "");
+  assert.equal(kh[2][khCol(kh, "NguonGoc")], "Landing");
+  assert.equal(kh[2][khCol(kh, "NgayCapNhat")], "2026-10-01T00:00:00.000Z");
+  assert.equal(kh[5][18 - 1], "=A6", "cột của anh bên phải giữ nguyên");
+  assert.equal(kh[1001][khCol(kh, "NguonGoc")], "CRM");
+});
+
+test("lưới Sheet: KhachHang 990 dòng + 50 khách mới thì tự mở rộng lưới (Sheets thật ném lỗi nếu vượt)", () => {
+  const existing = [];
+  for (let i = 0; i < 989; i++) existing.push(bulkCustomer(i));
+  const crm = [];
+  for (let i = 0; i < 50; i++) crm.push(["Khach CRM " + i, "09" + String(30000000 + i), "", "", ""]);
+  const T = setup({ withKhach: false, masterExtra: { KhachHang: [KHACH_COLS, ...existing], NhapCRM: [CRM_H, ...crm] } });
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 50, moi: 50, trung: 0, loi: 0 });
+  const kh = T.F.values(null, "KhachHang");
+  assert.equal(kh.length, 1040);
+  assert.equal(kh[1039][0], "KH-001039");
+  assert.equal(kh[1039][khCol(kh, "SDT")], "0930000049");
+});
+
+test("lưới Sheet: tab Loi gần cuối lưới vẫn ghi được; dryRun không mở rộng lưới", () => {
+  const loiOld = [];
+  for (let i = 0; i < 999; i++) loiOld.push([NOW.toISOString(), "CRM", i + 2, "SĐT không hợp lệ"]);
+  const mk = () => setup({ masterExtra: { Loi: [["Thời gian", "Nguồn", "Dòng", "Lý do"], ...loiOld], NhapCRM: [CRM_H, ["a", "", "", "", ""], ["b", "", "", "", ""], ["c", "", "", "", ""]] } });
+  const D = mk();
+  const before = D.F.snapshot();
+  assert.deepEqual(plain(D.ctx.gopNhapCRM_({ dryRun: true, now: NOW })), { doc: 3, moi: 0, trung: 0, loi: 3 });
+  assert.equal(D.F.snapshot(), before);
+  assert.equal(D.F.calls.writes.length, 0);
+  const T = mk();
+  assert.deepEqual(plain(T.ctx.gopNhapCRM_({ dryRun: false, now: NOW })), { doc: 3, moi: 0, trung: 0, loi: 3 });
+  assert.equal(T.F.values(null, "Loi").length, 1003);
+});
+
+test("gopNhapCRM_: thiếu tiêu đề HoTen/DuAnQuanTam/TrangThaiCRM -> lỗi tiếng Việt nêu tên cột, không ghi gì", () => {
+  for (const miss of ["HoTen", "DuAnQuanTam", "TrangThaiCRM"]) {
+    const heads = CRM_H.filter((h) => h !== miss);
+    const T = setup({ masterExtra: { NhapCRM: [heads, heads.map((h) => (h === "SDT" ? "0900000002" : ""))] } });
+    const before = T.F.snapshot();
+    assert.throws(() => T.ctx.gopNhapCRM_({ dryRun: false, now: NOW }), new RegExp("NhapCRM thiếu cột.*" + miss));
+    assert.equal(T.F.snapshot(), before);
+    assert.deepEqual(T.F.calls.lock, ["wait", "release"]);
+  }
+});
+
+test("HoTen là văn bản: ensureTabs_ đặt '@' cho cột HoTen, tên '0123' không mất số 0 khi sang KhachHang", () => {
+  const T = setupCrm([["0123", "0900000002", "", "", ""], ["12345", "0900000004", "", "", ""]]);
+  T.ctx.gopNhapCRM_({ dryRun: false, now: NOW });
+  const kh = T.F.values(null, "KhachHang");
+  assert.strictEqual(kh[2][khCol(kh, "HoTen")], "0123");
+  assert.strictEqual(kh[3][khCol(kh, "HoTen")], "12345");
+  const ss = T.F.SpreadsheetApp.getActiveSpreadsheet();
+  const fmt = T.F.calls.writes.filter((w) => w.method === "setNumberFormat");
+  for (const tab of ["NhapCRM", "KhachHang", "ChuaPhanDuAn"]) assert.ok(fmt.some((w) => w.sheet === tab && w.col === 1 || w.sheet === tab && w.col === 3), "chưa định dạng HoTen ở " + tab);
+  assert.ok(ss.getSheetByName("NhapCRM"));
+});

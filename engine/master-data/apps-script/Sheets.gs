@@ -12,21 +12,26 @@ var TAB_HEADERS_ = {
   NhatKy: ['Thời gian', 'Nguồn', 'Số dòng đọc', 'Khách mới', 'Gộp trùng', 'Lỗi', 'Ghi chú'],
   CauHinh: ['maDuAn', 'landingSheetId', 'masterSheetId']
 };
-/** Tab có cột SĐT phải định dạng văn bản, nếu không Google Sheets bỏ số 0 đầu. */
+/** Cột phải là văn bản: SDT (không mất số 0 đầu) và HoTen (tên như '0123' hay '12345' không thành số). */
+var TEXT_COLS_ = ['SDT', 'HoTen'];
+/** Tab có cột SĐT/HoTen phải định dạng văn bản, nếu không Google Sheets bỏ số 0 đầu. */
 var TAB_SDT_TEXT_ = ['KhachHang', 'NhapCRM', 'TuChoi', 'ChuaPhanDuAn'];
 
-/** Tạo tab còn thiếu (kèm tiêu đề) và đặt cột SĐT là văn bản. dryRun: không làm gì, người gọi coi tab thiếu là rỗng. */
-function ensureTabs_(ss, dryRun) {
+/** Tạo tab còn thiếu (kèm tiêu đề) và đặt cột SĐT/HoTen là văn bản. Tab đã có chỉ được định dạng lại nếu nằm trong `touch` (giữ số lần gọi ghi nhỏ ở mỗi lần chạy 15 phút); không truyền `touch` thì định dạng mọi tab. dryRun: không làm gì, người gọi coi tab thiếu là rỗng. */
+function ensureTabs_(ss, dryRun, touch) {
   if (dryRun) return;
   Object.keys(TAB_HEADERS_).forEach(function (name) {
     var headers = TAB_HEADERS_[name];
     var sh = ss.getSheetByName(name);
+    var fresh = !sh;
     if (!sh) sh = ss.insertSheet(name);
     if (sh.getLastRow() === 0) sh.getRange(1, 1, 1, headers.length).setValues([headers]);
-    if (TAB_SDT_TEXT_.indexOf(name) >= 0) {
+    if (TAB_SDT_TEXT_.indexOf(name) >= 0 && (fresh || !touch || touch.indexOf(name) >= 0)) {
       var actual = sh.getRange(1, 1, 1, Math.max(sh.getLastColumn(), 1)).getValues()[0].map(function (h) { return String(h).trim(); });
-      var i = actual.indexOf('SDT');
-      if (i >= 0) sh.getRange(1, i + 1, Math.max(sh.getMaxRows(), 2), 1).setNumberFormat('@');
+      TEXT_COLS_.forEach(function (col) {
+        var i = actual.indexOf(col);
+        if (i >= 0) sh.getRange(1, i + 1, Math.max(sh.getMaxRows(), 2), 1).setNumberFormat('@');
+      });
     }
   });
 }
@@ -95,6 +100,12 @@ function khachRow_(kh, base, obj) {
   return row;
 }
 
+/** Sheets thật ném lỗi khi ghi vượt số dòng của lưới (mặc định 1000): mở rộng trước khi ghi tới dòng `needed`. */
+function ensureRows_(sheet, needed) {
+  var max = sheet.getMaxRows();
+  if (needed > max) sheet.insertRowsAfter(max, needed - max);
+}
+
 /** Trạng thái gộp trong bộ nhớ: dòng có chỉ số >= origLen là khách mới của lần chạy này; dirty = chỉ số dòng cũ -> {chỉ số cột: true}. */
 function newKhachState_(kh) {
   return { origLen: kh.data.length, dirty: {} };
@@ -131,30 +142,56 @@ function upsertKhach_(kh, rec, nowIso, st, out) {
   return rec.MaKhach;
 }
 
-/** Ghi KhachHang theo lô. (a) khách mới: một lần ghi vào vùng ngay sau dữ liệu, SĐT đặt định dạng văn bản trước. (b) khách cũ: chỉ các ô đổi, gom các dòng liền nhau của cùng một cột. */
+/** Số lần ghi tối đa cho ô khách cũ đổi (mỗi đoạn dòng liền nhau của một cột là một lần); vượt thì ghi một khối liền. */
+var MAX_RUN_WRITES_ = 8;
+
+/** Ghi KhachHang theo lô. (a) khách mới: một lần ghi vào vùng ngay sau dữ liệu, SĐT và HoTen đặt định dạng văn bản trước.
+ *  (b) khách cũ: chỉ các ô đổi, gom các dòng liền nhau của cùng một cột; nếu quá nhiều đoạn thì ghi MỘT khối liền
+ *  phủ các dòng và cột đã đụng (chỉ trong KHACH_COLS) (cột anh thêm bên phải không bị ghi). */
 function flushKhach_(kh, st) {
   var origLen = st.origLen;
+  var width = 0;
+  KHACH_COLS.forEach(function (c) {
+    if (kh.idx[c] < 0) return;
+    if (kh.idx[c] + 1 > width) width = kh.idx[c] + 1;
+  });
   var newRows = kh.data.slice(origLen);
   if (newRows.length) {
-    var width = 0;
-    KHACH_COLS.forEach(function (c) { if (kh.idx[c] + 1 > width) width = kh.idx[c] + 1; });
     var block = newRows.map(function (rw) { return rw.slice(0, width); });
+    ensureRows_(kh.sheet, origLen + block.length);
     kh.sheet.getRange(origLen + 1, kh.idx.SDT + 1, block.length, 1).setNumberFormat('@');
+    if (kh.idx.HoTen >= 0) kh.sheet.getRange(origLen + 1, kh.idx.HoTen + 1, block.length, 1).setNumberFormat('@');
     kh.sheet.getRange(origLen + 1, 1, block.length, width).setValues(block);
   }
   var perCol = {};
+  var minRow = 1e9, maxRow = -1, minCol = 1e9, maxCol = -1;
   Object.keys(st.dirty).forEach(function (rk) {
-    Object.keys(st.dirty[rk]).forEach(function (ck) { (perCol[ck] = perCol[ck] || []).push(Number(rk)); });
+    Object.keys(st.dirty[rk]).forEach(function (ck) {
+      (perCol[ck] = perCol[ck] || []).push(Number(rk));
+      minCol = Math.min(minCol, Number(ck));
+      maxCol = Math.max(maxCol, Number(ck));
+    });
+    minRow = Math.min(minRow, Number(rk));
+    maxRow = Math.max(maxRow, Number(rk));
   });
+  var runs = [];
   Object.keys(perCol).forEach(function (ck) {
     var rows = perCol[ck].sort(function (a, b) { return a - b; });
     var start = 0;
     for (var k = 1; k <= rows.length; k++) {
       if (k < rows.length && rows[k] === rows[k - 1] + 1) continue;
-      var block2 = rows.slice(start, k).map(function (ri) { return [kh.data[ri][Number(ck)]]; });
-      kh.sheet.getRange(rows[start] + 1, Number(ck) + 1, block2.length, 1).setValues(block2);
+      runs.push({ col: Number(ck), rows: rows.slice(start, k) });
       start = k;
     }
+  });
+  if (runs.length > MAX_RUN_WRITES_) {
+    var span = kh.data.slice(minRow, maxRow + 1).map(function (rw) { return rw.slice(minCol, maxCol + 1); });
+    kh.sheet.getRange(minRow + 1, minCol + 1, span.length, maxCol - minCol + 1).setValues(span);
+    return;
+  }
+  runs.forEach(function (run) {
+    var vals = run.rows.map(function (ri) { return [kh.data[ri][run.col]]; });
+    kh.sheet.getRange(run.rows[0] + 1, run.col + 1, vals.length, 1).setValues(vals);
   });
 }
 
@@ -162,10 +199,12 @@ function flushKhach_(kh, st) {
 function flushLoi_(master, loiRows) {
   if (!loiRows.length) return;
   var loiSheet = master.getSheetByName('Loi');
+  ensureRows_(loiSheet, loiSheet.getLastRow() + loiRows.length);
   loiSheet.getRange(loiSheet.getLastRow() + 1, 1, loiRows.length, 4).setValues(loiRows);
 }
 
-/** Đánh dấu một cột (Đã gộp/DaGop): một lần ghi cả đoạn cột, ô không đổi ghi lại đúng giá trị cũ. values gồm cả dòng tiêu đề. */
+/** Đánh dấu một cột (Đã gộp/DaGop). Lưu ý: dòng đã đánh dấu 'LOI' không bao giờ được thử lại trừ khi anh xóa dấu; cả cột được ghi lại từ ảnh chụp lúc bắt đầu lần chạy (ô anh sửa giữa chừng sẽ bị ghi đè, nên giữ khóa script suốt lần chạy).
+ *   một lần ghi cả đoạn cột, ô không đổi ghi lại đúng giá trị cũ. values gồm cả dòng tiêu đề. */
 function markColumn_(sheet, values, iCol, marks) {
   if (!Object.keys(marks).length) return;
   var col = [];
@@ -208,7 +247,7 @@ function gopLandingLocked_(dryRun, nowIso) {
     if (iGop < 0) throw new Error('Thiếu cột Đã gộp trong tab Landing ' + id + '.');
     sources.push({ sheet: lsh, values: values, headers: headers, iGop: iGop, marks: {} });
   });
-  ensureTabs_(master, dryRun);
+  ensureTabs_(master, dryRun, ['KhachHang']);
   var kh = readKhach_(master);
   var out = { doc: 0, moi: 0, trung: 0, loi: 0 };
   var st = newKhachState_(kh);
@@ -267,9 +306,11 @@ function gopNhapCRMLocked_(dryRun, nowIso) {
   var headers = values[0].map(function (h) { return String(h).trim(); });
   var ix = {};
   TAB_HEADERS_.NhapCRM.forEach(function (c) { ix[c] = headers.indexOf(c); });
-  if (ix.SDT < 0 || ix.DaGop < 0) throw new Error('Tab NhapCRM thiếu cột SDT hoặc DaGop.');
+  TAB_HEADERS_.NhapCRM.forEach(function (c) {
+    if (ix[c] < 0) throw new Error('Tab NhapCRM thiếu cột ' + c + '.');
+  });
   var at = function (row, c) { return ix[c] < 0 || ix[c] >= row.length ? '' : row[ix[c]]; };
-  ensureTabs_(master, dryRun);
+  ensureTabs_(master, dryRun, ['KhachHang', 'NhapCRM']);
   var kh = readKhach_(master);
   var st = newKhachState_(kh);
   var loiRows = [];
