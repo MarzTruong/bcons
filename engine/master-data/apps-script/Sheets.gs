@@ -95,12 +95,19 @@ function khachObj_(kh, row) {
   return o;
 }
 
+/** Chữ ghi vào ô KhachHang: DongYBangChung/DongYDuAn dùng cellDai_ (không cắt giữa đoạn bằng chứng), cột khác dùng cell_. */
+function khachCell_(col, v) {
+  if (col === 'DongYBangChung') return cellDai_(v, ' || ');
+  if (col === 'DongYDuAn') return cellDai_(v, ';');
+  return cell_(v);
+}
+
 /** Đặt giá trị khách vào dòng (giữ nguyên cột lạ anh thêm); chữ qua cell_ để chặn công thức. */
 function khachRow_(kh, base, obj) {
   var row = base ? base.slice() : [];
   while (row.length < kh.headers.length) row.push('');
   KHACH_COLS.forEach(function (c) {
-    if (kh.idx[c] >= 0) row[kh.idx[c]] = c === 'MaKhach' ? String(obj[c] || '') : cell_(obj[c]);
+    if (kh.idx[c] >= 0) row[kh.idx[c]] = c === 'MaKhach' ? String(obj[c] || '') : khachCell_(c, obj[c]);
   });
   return row;
 }
@@ -131,7 +138,7 @@ function upsertKhach_(kh, rec, nowIso, st, out) {
       var ci = kh.idx[c];
       if (ci < 0) return;
       if (s_(cur[ci]) === s_(merged[c])) return;
-      cur[ci] = c === 'MaKhach' ? String(merged[c]) : cell_(merged[c]);
+      cur[ci] = c === 'MaKhach' ? String(merged[c]) : khachCell_(c, merged[c]);
       if (at < st.origLen) (st.dirty[at] = st.dirty[at] || {})[ci] = true;
     });
     out.trung++;

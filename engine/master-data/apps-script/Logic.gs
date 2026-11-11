@@ -15,6 +15,9 @@ function normalizePhone_(s) {
  *  DongYBangChung = mỗi dự án một đoạn '<mã>: <bằng chứng>', ngăn ' || '. NgayRutLai = ISO hoặc rỗng. */
 var KHACH_COLS = ['MaKhach', 'SDT', 'HoTen', 'NgayTao', 'NgayCapNhat', 'NguonGoc', 'NguonChiTiet', 'DuAnQuanTam', 'NhuCau', 'CanXem', 'PTTT', 'DongYNhanTin', 'DongYBangChung', 'TrangThaiCRM', 'TrangThaiChamSoc', 'NguoiChamSoc', 'GhiChu', 'DongYDuAn', 'NgayRutLai'];
 
+/** Độ dài tối đa một đoạn bằng chứng lưu ở DongYBangChung ('<mã>: Có (...)'). */
+var EVIDENCE_SEG_MAX_ = 200;
+
 /** Chữ đưa vào Sheet: cắt 500 ký tự, chặn công thức (giống cell_ của landing). */
 function cell_(v) {
   var s = (v == null ? '' : String(v)).slice(0, 500);
@@ -36,6 +39,20 @@ function codesOnly_(v) {
 function isoOrEmpty_(v) {
   var m = /^\d{4}-\d{2}-\d{2}T[\d:.]+Z$/.test(String(v || '')) ? Date.parse(v) : NaN;
   return isNaN(m) ? '' : new Date(m).toISOString();
+}
+
+/** Chữ dài đưa vào Sheet (DongYBangChung, DongYDuAn): giữ chặn công thức như cell_ nhưng KHÔNG cắt ở 500 ký tự
+ *  (cắt giữa đoạn làm hỏng bằng chứng). Giới hạn ô Sheets 50000: quá 45000 thì bỏ NGUYÊN các đoạn đầu (cũ nhất), không cắt giữa đoạn;
+ *  sep = dấu ngăn đoạn (mặc định ' || '; DongYDuAn dùng ';'). Còn một đoạn mà vẫn quá dài -> ''. */
+function cellDai_(v, sep) {
+  sep = sep || ' || ';
+  var s = v == null ? '' : String(v);
+  if (s.length > 45000) {
+    var parts = s.split(sep);
+    while (parts.length > 0 && parts.join(sep).length > 45000) parts.shift();
+    s = parts.join(sep);
+  }
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
 }
 
 function parseLandingRow_(headers, row) {
@@ -70,6 +87,13 @@ function parseLandingRow_(headers, row) {
   var maDongY = duAn.split(';')[0]; // ô Dự án nhiều mã: chỉ gắn đồng ý cho mã đầu (bảo thủ)
   // ' || ' là dấu ngăn các đoạn bằng chứng; bằng chứng chứa nó (vd. URL trang do client gửi) là không hợp lệ.
   var coDongY = coBangChung && dongYRaw.indexOf(' || ') < 0 && maDongY !== '';
+  // Mỗi đoạn lưu '<mã>: <bằng chứng>' tối đa 200 ký tự: cắt phần trang (cuối) cho vừa, giữ đúng khuôn. Phần đầu (ngày, phiên bản) tự nó đã quá dài -> không hợp lệ.
+  if (coDongY) {
+    var mm = /^(Có \(\d{4}-\d{2}-\d{2}T[\d:.]+Z, mẫu \S+, )([^\n\r]*)\)$/.exec(dongYRaw);
+    var room = EVIDENCE_SEG_MAX_ - (maDongY.length + 2) - mm[1].length - 1;
+    if (room < 0) coDongY = false;
+    else dongY = mm[1] + mm[2].slice(0, room) + ')';
+  }
   rec.DongYNhanTin = coDongY ? 'Có' : 'Chưa rõ';
   rec.DongYDuAn = coDongY ? maDongY : '';
   rec.DongYBangChung = coDongY ? maDongY + ': ' + dongY : '';
@@ -137,14 +161,15 @@ function mergeNguon_(a, b) {
 
 /** Tách DongYBangChung thành các đoạn có mã: [{ma, ev, iso}] theo thứ tự xuất hiện, mỗi mã giữ bằng chứng MỚI nhất (bằng nhau giữ bản đứng trước).
  *  Cả ô phải hợp lệ (bangChungHopLe_), một đoạn hỏng thì bỏ cả ô (fail closed). Bằng chứng cũ không mã không thuộc dự án nào nên không có mặt ở đây. */
-function segmentsOf_(bangChung) {
+function segmentsOf_(bangChung, nowIso) {
   var out = [];
+  var cutoff = nowIso === undefined ? Infinity : Date.parse(s_(nowIso)) + 5 * 60000; // nowIso hỏng -> NaN -> không đoạn nào qua (fail closed)
   var e = s_(bangChung);
   if (!e || !bangChungHopLe_(e) || hasConsentEvidence_(e)) return out;
   e.split(' || ').forEach(function (part) {
     var m = /^([a-z][a-z0-9-]{2,39}): ([\s\S]*)$/.exec(part);
     var iso = ngayDongY_(m[2]);
-    if (!iso) return;
+    if (!iso || !(Date.parse(iso) <= cutoff)) return; // bằng chứng ghi ngày ở tương lai (> now + 5 phút) là sheet sửa tay: bỏ
     for (var i = 0; i < out.length; i++) {
       if (out[i].ma === m[1]) {
         if (iso > out[i].iso) out[i] = { ma: m[1], ev: m[2], iso: iso };
@@ -193,18 +218,9 @@ function mergeCustomer_(existing, incoming, nowIso) {
   out.DuAnQuanTam = unionList_(ex.DuAnQuanTam, inc.DuAnQuanTam);
   out.NguonGoc = mergeNguon_(ex.NguonGoc, inc.NguonGoc);
 
-  // Ngày rút lại: giữ của existing; 'Không' (anh gõ) là lần rút mới -> nowIso; 'Đã rút lại' mà chưa có ngày -> nowIso. 'Không rõ' và chữ lạ không phải rút lại.
-  var rut = s_(ex.NgayRutLai) !== '' ? s_(ex.NgayRutLai) : s_(inc.NgayRutLai);
-  var rutIso = isoOrEmpty_(rut);
-  if (rutIso) rut = rutIso;
-  var kieu = [foldText_(ex.DongYNhanTin), foldText_(inc.DongYNhanTin)];
-  if (kieu.indexOf('khong') >= 0) rut = nowIso;
-  else if (!rut && kieu.indexOf('darutlai') >= 0) rut = nowIso;
-  out.NgayRutLai = rut;
-
-  // Bằng chứng: existing trước, rồi incoming; mỗi mã giữ bản mới nhất (bằng nhau giữ bản cũ).
-  var merged = segmentsOf_(ex.DongYBangChung);
-  segmentsOf_(inc.DongYBangChung).forEach(function (g) {
+  // Bằng chứng: existing trước, rồi incoming; mỗi mã giữ bản mới nhất (bằng nhau giữ bản cũ); bằng chứng ở tương lai (> now + 5 phút) bị bỏ.
+  var merged = segmentsOf_(ex.DongYBangChung, nowIso);
+  segmentsOf_(inc.DongYBangChung, nowIso).forEach(function (g) {
     for (var i = 0; i < merged.length; i++) {
       if (merged[i].ma === g.ma) {
         if (g.iso > merged[i].iso) merged[i] = g;
@@ -221,6 +237,34 @@ function mergeCustomer_(existing, incoming, nowIso) {
       return false;
     });
   }
+  var newest = '';
+  merged.forEach(function (g) { if (g.iso > newest) newest = g.iso; });
+
+  // Ngày rút lại = LỚN NHẤT trong các ngày hợp lệ của hai phía; phía nào có chữ không đọc được thì giữ chữ đó (mốc vô hạn, fail closed).
+  var dates = [s_(ex.NgayRutLai), s_(inc.NgayRutLai)];
+  var rut = '';
+  var garbage = '';
+  dates.forEach(function (d) {
+    if (!d) return;
+    var iso = isoOrEmpty_(d);
+    if (!iso) { if (!garbage) garbage = d; return; }
+    if (iso > rut) rut = iso;
+  });
+  if (garbage) {
+    rut = garbage;
+  } else {
+    // 'Không' gõ tay: là lần rút MỚI (đóng dấu now) chỉ khi chưa có ngày rút, hoặc đã có bằng chứng đồng ý mới hơn ngày rút (điền lại sau lần rút trước).
+    // Đã rút mà không có bằng chứng mới hơn thì giữ nguyên (idempotent, không đẩy ngày). 'Không rõ' và chữ lạ không phải rút lại.
+    var kieu = [foldText_(ex.DongYNhanTin), foldText_(inc.DongYNhanTin)];
+    if (kieu.indexOf('khong') >= 0) {
+      if (!rut) rut = nowIso;
+      else if (newest > rut) rut = newest > nowIso ? newest : nowIso;
+    } else if (!rut && kieu.indexOf('darutlai') >= 0) {
+      // Trạng thái 'Đã rút lại' mà chưa có ngày: lần chạm hàng gần nhất (NgayCapNhat của existing) để bằng chứng mới đến cùng lượt gộp không bị chặn nhầm.
+      rut = isoOrEmpty_(s_(ex.NgayCapNhat)) || nowIso;
+    }
+  }
+  out.NgayRutLai = rut;
   out.DongYDuAn = doanConHieuLuc_(merged, rut).map(function (g) { return g.ma; }).join(';');
   out.DongYNhanTin = trangThaiDongY_(out.DongYDuAn, out.DongYBangChung, rut);
   out.NgayCapNhat = nowIso;

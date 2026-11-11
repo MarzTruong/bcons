@@ -201,7 +201,7 @@ test("parseLandingRow_: Dự án chỉ giữ mã hợp lệ; Thời gian chỉ n
 // ---- mergeCustomer_ (Task 4) ----
 const blank = () => Object.fromEntries(ctx.KHACH_COLS.map((c) => [c, ""]));
 const mk = (o) => Object.assign(blank(), o);
-const NOW = "2026-11-11T02:00:00.000Z";
+const NOW = "2026-11-13T02:00:00.000Z";
 const MA = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/)";
 const merge = (a, b) => plain(ctx.mergeCustomer_(a, b, NOW));
 
@@ -733,10 +733,10 @@ test("Task 2 (j): existing Có + incoming 'Đã rút lại' -> Đã rút lại, 
 
 test("Task 2 (k): rút lại và đồng ý mới (bằng chứng mới hơn) trong cùng một lần gộp -> Có", () => {
   const inc = Object.assign(consent("aaa-aaa", "2026-11-12"), {});
-  const r = merge(consent("bbb-bbb", "2026-11-05"), Object.assign({}, inc, { DongYNhanTin: "Đã rút lại" }));
+  const r = merge({ ...consent("bbb-bbb", "2026-11-05"), NgayCapNhat: "2026-11-11T00:00:00.000Z" }, Object.assign({}, inc, { DongYNhanTin: "Đã rút lại" }));
   assert.equal(r.DongYNhanTin, "Có");
   assert.equal(r.DongYDuAn, "aaa-aaa");
-  assert.equal(r.NgayRutLai, NOW, "ngày rút lại vẫn ghi làm lịch sử");
+  assert.equal(r.NgayRutLai, "2026-11-11T00:00:00.000Z", "ngày rút lại = lần chạm gần nhất của hàng, ghi làm lịch sử");
   assert.equal(ctx.coTheNhan_(r, "bbb-bbb"), false, "đồng ý cũ của B đã bị rút");
 });
 
@@ -807,4 +807,131 @@ test("Task 2: cùng một mã xuất hiện hai lần trong một ô -> giữ b�
     const w = merge(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "2026-11-06T00:00:00.000Z", DongYBangChung: cell }), mk({}));
     assert.equal(w.DongYNhanTin, "Có", "bản mới 08/11 > ngày rút 06/11");
   }
+});
+
+// ---- Task 2 fix: cắt/giới hạn ô, ngày rút lại, bằng chứng tương lai ----
+const consentRow = (ev) => plain(ctx.parseLandingRow_(HEADERS, landingRow({ "Đồng ý nhận tin": ev }))).rec;
+
+test("fix A: parseLandingRow_ cắt phần trang của bằng chứng để mỗi đoạn lưu <= 200 ký tự, vẫn đúng khuôn", () => {
+  const ev = "Có (2026-11-06T03:15:00.000Z, mẫu v1-2026-11-06, https://x.pages.dev/" + "q".repeat(600) + ")";
+  const r = consentRow(ev);
+  assert.ok(r.DongYBangChung.length <= 200, String(r.DongYBangChung.length));
+  assert.equal(r.DongYBangChung.length, 200, "cắt vừa đủ, không cắt thừa");
+  assert.equal(r.DongYNhanTin, "Có");
+  assert.equal(r.DongYDuAn, "bcons-newsky");
+  const e = r.DongYBangChung.slice("bcons-newsky: ".length);
+  assert.equal(ctx.hasConsentEvidence_(e), true);
+  assert.equal(ctx.ngayDongY_(e), "2026-11-06T03:15:00.000Z");
+  assert.equal(ctx.bangChungHopLe_(r.DongYBangChung), true);
+  // bằng chứng ngắn giữ nguyên
+  assert.equal(consentRow(CONSENT).DongYBangChung, "bcons-newsky: " + CONSENT);
+  // trang rỗng sau khi cắt vẫn hợp lệ
+  const long = "Có (2026-11-06T03:15:00.000Z, mẫu " + "v".repeat(100) + ", " + "q".repeat(300) + ")";
+  const r2 = consentRow(long);
+  assert.ok(r2.DongYBangChung.length <= 200);
+  assert.equal(r2.DongYNhanTin, "Có");
+  // phần đầu (ngày + phiên bản) đã vượt giới hạn: không thể cắt hợp lệ -> không đồng ý (fail closed)
+  const r3 = consentRow("Có (2026-11-06T03:15:00.000Z, mẫu " + "v".repeat(300) + ", x)");
+  assert.deepEqual([r3.DongYNhanTin, r3.DongYDuAn, r3.DongYBangChung], ["Chưa rõ", "", ""]);
+});
+
+test("fix A: cellDai_ giữ chặn công thức, giới hạn 45000, bỏ nguyên đoạn cũ nhất và không bao giờ cắt giữa đoạn", () => {
+  assert.equal(ctx.cellDai_("=x"), "'=x");
+  assert.equal(ctx.cellDai_("+x"), "'+x");
+  assert.equal(ctx.cellDai_(null), "");
+  const short = "a".repeat(1000);
+  assert.equal(ctx.cellDai_(short), short, "không cắt ở 500");
+  const segs = Array.from({ length: 300 }, (_, i) => `bcons-p${String(i).padStart(3, "0")}: ${"e".repeat(190)}`);
+  const out = ctx.cellDai_(segs.join(" || "));
+  assert.ok(out.length <= 45000);
+  const parts = out.split(" || ");
+  assert.ok(parts.length > 100 && parts.length < 300);
+  assert.deepEqual(parts, segs.slice(300 - parts.length), "bỏ các đoạn đầu (cũ nhất), phần còn lại nguyên vẹn");
+  assert.equal(ctx.cellDai_("x".repeat(46000)), "", "một đoạn quá dài: bỏ cả đoạn");
+  assert.equal(ctx.cellDai_("a-b-c;".repeat(9000), ";").length <= 45000, true);
+});
+
+const CU = "2026-11-12T03:00:00.000Z";
+test("fix B: 'Đã rút lại' không ngày -> đóng dấu NgayCapNhat của existing (không phải now), bằng chứng mới hơn vẫn ra Có", () => {
+  const ex = mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: "", NgayCapNhat: CU });
+  const evNew = "2026-11-12T03:30:00.000Z";
+  const inc = mk({ DongYNhanTin: "Có", DongYDuAn: "aaa-aaa", DongYBangChung: `aaa-aaa: Có (${evNew}, mẫu v1, x)` });
+  const r = plain(ctx.mergeCustomer_(ex, inc, "2026-11-12T03:30:05.000Z"));
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn, r.NgayRutLai], ["Có", "aaa-aaa", CU]);
+  const r2 = plain(ctx.mergeCustomer_({ ...ex, NgayCapNhat: "" }, inc, "2026-11-12T03:30:05.000Z"));
+  assert.deepEqual([r2.DongYNhanTin, r2.DongYDuAn, r2.NgayRutLai], ["Đã rút lại", "", "2026-11-12T03:30:05.000Z"], "không có NgayCapNhat -> now (bằng chứng 03:30:00 < now)");
+  const r3 = plain(ctx.mergeCustomer_({ ...ex, NgayCapNhat: "rác" }, inc, "2026-11-12T03:30:05.000Z"));
+  assert.equal(r3.NgayRutLai, "2026-11-12T03:30:05.000Z", "NgayCapNhat không hợp lệ -> nowIso");
+  assert.equal(r3.DongYNhanTin, "Đã rút lại");
+  // incoming 'Đã rút lại' cũng dùng NgayCapNhat của existing
+  const r4 = plain(ctx.mergeCustomer_(mk({ NgayCapNhat: CU }), mk({ DongYNhanTin: "Đã rút lại" }), "2026-11-13T00:00:00.000Z"));
+  assert.equal(r4.NgayRutLai, CU);
+  // ô Date của Sheets
+  const r5 = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayCapNhat: new Date(CU) }), mk({}), "2026-11-13T00:00:00.000Z"));
+  assert.equal(r5.NgayRutLai, CU);
+});
+
+test("fix C: 'Không' gõ lặp lại với now tăng dần không đẩy NgayRutLai; rút -> điền lại -> 'Không' lần nữa thì đóng dấu mới", () => {
+  let cur = merge(mk({ DongYNhanTin: "Không", DongYDuAn: "aaa-aaa", DongYBangChung: seg("aaa-aaa", "2026-11-05") }), mk({}));
+  assert.equal(cur.NgayRutLai, NOW);
+  for (const n of ["2026-11-12T00:00:00.000Z", "2026-11-13T00:00:00.000Z", "2026-12-01T00:00:00.000Z"]) {
+    const nx = plain(ctx.mergeCustomer_(cur, mk({ DongYNhanTin: "Không" }), n));
+    assert.equal(nx.NgayRutLai, NOW, n);
+    assert.equal(nx.DongYNhanTin, "Đã rút lại");
+    assert.deepEqual({ ...nx, NgayCapNhat: 0 }, { ...cur, NgayCapNhat: 0 });
+    cur = nx;
+  }
+  const same = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), mk({ DongYNhanTin: "Không" }), "2026-11-20T00:00:00.000Z"));
+  assert.equal(same.NgayRutLai, T10, "đã rút lại, không có bằng chứng mới hơn -> không đẩy");
+  // rút -> điền lại -> gõ Không
+  const refilled = plain(ctx.mergeCustomer_(mk({ DongYNhanTin: "Đã rút lại", NgayRutLai: T10 }), consent("aaa-aaa", "2026-11-12"), "2026-11-12T10:00:00.000Z"));
+  assert.equal(refilled.DongYNhanTin, "Có");
+  const again = plain(ctx.mergeCustomer_({ ...refilled, DongYNhanTin: "Không" }, mk({}), "2026-11-15T00:00:00.000Z"));
+  assert.deepEqual([again.DongYNhanTin, again.NgayRutLai, again.DongYDuAn], ["Đã rút lại", "2026-11-15T00:00:00.000Z", ""]);
+  // 'Không' phía incoming cũng vậy
+  const inc = plain(ctx.mergeCustomer_(refilled, mk({ DongYNhanTin: "Không" }), "2026-11-15T00:00:00.000Z"));
+  assert.deepEqual([inc.DongYNhanTin, inc.NgayRutLai], ["Đã rút lại", "2026-11-15T00:00:00.000Z"]);
+});
+
+test("fix D: NgayRutLai là max các ngày hợp lệ của hai phía; phía nào có ngày rác thì đóng vĩnh viễn; dấu 'Không' không hạ ngày", () => {
+  const a = plain(ctx.mergeCustomer_(mk({ NgayRutLai: T10, DongYNhanTin: "Đã rút lại" }), { ...consent("aaa-aaa", "2026-11-11"), NgayRutLai: "2026-11-15T00:00:00.000Z" }, "2026-11-16T00:00:00.000Z"));
+  assert.equal(a.NgayRutLai, "2026-11-15T00:00:00.000Z");
+  assert.notEqual(a.DongYNhanTin, "Có");
+  assert.equal(a.DongYDuAn, "");
+  const b = plain(ctx.mergeCustomer_(mk({ NgayRutLai: "2030-01-01T00:00:00.000Z", DongYNhanTin: "Không" }), mk({}), "2026-11-12T00:00:00.000Z"));
+  assert.deepEqual([b.NgayRutLai, b.DongYNhanTin], ["2030-01-01T00:00:00.000Z", "Đã rút lại"]);
+  for (const [x, y] of [[T10, "rác"], ["rác", T10], [new Date(T10), "mai"]]) {
+    const g = plain(ctx.mergeCustomer_(mk({ NgayRutLai: x }), { ...consent("aaa-aaa", "2026-12-30"), NgayRutLai: y }, "2027-01-01T00:00:00.000Z"));
+    assert.equal(g.DongYNhanTin, "Đã rút lại");
+    assert.equal(g.DongYDuAn, "");
+    assert.ok(!ctx.coTheNhan_(g, "aaa-aaa"));
+  }
+  const c = plain(ctx.mergeCustomer_(mk({}), { ...mk({}), NgayRutLai: "2026-11-09T00:00:00.000Z" }, NOW));
+  assert.equal(c.NgayRutLai, "2026-11-09T00:00:00.000Z", "ngày rút chỉ có ở incoming vẫn được giữ");
+});
+
+test("fix E: bằng chứng ghi ngày quá now + 5 phút bị coi là không hợp lệ (sheet sửa tay)", () => {
+  const now = "2026-11-12T03:00:00.000Z";
+  const at = (iso) => plain(ctx.mergeCustomer_(mk({}), { ...mk({}), DongYNhanTin: "Có", DongYDuAn: "aaa-aaa", DongYBangChung: `aaa-aaa: Có (${iso}, mẫu v1, x)` }, now));
+  for (const iso of ["2026-11-12T03:00:00.000Z", "2026-11-12T03:04:00.000Z", "2026-11-12T03:05:00.000Z"]) {
+    assert.equal(at(iso).DongYNhanTin, "Có", iso);
+  }
+  for (const iso of ["2026-11-12T03:05:00.001Z", "2026-11-12T03:06:00.000Z", "2999-01-01T00:00:00.000Z"]) {
+    const r = at(iso);
+    assert.deepEqual([r.DongYNhanTin, r.DongYDuAn, r.DongYBangChung], ["Chưa rõ", "", ""], iso);
+  }
+  // bản tương lai không che bản hợp lệ của cùng dự án
+  const both = plain(ctx.mergeCustomer_(mk({}), { ...mk({}), DongYBangChung: `aaa-aaa: Có (2999-01-01T00:00:00.000Z, mẫu v1, x) || aaa-aaa: Có (2026-11-12T02:00:00.000Z, mẫu v1, y)` }, now));
+  assert.equal(both.DongYNhanTin, "Có");
+  assert.match(both.DongYBangChung, /, y\)$/);
+  // nowIso hỏng -> không bằng chứng nào được tin
+  assert.equal(plain(ctx.mergeCustomer_(mk({}), consent("aaa-aaa", "2026-11-12"), "rác")).DongYNhanTin, "Chưa rõ");
+});
+
+test("fix C: 'Không' gõ khi bằng chứng mới hơn ngày rút nhưng nằm trong khoảng now + 5 phút -> vẫn rút (dấu không thấp hơn bằng chứng)", () => {
+  const now = "2026-11-15T00:00:00.000Z";
+  const ex = { ...mk({ DongYNhanTin: "Không", NgayRutLai: T10 }), DongYDuAn: "aaa-aaa", DongYBangChung: "aaa-aaa: Có (2026-11-15T00:02:00.000Z, mẫu v1, x)" };
+  const r = plain(ctx.mergeCustomer_(ex, mk({}), now));
+  assert.deepEqual([r.DongYNhanTin, r.DongYDuAn], ["Đã rút lại", ""]);
+  assert.equal(r.NgayRutLai, "2026-11-15T00:02:00.000Z");
 });

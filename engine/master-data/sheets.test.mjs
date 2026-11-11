@@ -19,8 +19,8 @@ const NAMES = ["Khach Cu", "Khach Moi", "Khach Loi", "Khach Hai"];
 const PHONES = ["0900000001", "0900000002", "0900000003", "0900000004"];
 
 /** Dòng landing đúng như Code.gs thật ghi (validateLead_ + rowFor_), rồi bỏ dấu ' ở SĐT như Sheets trả về. */
-function leadRow({ ten, sdt, duAn = "bcons-newsky", at = new Date("2026-11-10T03:00:00.000Z"), badPhone }) {
-  const v = landing.validateLead_({ ten, sdt, dongY: true, t: 5000, nguon: "facebook", duAn, trang: "https://x.pages.dev/", nhuCau: "Mua để ở", canLoai: "2PN-2WC", pttt: "PTTT 03" });
+function leadRow({ ten, sdt, duAn = "bcons-newsky", at = new Date("2026-11-10T03:00:00.000Z"), badPhone, trang = "https://x.pages.dev/" }) {
+  const v = landing.validateLead_({ ten, sdt, dongY: true, t: 5000, nguon: "facebook", duAn, trang, nhuCau: "Mua để ở", canLoai: "2PN-2WC", pttt: "PTTT 03" });
   assert.equal(v.ok, true);
   const row = Array.from(landing.rowFor_(v.lead, at));
   row[1] = String(row[1]).replace(/^'/, "");
@@ -2037,4 +2037,44 @@ test("L1: phanBo_ - 'Không rõ' không rút lại, không xóa, ghi Loi một l
   assert.equal(loi.length, 1);
   assert.deepEqual([loi[0][1], loi[0][2], loi[0][3]], ["Rút lại", 2, "Giá trị DongYNhanTin cần anh kiểm: ghi đúng Không để rút lại"]);
   assert.ok(!JSON.stringify(loi).includes(PHONES[0]));
+});
+
+test("Task 2 fix A: ba dự án, URL 250 ký tự: ghi lên Sheet (cell dài > 500) rồi đọc lại và gộp tiếp, đồng ý vẫn nguyên", () => {
+  const urls = ["a", "b", "c"].map((c) => "https://x.pages.dev/" + c.repeat(230));
+  const projects = ["bcons-aaa", "bcons-bbb", "bcons-ccc"];
+  const landingRows = projects.map((duAn, i) => leadRow({ ten: NAMES[1], sdt: PHONES[1], duAn, trang: urls[i], at: new Date(`2026-11-0${5 + i}T03:00:00.000Z`) }));
+  const T = setup({ landingRows });
+  const r = plain(T.ctx.gopLanding_({ dryRun: false, now: NOW }));
+  assert.equal(r.moi + r.trung, 3);
+  const kh = T.F.values(null, "KhachHang");
+  const row = kh.find((x) => x[kh[0].indexOf("SDT")] === PHONES[1]);
+  const obj = Object.fromEntries(kh[0].map((c, i) => [c, row[i]]));
+  assert.ok(obj.DongYBangChung.length > 500, "cell dài hơn giới hạn 500 của cell_: " + obj.DongYBangChung.length);
+  for (const sg of obj.DongYBangChung.split(" || ")) assert.ok(sg.length <= 200, "mỗi đoạn <= 200: " + sg.length);
+  assert.equal(obj.DongYDuAn, "bcons-aaa;bcons-bbb;bcons-ccc");
+  const again = plain(T.ctx.mergeCustomer_(obj, { ...Object.fromEntries(KHACH_COLS.map((c) => [c, ""])), SDT: PHONES[1] }, "2026-11-11T02:00:00.000Z"));
+  assert.equal(again.DongYNhanTin, "Có");
+  for (const m of projects) assert.equal(T.ctx.coTheNhan_(again, m), true, m);
+  assert.equal(again.DongYBangChung, obj.DongYBangChung);
+});
+
+test("Task 2 fix A: cell_ không dùng cho DongYBangChung/DongYDuAn trong upsertKhach_ (khách mới và khách cũ)", () => {
+  const long = Array.from({ length: 3 }, (_, i) => leadRow({ ten: NAMES[2], sdt: PHONES[3], duAn: "bcons-" + "abc"[i].repeat(3), trang: "https://x.pages.dev/" + "z".repeat(300), at: new Date(`2026-11-0${5 + i}T03:00:00.000Z`) }));
+  const T = setup({ landingRows: long });
+  T.ctx.gopLanding_({ dryRun: false, now: NOW });
+  const kh = T.F.values(null, "KhachHang");
+  const row = kh.find((x) => x[kh[0].indexOf("SDT")] === PHONES[3]);
+  assert.equal(row[kh[0].indexOf("DongYBangChung")].split(" || ").length, 3);
+});
+
+test("Task 2 fix A: DongYDuAn dài hơn 500 ký tự (14 dự án) không bị cắt khi ghi lên Sheet", () => {
+  const projects = Array.from({ length: 14 }, (_, i) => "bcons-" + String.fromCharCode(97 + i).repeat(33));
+  const landingRows = projects.map((duAn, i) => leadRow({ ten: NAMES[2], sdt: PHONES[3], duAn, at: new Date(`2026-11-05T03:${String(10 + i)}:00.000Z`) }));
+  const T = setup({ landingRows });
+  T.ctx.gopLanding_({ dryRun: false, now: NOW });
+  const kh = T.F.values(null, "KhachHang");
+  const row = kh.find((x) => x[kh[0].indexOf("SDT")] === PHONES[3]);
+  const duAn = row[kh[0].indexOf("DongYDuAn")];
+  assert.ok(duAn.length > 500, String(duAn.length));
+  assert.equal(duAn, projects.join(";"));
 });
