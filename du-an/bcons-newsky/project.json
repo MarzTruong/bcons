@@ -1,0 +1,33 @@
+{
+  "ma": "bcons-newsky",
+  "ten": "Bcons Newsky",
+  "tenPhapLy": "Khu căn hộ chung cư Điểm đến mới - The New Point",
+  "diaChi": "Phường Lái Thiêu, TP. Hồ Chí Minh (trước sáp nhập: TP. Thuận An, tỉnh Bình Dương), mặt tiền Quốc lộ 13",
+  "diaChiVideo": "Lái Thiêu, Bình Dương",
+  "toaDo": [
+    0,
+    0
+  ],
+  "chuDauTu": "Công ty TNHH Song Hỷ Quốc Tế (sản phẩm do Công ty CP Đầu tư Xây dựng Bcons triển khai và phát triển)",
+  "donViPhanPhoi": "Bcons PS (Công ty CP Bất động sản Bcons PS)",
+  "soCan": {
+    "o": 0,
+    "thuongMai": 0
+  },
+  "banGiaoDuKien": "Quý II/2028",
+  "thongTin": "thong-tin.md",
+  "tuKhoaNghienCuu": [
+    "Lái Thiêu",
+    "Thuận An",
+    "Bình Dương",
+    "Quốc lộ 13",
+    "metro số 2 Thủ Dầu Một - TP.HCM",
+    "lãi suất vay mua nhà"
+  ],
+  "tenKenh": {
+    "facebook": "",
+    "tiktok": ""
+  },
+  "_nguon": "Số chép từ tài liệu CĐT trên Drive Bcons/data/bcons-newsky/tai-lieu-cdt (xem thong-tin.md). Tọa độ, số căn ở/thương mại, tên kênh: chưa có, hỏi anh. Chưa có lienHe cho dự án này.",
+  "lichNoiDungSheetId": ""
+}

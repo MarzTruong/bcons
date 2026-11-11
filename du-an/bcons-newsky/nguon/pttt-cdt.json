@@ -1,0 +1,20 @@
+{
+  "_nguon": "Chép từ thông báo PTTT 08, 09, 10 của Công ty TNHH Song Hỷ Quốc Tế (ngày 05/10/2026), Drive: Bcons/data/bcons-newsky/tai-lieu-cdt/7. CSBH & PTTT/BTNP - PTTT 0x.pdf. Đọc 11/11/2026 từ bản OCR; tổng mỗi PTTT cộng đủ 100%. Số thứ tự PTTT là của CĐT, khác Bcons Central Park. Chưa có công cụ tính hay test cho dự án này.",
+  "chung": {
+    "vat": 0.1,
+    "phiBaoTri": 0.02,
+    "denBanGiao": "Lũy tiến 95% giá trị căn hộ + 100% thuế GTGT + 100% phí bảo trì tại thông báo bàn giao căn hộ",
+    "banGiaoDuKien": "Quý II/2028"
+  },
+  "pttt": {
+    "08": { "so": "29/TB-SHQT", "ngay": "05/10/2026", "chietKhau": 0.0565, "chietKhauTheoGia": "09", "tranLai": null,
+      "dot": [5, 10, 5, 5, 5, 10, 10, 5, 5, 10, 25, 5],
+      "ghiChu": "Đợt 3–10 vào 2, 4, 6, 8, 10, 12, 14, 16 tháng sau ký HĐMB. Chiết khấu 5,65% trên giá chưa VAT, chưa phí bảo trì, theo giá PTTT 09." },
+    "09": { "so": "30/TB-SHQT", "ngay": "05/10/2026", "chietKhau": 0, "tranLai": 6.9,
+      "dot": [5, 5, 50, 5, 5, 25, 5], "vay": [3],
+      "ghiChu": "Đợt 3 ngân hàng giải ngân 50%, 7 ngày sau ký HĐMB. Lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; CĐT bù chênh lệch. Chỉ khách cá nhân, gói cố định tối đa 30 tháng tại MB." },
+    "10": { "so": "34/TB-SHQT", "ngay": "05/10/2026", "chietKhau": 0.0215, "chietKhauTheoGia": "09", "tranLai": null,
+      "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
+      "ghiChu": "Vay 10% + 20% + 20% (đợt 3, 5, 7); CĐT hỗ trợ lãi và ân hạn gốc tối đa 18 tháng. Chiết khấu 2,15% theo giá PTTT 09. Chỉ khách cá nhân, gói cố định tối đa 18 tháng. Không có trần 6,9%." }
+  }
+}
