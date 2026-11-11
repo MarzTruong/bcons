@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadGs, plain, fakeSheets } from "./helpers.mjs";
@@ -44,7 +45,7 @@ function setup({ landingRows, cauHinh, extraById = {}, masterExtra = {}, withKha
   const ctx = loadGs([LOGIC, SHEETS]);
   const logs = [];
   ctx.Logger = { log: (...a) => logs.push(a.join(" ")) };
-  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp });
+  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp });
   return { F, ctx, logs };
 }
 const threeRows = () => [leadRow({ ten: NAMES[1], sdt: PHONES[1] }), leadRow({ ten: "Ten Khac", sdt: PHONES[0], duAn: "bcons-newsky" }), leadRow({ ten: NAMES[2], sdt: PHONES[2], badPhone: "12345" })];
@@ -627,7 +628,7 @@ function build({ khach, cauHinh = CAU2, tuChoi, byId = { M1: {}, M2: {} }, chua 
   const ctx = loadGs([LOGIC, SHEETS]);
   const logs = [];
   ctx.Logger = { log: (...a) => logs.push(a.join(" ")) };
-  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp });
+  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp });
   return { F, ctx, logs };
 }
 const run = (ctx, o = {}) => plain(ctx.phanBo_({ dryRun: false, now: NOW, ...o }));
@@ -1108,4 +1109,498 @@ test("hai người rút lại trong cùng một Master: xóa từ dưới lên, 
   assert.deepEqual(masterMa(F, "M1"), [pad(2), pad(4)]);
   const dels = F.calls.writes.filter((x) => x.method === "deleteRow" && x.owner === "M1").map((x) => x.row);
   assert.deepEqual(dels, [4, 2]);
+});
+
+// ---------------- Task 9: nhật ký, báo Telegram, lịch, menu ----------------
+const TG = { TELEGRAM_BOT_TOKEN: "TOKEN-BI-MAT-123", TELEGRAM_CHAT_ID: "-100777" };
+const SECRET_ID = "SHEETID-RIENG-XYZ";
+const SECRET_NAMES = ["Nguyễn Văn Kín", "Khach Cu", "Khach Moi", "Khach Loi", "Ten Khac", "Trần Thị Crm"];
+const SECRET_PHONES = ["0900000001", "0900000002", "0900000003", "0981234567", "090 000 0002"];
+function full({ props = TG, landingId = "L1", crmRows, landingRows, cauHinh, khach, tuChoi, byId, masterExtra = {} } = {}) {
+  const master = {
+    CauHinh: cauHinh || [CAU_HINH, ["bcons-newsky", landingId, "M1"]],
+    KhachHang: [KHACH_COLS, ...(khach || [existingCustomer()])],
+    NhapCRM: [CRM_H, ...(crmRows || [["Trần Thị Crm", "098.123.4567", "bcons-newsky", "Đã gọi", ""], ["Không SĐT", "12", "", "", ""]])],
+    ...(tuChoi ? { TuChoi: [["SDT", "LyDo", "NgayGhi"], ...tuChoi.map((x) => [x, "", ""])] } : {}),
+    ...masterExtra,
+  };
+  const F = fakeSheets({
+    master,
+    props,
+    byId: byId || { [landingId]: { Landing: [HEADERS, ...(landingRows || threeRows())] }, M1: {} },
+  });
+  const ctx = loadGs([LOGIC, SHEETS]);
+  const logs = [];
+  ctx.Logger = { log: (...a) => logs.push(a.join(" ")) };
+  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp });
+  return { F, ctx, logs };
+}
+const runAll = (ctx, o = {}) => plain(ctx.chayTatCa_({ dryRun: false, now: NOW, ...o }));
+const nhatKy = (F) => F.values(null, "NhatKy");
+const tgTexts = (F) => F.calls.fetch.map((c) => JSON.parse(c.options.payload).text);
+
+test("chayTatCa_: chạy đủ ba bước, trả số đếm từng bước, loi rỗng", () => {
+  const { ctx } = full();
+  const r = runAll(ctx);
+  assert.equal(r.loi, "");
+  assert.equal(r.skipped, undefined);
+  assert.deepEqual([r.landing.doc, r.landing.moi, r.landing.trung, r.landing.loi], [3, 1, 1, 1]);
+  assert.deepEqual([r.crm.doc, r.crm.moi, r.crm.loi], [2, 1, 1]);
+  assert.equal(typeof r.phanBo.chua, "number");
+  assert.deepEqual(r.phanBo.masterLoi, []);
+});
+
+test("chayTatCa_: đúng một dòng NhatKy: giờ ISO, nguồn, số đọc, mới, trùng, lỗi, ghi chú chỉ có số", () => {
+  const { F, ctx } = full();
+  const r = runAll(ctx);
+  const nk = nhatKy(F);
+  assert.equal(nk.length, 2);
+  assert.deepEqual(nk[0], ["Thời gian", "Nguồn", "Số dòng đọc", "Khách mới", "Gộp trùng", "Lỗi", "Ghi chú"]);
+  const [t, nguon, doc, moi, trung, loi, ghiChu] = nk[1];
+  assert.equal(t instanceof Date ? t.toISOString() : t, NOW.toISOString());
+  assert.equal(nguon, "Tự động");
+  assert.equal(doc, r.landing.doc + r.crm.doc);
+  assert.equal(moi, r.landing.moi + r.crm.moi);
+  assert.equal(trung, r.landing.trung + r.crm.trung);
+  assert.equal(loi, r.landing.loi + r.crm.loi + r.phanBo.masterLoi.length);
+  assert.match(String(ghiChu), /^chua=\d+ chan=\d+ tuchoi=\d+ khong=\d+$/);
+});
+
+test("chayTatCa_: nguồn 'Gộp ngay' được ghi đúng; mặc định 'Tự động'", () => {
+  const { F, ctx } = full();
+  runAll(ctx, { source: "Gộp ngay" });
+  assert.equal(nhatKy(F)[1][1], "Gộp ngay");
+});
+
+test("chayTatCa_: lần hai (không còn gì) vẫn ghi một dòng toàn số 0", () => {
+  const { F, ctx } = full();
+  runAll(ctx);
+  runAll(ctx);
+  const nk = nhatKy(F);
+  assert.equal(nk.length, 3);
+  assert.deepEqual(nk[2].slice(2, 6), [0, 0, 0, 0]);
+});
+
+test("không rò: chạy cả Master_Data có tên/SĐT nhận dạng được -> không có trong NhatKy, payload Telegram, alert UI, Logger", () => {
+  const rows = [
+    leadRow({ ten: "Nguyễn Văn Kín", sdt: "0981234567" }),
+    leadRow({ ten: "Khach Moi", sdt: "0900000002" }),
+    leadRow({ ten: "Khach Loi", sdt: "0900000003", badPhone: "090 000 0002" }),
+  ];
+  const check = ({ F, logs }) => {
+    const all = JSON.stringify(nhatKy(F)) + JSON.stringify(F.calls.fetch.map((c) => c.options)) + F.ui.alerts.join("\n") + logs.join("\n");
+    for (const x of [...SECRET_NAMES, ...SECRET_PHONES]) assert.ok(!all.includes(x), "rò rỉ: " + x);
+    assert.ok(!JSON.stringify(F.calls.fetch.map((c) => c.options)).includes(TG.TELEGRAM_BOT_TOKEN), "token trong payload");
+    assert.ok(!all.includes(SECRET_ID), "ID Sheet bị rò");
+  };
+  // 1) chạy thường, có khách rút lại và Master hỏng (để có tin báo)
+  let e = full({ landingId: SECRET_ID, landingRows: rows, khach: [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Trần Thị Crm", DongYNhanTin: "Không", DuAnQuanTam: "bcons-newsky" })] });
+  runAll(e.ctx, { source: "Gộp ngay" });
+  e.ctx.chayThu();
+  e.ctx.gopNgay();
+  e.ctx.baoCaoNgay_({ now: NOW });
+  check(e);
+  assert.ok(e.F.calls.fetch.length >= 1, "phải có ít nhất một tin để kiểm");
+  // 2) lỗi giữa chừng
+  e = full({ landingId: SECRET_ID, landingRows: rows, crmRows: [["Nguyễn Văn Kín", "0981234567", "", "", ""]], masterExtra: {} });
+  let khReads = 0;
+  e.F.hooks.onRead = ({ sheet }) => {
+    if (sheet === "KhachHang" && ++khReads === 3) throw new Error("Nguyễn Văn Kín 0981234567 " + SECRET_ID); // bước 3 (phanBo_)
+  };
+  const r = runAll(e.ctx);
+  assert.match(r.loi, /^LOI_[A-Z_]+$/);
+  check(e);
+  // 3) lỗi mở Sheet landing: thông báo gốc có ID
+  e = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  const r3 = runAll(e.ctx);
+  assert.equal(r3.loi, "LOI_DOC_SHEET");
+  check(e);
+  assert.equal(tgTexts(e.F).length, 1);
+});
+
+test("chayTatCa_: lỗi ở bước 2 -> bước 3 không chạy, một dòng NhatKy với loại lỗi, một tin Telegram, trả loi, không ném", () => {
+  // làm hỏng bước 2: NhapCRM thiếu cột DaGop
+  const bad = full({ masterExtra: { NhapCRM: [["HoTen", "SDT", "DuAnQuanTam", "TrangThaiCRM"], ["A", "0900000002", "", ""]] } });
+  const r = runAll(bad.ctx);
+  assert.equal(r.loi, "LOI_TAB");
+  assert.ok(r.landing, "bước 1 đã xong, có kết quả");
+  assert.equal(r.phanBo, undefined);
+  assert.ok(!bad.F.calls.openById.includes("M1"), "bước 3 (phanBo_) không được chạy");
+  assert.equal(bad.F.values("M1", "KhachTuMaster"), null);
+  const nk = nhatKy(bad.F);
+  assert.equal(nk.length, 2);
+  assert.equal(nk[1][1], "Tự động");
+  assert.match(String(nk[1][6]), /LOI_TAB/);
+  assert.ok(nk[1][5] >= 1);
+  const tg = tgTexts(bad.F);
+  assert.equal(tg.length, 1);
+  assert.match(tg[0], /LOI_TAB/);
+  assert.ok(!tg[0].includes("DaGop"), "không đưa nguyên thông báo lỗi");
+});
+
+test("chayTatCa_: lỗi ở bước 1 (không mở được Sheet landing) -> LOI_DOC_SHEET, bước 2 và 3 không chạy", () => {
+  const { F, ctx } = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  const r = runAll(ctx);
+  assert.equal(r.loi, "LOI_DOC_SHEET");
+  assert.equal(r.crm, undefined);
+  assert.equal(r.phanBo, undefined);
+  assert.equal(F.values(null, "KhachHang").length, 2); // bước 2 không ghi khách CRM
+  assert.equal(nhatKy(F).length, 2);
+  assert.equal(tgTexts(F).length, 1);
+});
+
+test("errorClass_: ánh xạ thông báo lỗi sang mã cố định, lỗi lạ hoặc không phải Error -> LOI_KHAC", () => {
+  const { ctx } = full();
+  const c = (m) => ctx.errorClass_(m);
+  assert.equal(c(new Error("Không mở được Sheet: abc")), "LOI_DOC_SHEET");
+  assert.equal(c(new Error("Không mở được hoặc tiêu đề sai ở tab KhachTuMaster của dự án: x.")), "LOI_DOC_SHEET");
+  assert.equal(c(new Error("Tab NhapCRM thiếu cột DaGop.")), "LOI_TAB");
+  assert.equal(c(new Error("Thiếu tab CauHinh trong Master_Data.")), "LOI_TAB");
+  assert.equal(c(new Error("Sheet landing X không có tab Landing.")), "LOI_TAB");
+  assert.equal(c(new Error("Không lấy được khóa")), "LOI_KHOA");
+  assert.equal(c(new Error("Lock timeout: Could not obtain lock after 10000 milliseconds")), "LOI_KHOA");
+  assert.equal(c(new Error("Service invoked too many times")), "LOI_KHAC");
+  assert.equal(c("chuỗi"), "LOI_KHAC");
+  assert.equal(c(null), "LOI_KHAC");
+  assert.equal(c(undefined), "LOI_KHAC");
+});
+
+test("chayTatCa_: lỗi khóa (ném giữa chừng) -> LOI_KHOA", () => {
+  const { F, ctx } = full();
+  F.hooks.onRead = () => { throw new Error("Lock timeout: could not obtain lock"); };
+  assert.equal(runAll(ctx).loi, "LOI_KHOA");
+});
+
+test("chayTatCa_: dryRun -> không NhatKy, không Telegram, không ghi gì, vẫn trả số đếm", () => {
+  const { F, ctx } = full();
+  const before = F.snapshot();
+  const r = runAll(ctx, { dryRun: true });
+  assert.equal(F.snapshot(), before);
+  assert.equal(F.calls.writes.length, 0);
+  assert.equal(F.calls.fetch.length, 0);
+  assert.equal(r.loi, "");
+  assert.equal(r.landing.moi, 1);
+  assert.equal(F.values(null, "NhatKy"), null);
+});
+
+test("chayTatCa_: dryRun gặp lỗi -> trả loi nhưng không NhatKy, không Telegram, không ghi", () => {
+  const { F, ctx } = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  const before = F.snapshot();
+  const r = runAll(ctx, { dryRun: true });
+  assert.equal(r.loi, "LOI_DOC_SHEET");
+  assert.equal(F.calls.fetch.length, 0);
+  assert.equal(F.calls.writes.length, 0);
+  assert.equal(F.snapshot(), before);
+});
+
+test("chayTatCa_: Master dự án hỏng (masterLoi) -> tin báo chỉ có mã dự án và số, NhatKy đếm vào cột Lỗi", () => {
+  const khach = [khRow({ MaKhach: pad(1), SDT: "0900000009", HoTen: "Trần Thị Crm", DongYNhanTin: "Không", DuAnQuanTam: "bcons-central-park" })];
+  const { F, ctx } = full({ khach, landingRows: [], crmRows: [], cauHinh: [CAU_HINH, ["bcons-newsky", "L1", "M1"], ["bcons-central-park", "", "M2"]], byId: { L1: { Landing: [HEADERS] }, M1: {} } });
+  const r = runAll(ctx);
+  assert.deepEqual(r.phanBo.masterLoi, ["bcons-central-park"]);
+  assert.equal(r.loi, "LOI_MASTER");
+  const tg = tgTexts(F);
+  assert.equal(tg.length, 1);
+  assert.match(tg[0], /bcons-central-park/);
+  assert.match(tg[0], /1/);
+  for (const x of ["Trần Thị Crm", "0900000009", "Khach", "M2"]) assert.ok(!tg[0].includes(x));
+  const nk = nhatKy(F);
+  assert.equal(nk.length, 2);
+  assert.equal(nk[1][5], 1);
+  assert.match(String(nk[1][6]), /LOI_MASTER/);
+});
+
+test("Telegram hỏng (fetch ném lỗi / mã khác 200) không bao giờ làm chayTatCa_ ném; NhatKy vẫn ghi", () => {
+  for (const mode of ["throw", 500, 429]) {
+    const { F, ctx } = full({ landingId: SECRET_ID, byId: { M1: {} } });
+    if (mode === "throw") F.hooks.fetchError = true;
+    else F.hooks.fetchCode = mode;
+    const r = runAll(ctx);
+    assert.equal(r.loi, "LOI_DOC_SHEET", String(mode));
+    assert.equal(nhatKy(F).length, 2, String(mode));
+  }
+});
+
+test("thiếu thuộc tính Telegram -> bỏ qua lặng lẽ, không gọi fetch, vẫn ghi NhatKy", () => {
+  for (const props of [{}, { TELEGRAM_BOT_TOKEN: "t" }, { TELEGRAM_CHAT_ID: "1" }, { TELEGRAM_BOT_TOKEN: "  ", TELEGRAM_CHAT_ID: "1" }]) {
+    const { F, ctx } = full({ props, landingId: SECRET_ID, byId: { M1: {} } });
+    const r = runAll(ctx);
+    assert.equal(r.loi, "LOI_DOC_SHEET");
+    assert.equal(F.calls.fetch.length, 0);
+    assert.equal(nhatKy(F).length, 2);
+  }
+});
+
+test("baoLoi_: định dạng tin, cắt ngắn, dùng token trong URL, không ghi token ra Logger", () => {
+  const { F, ctx, logs } = full();
+  ctx.baoLoi_("LOI_TAB", 3);
+  assert.equal(F.calls.fetch.length, 1);
+  const f = F.calls.fetch[0];
+  assert.equal(f.url, "https://api.telegram.org/botTOKEN-BI-MAT-123/sendMessage");
+  assert.equal(f.options.method, "post");
+  assert.equal(f.options.muteHttpExceptions, true);
+  const body = JSON.parse(f.options.payload);
+  assert.equal(body.chat_id, "-100777");
+  assert.match(body.text, /LOI_TAB/);
+  assert.match(body.text, /3/);
+  assert.ok(!logs.join("").includes("TOKEN-BI-MAT"));
+  ctx.baoLoi_("X".repeat(9000), 1);
+  assert.ok(JSON.parse(F.calls.fetch[1].options.payload).text.length <= 4000);
+});
+
+test("báo lỗi lặp: cùng loại lỗi trong 6 giờ chỉ gửi một tin; sau 6 giờ hoặc loại khác thì gửi lại", () => {
+  const { F, ctx } = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  runAll(ctx);
+  runAll(ctx, { now: new Date(NOW.getTime() + 15 * 60000) });
+  runAll(ctx, { now: new Date(NOW.getTime() + 5 * 3600 * 1000) });
+  assert.equal(F.calls.fetch.length, 1);
+  assert.equal(nhatKy(F).length, 4, "NhatKy vẫn ghi mỗi lần chạy");
+  runAll(ctx, { now: new Date(NOW.getTime() + 6 * 3600 * 1000 + 1000) });
+  assert.equal(F.calls.fetch.length, 2);
+});
+
+test("báo lỗi lặp: lỗi đổi loại thì gửi ngay; chạy thành công xong rồi lỗi lại thì gửi lại", () => {
+  const { F, ctx } = full();
+  const at = (min) => ({ now: new Date(NOW.getTime() + min * 60000) });
+  F.hooks.onRead = () => { throw new Error("Lock timeout"); };
+  assert.equal(runAll(ctx, at(0)).loi, "LOI_KHOA");
+  assert.equal(F.calls.fetch.length, 1);
+  F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
+  assert.equal(runAll(ctx, at(1)).loi, "LOI_KHAC");
+  assert.equal(F.calls.fetch.length, 2);
+  runAll(ctx, at(2));
+  assert.equal(F.calls.fetch.length, 2, "cùng loại, chưa đủ 6 giờ");
+  F.hooks.onRead = null;
+  assert.equal(runAll(ctx, at(3)).loi, "");
+  F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
+  runAll(ctx, at(4));
+  assert.equal(F.calls.fetch.length, 3, "sau một lần chạy tốt, lỗi lại phải báo lại");
+});
+
+test("hai lần chạy chồng: lần hai (gọi lại lúc lần một đang đọc) thoát lặng lẽ skipped:true, không ghi, không báo", () => {
+  const { F, ctx } = full();
+  let inner = null;
+  F.hooks.onRead = () => {
+    if (inner) return;
+    inner = runAll(ctx);
+  };
+  const w0 = F.calls.writes.length;
+  const r = runAll(ctx);
+  assert.equal(inner.skipped, true);
+  assert.equal(inner.loi, "");
+  assert.equal(r.loi, "");
+  assert.equal(F.calls.fetch.length, 0);
+  assert.equal(nhatKy(F).length, 2, "chỉ lần chạy ngoài ghi NhatKy");
+  assert.ok(F.calls.writes.length > w0);
+  assert.equal(F.calls.lock.filter((x) => x === "wait").length, 0, "bước trong dùng khóa của bên ngoài, không tự chờ (không bế tắc)");
+});
+
+test("khóa bận (tiến trình khác giữ): skipped:true, không đọc không ghi, không báo lỗi, không NhatKy", () => {
+  const { F, ctx } = full();
+  F.hooks.lockBusy = true;
+  let reads = 0;
+  F.hooks.onRead = () => { reads++; };
+  const r = runAll(ctx);
+  assert.deepEqual([r.skipped, r.loi], [true, ""]);
+  assert.equal(reads, 0);
+  assert.equal(F.calls.writes.length, 0);
+  assert.equal(F.calls.fetch.length, 0);
+});
+
+test("khóa luôn được nhả (thành công và khi lỗi), và lần chạy sau chạy được", () => {
+  const ok = full();
+  runAll(ok.ctx);
+  assert.deepEqual(ok.F.calls.lock, ["tryLock", "release"]);
+  const bad = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  runAll(bad.ctx);
+  assert.deepEqual(bad.F.calls.lock, ["tryLock", "release"]);
+  const r = runAll(bad.ctx, { now: new Date(NOW.getTime() + 86400000) });
+  assert.equal(r.skipped, undefined);
+});
+
+test("ghi NhatKy hỏng giữa chừng không ném ra ngoài chayTatCa_: trả LOI_KHAC và báo một tin", () => {
+  const { F, ctx } = full();
+  F.hooks.onWrite = (i) => { if (i.sheet === "NhatKy" && i.method === "setValues" && i.row > 1) throw new Error("quota"); };
+  const r = runAll(ctx);
+  assert.equal(r.loi, "LOI_KHAC");
+  assert.equal(tgTexts(F).length, 1);
+  assert.deepEqual(F.calls.lock, ["tryLock", "release"]);
+});
+
+test("gopNgay / chayThu / chayTatCaTuDong: nguồn và dryRun đúng; alert chỉ có số", () => {
+  const e = full();
+  e.ctx.chayThu();
+  assert.equal(e.F.calls.writes.length, 0);
+  assert.equal(e.F.ui.alerts.length, 1);
+  assert.match(e.F.ui.alerts[0], /\d/);
+  e.ctx.gopNgay();
+  assert.equal(nhatKy(e.F)[1][1], "Gộp ngay");
+  assert.equal(e.F.ui.alerts.length, 2);
+  for (const x of [...SECRET_NAMES, ...SECRET_PHONES]) assert.ok(!e.F.ui.alerts.join("").includes(x));
+  e.ctx.chayTatCaTuDong();
+  assert.equal(nhatKy(e.F)[2][1], "Tự động");
+  assert.equal(e.F.ui.alerts.length, 2, "chạy tự động không hiện alert");
+});
+
+test("chayThu: alert nêu đủ các số của ba bước", () => {
+  const e = full();
+  e.ctx.chayThu();
+  const a = e.F.ui.alerts[0];
+  assert.match(a, /^Chạy thử/);
+  assert.ok(a.includes("Landing: đọc 3, mới 1, trùng 1, lỗi 1"), a);
+  assert.ok(a.includes("CRM: đọc 2, mới 1, trùng 0, lỗi 1"), a);
+  assert.match(a, /Phân bổ: .*chưa phân \d+, rút lại \d+/);
+});
+
+test("gopNgay khi bị bỏ qua (khóa bận) báo anh thử lại, không ném", () => {
+  const e = full();
+  e.F.hooks.lockBusy = true;
+  e.ctx.gopNgay();
+  assert.equal(e.F.ui.alerts.length, 1);
+  assert.match(e.F.ui.alerts[0], /đang chạy/);
+});
+
+test("gopNgay khi lỗi: alert chỉ có mã lỗi", () => {
+  const e = full({ landingId: SECRET_ID, byId: { M1: {} } });
+  e.ctx.gopNgay();
+  assert.match(e.F.ui.alerts[0], /LOI_DOC_SHEET/);
+  assert.ok(!e.F.ui.alerts[0].includes(SECRET_ID));
+});
+
+test("onOpen: menu Master_Data với ba mục đúng tên và hàm", () => {
+  const e = full();
+  e.ctx.onOpen();
+  assert.equal(e.F.ui.menus.length, 1);
+  assert.equal(e.F.ui.menus[0].name, "Master_Data");
+  assert.deepEqual(plain(e.F.ui.menus[0].items), [["Gộp ngay", "gopNgay"], ["Chạy thử (không ghi)", "chayThu"], ["Cài lịch tự động", "caiLichTuDong"]]);
+  for (const [, fn] of e.F.ui.menus[0].items) assert.equal(typeof e.ctx[fn], "function", fn);
+});
+
+test("caiLichTuDong (mục menu): cài lịch và báo bằng alert", () => {
+  const e = full();
+  e.ctx.caiLichTuDong();
+  assert.equal(e.F.triggers.length, 2);
+  assert.equal(e.F.ui.alerts.length, 1);
+});
+
+test("caiLich_: đúng hai trigger (15 phút, 8:00 hằng ngày); chạy hai lần vẫn hai; trigger lạ không bị xóa; trigger cũ trùng tên bị thay", () => {
+  const { F, ctx } = full();
+  ctx.ScriptApp.newTrigger("khacNua").timeBased().everyMinutes(5).create();
+  ctx.ScriptApp.newTrigger("chayTatCaTuDong").timeBased().everyMinutes(30).create();
+  ctx.ScriptApp.newTrigger("baoCaoNgayTuDong").timeBased().atHour(3).everyDays(1).create();
+  ctx.caiLich_();
+  ctx.caiLich_();
+  const mine = F.triggers.filter((t) => t.fn !== "khacNua");
+  assert.equal(F.triggers.length, 3);
+  assert.equal(mine.length, 2);
+  const a = mine.find((t) => t.fn === "chayTatCaTuDong");
+  const b = mine.find((t) => t.fn === "baoCaoNgayTuDong");
+  assert.deepEqual([a.kind, a.every], ["minutes", 15]);
+  assert.deepEqual([b.kind, b.every, b.hour], ["days", 1, 8]);
+  assert.ok(F.triggers.some((t) => t.fn === "khacNua"));
+});
+
+test("hàm điểm vào của trigger tồn tại", () => {
+  const { ctx } = full();
+  for (const f of ["chayTatCaTuDong", "baoCaoNgayTuDong", "gopNgay", "chayThu", "onOpen", "caiLichTuDong"]) assert.equal(typeof ctx[f], "function", f);
+});
+
+test("baoCaoNgayTuDong: lỗi khi đọc -> báo loại lỗi, không ném", () => {
+  const { F, ctx } = full();
+  F.hooks.onRead = () => { throw new Error("Service invoked too many times"); };
+  assert.doesNotThrow(() => ctx.baoCaoNgayTuDong());
+  const t = tgTexts(F);
+  assert.equal(t.length, 1);
+  assert.match(t[0], /LOI_KHAC/);
+});
+
+// baoCaoNgay_: hôm qua theo giờ Asia/Ho_Chi_Minh (UTC+7). NOW = 11/11 08:00 giờ VN, nên "hôm qua" = 10/11.
+const khAt = (ngayTao, nguon, i) => khRow({ MaKhach: pad(i), SDT: "09000000" + String(10 + i), NgayTao: ngayTao, NguonGoc: nguon });
+function baoCaoFixture(asDate = false) {
+  const d = (iso) => (asDate ? new Date(iso) : iso);
+  return full({
+    khach: [
+      khAt(d("2026-11-09T16:59:59.000Z"), "Landing", 1), // 09/11 23:59:59 VN: không tính
+      khAt(d("2026-11-09T17:00:00.000Z"), "Landing", 2), // 10/11 00:00:00 VN: tính
+      khAt(d("2026-11-10T09:00:00.000Z"), "CRM", 3), // tính
+      khAt(d("2026-11-10T16:59:59.000Z"), "Landing", 4), // 10/11 23:59:59 VN: tính
+      khAt(d("2026-11-10T17:00:00.000Z"), "CRM", 5), // 11/11 00:00 VN: không tính
+      khAt("không phải ngày", "Landing", 6), // rác: không tính, không ném
+      khAt(d("2026-11-10T10:00:00.000Z"), "Nguồn lạ Khách A", 7), // tính vào Khác, không in nguồn lạ
+    ],
+    masterExtra: {
+      ChuaPhanDuAn: [[...KHACH_COLS, "GanDuAn"], khRow({ MaKhach: pad(8) }), khRow({ MaKhach: pad(9) }), new Array(KHACH_COLS.length + 1).fill("")],
+      Loi: [["Thời gian", "Nguồn", "Dòng", "Lý do"], ["2026-11-10T01:00:00.000Z", "Landing", 3, "SĐT không hợp lệ"]],
+      TuChoi: [["SDT", "LyDo", "NgayGhi"], ["0900000099", "x", d("2026-11-10T03:00:00.000Z")], ["0900000098", "x", d("2026-11-09T03:00:00.000Z")]],
+    },
+  });
+}
+test("baoCaoNgay_: đếm đúng quanh nửa đêm Asia/Ho_Chi_Minh, theo nguồn, chỉ số", () => {
+  for (const asDate of [false, true]) {
+    const { F, ctx } = baoCaoFixture(asDate);
+    const before = F.snapshot();
+    const text = ctx.baoCaoNgay_({ now: NOW });
+    assert.equal(text, "📊 Master_Data hôm qua: 4 khách mới (Landing 2, CRM 1, Khác 1). Chưa phân dự án: 2. Dòng lỗi: 1. Rút lại: 1.", String(asDate));
+    assert.deepEqual(tgTexts(F), [text]);
+    assert.equal(F.snapshot(), before, "chỉ đọc");
+    assert.equal(F.calls.writes.length, 0);
+  }
+});
+
+test("baoCaoNgay_: ngày mặc định là hôm nay theo giờ VN; 17:00 UTC đã sang ngày mới ở VN", () => {
+  const { ctx } = baoCaoFixture(false);
+  // 10/11 17:00 UTC = 11/11 00:00 VN: hôm qua = 10/11 (đúng như NOW)
+  const t = ctx.baoCaoNgay_({ now: new Date("2026-11-10T17:00:00.000Z") });
+  assert.match(t, /4 khách mới/);
+  // 10/11 16:59 UTC = 10/11 23:59 VN: hôm qua = 09/11, chỉ có 1 khách (09/11 23:59:59 VN)
+  const t2 = ctx.baoCaoNgay_({ now: new Date("2026-11-10T16:59:00.000Z") });
+  assert.match(t2, /1 khách mới \(Landing 1\)/);
+});
+
+test("baoCaoNgay_: không có tab nào -> toàn số 0, không ném; thiếu thuộc tính Telegram -> không gửi", () => {
+  const F = fakeSheets({ master: {}, props: {} });
+  const ctx = loadGs([LOGIC, SHEETS]);
+  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp, Logger: { log() {} } });
+  const text = ctx.baoCaoNgay_({ now: NOW });
+  assert.equal(text, "📊 Master_Data hôm qua: 0 khách mới. Chưa phân dự án: 0. Dòng lỗi: 0. Rút lại: 0.");
+  assert.equal(F.calls.fetch.length, 0);
+});
+
+test("baoCaoNgay_: Telegram hỏng không làm ném", () => {
+  const { F, ctx } = baoCaoFixture();
+  F.hooks.fetchError = true;
+  assert.doesNotThrow(() => ctx.baoCaoNgay_({ now: NOW }));
+  F.hooks.fetchError = false;
+  F.hooks.fetchCode = 500;
+  assert.doesNotThrow(() => ctx.baoCaoNgay_({ now: NOW }));
+});
+
+test("ghiNhatKy_: tab NhatKy chưa có thì tạo kèm tiêu đề rồi ghi một dòng", () => {
+  const F = fakeSheets({ master: {} });
+  const ctx = loadGs([LOGIC, SHEETS]);
+  Object.assign(ctx, { SpreadsheetApp: F.SpreadsheetApp, LockService: F.LockService, PropertiesService: F.PropertiesService, UrlFetchApp: F.UrlFetchApp, ScriptApp: F.ScriptApp, Logger: { log() {} } });
+  ctx.ghiNhatKy_(F.SpreadsheetApp.getActiveSpreadsheet(), { now: NOW, nguon: "Gộp ngay", doc: 5, moi: 2, trung: 1, loi: 3, ghiChu: "chua=2 chan=1 tuchoi=1 khong=0" });
+  const nk = F.values(null, "NhatKy");
+  assert.equal(nk.length, 2);
+  assert.deepEqual(nk[1].map((x) => (x instanceof Date ? x.toISOString() : x)), [NOW.toISOString(), "Gộp ngay", 5, 2, 1, 3, "chua=2 chan=1 tuchoi=1 khong=0"]);
+});
+
+test("appsscript.json: múi giờ Asia/Ho_Chi_Minh, V8, Stackdriver, đủ và tối thiểu các quyền", () => {
+  const j = JSON.parse(fs.readFileSync(path.join(here, "apps-script", "appsscript.json"), "utf8"));
+  assert.equal(j.timeZone, "Asia/Ho_Chi_Minh");
+  assert.equal(j.runtimeVersion, "V8");
+  assert.equal(j.exceptionLogging, "STACKDRIVER");
+  assert.deepEqual([...j.oauthScopes].sort(), [
+    "https://www.googleapis.com/auth/script.container.ui",
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/script.scriptapp",
+    "https://www.googleapis.com/auth/spreadsheets",
+  ]);
+});
+
+test("baoLoi_: kho thuộc tính script hỏng (ném lỗi) cũng không làm ném", () => {
+  const { ctx } = full();
+  ctx.PropertiesService = { getScriptProperties: () => { throw new Error("hỏng"); } };
+  assert.doesNotThrow(() => ctx.baoLoi_("LOI_KHAC", 1));
+  assert.doesNotThrow(() => ctx.sendTelegram_("x"));
 });

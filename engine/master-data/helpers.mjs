@@ -23,7 +23,12 @@ export const plain = (x) => (x === undefined ? undefined : JSON.parse(JSON.strin
 // hooks.waitLockError = true làm waitLock ném lỗi.
 export function fakeSheets(spec = {}) {
   const calls = { fetch: [], lock: [], writes: [], openById: [] };
-  const hooks = { onWrite: null, onRead: null, waitLockError: false };
+  const hooks = { onWrite: null, onRead: null, waitLockError: false, lockBusy: false, fetchError: false, fetchCode: 200 };
+  const props = { ...(spec.props || {}) };
+  let lockHeld = false;
+  const ui = { menus: [], alerts: [] };
+  const triggers = [];
+  let triggerSeq = 0;
   const looksNumeric = (v) => typeof v === "string" && /^-?\d+(\.\d+)?$/.test(v);
 
   function makeSheet(owner, name, rows) {
@@ -150,6 +155,22 @@ export function fakeSheets(spec = {}) {
     hooks,
     SpreadsheetApp: {
       getActiveSpreadsheet: () => master,
+      getUi: () => ({
+        createMenu(name) {
+          const m = { name, items: [] };
+          const b = {
+            addItem(label, fn) {
+              m.items.push([label, fn]);
+              return b;
+            },
+            addToUi() {
+              ui.menus.push(m);
+            },
+          };
+          return b;
+        },
+        alert: (msg) => ui.alerts.push(String(msg)),
+      }),
       openById(id) {
         calls.openById.push(id);
         if (id === masterId) return master;
@@ -158,25 +179,84 @@ export function fakeSheets(spec = {}) {
       },
     },
     LockService: {
+      // Khóa script thật: một khóa duy nhất, không cho vào lại. tryLock/waitLock thất bại khi đang bị giữ.
       getScriptLock: () => ({
         waitLock(ms) {
           calls.lock.push("wait");
-          if (hooks.waitLockError) throw new Error("Không lấy được khóa");
+          if (hooks.waitLockError || hooks.lockBusy || lockHeld) throw new Error("Không lấy được khóa");
+          lockHeld = true;
+        },
+        tryLock(ms) {
+          calls.lock.push("tryLock");
+          if (hooks.lockBusy || lockHeld) return false;
+          lockHeld = true;
+          return true;
         },
         releaseLock() {
           calls.lock.push("release");
+          lockHeld = false;
         },
       }),
     },
     PropertiesService: {
-      getScriptProperties: () => ({ getProperty: (k) => (spec.props && k in spec.props ? spec.props[k] : null) }),
+      getScriptProperties: () => ({
+        getProperty: (k) => (k in props ? props[k] : null),
+        setProperty: (k, v) => {
+          props[k] = String(v);
+        },
+        deleteProperty: (k) => {
+          delete props[k];
+        },
+      }),
     },
     UrlFetchApp: {
       fetch(url, options) {
         calls.fetch.push({ url, options });
-        return { getResponseCode: () => 200 };
+        if (hooks.fetchError) throw new Error("Telegram không trả lời");
+        return { getResponseCode: () => hooks.fetchCode };
       },
     },
+    // Trigger giả: chỉ nhận cách gọi mà Apps Script thật có (everyMinutes chỉ 1/5/10/15/30; atHour 0..23).
+    triggers,
+    ScriptApp: {
+      getProjectTriggers: () => triggers.slice(),
+      deleteTrigger(t) {
+        const i = triggers.indexOf(t);
+        if (i >= 0) triggers.splice(i, 1);
+      },
+      newTrigger(fn) {
+        const t = { id: ++triggerSeq, fn, kind: null, every: null, hour: null, getHandlerFunction: () => fn };
+        const builder = {
+          timeBased: () => ({
+            everyMinutes(n) {
+              if (![1, 5, 10, 15, 30].includes(n)) throw new Error("everyMinutes chỉ nhận 1, 5, 10, 15, 30");
+              t.kind = "minutes";
+              t.every = n;
+              return builder;
+            },
+            atHour(h) {
+              if (!(h >= 0 && h <= 23)) throw new Error("atHour 0..23");
+              t.hour = h;
+              return {
+                everyDays(n) {
+                  t.kind = "days";
+                  t.every = n;
+                  return builder;
+                },
+              };
+            },
+          }),
+          create() {
+            triggers.push(t);
+            return t;
+          },
+        };
+        return builder;
+      },
+    },
+    ui,
+    /** Thuộc tính script hiện tại (để test kiểm cờ chống báo lặp). */
+    props,
     /** Giá trị một tab (qua API giả, đúng như getValues trả). id=null là Master_Data. */
     values(id, tab) {
       const ss = id == null ? master : byId[id];
