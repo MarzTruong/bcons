@@ -7,20 +7,328 @@
     "dotSo": "5%, không bao gồm thuế GTGT"
   },
   "pttt": {
-    "01": { "so": "05/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0.085, "tranLai": null,
-      "dot": [5, 15, 5, 5, 5, 10, 5, 5, 5, 10, 25, 5],
-      "ghiChu": "Chiết khấu 8,5% trên giá chưa VAT, chưa phí bảo trì, theo giá PTTT 02." },
-    "02": { "so": "06/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0, "tranLai": null,
-      "dot": [5, 15, 50, 25, 5], "vay": [3],
-      "ghiChu": "Đợt 3 ngân hàng giải ngân 50%; CĐT hỗ trợ lãi và ân hạn gốc từ ngày giải ngân đến thông báo bàn giao, tối đa 24 tháng." },
-    "03": { "so": "07/TB-BPTH", "ngay": "04/09/2026", "chietKhau": 0, "tranLai": 6.9,
-      "dot": [5, 5, 50, 5, 5, 25, 5], "vay": [3],
-      "ghiChu": "Lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; gói cố định tối đa 30 tháng tại MB." },
-    "04": { "so": "09/TB-DTTH", "ngay": "26/10/2026", "chietKhau": 0.0245, "tranLai": 6.9,
-      "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
-      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; trần 6,9% như PTTT 03; MB, gói cố định tối đa 30 tháng." },
-    "05": { "so": "10/TB-ĐTTH", "ngay": "26/10/2026", "chietKhau": 0.0245, "tranLai": null,
-      "dot": [5, 5, 10, 5, 20, 5, 20, 25, 5], "vay": [3, 5, 7],
-      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng, KHÔNG có trần 6,9%. PDF ghi bàn giao 'Dự kiến Quý I/2029' là CĐT ghi nhầm: anh xác nhận 07/11/2026 bàn giao dự kiến Quý II/2029 như các PTTT khác." }
+    "01": {
+      "so": "05/TB-BPTH",
+      "ngay": "04/09/2026",
+      "chietKhau": 0.085,
+      "tranLai": null,
+      "dot": [
+        5,
+        15,
+        5,
+        5,
+        5,
+        10,
+        5,
+        5,
+        5,
+        10,
+        25,
+        5
+      ],
+      "ghiChu": "Chiết khấu 8,5% trên giá chưa VAT, chưa phí bảo trì, theo giá PTTT 02.",
+      "dotChiTiet": [
+        {
+          "l": "Ký thỏa thuận đăng ký",
+          "w": "Khi ký thỏa thuận",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Đợt 3",
+          "w": "2 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 4",
+          "w": "4 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 5",
+          "w": "6 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 6",
+          "w": "8 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 7",
+          "w": "10 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 8",
+          "w": "12 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 9",
+          "w": "14 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 10",
+          "w": "18 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2029",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ]
+    },
+    "02": {
+      "so": "06/TB-BPTH",
+      "ngay": "04/09/2026",
+      "chietKhau": 0,
+      "tranLai": null,
+      "dot": [
+        5,
+        15,
+        50,
+        25,
+        5
+      ],
+      "vay": [
+        3
+      ],
+      "ghiChu": "Đợt 3 ngân hàng giải ngân 50%; CĐT hỗ trợ lãi và ân hạn gốc từ ngày giải ngân đến thông báo bàn giao, tối đa 24 tháng.",
+      "dotChiTiet": [
+        {
+          "l": "Ký thỏa thuận đăng ký",
+          "w": "Khi ký thỏa thuận",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Ngân hàng giải ngân",
+          "w": "15 ngày sau HĐMB",
+          "k": "loan"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2029",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ]
+    },
+    "03": {
+      "so": "07/TB-BPTH",
+      "ngay": "04/09/2026",
+      "chietKhau": 0,
+      "tranLai": 6.9,
+      "dot": [
+        5,
+        5,
+        50,
+        5,
+        5,
+        25,
+        5
+      ],
+      "vay": [
+        3
+      ],
+      "ghiChu": "Lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; gói cố định tối đa 30 tháng tại MB.",
+      "dotChiTiet": [
+        {
+          "l": "Ký thỏa thuận đăng ký",
+          "w": "Khi ký thỏa thuận",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Ngân hàng giải ngân",
+          "w": "7 ngày sau HĐMB",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 4",
+          "w": "2 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Đợt 5",
+          "w": "4 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2029",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ]
+    },
+    "04": {
+      "so": "09/TB-DTTH",
+      "ngay": "26/10/2026",
+      "chietKhau": 0.0245,
+      "tranLai": 6.9,
+      "dot": [
+        5,
+        5,
+        10,
+        5,
+        20,
+        5,
+        20,
+        25,
+        5
+      ],
+      "vay": [
+        3,
+        5,
+        7
+      ],
+      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; trần 6,9% như PTTT 03; MB, gói cố định tối đa 30 tháng.",
+      "dotChiTiet": [
+        {
+          "l": "Ký thỏa thuận đăng ký",
+          "w": "Khi ký thỏa thuận",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 1",
+          "w": "7 ngày sau HĐMB",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 4",
+          "w": "5 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 2",
+          "w": "7 ngày sau đợt 4",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 6",
+          "w": "10 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 3",
+          "w": "7 ngày sau đợt 6",
+          "k": "loan"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2029",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ]
+    },
+    "05": {
+      "so": "10/TB-ĐTTH",
+      "ngay": "26/10/2026",
+      "chietKhau": 0.0245,
+      "tranLai": null,
+      "dot": [
+        5,
+        5,
+        10,
+        5,
+        20,
+        5,
+        20,
+        25,
+        5
+      ],
+      "vay": [
+        3,
+        5,
+        7
+      ],
+      "ghiChu": "Chiết khấu 2,45% theo giá PTTT 02; CĐT hỗ trợ lãi và ân hạn gốc tối đa 24 tháng, KHÔNG có trần 6,9%. PDF ghi bàn giao 'Dự kiến Quý I/2029' là CĐT ghi nhầm: anh xác nhận 07/11/2026 bàn giao dự kiến Quý II/2029 như các PTTT khác.",
+      "dotChiTiet": [
+        {
+          "l": "Ký thỏa thuận đăng ký",
+          "w": "Khi ký thỏa thuận",
+          "k": "tt"
+        },
+        {
+          "l": "Ký hợp đồng mua bán",
+          "w": "Khi ký HĐMB",
+          "k": "hdmb"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 1",
+          "w": "7 ngày sau HĐMB",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 4",
+          "w": "5 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 2",
+          "w": "7 ngày sau đợt 4",
+          "k": "loan"
+        },
+        {
+          "l": "Đợt 6",
+          "w": "10 tháng sau HĐMB",
+          "k": "mid"
+        },
+        {
+          "l": "Ngân hàng giải ngân lần 3",
+          "w": "7 ngày sau đợt 6",
+          "k": "loan"
+        },
+        {
+          "l": "Thông báo bàn giao căn hộ",
+          "w": "Dự kiến Quý II/2029",
+          "k": "handover"
+        },
+        {
+          "l": "Thông báo bàn giao sổ hồng",
+          "w": "Theo thông báo của CĐT",
+          "k": "so"
+        }
+      ]
+    }
   }
 }

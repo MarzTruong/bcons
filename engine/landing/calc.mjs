@@ -51,11 +51,11 @@ export const PLANS = {
   },
 };
 
-/** Các đợt thanh toán của một PTTT. Đợt 2 gồm VAT của đợt 1 + 2; đợt giữa và vay tính trên giá có VAT; bàn giao gồm VAT của đợt sổ. */
-export function calc(key, P) {
-  const plan = PLANS[key];
-  if (!plan) throw new Error(`Không có PTTT ${key}`);
-  const V = P * VAT;
+/** Tính các đợt của một lịch đợt bất kỳ (plan.rows). Đợt 2 gồm VAT của đợt 1 + 2; đợt giữa và vay tính trên giá có VAT; bàn giao gồm VAT của đợt sổ hồng. */
+export function calcWith(plan, P, opts = {}) {
+  const vat = opts.vat ?? plan.vat ?? VAT;
+  const fee = opts.fee ?? plan.fee ?? FEE;
+  const V = P * vat;
   const G = P + V;
   const pct = (k) => plan.rows.find((r) => r.k === k)?.p ?? 0;
   const p1 = pct("tt");
@@ -80,7 +80,14 @@ export function calc(key, P) {
     else if (r.k === "so") so = r.amt;
     else ownBefore += r.amt;
   }
-  return { key, P, V: Math.round(V), G: Math.round(G), fee: Math.round(P * FEE), rows, ownBefore, loan, handover, so };
+  return { P, V: Math.round(V), G: Math.round(G), fee: Math.round(P * fee), rows, ownBefore, loan, handover, so };
+}
+
+/** Các đợt thanh toán của một PTTT Central Park (bảng PLANS ở trên). */
+export function calc(key, P) {
+  const plan = PLANS[key];
+  if (!plan) throw new Error(`Không có PTTT ${key}`);
+  return { key, ...calcWith(plan, P) };
 }
 
 /** Trả đều gốc + lãi hàng tháng. rate: %/năm, years: số năm. */
