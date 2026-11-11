@@ -25,7 +25,7 @@ export function timCotMaster(header) {
     const t = fold(h);
     if (out.ma === undefined && /^ma can$/.test(t)) out.ma = i;
     else if (/^loai can$/.test(t)) out.loai = i;
-    else if (/^block$/.test(t)) out.block = i;
+    else if (/^block$/.test(t)) out.block ??= i; // Master File Newsky có tiêu đề 'Block' lặp ở cột D: lấy cột đầu
     else if (/^tang$/.test(t)) out.tang = i;
     else if (/^dt tim tuong/.test(t)) out.tim = i;
     else if (/^dt thong thuy/.test(t)) out.thongThuy = i;

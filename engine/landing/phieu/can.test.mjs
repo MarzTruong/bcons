@@ -31,6 +31,12 @@ test("timCotMaster: Central Park, cột gộp 'PTTT 02 / 03' cho cả 02 và 03,
   assert.equal(c.thongThuy, 8);
 });
 
+test("timCotMaster: tiêu đề 'Block' lặp (Master File Newsky thật có cột D ghi nhầm) thì lấy cột đầu", () => {
+  const h = [...H_NS];
+  h[3] = "Block";
+  assert.equal(timCotMaster(h).block, 1);
+});
+
 test("timCotMaster: Newsky PTTT 08, 09, 10; bỏ cột 'Tính lại'", () => {
   const c = timCotMaster(H_NS);
   assert.deepEqual(c.gia, { "08": 10, "09": 13, "10": 22 });
