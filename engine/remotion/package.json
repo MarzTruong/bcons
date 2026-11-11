@@ -33,6 +33,7 @@
   },
   "scripts": {
     "phieu": "node scripts/phieu.mjs",
+    "phieu:mau": "node scripts/phieu-mau.mjs",
     "dev": "node scripts/with-env.mjs remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
