@@ -5,14 +5,14 @@
   "diaChi": "Phường Lái Thiêu, TP. Hồ Chí Minh (trước sáp nhập: TP. Thuận An, tỉnh Bình Dương), mặt tiền Quốc lộ 13",
   "diaChiVideo": "Lái Thiêu, Bình Dương",
   "toaDo": [
-    0,
-    0
+    106.70369904755647,
+    10.890026400573376
   ],
   "chuDauTu": "Công ty TNHH Song Hỷ Quốc Tế (sản phẩm do Công ty CP Đầu tư Xây dựng Bcons triển khai và phát triển)",
   "donViPhanPhoi": "Bcons PS (Công ty CP Bất động sản Bcons PS)",
   "soCan": {
-    "o": 0,
-    "thuongMai": 0
+    "o": 1536,
+    "thuongMai": 29
   },
   "banGiaoDuKien": "Quý II/2028",
   "thongTin": "thong-tin.md",
@@ -26,8 +26,15 @@
   ],
   "tenKenh": {
     "facebook": "",
-    "tiktok": ""
+    "tiktok": "tuantruong.bconsps"
   },
-  "_nguon": "Số chép từ tài liệu CĐT trên Drive Bcons/data/bcons-newsky/tai-lieu-cdt (xem thong-tin.md). Tọa độ, số căn ở/thương mại, tên kênh: chưa có, hỏi anh. Chưa có lienHe cho dự án này.",
-  "lichNoiDungSheetId": ""
+  "_nguon": "Số chép từ tài liệu CĐT trên Drive Bcons/data/bcons-newsky/tai-lieu-cdt (xem thong-tin.md). Tọa độ, số căn (1.536 ở + 29 thương mại), diện tích đất, bàn giao Quý II/2028, liên hệ: anh cung cấp 11/11/2026. Tên kênh Facebook: chưa có.",
+  "lichNoiDungSheetId": "",
+  "lienHe": {
+    "ten": "Tuấn Trương",
+    "sdt": "0938323139",
+    "sdtHienThi": "0938.32.31.39",
+    "zalo": "https://zalo.me/0938323139",
+    "_ghiChu": "Anh đổi quy tắc 06/11/2026: video có tên + QR, landing có nút gọi/Zalo. Caption vẫn không ghi SĐT."
+  }
 }

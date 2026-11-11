@@ -22,3 +22,6 @@ Ba số này không dùng làm nội dung cho tới khi anh mở tay hai bài ki
 - Giá thị trường chung (Knight Frank, CBRE, Savills) là mặt bằng TP.HCM mở rộng, không phải giá Bcons NewSky. Không so sánh với dự án.
 - Cảnh báo pháp lý AGY nêu (Tuổi Trẻ 15/01/2026 về điều kiện bán nhà hình thành trong tương lai của NewSky): cần kiểm hồ sơ pháp lý mới nhất của CĐT trước khi làm nội dung NewSky.
 - AGY không đưa nhận định "tiềm năng tăng giá": đúng quy tắc.
+
+## Cập nhật 11/11/2026 (anh báo)
+Chính phủ vừa cập nhật: tuyến metro không còn trên trục Quốc lộ 13, đã dời ra sau. Các dòng metro số 2 dọc QL13 trong báo cáo này (ga C10 Lái Thiêu, thu hồi đất Lái Thiêu, GPMB 36.586 tỷ...) **không dùng** cho nội dung Newsky cho tới khi có nguồn chính thống về tuyến mới.
