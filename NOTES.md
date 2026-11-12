@@ -84,6 +84,7 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 9. VAT 10% trên giá căn hộ có đúng với cách CĐT thu không (xem mục Chưa làm)?
 
 ## Ghi chú kỹ thuật
+- Skill Superpowers (brainstorming, writing-plans, executing-plans, TDD, systematic-debugging, verification) không còn chép trong `.claude/skills/` (12/11/2026): dùng bản plugin Superpowers cài trên máy (cloud và laptop đã có). Máy mới phải cài plugin này.
 - Windows: bot đang chạy giữ file code của nó nên `git pull` lỗi "unable to unlink". Từ `97ad9e7`, `/capnhat` thoát mã 4 để `Bcons-Bot.cmd` cập nhật lúc bot tắt (`scripts/bot/capnhat.cmd`, log `out/tam/capnhat.log`).
 - Khóa ElevenLabs cần quyền Sound Effects cho `/sfx` (anh đã bật 07/11). Cloud không vào được ai.google.dev dù đã mở mạng (có thể cần phiên mới).
 - Bot laptop: nút "Lưu lên GitHub" chạy `git pull --rebase`; nếu GitHub có bản mới của chính file bot thì Windows có thể không cho thay file (06/11 lỗi "unable to unlink ... Invalid argument", để lại file chép dở làm lần sau báo "untracked files would be overwritten"). Cách xử lý: đóng cửa sổ bot, xóa các file chép dở trong danh sách báo lỗi, `git pull --rebase --autostash`, `git push`, mở lại bot. Laptop có thể còn thay đổi cục bộ từ autostash, kiểm `git status` khi tiện.
