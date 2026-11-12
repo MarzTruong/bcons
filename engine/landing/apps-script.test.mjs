@@ -126,3 +126,12 @@ test("nhiều dự án dùng chung một Apps Script: tin báo và tin Zalo ghi 
   assert.ok(!/Central Park|Phan Trung/.test(z), "không lẫn dự án khác");
   assert.match(ctx.formatTelegram_(ctx.validateLead_({ ...lead, duAn: "du-an-la" }).lead), /landing Bcons Central Park/);
 });
+
+test("địa chỉ trang trong Code.gs (SITE) khớp link QR trong project.json của từng dự án (đổi tên miền phải đổi cả hai)", () => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+  const site = vm.runInContext("SITE", ctx);
+  for (const ma of ["bcons-central-park", "bcons-newsky"]) {
+    const proj = JSON.parse(fs.readFileSync(path.join(root, "du-an", ma, "project.json"), "utf8"));
+    assert.equal(new URL(proj.watermark.link).origin.toLowerCase(), site[ma], ma);
+  }
+});

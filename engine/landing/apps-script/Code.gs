@@ -11,7 +11,7 @@ var NHU_CAU = ['Mua để ở', 'Mua cho thuê', 'Tìm hiểu thêm'];
 var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
 var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '236 Phan Trung, Biên Hòa' }, 'bcons-newsky': { ten: 'Bcons Newsky', diaChi: 'Quốc lộ 13, phường Lái Thiêu, TP.HCM' } };
 /** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
-var SITE = { 'bcons-central-park': 'https://bcons-central-park-dsj.pages.dev', 'bcons-newsky': 'https://bcons-newsky-53r.pages.dev' };
+var SITE = { 'bcons-central-park': 'https://bcons-central-park-dsj.pages.dev', 'bcons-newsky': 'https://bcons-newsky-binhduong.pages.dev' };
 function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
 var CONSENT_VERSION = 'v1-2026-11-06';
 var MAX_LEADS_10M = 20; // quá số này trong 10 phút: vẫn ghi Sheet nhưng tạm dừng báo Telegram (chống nhồi tin)
