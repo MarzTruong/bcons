@@ -7,7 +7,8 @@ import { parseCaption } from "../caption.mjs";
 import { videoPaths } from "../project.mjs";
 import { buttons } from "./tg.mjs";
 import { chayPhieu as chayPhieuThat, parseLenhPhieu } from "../phieu.mjs";
-import { HELP, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
+import { HELP, buocVideo, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
+import { pidOf } from "./du-an.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
 
@@ -42,14 +43,21 @@ export function parsePorcelainZ(out) {
 }
 
 /**
- * deps: { tg, chatId, projDir, outDir, repoRoot, remotionDir,
+ * deps: { tg, chatId, duAn (taoDuAn: nhiều dự án, anh chọn bằng /duan) hoặc projDir (một dự án cố định), outDir, repoRoot, remotionDir,
  *         exec(cmd, args, { cwd, timeoutMs }) → Promise<{ code, out }>, cancel() → bool,
  *         runClaude(prompt, { sessionId, cwd }) → Promise<{ text, sessionId, isError }>,
  *         sendApproved({ captionPath, mp4Path, label }) → Promise,
  *         now() → ms, startedAt (ms), restart() → void }
  */
 export function createBot(deps) {
-  const { tg, chatId, projDir, outDir, repoRoot, remotionDir, exec, runClaude, sendApproved } = deps;
+  const { tg, chatId, outDir, repoRoot, remotionDir, exec, runClaude, sendApproved } = deps;
+  // Dự án đang làm: đổi được khi bot đang chạy (/duan). Mọi lệnh con đọc projDir tại lúc chạy và truyền --du-an.
+  const duAn = deps.duAn ?? null;
+  let cur = duAn ? duAn.get() : null;
+  let projDir = cur ? cur.dir : deps.projDir;
+  const pid = () => (cur ? pidOf(cur.ma) : "");
+  const nhan = () => (cur ? `🏢 ${cur.ten}\n` : "");
+  const daFlag = () => (cur ? ["--du-an", cur.ma] : []);
   const now = deps.now ?? (() => Date.now());
   const startedAt = deps.startedAt ?? now();
   const runId = crypto.randomBytes(3).toString("hex"); // nút bấm của lần chạy trước hết hiệu lực
@@ -57,6 +65,7 @@ export function createBot(deps) {
     Promise.resolve()
       .then(() => tg.sendMessage(chatId, text, extra))
       .catch((e) => console.error(`Không gửi được tin Telegram: ${e.message}`));
+  const sayP = (text, extra) => say(nhan() + text, extra);
   const pending = new Map(); // id → { kind, run }
   let session = null; // { id, at }
   let current = null; // tên việc đang chạy
@@ -125,7 +134,7 @@ export function createBot(deps) {
         : kind === "gemvid"
           ? [["🎬 Làm video từ kết quả này", `ok:${kind}:${id}`], ["Để sau", `huy:${kind}:${id}`]]
           : [["✅ Đồng ý", `ok:${kind}:${id}`], ["✖️ Hủy", `huy:${kind}:${id}`]];
-    return say(text, buttons(labels));
+    return say((kind === "giong" ? nhan() : "") + text, buttons(labels));
   }
 
   function checkName(name) {
@@ -149,9 +158,44 @@ export function createBot(deps) {
   const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard"]);
 
   const commands = {
-    start: () => say(HELP),
-    huongdan: () => say(HELP),
-    danhsach: () => say(formatList(projDir, outDir)),
+    start: () => sayP(HELP),
+    huongdan: () => sayP(HELP),
+    danhsach: () => sayP(formatList(projDir, outDir)),
+    duan(args) {
+      if (!duAn) return say("Bot này đang chạy cố định một dự án.");
+      const chu = (args ?? []).join(" ").trim();
+      if (chu) {
+        const hit = duAn.tim(chu);
+        if (!hit) return say(`Không thấy dự án "${chu}" (hoặc khớp nhiều dự án). Gõ /duan để bấm chọn.`);
+        return doiDuAn(hit.ma);
+      }
+      const rows = duAn.list().map((d) => [{ text: `${d.ma === cur?.ma ? "✅ " : ""}${d.ten}`.slice(0, 60), callback_data: `da:${d.ma}`.slice(0, 64) }]);
+      return say(`Đang làm: ${cur?.ten ?? "(chưa có dự án)"}. Chọn dự án:`, { reply_markup: { inline_keyboard: rows } });
+    },
+    video() {
+      const idx = videoIndex(projDir);
+      if (!idx.length) return sayP("Chưa có video nào. Nhắn Claude chủ đề để bắt đầu video mới.");
+      const icon = { kichban: "📝", giong: "🎙", render: "🎬", duyet: "👀", xong: "✅" };
+      const rows = idx.map((v) => [{ text: `${icon[buocVideo(v.name, projDir, outDir).tiep]} ${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `v:${pid()}:${v.so}` }]);
+      if (idx.length > 1) rows.push([{ text: "☑ Làm nhiều video cùng lúc", callback_data: `vm:${pid()}` }]);
+      return sayP("Bấm một video để xem tiến trình và làm bước kế tiếp.\n📝 chờ duyệt kịch bản · 🎙 chờ giọng · 🎬 chờ render · 👀 chờ duyệt · ✅ xong", { reply_markup: { inline_keyboard: rows } });
+    },
+    khach() {
+      return sayP(
+        "Phiếu tính gửi khách: gõ /phieu <mã căn> <PTTT> (thêm chữ pdf nếu cần), vd. /phieu B1.3-01 09\nHoặc bấm lệnh /phieu_... có sẵn trong tin báo khách mới.",
+        buttons([["🔎 Kiểm giá Master File", "m:kiemgia"]]),
+      );
+    },
+    nghiencuu() {
+      return sayP("Tìm số liệu có nguồn: gõ /gemini <chủ đề>, vd. /gemini lãi suất vay mua nhà tháng 11 (tốn ít phí Google).", buttons([["📄 Chọn báo cáo cũ để làm video", "m:baocao"]]));
+    },
+    may() {
+      const rows = [
+        [{ text: "⬇️ Cập nhật bot", callback_data: "m:capnhat" }, { text: "🔁 Chuyển máy", callback_data: "m:chuyenmay" }],
+        [{ text: "🔊 Tạo hiệu ứng âm thanh", callback_data: "m:sfx" }, { text: "🆕 Trò chuyện Claude mới", callback_data: "m:moi" }],
+      ];
+      return say(`Máy đang chạy bot: ${switcher?.self ?? "máy này"}.${busy ? `\nĐang làm: ${current}.` : ""}`, { reply_markup: { inline_keyboard: rows } });
+    },
     async huy() {
       if (!busy) return say("Không có việc nào đang chạy.");
       const ok = deps.cancel?.();
@@ -209,16 +253,16 @@ export function createBot(deps) {
       const khongNhac = opt === "khongnhac" || opt === "khong-nhac";
       const file = `${name}${khongNhac ? "-khong-nhac" : ""}.mp4`;
       return enqueue(`render ${name}`, async () => {
-        await say(`Đang render ${name}${khongNhac ? " (không nhạc)" : ""}, mất vài phút... (dừng: /huy)`);
-        await run("npm", ["run", "render:drive", "--", name, ...(khongNhac ? ["--khong-nhac"] : [])], remotionDir, `Render ${name}`, 60 * 60e3);
+        await sayP(`Đang render ${name}${khongNhac ? " (không nhạc)" : ""}, mất vài phút... (dừng: /huy)`);
+        await run("npm", ["run", "render:drive", "--", ...daFlag(), name, ...(khongNhac ? ["--khong-nhac"] : [])], remotionDir, `Render ${name}`, 60 * 60e3);
         await sendPreview(path.join(outDir, file), khongNhac ? `Bản không nhạc ${name} (để chọn nhạc trên TikTok).` : `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
       });
     },
     storyboard([name]) {
       if (!checkName(name)) return;
       return enqueue(`storyboard ${name}`, async () => {
-        await say(`Đang chụp storyboard ${name} (không tốn credit, vài phút)...`);
-        await run("npm", ["run", "storyboard", "--", name], remotionDir, `Storyboard ${name}`, 30 * 60e3);
+        await sayP(`Đang chụp storyboard ${name} (không tốn credit, vài phút)...`);
+        await run("npm", ["run", "storyboard", "--", ...daFlag(), name], remotionDir, `Storyboard ${name}`, 30 * 60e3);
         const dir = path.join(remotionDir, "out", "tam", "storyboard", name);
         const m = JSON.parse(fs.readFileSync(path.join(dir, "manifest.json"), "utf8"));
         if (m.uocTinh) await say("Thời lượng từng cảnh đang là ước tính (chưa có giọng). Có giọng thật thì hình giữ nguyên, chỉ khớp lại thời gian.");
@@ -246,7 +290,7 @@ export function createBot(deps) {
         return say(e.message);
       }
       return enqueue(`phiếu ${a.ma}`, async () => {
-        await say(`Đang dựng phiếu tính căn ${a.ma} (PTTT ${a.pttt})...`);
+        await sayP(`Đang dựng phiếu tính căn ${a.ma} (PTTT ${a.pttt})...`);
         try {
           const r = await (deps.chayPhieu ?? chayPhieuThat)({ ...a, projDir });
           const ten = r.png.split(/[\\/]/).pop();
@@ -254,14 +298,14 @@ export function createBot(deps) {
           if (r.pdf) await tg.sendDocument(chatId, r.pdf, `Bản PDF ${ten.replace(/\.png$/, "")}`);
           if (r.canhBao) await say(r.canhBao);
         } catch (e) {
-          await say(e.message);
+          await say(e.message + (cur ? `\n(Bot đang ở dự án ${cur.ten}. Căn thuộc dự án khác thì gõ /duan đổi rồi bấm lại.)` : ""));
         }
       });
     },
     kiemgia() {
       return enqueue("kiểm Master File", async () => {
-        await say("Đang kiểm Master File theo 5 thông báo PTTT của CĐT...");
-        const out = await run("npm", ["run", "kiem-gia"], remotionDir, "Kiểm Master File", 10 * 60e3);
+        await sayP("Đang kiểm Master File theo 5 thông báo PTTT của CĐT...");
+        const out = await run("npm", ["run", "kiem-gia", ...(cur ? ["--", ...daFlag()] : [])], remotionDir, "Kiểm Master File", 10 * 60e3);
         await say(tail(out, 40));
       });
     },
@@ -269,8 +313,8 @@ export function createBot(deps) {
       const topic = (words ?? []).join(" ").trim();
       if (!topic) return say("Nhắn kèm chủ đề, ví dụ: /gemini lãi suất vay mua nhà tháng 11");
       return enqueue(`nghiên cứu ${topic}`, async () => {
-        await say(`Đang nhờ Gemini tìm số liệu: "${topic}" (1–3 phút)...`);
-        const out = await run("npm", ["run", "gemini", "--", ...words], remotionDir, "Nghiên cứu Gemini", 10 * 60e3);
+        await sayP(`Đang nhờ Gemini tìm số liệu: "${topic}" (1–3 phút)...`);
+        const out = await run("npm", ["run", "gemini", "--", ...daFlag(), ...words], remotionDir, "Nghiên cứu Gemini", 10 * 60e3);
         const saved = await gitSave([path.relative(repoRoot, path.join(projDir, "nguon", "gemini"))], `Gemini ${topic}`).catch((e) => `Chưa lưu lên GitHub: ${e.message}`);
         await say(`${tail(out, 40)}\n\n${saved}`);
         // Nối cổng 1 → 2: một nút giao Claude kiểm link + đề xuất góc từ chính báo cáo này (anh muốn 07/11/2026).
@@ -308,8 +352,8 @@ export function createBot(deps) {
       const label = ids ? ` cảnh ${n}` : "";
       return ask(`Tạo giọng ElevenLabs cho ${name}${label}? Việc này TỐN CREDIT.`, "giong", () =>
         enqueue(`tạo giọng ${name}${label}`, async () => {
-          await say(`Đang tạo giọng ${name}${label}...`);
-          const args = ["run", "voice", "--", name, ...(ids ? [`--canh=${ids.join(",")}`] : [])];
+          await sayP(`Đang tạo giọng ${name}${label}...`);
+          const args = ["run", "voice", "--", ...daFlag(), name, ...(ids ? [`--canh=${ids.join(",")}`] : [])];
           const out = await run("npm", args, remotionDir, `Tạo giọng ${name}${label}`, 20 * 60e3);
           const audio = path.relative(repoRoot, videoPaths(name, projDir).audioDir);
           const saved = await gitSave([audio, path.relative(repoRoot, videoPaths(name, projDir).timestamps)], `Giong ${name}${label}`).catch((e) => `Chưa lưu được giọng lên GitHub: ${e.message}`);
@@ -350,7 +394,8 @@ export function createBot(deps) {
     },
   };
 
-  function claudeTask(text) {
+  function claudeTask(text0) {
+    const text = cur ? `[Dự án đang làm trên bot: ${cur.ma} (${cur.ten}), thư mục du-an/${cur.ma}/. Lệnh npm thêm --du-an ${cur.ma}.]\n${text0}` : text0;
     return enqueue("việc giao cho Claude", async () => {
       const before = new Set(await changedPaths());
       if (before.size) await say(`Lưu ý: laptop đang có ${before.size} file sửa dở chưa lưu. Em chỉ lưu/bỏ những file Claude sửa lần này.`);
@@ -363,7 +408,7 @@ export function createBot(deps) {
       if (!mine.length) return;
       await ask(`Claude đã sửa ${mine.length} file:\n${mine.join("\n")}\n\nLưu lên GitHub?`, "claude", (ok) =>
         ok
-          ? enqueue("lưu thay đổi của Claude", async () => say(await gitSave(mine, `Bot: ${text.slice(0, 60)}`)))
+          ? enqueue("lưu thay đổi của Claude", async () => say(await gitSave(mine, `Bot: ${text0.slice(0, 60)}`)))
           : enqueue("bỏ thay đổi", async () => {
               await run("git", ["stash", "push", "-u", "-m", `bot-bo-${now()}`, "--", ...mine], repoRoot, "Cất thay đổi (git stash)");
               await say("Đã bỏ thay đổi của Claude (cất vào git stash, lấy lại được nếu cần).");
@@ -372,27 +417,82 @@ export function createBot(deps) {
     });
   }
 
+  const M_CMDS = new Set(["kiemgia", "baocao", "capnhat", "chuyenmay", "sfx", "moi", "video", "duan"]);
+  const VIDEO_NHAN = [["storyboard", "🖼 Storyboard"], ["giong", "🎙 Tạo giọng"], ["render", "🎬 Render"], ["xem", "👀 Xem"], ["duyet", "✅ Duyệt"]];
+
+  function doiDuAn(ma) {
+    if (!duAn) return say("Bot này đang chạy cố định một dự án.");
+    if (busy || queue.length) return say(`Đang làm: ${current ?? "việc xếp hàng"}. Đợi xong (hoặc /huy) rồi đổi dự án, để việc đang chạy không lẫn dự án.`);
+    let hit;
+    try {
+      hit = duAn.set(ma);
+    } catch {
+      return say(`Không thấy dự án "${ma}". Gõ /duan để chọn lại.`);
+    }
+    cur = hit;
+    projDir = hit.dir;
+    pending.clear(); // nút Đồng ý của dự án trước hết hiệu lực
+    picks.clear();
+    const n = videoIndex(projDir).length;
+    return say(`🏢 Đang làm: ${hit.ten} (${n} video). Mọi lệnh từ giờ chạy cho dự án này. Gõ /video để tiếp tục.`);
+  }
+
+  /** Thẻ một video: tiến trình + nút bước kế tiếp ở hàng đầu, các bước khác ở hàng dưới. */
+  function theVideo(so) {
+    const v = videoIndex(projDir).find((x) => String(x.so) === String(so));
+    if (!v) return say("Không tìm thấy video này nữa. Gõ /video.");
+    const b = buocVideo(v.name, projDir, outDir);
+    const o = (x) => (x ? "✅" : "⬜");
+    const nut = (cmd, text, extra) => ({ text, callback_data: `va:${pid()}:${cmd}:${v.so}${extra ? `:${extra}` : ""}` });
+    const chinh = {
+      kichban: [nut("storyboard", "🖼 Xem storyboard (chụp hình từng cảnh)")],
+      giong: [nut("giong", "🎙 Tạo giọng (tốn credit, có hỏi lại)")],
+      render: [nut("render", "🎬 Render video")],
+      duyet: [nut("xem", "👀 Xem bản render"), nut("duyet", "✅ Duyệt")],
+      xong: [nut("xem", "👀 Xem lại caption + video")],
+    }[b.tiep];
+    const daCo = new Set(chinh.map((x) => x.callback_data.split(":")[2]));
+    const khac = VIDEO_NHAN.filter(([cmd]) => !daCo.has(cmd)).map(([cmd, t]) => nut(cmd, t));
+    const rows = [chinh, khac.slice(0, 3), [...khac.slice(3), nut("render", "🎬 Render không nhạc", "khongnhac")], [{ text: "⬅ Danh sách video", callback_data: "m:video" }]].filter((r) => r.length);
+    const tiep = {
+      kichban: "Bước kế: kịch bản chưa duyệt. Xem storyboard rồi nhắn Claude duyệt hoặc sửa.",
+      giong: "Bước kế: tạo giọng.",
+      render: "Bước kế: render.",
+      duyet: `Bước kế: xem rồi duyệt (caption: ${b.caption}, video: ${b.video}).`,
+      xong: "Đã duyệt xong. Nhắn Claude ngày giờ đăng để lên lịch.",
+    }[b.tiep];
+    return sayP(`🎬 ${v.so} · ${v.tieuDe}\nKịch bản ${b.kichBan ? "✅" : "📝 nháp"} · Giọng ${o(b.giong)} · Render ${o(b.mp4)} · Duyệt ${o(b.duyet)}\n${tiep}`, { reply_markup: { inline_keyboard: rows } });
+  }
+
   /** Menu tick chọn video (anh muốn 07/11/2026): ☐/☑ mỗi video, "Chọn tất cả", "▶ Làm (n video)". */
   const picks = new Map(); // cmd → { sel: Set<số>, extra }
+  const sfx = () => (cur ? `:${pid()}` : "");
+  /** Nút của dự án khác (tin cũ trước khi đổi dự án) thì không chạy. */
+  function dungDuAn(p) {
+    if (!cur || p === pid()) return true;
+    say(`Nút này thuộc dự án khác (tin cũ). Bot đang làm: ${cur.ten}. Gõ /video để xem lại.`);
+    return false;
+  }
   function pickMarkup(cmd) {
     const idx = videoIndex(projDir);
     const p = picks.get(cmd) ?? { sel: new Set() };
     const all = idx.length > 0 && idx.every((v) => p.sel.has(v.so));
-    const rows = idx.map((v) => [{ text: `${p.sel.has(v.so) ? "☑" : "☐"} ${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `tick:${cmd}:${v.so}` }]);
-    rows.push([{ text: all ? "☑ Bỏ chọn tất cả" : "☐ Chọn tất cả", callback_data: `tick:${cmd}:all` }]);
-    rows.push([{ text: p.sel.size ? `▶ Làm (${p.sel.size} video)` : "▶ Làm (chưa chọn)", callback_data: `tick:${cmd}:ok` }]);
+    const rows = idx.map((v) => [{ text: `${p.sel.has(v.so) ? "☑" : "☐"} ${v.so} · ${v.tieuDe}`.slice(0, 60), callback_data: `tick:${cmd}:${v.so}${sfx()}` }]);
+    rows.push([{ text: all ? "☑ Bỏ chọn tất cả" : "☐ Chọn tất cả", callback_data: `tick:${cmd}:all${sfx()}` }]);
+    rows.push([{ text: p.sel.size ? `▶ Làm (${p.sel.size} video)` : "▶ Làm (chưa chọn)", callback_data: `tick:${cmd}:ok${sfx()}` }]);
     return { inline_keyboard: rows };
   }
   function pickVideo(cmd, extra = []) {
     const idx = videoIndex(projDir);
     if (!idx.length) return say("Chưa có video nào có số. Xem /danhsach.");
     picks.set(cmd, { sel: new Set(), extra: extra[0] });
-    return say(`/${cmd}: tick chọn 1 hoặc nhiều video (hoặc Chọn tất cả), rồi bấm ▶ Làm.`, { reply_markup: pickMarkup(cmd) });
+    return sayP(`/${cmd}: tick chọn 1 hoặc nhiều video (hoặc Chọn tất cả), rồi bấm ▶ Làm.`, { reply_markup: pickMarkup(cmd) });
   }
   async function onTick(cq) {
-    const [, cmd, what] = cq.data.split(":");
+    const [, cmd, what, p0] = cq.data.split(":");
     await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
     if (!VIDEO_CMDS.has(cmd)) return;
+    if (!dungDuAn(p0)) return;
     const p = picks.get(cmd) ?? { sel: new Set() };
     picks.set(cmd, p);
     const idx = videoIndex(projDir);
@@ -427,6 +527,22 @@ export function createBot(deps) {
       return say(`Đang chuyển bot sang ${host} (khoảng 10–40 giây, chờ Drive đồng bộ)...`);
     }
     if (String(cq.data ?? "").startsWith("tick:")) return onTick(cq);
+    const d = String(cq.data ?? "");
+    if (/^(da|v|va|vm|vmc|m):/.test(d) || d === "vm") {
+      await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
+      const [loai, a, b, c, e] = d.split(":");
+      if (loai === "da") return doiDuAn(d.slice(3));
+      if (loai === "m") return M_CMDS.has(a) ? commands[a]([]) : undefined;
+      if (!dungDuAn(a)) return;
+      if (loai === "v") return theVideo(b);
+      if (loai === "vm") return say("Làm việc gì cho nhiều video?", buttons(VIDEO_NHAN.map(([cmd, nhanNut]) => [nhanNut, `vmc:${a}:${cmd}`])));
+      if (loai === "vmc") return VIDEO_CMDS.has(b) ? pickVideo(b) : undefined;
+      if (loai === "va") {
+        const name = resolveVideo(c, projDir);
+        if (!name || !VIDEO_CMDS.has(b)) return say("Không tìm thấy video này nữa. Gõ /video.");
+        return commands[b]([name, ...(e ? [e] : [])]);
+      }
+    }
     if (String(cq.data ?? "").startsWith("gv:")) {
       await Promise.resolve(tg.answerCallback(cq.id)).catch(() => {});
       const key = cq.data.slice(3);
@@ -473,7 +589,7 @@ export function createBot(deps) {
     // Lệnh bấm được trong tin báo khách: /phieu_<mã>_<PTTT>_<lãi>_<năm> (Telegram không cho dấu '-' và '.').
     if (/^phieu_\w+$/.test(c.cmd)) return commands.phieu([`/${c.cmd}`, ...c.args]);
     const fn = commands[c.cmd];
-    if (!fn) return say(`Không có lệnh /${c.cmd}.\n\n${HELP}`);
+    if (!fn) return sayP(`Không có lệnh /${c.cmd}.\n\n${HELP}`);
     if (VIDEO_CMDS.has(c.cmd)) {
       // Lệnh cần video: nhận số (/render 3), tên, hoặc vài chữ đầu; không có/không khớp thì hiện nút chọn.
       const name = resolveVideo(c.args[0], projDir);

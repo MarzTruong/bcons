@@ -6,32 +6,30 @@ import { sha256File } from "../caption-cli.mjs";
 import { listVideos, videoPaths } from "../project.mjs";
 
 export const HELP = [
-  "Lệnh bot Bcons:",
-  "/danhsach – trạng thái các video",
-  "/xem <tên> – gửi caption + bản xem thử; thêm chữ icon (vd. /xem 8 icon) để xem bản caption có icon",
-  "/duyet <tên> – duyệt caption + video vừa render, gửi chữ caption để đăng, lưu lên GitHub",
-  "/render <số> – render video có nhạc + hiệu ứng (vài phút); thêm chữ khongnhac để ra bản không nhạc",
-  "(Các lệnh cần video: gõ số trong /danhsach, hoặc gõ lệnh không kèm gì để tick chọn 1, nhiều hoặc tất cả video.)",
-  "/sfx – tạo hiệu ứng âm thanh còn thiếu trong kho 11 kiểu (tốn ít credit, hỏi trước)",
-  "/phieu <mã căn> <PTTT> – dựng phiếu tính (ảnh PNG, thêm chữ pdf nếu cần) để anh gửi khách qua Zalo",
-  "/kiemgia – kiểm giá từng căn trong Master File theo tài liệu PTTT của CĐT",
-  "/gemini <chủ đề> – nhờ Gemini tìm số liệu có nguồn (tốn ít phí Google)",
-  "/baocao – chọn lại báo cáo Gemini cũ để làm video",
-  "/storyboard <tên> – chụp hình từng cảnh để duyệt TRƯỚC khi tạo giọng (không tốn credit)",
-  "/giong <tên> – tạo giọng ElevenLabs (tốn credit, hỏi trước); thêm canh1 để chỉ tạo lại cảnh 1",
-  "/capnhat – lấy bản mới nhất từ GitHub",
-  "/chuyenmay – chuyển bot sang máy khác đang mở bot (PC ⇄ laptop)",
-  "/moi – bắt đầu trò chuyện Claude mới",
-  "/huy – dừng việc đang chạy",
+  "Bot Bcons – gõ một trong 6 mục, phần còn lại bấm nút:",
   "",
-  "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên laptop.",
+  "/duan – đổi dự án đang làm (mọi lệnh bên dưới chạy theo dự án này)",
+  "/video – danh sách video, bấm một video để làm bước kế tiếp",
+  "/khach – phiếu tính cho khách, kiểm giá Master File",
+  "/nghiencuu – Gemini tìm số liệu, chọn báo cáo cũ để làm video",
+  "/may – cập nhật bot, chuyển máy, hiệu ứng âm thanh, trò chuyện Claude mới",
+  "/huy – dừng việc đang chạy",
+  "/huongdan – xem lại bảng này",
+  "",
+  "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên máy.",
+  "",
+  "Lệnh gõ nhanh (vẫn chạy như cũ, <số> là số video trong /video):",
+  "Video: /danhsach · /storyboard <số> · /giong <số> [canh1] · /render <số> [khongnhac] · /xem <số> [icon] · /duyet <số>",
+  "Khách: /phieu <mã căn> <PTTT> [pdf] · /kiemgia",
+  "Nghiên cứu: /gemini <chủ đề> · /baocao",
+  "Máy: /capnhat · /chuyenmay · /sfx · /moi",
 ].join("\n");
 
-/** Menu lệnh hiện khi anh gõ "/" trong Telegram: lấy từ HELP để hai chỗ không lệch nhau. */
-export const MENU = HELP.split("\n")
-  .map((l) => l.match(/^\/([a-z0-9_]+)\b[^–]*–\s*(.+)$/))
-  .filter(Boolean)
-  .map(([, command, description]) => ({ command, description: description.trim().slice(0, 256) }));
+/** Menu hiện khi anh gõ "/" trong Telegram: chỉ các mục gom nhóm (anh thấy 19 lệnh ngang hàng là rối, 12/11/2026). Mô tả lấy từ HELP để không lệch. */
+export const MENU = ["duan", "video", "khach", "nghiencuu", "may", "huy", "huongdan"].map((command) => ({
+  command,
+  description: HELP.split("\n").find((l) => l.startsWith(`/${command} –`)).split("–").slice(1).join("–").trim().slice(0, 256),
+}));
 
 /** Đăng ký menu với Telegram (setMyCommands). Lỗi mạng thì bỏ qua: gõ tay lệnh vẫn chạy. */
 export async function setMenu(tg) {
@@ -85,6 +83,25 @@ export function videoStatus(name, projDir, outDir) {
   return { name, caption, mp4: hasMp4, video };
 }
 
+/**
+ * Tiến trình một video: kịch bản (spec approved) → giọng (có timestamps.json) → render (có mp4) → duyệt.
+ * `tiep`: bước kế tiếp anh cần làm ("kichban" | "giong" | "render" | "duyet" | "xong").
+ */
+export function buocVideo(name, projDir, outDir) {
+  const st = videoStatus(name, projDir, outDir);
+  let spec = {};
+  try {
+    spec = JSON.parse(fs.readFileSync(videoPaths(name, projDir).spec, "utf8"));
+  } catch {
+    // spec hỏng: coi như chưa duyệt
+  }
+  const kichBan = spec.status === "approved";
+  const giong = fs.existsSync(videoPaths(name, projDir).timestamps);
+  const duyet = st.caption === "đã duyệt" && st.video === "đã duyệt";
+  const tiep = !kichBan ? "kichban" : !giong ? "giong" : !st.mp4 ? "render" : !duyet ? "duyet" : "xong";
+  return { kichBan, giong, mp4: st.mp4, duyet, tiep, caption: st.caption, video: st.video };
+}
+
 /** Danh sách gửi về Telegram. */
 const readSpec = (projDir, name) => {
   try {
@@ -135,6 +152,6 @@ export function formatList(projDir, outDir) {
   };
   return (
     [...idx.map((v) => line(`${v.so} · ${v.tieuDe}`, v.name)), ...khongSo.map((n) => line(`(chưa có số) ${n}`, n))].join("\n") +
-    "\n\nGọi lệnh bằng số, vd. /render 3 (hoặc gõ /render rồi bấm chọn)."
+    "\n\nBấm một video trong /video để làm bước kế tiếp (hoặc gõ nhanh, vd. /render 3)."
   );
 }

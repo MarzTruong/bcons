@@ -28,6 +28,23 @@ Chỉ tài khoản Telegram của anh, trong cuộc trò chuyện riêng với b
    - Chuột phải vào `Bcons-Bot.cmd` → **Show more options** → **Create shortcut**, kéo shortcut vừa tạo vào thư mục đó.
 6. (Tùy chọn) Để laptop không ngủ khi cắm sạc: Settings → System → Power → Screen and sleep → "When plugged in, put my device to sleep after" = **Never**.
 
+## Cách dùng gọn: 6 mục (từ 12/11/2026)
+Gõ `/` trong Telegram chỉ còn 6 mục, phần còn lại bấm nút. Bot làm được nhiều dự án, không khóa cứng một dự án.
+
+| Mục | Dùng để |
+|---|---|
+| `/duan` | Đổi dự án đang làm (Newsky, Central Park, dự án mới tự hiện). Bot nhớ lựa chọn qua các lần mở lại và `/capnhat`; tin trả lời có nhãn 🏢 tên dự án. Đang chạy việc thì đợi xong mới đổi được. Gõ nhanh: `/duan newsky`. |
+| `/video` | Danh sách video của dự án đang làm. Bấm một video ra thẻ tiến trình (kịch bản → giọng → render → duyệt), nút **bước kế tiếp** ở hàng đầu. "Làm nhiều video cùng lúc" mở menu tick như cũ. |
+| `/khach` | Phiếu tính (`/phieu <mã căn> <PTTT>`), nút kiểm giá Master File. |
+| `/nghiencuu` | `/gemini <chủ đề>`, nút chọn báo cáo cũ để làm video. |
+| `/may` | Cập nhật bot, chuyển máy, tạo hiệu ứng âm thanh, trò chuyện Claude mới. |
+| `/huy` | Dừng việc đang chạy. |
+
+- Hai dự án có thể trùng số video (Newsky 1, Central Park 1): số luôn hiểu theo dự án đang chọn. Nút của dự án khác trong tin cũ sẽ báo "thuộc dự án khác", không chạy nhầm.
+- Lệnh `/phieu_...` trong tin báo khách chạy theo dự án bot đang chọn; khách của dự án khác thì `/duan` đổi trước rồi bấm lại.
+- Nhắn câu thường cho Claude: bot tự kèm tên dự án đang làm.
+- Các lệnh gõ tay ở bảng dưới **vẫn chạy như cũ**, chỉ không còn nằm trong menu.
+
 ## Lệnh
 
 | Anh nhắn | Bot làm |

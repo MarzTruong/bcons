@@ -68,7 +68,8 @@ test("MENU: menu lệnh Telegram lấy từ HELP, đúng định dạng Telegram
   const { MENU, HELP } = await import("../scripts/bot/core.mjs");
   const { createBot } = await import("../scripts/bot/handlers.mjs");
   const names = MENU.map((m) => m.command);
-  for (const c of ["danhsach", "render", "gemini", "kiemgia", "capnhat", "chuyenmay", "huy"]) assert.ok(names.includes(c), c);
+  for (const c of ["duan", "video", "khach", "nghiencuu", "may", "huy"]) assert.ok(names.includes(c), c);
+  for (const c of ["danhsach", "render", "gemini", "kiemgia", "capnhat", "chuyenmay"]) assert.ok(!names.includes(c) && HELP.includes(`/${c}`), `${c}: ẩn khỏi menu nhưng còn trong hướng dẫn`);
   assert.equal(new Set(names).size, names.length, "không trùng");
   assert.ok(MENU.length <= 100);
   for (const m of MENU) {

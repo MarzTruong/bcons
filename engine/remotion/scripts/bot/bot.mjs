@@ -7,7 +7,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { sendApproved } from "../send-telegram.mjs";
-import { REPO_ROOT, projectDir, readActiveProject } from "../project.mjs";
+import { REPO_ROOT } from "../project.mjs";
+import { taoDuAn } from "./du-an.mjs";
 import { killTree, runClaude } from "./claude-bridge.mjs";
 import { createBot } from "./handlers.mjs";
 import { createTg } from "./tg.mjs";
@@ -67,6 +68,17 @@ function cancel() {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+/** Nơi nhớ dự án đang chọn: Drive "Bcons/bot" (PC và laptop dùng chung) nếu có, không thì out/tam trên máy. */
+function noiNho() {
+  try {
+    const d = stateDir();
+    if (d) return d;
+  } catch {
+    // không có Drive
+  }
+  return path.join(REMOTION_DIR, "out", "tam");
+}
+
 async function main() {
   process.chdir(REMOTION_DIR);
   try {
@@ -87,7 +99,7 @@ async function main() {
   const bot = createBot({
     tg,
     chatId,
-    projDir: projectDir(readActiveProject()),
+    duAn: taoDuAn({ file: path.join(noiNho(), "du-an-dang-chon.json") }),
     outDir: path.join(REMOTION_DIR, "out", "video"),
     repoRoot: REPO_ROOT,
     remotionDir: REMOTION_DIR,
