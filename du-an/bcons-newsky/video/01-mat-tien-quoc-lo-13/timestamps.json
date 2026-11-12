@@ -1,0 +1,589 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 7.000816326530612,
+      "speech": "Quốc lộ 13 qua Bình Dương cũ đang được làm rộng từ sáu lên tám làn xe, từ cầu Vĩnh Bình đến ngã tư Lê Hồng Phong.",
+      "words": [
+        {
+          "text": "Quốc",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "lộ",
+          "start": 0.2,
+          "end": 0.28
+        },
+        {
+          "text": "13",
+          "start": 0.32,
+          "end": 0.64
+        },
+        {
+          "text": "qua",
+          "start": 0.8,
+          "end": 0.96
+        },
+        {
+          "text": "Bình",
+          "start": 1,
+          "end": 1.12
+        },
+        {
+          "text": "Dương",
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "text": "cũ",
+          "start": 1.44,
+          "end": 1.68
+        },
+        {
+          "text": "đang",
+          "start": 1.92,
+          "end": 2
+        },
+        {
+          "text": "được",
+          "start": 2.08,
+          "end": 2.16
+        },
+        {
+          "text": "làm",
+          "start": 2.24,
+          "end": 2.36
+        },
+        {
+          "text": "rộng",
+          "start": 2.4,
+          "end": 2.64
+        },
+        {
+          "text": "từ",
+          "start": 2.72,
+          "end": 2.8
+        },
+        {
+          "text": "6",
+          "start": 2.96,
+          "end": 3.2
+        },
+        {
+          "text": "lên",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "8",
+          "start": 3.68,
+          "end": 3.76
+        },
+        {
+          "text": "làn",
+          "start": 3.84,
+          "end": 4
+        },
+        {
+          "text": "xe,",
+          "start": 4.08,
+          "end": 4.64
+        },
+        {
+          "text": "từ",
+          "start": 4.68,
+          "end": 4.8
+        },
+        {
+          "text": "cầu",
+          "start": 4.84,
+          "end": 4.96
+        },
+        {
+          "text": "Vĩnh",
+          "start": 5.04,
+          "end": 5.12
+        },
+        {
+          "text": "Bình",
+          "start": 5.2,
+          "end": 5.52
+        },
+        {
+          "text": "đến",
+          "start": 5.6,
+          "end": 5.76
+        },
+        {
+          "text": "ngã",
+          "start": 5.8,
+          "end": 5.92
+        },
+        {
+          "text": "tư",
+          "start": 6,
+          "end": 6.16
+        },
+        {
+          "text": "Lê",
+          "start": 6.24,
+          "end": 6.32
+        },
+        {
+          "text": "Hồng",
+          "start": 6.4,
+          "end": 6.48
+        },
+        {
+          "text": "Phong.",
+          "start": 6.56,
+          "end": 7.04
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 9.717551020408163,
+      "speech": "Tổng vốn đầu tư sáu ngàn hai trăm năm mươi lăm tỉ Đoạn khoảng mười ki-lô-mét từ cầu Ông Bố đến Lê Hồng Phong đã xong lớp thảm nhựa, còn dải phân cách và chiếu sáng.",
+      "words": [
+        {
+          "text": "Tổng",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "vốn",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "đầu",
+          "start": 0.4,
+          "end": 0.48
+        },
+        {
+          "text": "tư",
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "text": "6.255",
+          "start": 1.04,
+          "end": 2.48
+        },
+        {
+          "text": "tỉ",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "đồng.",
+          "start": 3.2,
+          "end": 3.2
+        },
+        {
+          "text": "Đoạn",
+          "start": 3.2,
+          "end": 3.32
+        },
+        {
+          "text": "khoảng",
+          "start": 3.36,
+          "end": 3.6
+        },
+        {
+          "text": "10",
+          "start": 3.76,
+          "end": 3.84
+        },
+        {
+          "text": "km",
+          "start": 3.92,
+          "end": 4.48
+        },
+        {
+          "text": "từ",
+          "start": 4.52,
+          "end": 4.64
+        },
+        {
+          "text": "cầu",
+          "start": 4.72,
+          "end": 4.88
+        },
+        {
+          "text": "Ông",
+          "start": 4.96,
+          "end": 5.04
+        },
+        {
+          "text": "Bố",
+          "start": 5.12,
+          "end": 5.28
+        },
+        {
+          "text": "đến",
+          "start": 5.36,
+          "end": 5.52
+        },
+        {
+          "text": "Lê",
+          "start": 5.6,
+          "end": 5.72
+        },
+        {
+          "text": "Hồng",
+          "start": 5.76,
+          "end": 5.92
+        },
+        {
+          "text": "Phong",
+          "start": 6,
+          "end": 6.24
+        },
+        {
+          "text": "đã",
+          "start": 6.4,
+          "end": 6.56
+        },
+        {
+          "text": "xong",
+          "start": 6.64,
+          "end": 6.8
+        },
+        {
+          "text": "lớp",
+          "start": 6.88,
+          "end": 7.04
+        },
+        {
+          "text": "thảm",
+          "start": 7.08,
+          "end": 7.2
+        },
+        {
+          "text": "nhựa,",
+          "start": 7.28,
+          "end": 7.84
+        },
+        {
+          "text": "còn",
+          "start": 7.88,
+          "end": 8.08
+        },
+        {
+          "text": "dải",
+          "start": 8.16,
+          "end": 8.32
+        },
+        {
+          "text": "phân",
+          "start": 8.36,
+          "end": 8.48
+        },
+        {
+          "text": "cách",
+          "start": 8.56,
+          "end": 8.8
+        },
+        {
+          "text": "và",
+          "start": 8.84,
+          "end": 8.96
+        },
+        {
+          "text": "chiếu",
+          "start": 9.04,
+          "end": 9.2
+        },
+        {
+          "text": "sáng.",
+          "start": 9.28,
+          "end": 9.76
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 9.325714285714286,
+      "speech": "Phía TP.HCM, đoạn sáu ki-lô-mét từ cầu Bình Triệu đến cầu Vĩnh Bình đã bàn giao tám mươi bốn phẩy ba mươi bảy phần trăm mặt bằng, tính đến ngày mùng một tháng mười một.",
+      "words": [
+        {
+          "text": "Phía",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "TP.HCM,",
+          "start": 0.24,
+          "end": 1.36
+        },
+        {
+          "text": "đoạn",
+          "start": 1.4,
+          "end": 1.6
+        },
+        {
+          "text": "6",
+          "start": 1.68,
+          "end": 1.867
+        },
+        {
+          "text": "km",
+          "start": 1.92,
+          "end": 2.32
+        },
+        {
+          "text": "từ",
+          "start": 2.4,
+          "end": 2.56
+        },
+        {
+          "text": "cầu",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "Bình",
+          "start": 2.84,
+          "end": 2.96
+        },
+        {
+          "text": "Triệu",
+          "start": 3.04,
+          "end": 3.36
+        },
+        {
+          "text": "đến",
+          "start": 3.4,
+          "end": 3.52
+        },
+        {
+          "text": "cầu",
+          "start": 3.68,
+          "end": 3.76
+        },
+        {
+          "text": "Vĩnh",
+          "start": 3.84,
+          "end": 4
+        },
+        {
+          "text": "Bình",
+          "start": 4.08,
+          "end": 4.24
+        },
+        {
+          "text": "đã",
+          "start": 4.48,
+          "end": 4.56
+        },
+        {
+          "text": "bàn",
+          "start": 4.6,
+          "end": 4.72
+        },
+        {
+          "text": "giao",
+          "start": 4.8,
+          "end": 5.04
+        },
+        {
+          "text": "84,37%",
+          "start": 5.12,
+          "end": 6.92
+        },
+        {
+          "text": "mặt",
+          "start": 6.96,
+          "end": 7.12
+        },
+        {
+          "text": "bằng,",
+          "start": 7.2,
+          "end": 7.6
+        },
+        {
+          "text": "tính",
+          "start": 7.64,
+          "end": 7.76
+        },
+        {
+          "text": "đến",
+          "start": 7.8,
+          "end": 7.92
+        },
+        {
+          "text": "ngày",
+          "start": 7.96,
+          "end": 8.08
+        },
+        {
+          "text": "1/11.",
+          "start": 8.16,
+          "end": 9.36
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene4",
+      "durationSec": 9.95265306122449,
+      "speech": "Bee Cons Niu-xki nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp hai mươi chín tầng, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi tám.",
+      "words": [
+        {
+          "text": "Bcons",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "Newsky",
+          "start": 0.6,
+          "end": 1.12
+        },
+        {
+          "text": "nằm",
+          "start": 1.36,
+          "end": 1.44
+        },
+        {
+          "text": "mặt",
+          "start": 1.48,
+          "end": 1.68
+        },
+        {
+          "text": "tiền",
+          "start": 1.72,
+          "end": 1.84
+        },
+        {
+          "text": "Quốc",
+          "start": 1.92,
+          "end": 2.04
+        },
+        {
+          "text": "lộ",
+          "start": 2.08,
+          "end": 2.2
+        },
+        {
+          "text": "13,",
+          "start": 2.24,
+          "end": 2.72
+        },
+        {
+          "text": "phường",
+          "start": 2.88,
+          "end": 3.04
+        },
+        {
+          "text": "Lái",
+          "start": 3.12,
+          "end": 3.28
+        },
+        {
+          "text": "Thiêu.",
+          "start": 3.36,
+          "end": 3.92
+        },
+        {
+          "text": "Dự",
+          "start": 3.96,
+          "end": 4.08
+        },
+        {
+          "text": "án",
+          "start": 4.16,
+          "end": 4.32
+        },
+        {
+          "text": "đã",
+          "start": 4.4,
+          "end": 4.48
+        },
+        {
+          "text": "khởi",
+          "start": 4.56,
+          "end": 4.72
+        },
+        {
+          "text": "công,",
+          "start": 4.8,
+          "end": 5.28
+        },
+        {
+          "text": "hai",
+          "start": 5.36,
+          "end": 5.44
+        },
+        {
+          "text": "tháp",
+          "start": 5.52,
+          "end": 5.76
+        },
+        {
+          "text": "29",
+          "start": 5.84,
+          "end": 6.24
+        },
+        {
+          "text": "tầng,",
+          "start": 6.32,
+          "end": 6.8
+        },
+        {
+          "text": "dự",
+          "start": 6.84,
+          "end": 6.96
+        },
+        {
+          "text": "kiến",
+          "start": 7.04,
+          "end": 7.2
+        },
+        {
+          "text": "bàn",
+          "start": 7.28,
+          "end": 7.44
+        },
+        {
+          "text": "giao",
+          "start": 7.52,
+          "end": 7.68
+        },
+        {
+          "text": "quý",
+          "start": 7.76,
+          "end": 7.92
+        },
+        {
+          "text": "II",
+          "start": 8,
+          "end": 8.16
+        },
+        {
+          "text": "năm",
+          "start": 8.32,
+          "end": 8.48
+        },
+        {
+          "text": "2028.",
+          "start": 8.52,
+          "end": 10
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
