@@ -38,7 +38,7 @@
   "watermark": {
     "kieu": "qr",
     "ten": "Tuấn Trương",
-    "link": "HTTPS://BCONS-CENTRAL-PARK-DSJ.PAGES.DEV/QR",
+    "link": "HTTPS://BCONS-CENTRAL-PARK-BIENHOA.PAGES.DEV/QR",
     "_ghiChuLink": "Viết hoa để QR dùng chế độ chữ-số, mã thưa hơn, quét được khi in nhỏ ở góc video. /QR chuyển về /?utm_source=qr (_redirects của landing)."
   },
   "_nguon": "Số liệu chép từ thong-tin.md (tài liệu CĐT); tọa độ từ assets/geo/NGUON.md (geo-central-park).",

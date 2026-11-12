@@ -13,7 +13,7 @@ var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '23
 /** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
 /** Mã căn mẫu theo thứ tự trên landing (trang không chứa mã căn: chỉ gửi số thứ tự, đây là nơi tra). Phải khớp du-an/<mã>/landing/landing.json → canMau (test kiểm). */
 var CAN_MAU = { 'bcons-central-park': ["A21-26", "A15-12", "E6-09", "A18-09", "A15-07"] };
-var SITE = { 'bcons-central-park': 'https://bcons-central-park-dsj.pages.dev', 'bcons-newsky': 'https://bcons-newsky-binhduong.pages.dev' };
+var SITE = { 'bcons-central-park': 'https://bcons-central-park-bienhoa.pages.dev', 'bcons-newsky': 'https://bcons-newsky-binhduong.pages.dev' };
 function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
 var CONSENT_VERSION = 'v1-2026-11-06';
 var MAX_LEADS_10M = 20; // quá số này trong 10 phút: vẫn ghi Sheet nhưng tạm dừng báo Telegram (chống nhồi tin)

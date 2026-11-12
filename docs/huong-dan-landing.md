@@ -25,13 +25,13 @@ Code: `engine/landing/` (dùng chung) và `du-an/bcons-central-park/landing/land
 7. **Khi em gửi bản `Code.gs` mới** (sửa lỗi, đổi mẫu tin): dán đè code, Lưu, rồi **Triển khai → Quản lý bản triển khai (Manage deployments) → biểu tượng ✏️ → Phiên bản: Phiên bản mới (New version) → Triển khai**. Không tạo "Bản triển khai mới" lần nữa (sẽ ra link khác, trang không gửi tới được).
 
 ## Bước 3: Cloudflare Pages (đăng trang miễn phí) — đã xong 06/11/2026
-Trang đang chạy tại https://bcons-central-park-dsj.pages.dev. Mỗi lần em đẩy lên `main`, Cloudflare tự build lại (1–2 phút).
+Trang đang chạy tại https://bcons-central-park-bienhoa.pages.dev. Mỗi lần em đẩy lên `main`, Cloudflare tự build lại (1–2 phút).
 Cấu hình đã dùng (khi cần làm lại cho dự án khác): **Workers & Pages → Create → Pages → Connect to Git** → repo **MarzTruong/bcons**, nhánh `main`, Framework preset **None**, Build command `node engine/landing/build.mjs`, Build output directory `engine/landing/dist/bcons-central-park`, biến môi trường `NODE_VERSION` = `22`. Không dùng Workers (đã bỏ `wrangler.jsonc`).
 
 ## Bước 4: Gắn link
-- **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://bcons-central-park-dsj.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
-- **Fanpage:** Thêm nút (Add button) → **Tìm hiểu thêm** / **Đăng ký** → link `https://bcons-central-park-dsj.pages.dev/?utm_source=facebook`.
-- Bình luận đầu bài Facebook: `https://bcons-central-park-dsj.pages.dev/?utm_source=fb-post`.
+- **TikTok:** Hồ sơ → Sửa hồ sơ → Trang web: `https://bcons-central-park-bienhoa.pages.dev/?utm_source=tiktok` (TikTok chỉ cho thêm link ở bio khi tài khoản đủ điều kiện; chưa đủ thì ghi trong caption "link ở trang Facebook").
+- **Fanpage:** Thêm nút (Add button) → **Tìm hiểu thêm** / **Đăng ký** → link `https://bcons-central-park-bienhoa.pages.dev/?utm_source=facebook`.
+- Bình luận đầu bài Facebook: `https://bcons-central-park-bienhoa.pages.dev/?utm_source=fb-post`.
 Phần `utm_source` giúp biết khách đến từ đâu (cột **Nguồn** trong Sheet).
 
 ## Mỗi khi có khách
