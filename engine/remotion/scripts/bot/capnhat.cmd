@@ -37,5 +37,10 @@ REM khong co gi moi: van bao Telegram la da moi nhat (anh bam /capnhat thi biet 
 if "!TRUOC!"=="!SAU!" echo KHONG CO BAN MOI >> "%LOG%"
 exit /b 0
 :loi
+REM Ghi them de chan doan: file nao dang bi giu (node dang chay?) va cay git dang o trang thai nao.
+echo --- chan doan (cac tien trinh node dang chay) >> "%LOG%"
+tasklist /fi "imagename eq node.exe" /fo list >> "%LOG%" 2>&1
+echo --- git status >> "%LOG%"
+git status --short -uno >> "%LOG%" 2>&1
 echo LOI: khong lay duoc ban moi, bot chay tiep ban dang co. Chup tin nay gui Claude. >> "%LOG%"
 exit /b 1
