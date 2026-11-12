@@ -129,3 +129,11 @@ test("mã QR lưu sẵn (phieu-qr.json) khớp link QR trong project.json", asyn
     assert.equal(kho.svg, qrSvgSync(proj.watermark.link));
   }
 });
+
+test("trang chuyển tiếp của tên miền cũ trỏ đúng tên miền hiện tại của dự án", () => {
+  const cu = fs.readFileSync(path.join(ROOT, "engine", "landing", "chuyen-tiep", "bcons-central-park-dsj", "_redirects"), "utf8");
+  const proj = JSON.parse(fs.readFileSync(path.join(ROOT, "du-an", "bcons-central-park", "project.json"), "utf8"));
+  const moi = new URL(proj.watermark.link).origin.toLowerCase();
+  for (const dong of cu.trim().split("\n")) assert.ok(dong.includes(moi), `${dong} phải trỏ ${moi}`);
+  assert.match(cu, /\/QR .*utm_source=qr/);
+});
