@@ -144,3 +144,42 @@ test("canStt (số thứ tự căn từ landing, không chứa mã căn) đượ
   assert.equal(ok(0, "bcons-newsky"), "", "dự án chưa có danh sách căn mẫu thì không tra");
   assert.equal(ctx.validateLead_({ ...lead, duAn: "bcons-central-park", canMa: "B1.3-01", canStt: 0 }).lead.canMa, "B1.3-01", "canMa gửi đúng dạng vẫn được ưu tiên (tương thích)");
 });
+
+/** Chạy doPost thật của Code.gs với Google giả (Sheet, bộ nhớ đệm, Telegram) để thử cả luồng nhận lead. */
+function chayDoPost() {
+  const gui = [];
+  const dong = [];
+  const kho = {};
+  const c = {
+    CacheService: { getScriptCache: () => ({ get: (k) => kho[k] ?? null, put: (k, v) => { kho[k] = v; } }) },
+    LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
+    SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: () => ({ getLastRow: () => 5, getLastColumn: () => 19, appendRow: (r) => dong.push(r), getRange: () => ({ setValues() {} }) }), insertSheet() {} }) },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: () => "x" }) },
+    UrlFetchApp: { fetch: (u, o) => { gui.push(JSON.parse(o.payload).text); return {}; } },
+    ContentService: { createTextOutput: (s) => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 1 } },
+    Logger: { log() {} },
+  };
+  vm.createContext(c);
+  vm.runInContext(fs.readFileSync(file, "utf8"), c);
+  return { gui, dong, post: (p) => JSON.parse(c.doPost({ postData: { contents: JSON.stringify(p) } }).s) };
+}
+const tho = { ten: "Nguyễn Văn B", sdt: "0901234567", dongY: true, t: 6000, nhuCau: "Mua để ở", canLoai: "Không rõ", canMoTa: "2PN – 2WC", dt: 0, giaChuaVat: 3e9, giaCoVat: 3.3e9, phiBaoTri: 6e7, tuCo: 6.6e8, vay: 1.65e9, traGop: 15380165, lai: 9.5, nam: 20, nguon: "truc-tiep", trang: "https://x.pages.dev/" };
+
+test("doPost: cùng SĐT gửi ở hai dự án khác nhau trong 2 phút: CẢ HAI đều được báo (anh thử hai landing bằng một số)", () => {
+  const h = chayDoPost();
+  assert.deepEqual(h.post({ ...tho, duAn: "bcons-central-park", pttt: "PTTT 03" }), { ok: true });
+  assert.deepEqual(h.post({ ...tho, duAn: "bcons-newsky", pttt: "PTTT 09" }), { ok: true });
+  assert.equal(h.dong.length, 2, "ghi 2 dòng Sheet");
+  assert.equal(h.gui.length, 4, "2 tin cho mỗi lead");
+  assert.match(h.gui[0], /landing Bcons Central Park/);
+  assert.match(h.gui[2], /landing Bcons Newsky/);
+});
+
+test("doPost: cùng SĐT cùng dự án bấm gửi hai lần trong 2 phút: chỉ báo một lần", () => {
+  const h = chayDoPost();
+  h.post({ ...tho, duAn: "bcons-newsky", pttt: "PTTT 09" });
+  const r = h.post({ ...tho, duAn: "bcons-newsky", pttt: "PTTT 10" });
+  assert.equal(r.dup, true);
+  assert.equal(h.dong.length, 1);
+  assert.equal(h.gui.length, 2);
+});

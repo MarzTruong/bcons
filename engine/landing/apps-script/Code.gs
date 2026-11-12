@@ -179,7 +179,7 @@ function doPost(e) {
     if (v.spam) return json_({ ok: true });
     if (!v.ok) return json_({ ok: false, error: v.error });
     var cache = CacheService.getScriptCache();
-    var key = 'lead_' + v.phone;
+    var key = 'lead_' + v.lead.duAn + '_' + v.phone; // chống trùng theo từng dự án: cùng số ở hai dự án vẫn báo cả hai
     var lock = LockService.getScriptLock();
     lock.waitLock(10000);
     var count;
