@@ -316,7 +316,7 @@
     },
     {
       "id": "scene3",
-      "durationSec": 9.325714285714286,
+      "durationSec": 9.247346938775511,
       "speech": "Phía TP.HCM, đoạn sáu ki-lô-mét từ cầu Bình Triệu đến cầu Vĩnh Bình đã bàn giao tám mươi bốn phẩy ba mươi bảy phần trăm mặt bằng, tính đến ngày mùng một tháng mười một.",
       "words": [
         {
@@ -326,28 +326,28 @@
         },
         {
           "text": "TP.HCM,",
-          "start": 0.24,
+          "start": 0.2,
           "end": 1.36
         },
         {
           "text": "đoạn",
-          "start": 1.4,
+          "start": 1.387,
           "end": 1.6
         },
         {
           "text": "6",
           "start": 1.68,
-          "end": 1.867
+          "end": 1.84
         },
         {
           "text": "km",
           "start": 1.92,
-          "end": 2.32
+          "end": 2.4
         },
         {
           "text": "từ",
-          "start": 2.4,
-          "end": 2.56
+          "start": 2.48,
+          "end": 2.6
         },
         {
           "text": "cầu",
@@ -356,52 +356,52 @@
         },
         {
           "text": "Bình",
-          "start": 2.84,
+          "start": 2.88,
           "end": 2.96
         },
         {
           "text": "Triệu",
-          "start": 3.04,
+          "start": 3.12,
           "end": 3.36
         },
         {
           "text": "đến",
-          "start": 3.4,
-          "end": 3.52
+          "start": 3.44,
+          "end": 3.6
         },
         {
           "text": "cầu",
           "start": 3.68,
-          "end": 3.76
+          "end": 3.84
         },
         {
           "text": "Vĩnh",
-          "start": 3.84,
+          "start": 3.88,
           "end": 4
         },
         {
           "text": "Bình",
           "start": 4.08,
-          "end": 4.24
+          "end": 4.32
         },
         {
           "text": "đã",
           "start": 4.48,
-          "end": 4.56
+          "end": 4.64
         },
         {
           "text": "bàn",
-          "start": 4.6,
-          "end": 4.72
+          "start": 4.68,
+          "end": 4.8
         },
         {
           "text": "giao",
-          "start": 4.8,
-          "end": 5.04
+          "start": 4.88,
+          "end": 5.12
         },
         {
           "text": "84,37%",
-          "start": 5.12,
+          "start": 5.2,
           "end": 6.92
         },
         {
@@ -412,35 +412,35 @@
         {
           "text": "bằng,",
           "start": 7.2,
-          "end": 7.6
+          "end": 7.52
         },
         {
           "text": "tính",
-          "start": 7.64,
-          "end": 7.76
+          "start": 7.56,
+          "end": 7.68
         },
         {
           "text": "đến",
-          "start": 7.8,
-          "end": 7.92
+          "start": 7.72,
+          "end": 7.84
         },
         {
           "text": "ngày",
-          "start": 7.96,
-          "end": 8.08
+          "start": 7.88,
+          "end": 8
         },
         {
           "text": "1/11.",
-          "start": 8.16,
-          "end": 9.36
+          "start": 8.08,
+          "end": 9.2
         }
       ],
-      "seed": 20260
+      "seed": 102964
     },
     {
       "id": "scene4",
-      "durationSec": 9.95265306122449,
-      "speech": "Bee Cons Niu-xki nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp hai mươi chín tầng, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi tám.",
+      "durationSec": 10.187755102040816,
+      "speech": "Bee Cons New Sky nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp hai mươi chín tầng, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi tám.",
       "words": [
         {
           "text": "Bcons",
@@ -449,141 +449,141 @@
         },
         {
           "text": "Newsky",
-          "start": 0.6,
-          "end": 1.12
+          "start": 0.64,
+          "end": 1.28
         },
         {
           "text": "nằm",
-          "start": 1.36,
-          "end": 1.44
+          "start": 1.52,
+          "end": 1.6
         },
         {
           "text": "mặt",
-          "start": 1.48,
-          "end": 1.68
-        },
-        {
-          "text": "tiền",
-          "start": 1.72,
+          "start": 1.64,
           "end": 1.84
         },
         {
+          "text": "tiền",
+          "start": 1.88,
+          "end": 2
+        },
+        {
           "text": "Quốc",
-          "start": 1.92,
-          "end": 2.04
+          "start": 2.08,
+          "end": 2.24
         },
         {
           "text": "lộ",
-          "start": 2.08,
-          "end": 2.2
+          "start": 2.28,
+          "end": 2.36
         },
         {
           "text": "13,",
-          "start": 2.24,
-          "end": 2.72
+          "start": 2.4,
+          "end": 2.84
         },
         {
           "text": "phường",
-          "start": 2.88,
-          "end": 3.04
+          "start": 2.96,
+          "end": 3.2
         },
         {
           "text": "Lái",
-          "start": 3.12,
-          "end": 3.28
+          "start": 3.28,
+          "end": 3.36
         },
         {
           "text": "Thiêu.",
-          "start": 3.36,
-          "end": 3.92
-        },
-        {
-          "text": "Dự",
-          "start": 3.96,
+          "start": 3.44,
           "end": 4.08
         },
         {
-          "text": "án",
-          "start": 4.16,
-          "end": 4.32
+          "text": "Dự",
+          "start": 4.12,
+          "end": 4.24
         },
         {
-          "text": "đã",
-          "start": 4.4,
+          "text": "án",
+          "start": 4.32,
           "end": 4.48
         },
         {
-          "text": "khởi",
+          "text": "đã",
           "start": 4.56,
-          "end": 4.72
+          "end": 4.64
+        },
+        {
+          "text": "khởi",
+          "start": 4.72,
+          "end": 4.88
         },
         {
           "text": "công,",
-          "start": 4.8,
-          "end": 5.28
-        },
-        {
-          "text": "hai",
-          "start": 5.36,
+          "start": 4.96,
           "end": 5.44
         },
         {
-          "text": "tháp",
+          "text": "hai",
           "start": 5.52,
-          "end": 5.76
+          "end": 5.6
+        },
+        {
+          "text": "tháp",
+          "start": 5.68,
+          "end": 5.92
         },
         {
           "text": "29",
-          "start": 5.84,
-          "end": 6.24
+          "start": 6,
+          "end": 6.4
         },
         {
           "text": "tầng,",
-          "start": 6.32,
-          "end": 6.8
-        },
-        {
-          "text": "dự",
-          "start": 6.84,
+          "start": 6.48,
           "end": 6.96
         },
         {
+          "text": "dự",
+          "start": 7,
+          "end": 7.12
+        },
+        {
           "text": "kiến",
-          "start": 7.04,
-          "end": 7.2
+          "start": 7.2,
+          "end": 7.36
         },
         {
           "text": "bàn",
-          "start": 7.28,
-          "end": 7.44
+          "start": 7.44,
+          "end": 7.52
         },
         {
           "text": "giao",
-          "start": 7.52,
-          "end": 7.68
+          "start": 7.6,
+          "end": 7.84
         },
         {
           "text": "quý",
-          "start": 7.76,
-          "end": 7.92
+          "start": 7.92,
+          "end": 8.08
         },
         {
           "text": "II",
-          "start": 8,
-          "end": 8.16
+          "start": 8.16,
+          "end": 8.32
         },
         {
           "text": "năm",
-          "start": 8.32,
-          "end": 8.48
+          "start": 8.48,
+          "end": 8.56
         },
         {
           "text": "2028.",
-          "start": 8.52,
-          "end": 10
+          "start": 8.64,
+          "end": 10.24
         }
       ],
-      "seed": 20260
+      "seed": 102964
     }
   ]
 }
