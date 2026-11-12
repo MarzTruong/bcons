@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import path from "node:path";
+import { REPO_ROOT } from "../scripts/project.mjs";
 import {
   resolveSpecPath,
   readSourceIds,
@@ -29,7 +31,7 @@ test("resolveSpecPath từ chối tên có ..", () => {
   assert.throws(() => resolveSpecPath("A b"));
 });
 test("resolveSpecPath trả đường dẫn du-an/<mã>/video/<name>/spec.json", () => {
-  assert.match(resolveSpecPath("01-dong-nai-ha-tang").replaceAll("\\", "/"), /du-an\/bcons-central-park\/video\/01-dong-nai-ha-tang\/spec\.json$/);
+  assert.match(resolveSpecPath("01-dong-nai-ha-tang", path.join(REPO_ROOT, "du-an", "bcons-central-park")).replaceAll("\\", "/"), /du-an\/bcons-central-park\/video\/01-dong-nai-ha-tang\/spec\.json$/);
 });
 test("readSourceIds chỉ đọc bảng dưới '## Bảng nguồn'", () => {
   assert.deepEqual(readSourceIds(md), ["s1", "s2"]);

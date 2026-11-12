@@ -48,14 +48,14 @@ A: 1 bài. B: 4 bài. Cả hai nhóm dưới 6 video và dữ liệu chưa tới
 - **Tuần sau:** Newsky video 1 (Quốc lộ 13); cắt nhà mẫu/tiện ích Central Park từ video công ty; đo lại với UTM.
 - **Thử nghiệm:** thay "comment ..." bằng câu hỏi một con số hoặc mời quét QR/nhắn Zalo; kênh chung hai dự án (đã chốt 12/11).
 
-## 8. Kế hoạch sản xuất 16–22/11
+## 8. Kế hoạch sản xuất 16–22/11 (tập trung Newsky, dự án đang bán từ 12/11/2026)
 | # | Dự án | Trụ cột | Góc | Nguồn | Cần anh |
 |---|---|---|---|---|---|
-| 1 | Newsky | A | Mặt tiền Quốc lộ 13 (khởi công, mở rộng 6→8 làn) | tự làm pipeline | duyệt cổng 2 |
-| 2 | Central Park | A | Nhà mẫu / tiện ích | cắt từ video công ty (anh chọn clip nguồn trên Drive) | chọn clip |
-| 3 | Central Park | A | "Vốn X mua căn nào" (phiếu tính) | tự làm | duyệt |
-| 4 | Central Park | A | Đợt 2 (29/11) | tự làm | duyệt |
-| 5 | chung | B | 1 video thị trường | tự làm | duyệt |
+| 1 | Newsky | A | Mặt tiền Quốc lộ 13 (video 1, đã duyệt) | tự làm pipeline | giọng + render qua bot |
+| 2 | Newsky | A | Tiện ích / thiết kế căn (cắt từ video công ty) | video công ty | chọn clip nguồn |
+| 3 | Newsky | A | "Vốn X mua căn nào" (phiếu tính Newsky) | tự làm | duyệt |
+| 4 | Newsky | A | Chính sách và lịch bán (theo thông báo CĐT) | tự làm | duyệt |
+| 5 | chung | B | 1 video thị trường Bình Dương (Quốc lộ 13, lãi vay) | tự làm | duyệt |
 
 ## Cách báo cáo lấy dữ liệu khách
 Báo cáo chỉ **đếm số dòng** ở tab Landing theo cột Nguồn và Dự án, không đọc tên/SĐT. Chạy tay (em kéo khi anh gọi) thì dùng được ngay. Chạy tự động hằng tuần thì tác vụ tự động phải được gắn connector Google Sheets và Metricool trong cài đặt (claude.ai); chưa gắn thì tác vụ tự động không đọc được và báo "chưa đo được".

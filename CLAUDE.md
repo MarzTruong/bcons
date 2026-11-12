@@ -1,7 +1,7 @@
 # CLAUDE.md — Bcons (hướng dẫn cho Claude)
 
 ## Vai trò và cách giao tiếp
-- Người dùng: anh, nhân viên kinh doanh sàn Bcons PS Land (phân phối chính thức của CĐT Bcons), không phải lập trình viên, là người quyết định của dự án. Đang bán **Bcons Central Park** (236 Phan Trung, Tam Hiệp, TP. Đồng Nai / Biên Hòa).
+- Người dùng: anh, nhân viên kinh doanh sàn Bcons PS Land (phân phối chính thức của CĐT Bcons), không phải lập trình viên, là người quyết định của dự án. Từ 12/11/2026 đang bán **Bcons Newsky** (mặt tiền Quốc lộ 13, phường Lái Thiêu, Bình Dương cũ; `config.json`); Bcons Central Park tạm dừng làm mới (236 Phan Trung, Tam Hiệp, TP. Đồng Nai / Biên Hòa), vẫn chạy được bằng `--du-an bcons-central-park`.
 - Mục tiêu repo: làm video và bài đăng Facebook/TikTok, phễu khách (landing, CRM, báo Telegram). Thiết kế: `docs/superpowers/specs/2026-11-05-bcons-automation-pipeline-design.md`.
 - Tiếng Việt, anh xưng "anh", Claude xưng "em". Ngắn gọn, nói thẳng, có số liệu.
 - Dùng thuật ngữ kỹ thuật thì giải thích 1 dòng kèm ví dụ đời thường (vd. "commit = lưu một mốc thay đổi, như bấm Lưu có ghi chú").

@@ -23,7 +23,7 @@ Tỷ lệ thực tế đến 13/11: **A 1/7 (14%), B 6/7 (86%)**, ngược với
 ## Kế hoạch tuần (cập nhật mỗi tuần bởi báo cáo hiệu suất)
 | Tuần | A (dự án) | B (thị trường) | Ghi chú |
 |---|---|---|---|
-| 16–22/11 | 4 video: Newsky 1 (Quốc lộ 13, cổng 1 đã duyệt, đang làm cổng 2), Central Park: nhà mẫu/tiện ích (cắt từ video công ty), "vốn X mua căn nào" (phiếu tính), đợt 2 (29/11) | 1 video | Xem kế hoạch 4 tuần trong phản biện |
+| 16–22/11 | 4 video Newsky (dự án đang bán từ 12/11): video 1 Quốc lộ 13 (đã duyệt, chờ giọng + render), tiện ích/thiết kế (cắt từ video công ty), "vốn X mua căn nào" (phiếu tính Newsky), chính sách và lịch bán | 1 video | Central Park tạm dừng làm mới |
 
 ## Chỉ số theo dõi
 Thời gian xem TB và tỷ lệ xem hết (giữ chân), bình luận, tin nhắn/form/quét QR từ kênh (cột Nguồn Sheet Landing), người theo dõi mới. Lượt xem chỉ là chỉ số phụ.

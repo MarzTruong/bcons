@@ -102,7 +102,9 @@ test("project.json của Bcons Central Park khớp số CĐT; _mau đủ khóa",
   assert.equal(cfg.soCan.o, 2820);
   assert.equal(cfg.soCan.thuongMai, 113);
   assert.doesNotThrow(() => readProjectConfig(path.join(REPO_ROOT, "du-an", "_mau")));
-  assert.equal(readActiveProject(), "bcons-central-park");
+  const dangBan = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, "config.json"), "utf8")).duAnDangBan;
+  assert.equal(readActiveProject(), dangBan);
+  assert.ok(fs.existsSync(path.join(REPO_ROOT, "du-an", dangBan, "project.json")), "dự án đang bán phải có project.json");
 });
 
 test("videoPaths có zalo.md: bài Zalo viết từ kịch bản video, nằm riêng để không đổi dấu duyệt của caption.md (video 1–7 đã duyệt và lên lịch)", () => {
