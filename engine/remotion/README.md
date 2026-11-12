@@ -1,54 +1,17 @@
-# Remotion video
+# engine/remotion: dựng video, bot Telegram, phiếu tính
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Code dùng chung cho mọi dự án (không chứa số liệu dự án). Quy tắc và cách làm việc: `CLAUDE.md` ở gốc repo; ràng buộc kỹ thuật: `.claude/rules/pipeline-constraints.md`.
 
-Welcome to your Remotion project!
+Chạy trong thư mục này (`npm run <lệnh> -- <tham số>`; thêm `--du-an <mã>` để chạy cho dự án khác `config.json`):
 
-## Commands
-
-**Install Dependencies**
-
-```console
-npm i --loglevel=error
-```
-
-**Start Preview**
-
-```console
-npm run dev
-```
-
-**Render video**
-
-```console
-npx remotion render
-```
-
-**Upgrade Remotion**
-
-```console
-npx remotion upgrade
-```
-
-## Docs
-
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
-
-## Help
-
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
-
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+| Lệnh | Việc |
+|---|---|
+| `test`, `lint` | Kiểm toàn bộ (gồm `engine/automation`, `engine/landing`, `engine/master-data`) và soát spec |
+| `storyboard`, `voice`, `render:drive`, `phu-de` | Làm video: hình duyệt trước, giọng (tốn credit), render (xem `docs/quy-trinh-video.md`) |
+| `check:caption`, `duyet:caption`, `duyet:video`, `send:telegram` | Caption: soát quy tắc, duyệt, gửi |
+| `bot` | Bot Telegram trên máy anh (`docs/huong-dan-bot-telegram.md`) |
+| `phieu`, `phieu:mau` | Phiếu tính gửi khách (PNG/PDF) và bộ phiếu mẫu kiểm UX |
+| `landing` | Dựng landing tĩnh vào `engine/landing/dist/<mã>` |
+| `kiem-gia` | Kiểm Master File theo thông báo PTTT của CĐT |
+| `gemini`, `sfx`, `geo:*`, `check:mapbox` | Nghiên cứu số liệu, hiệu ứng âm thanh, dữ liệu bản đồ |
+| `dev`, `still`, `build` | Remotion Studio, chụp một khung, đóng gói |

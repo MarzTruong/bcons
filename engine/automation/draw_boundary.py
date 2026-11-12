@@ -1,6 +1,6 @@
 """Vẽ ranh giới khu đất lên clip flycam bằng cách bám đặc trưng ảnh (ORB + homography).
 
-Dùng: python3 tools/draw_boundary.py input.mp4 output.mp4
+Dùng: python3 engine/automation/draw_boundary.py input.mp4 output.mp4
 Đa giác nhập tay trên khung đầu (tọa độ ảnh 1600x900), chỉ mang tính minh họa.
 """
 import subprocess
