@@ -59,3 +59,9 @@ Khách để lại thông tin trên landing, hoặc nhắn tin xin bảng giá (
 - Phiếu có in tên khách hay chỉ "anh/chị".
 - Lưu lịch sử phiếu đã gửi ở đâu (phụ thuộc Master_Data).
 - Zalo OA/ZNS tự gửi (phương án C) để sau.
+
+## Bổ sung 12/11/2026: hướng A (link xem phiếu, chạy khi máy anh tắt)
+- Tin Telegram báo khách mới có thêm dòng "Xem phiếu tính (bấm, lưu ảnh gửi khách): `<site>/phieu.html?k=..&g=..`". Trang tự dựng phiếu **trong trình duyệt** bằng cùng lõi tính (`engine/landing/phieu/phieu-core.mjs`, `phieu-web.mjs`), có nút "Lưu ảnh phiếu" (PNG 1080 px). Máy chủ không nhận ảnh từ ai. Liên kết không chứa tên hay SĐT; chỉ trỏ về trang của đúng dự án (`SITE` trong `Code.gs`).
+- Tham số: `k` PTTT, `g` giá chưa VAT của PTTT đó, `l` lãi, `n` năm vay, `m` mã căn, `c` loại căn, `th` tháp, `tg` tầng, `d`/`dt` diện tích, `t` tên khách (anh gõ thêm nếu muốn). Sai tham số thì trang báo "Liên kết không đúng", không dựng phiếu.
+- `/phieu` trên bot giữ cho khách nhắn hỏi mã căn lẻ (tra giá trong Master File).
+- **Hợp đồng với template (AGY giữ khi làm giao diện):** (1) hai chỗ dùng chung một template: máy anh (đọc `#phieu-data`) và trang web (gọi `window.veTheoDuLieu(phieu)`); (2) vẽ vào `#app`, rồi đặt `document.documentElement.dataset.ready = "1"`; (3) `can.ma` có thể `null` (căn theo khung giá: chỉ có loại căn); (4) `lienHe.qrSvg` có thể vắng; (5) trên điện thoại nội dung phải co theo bề ngang (trang web đang ghi đè `body{width:auto;max-width:540px}`); (6) nút "Lưu ảnh" chụp bằng SVG `foreignObject` nên font ngoài (Google Fonts) không vào ảnh, nên dùng font hệ thống hoặc nhúng font. Template hiện tại là **bản tạm của Claude**, AGY thay.

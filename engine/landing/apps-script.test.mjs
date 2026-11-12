@@ -82,8 +82,8 @@ test("lenhPhieu_: lệnh bấm được chỉ gồm chữ, số, gạch dưới;
   assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead }).lead), "", "payload cũ: không có dòng lệnh");
   assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead, canMa: "P1-01" }).lead), "", "mã có chữ P không mã hóa được an toàn");
   const tg = ctx.formatTelegram_(ctx.validateLead_({ ...lead, canMa: "A18-09" }).lead);
-  assert.ok(tg.includes("Dựng phiếu tính: /phieu_A18_09_02_9p5_20"));
-  assert.ok(!ctx.formatTelegram_(ctx.validateLead_(lead).lead).includes("Dựng phiếu"));
+  assert.ok(tg.includes("Hoặc dựng bằng bot: /phieu_A18_09_02_9p5_20"));
+  assert.ok(!ctx.formatTelegram_(ctx.validateLead_(lead).lead).includes("bằng bot"));
 });
 
 test("duAn: giữ mã dự án đúng dạng, còn lại về khong-ro; hàng khớp HEADERS", () => {

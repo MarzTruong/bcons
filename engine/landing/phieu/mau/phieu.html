@@ -26,8 +26,10 @@ tr.nganhang td.a,tr.nganhang td.l{color:#2447f9}
 <div id="app"></div>
 <script type="application/json" id="phieu-data">__PHIEU_DATA__</script>
 <script>
+/* HỢP ĐỒNG VỚI LÕI (template nào cũng phải giữ): đọc dữ liệu từ #phieu-data (hoặc window.veTheoDuLieu(P) do trang gọi),
+   vẽ vào #app, rồi đặt document.documentElement.dataset.ready = "1". can.ma có thể null (căn theo khung giá). */
 (function () {
-  var P = JSON.parse(document.getElementById("phieu-data").textContent);
+  function veTheoDuLieu(P) {
   var nf = new Intl.NumberFormat("vi-VN");
   var d = function (n) { return nf.format(Math.round(n)); };
   var tr = function (n) { return nf.format(Math.round(n / 1e6)) + " triệu"; };
@@ -35,8 +37,8 @@ tr.nganhang td.a,tr.nganhang td.l{color:#2447f9}
   var tien = function (n) { return n >= 1e9 ? ty(n) : tr(n); };
   var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
   var c = P.can, t = P.tong, vay = P.vay;
-  var mo = c.loai + " · " + String(c.dtTimTuong).replace(".", ",") + " m² tim tường" + (c.dtThongThuy ? " (" + String(c.dtThongThuy).replace(".", ",") + " thông thủy)" : "") + (c.tang ? " · tầng " + c.tang : "") + (c.thap ? ", tháp " + c.thap : "");
-  var h = '<div class="hi">Em gửi ' + esc(P.khach.xungHo) + " bảng tính " + esc(P.duAn.ten) + ", căn " + esc(c.ma) + ": " + esc(mo) + ".</div>";
+  var mo = [c.loai, c.dtTimTuong ? String(c.dtTimTuong).replace(".", ",") + " m² tim tường" + (c.dtThongThuy ? " (" + String(c.dtThongThuy).replace(".", ",") + " thông thủy)" : "") : "", c.tang ? "tầng " + c.tang : "", c.thap ? "tháp " + c.thap : ""].filter(Boolean).join(" · ");
+  var h = '<div class="hi">Em gửi ' + esc(P.khach.xungHo) + " bảng tính " + esc(P.duAn.ten) + (c.ma ? ", căn " + esc(c.ma) : "") + (mo ? ": " + esc(mo) : "") + ".</div>";
   h += '<div class="lead">' + esc(P.khach.xungHo.charAt(0).toUpperCase() + P.khach.xungHo.slice(1)) + " chuẩn bị khoảng <b>" + tien(t.tuCoTruocBanGiao) + "</b> trước khi nhận nhà." +
     (vay ? " Ngân hàng giải ngân <b>" + ty(vay.soTien) + "</b>, đến" : " Đến") + " bàn giao nộp thêm " + ty(t.banGiao) + ".</div>";
   if (vay) h += '<div class="lead2">Trả góp ước tính khoảng ' + tien(vay.traGopThang) + "/tháng" + (P.pttt.coTranLai ? " (lãi trần 6,9%/năm theo điều kiện của CĐT trong thời gian áp trần)" : "") + ".</div>";
@@ -48,6 +50,10 @@ tr.nganhang td.a,tr.nganhang td.l{color:#2447f9}
   h += '<div class="foot">' + (P.lienHe.qrSvg ? '<div class="qr">' + P.lienHe.qrSvg + "</div>" : "") + "<div><b>" + esc(P.lienHe.ten) + "</b><br>Bcons PS Land<br><span>Quét mã để tự tính căn khác. Nhắn Zalo cho em khi cần chỉnh số.</span></div></div>";
   document.getElementById("app").innerHTML = h;
   document.documentElement.dataset.ready = "1";
+  }
+  window.veTheoDuLieu = veTheoDuLieu;
+  var raw = document.getElementById("phieu-data").textContent.trim();
+  if (raw && raw !== "null") veTheoDuLieu(JSON.parse(raw));
 })();
 </script>
 </body>

@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 import { readProjectConfig, sharedDir, takeProjectFlag } from "../remotion/scripts/project.mjs";
 import { renderPage, renderPolicy } from "./page.mjs";
 import { loadCdt, planFromJson } from "./plans-json.mjs";
+import { duLieuTrang } from "./phieu/du-lieu-trang.mjs";
+import { xuatTrangPhieu } from "./phieu/trang.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const TYPES = ["Studio", "1PN-1WC", "2PN-1WC", "2PN-2WC", "3PN-2WC"];
@@ -82,6 +84,7 @@ export function buildStatic(projDir, outRoot, { draft = false } = {}) {
   fs.copyFileSync(path.join(dir, "client.js"), path.join(out, "client.js"));
   fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
   for (const sub of ["assets", "tai-lieu"]) if (fs.existsSync(path.join(dir, sub))) fs.cpSync(path.join(dir, sub), path.join(out, sub), { recursive: true });
+  xuatTrangPhieu(out, duLieuTrang(projDir, data.pttt));
   const qr = project.watermark?.link ? "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n" : "";
   fs.writeFileSync(path.join(out, "_redirects"), qr);
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");
@@ -103,6 +106,7 @@ export function buildLanding(projDir, outRoot, { draft = false } = {}) {
   fs.copyFileSync(path.join(HERE, "calc.mjs"), path.join(out, "calc.js"));
   fs.copyFileSync(path.join(HERE, "client.js"), path.join(out, "client.js"));
   for (const f of [data.anhChinh, ...(data.anhNhaMau ?? []).map((a) => a.file)]) fs.copyFileSync(path.join(projDir, f), path.join(out, path.basename(f)));
+  xuatTrangPhieu(out, duLieuTrang(projDir, ["01", "02", "03", "04", "05"]));
   // QR trong video in link viết hoa /QR (mã thưa, dễ quét); chuyển về trang chủ và ghi nguồn "qr".
   fs.writeFileSync(path.join(out, "_redirects"), "/QR /?utm_source=qr 302\n/qr /?utm_source=qr 302\n");
   fs.writeFileSync(path.join(out, "_headers"), "/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n");

@@ -6,6 +6,7 @@ Cập nhật lần cuối: 11/11/2026 (Master_Data: đồng ý theo dự án, b�
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
 
 ## Đang làm
+- [x] 12/11/2026 Phiếu hướng A: tin Telegram có link `phieu.html?...` (dựng phiếu trong trình duyệt, nút lưu ảnh PNG), chạy cả khi máy anh tắt; lõi dùng chung `engine/landing/phieu/phieu-core.mjs`. Cần anh dán lại `Code.gs` (như mục trên). Template/giao diện phiếu và nút lưu ảnh là bản tạm, giao AGY (quy tắc phân vai mới 12/11: UI/UX và ảnh là việc của AGY).
 - [x] 11/11/2026 Phiếu tính gửi khách: `/phieu <mã căn> <PTTT> [pdf]` trên bot (PNG 1080 px + PDF), lệnh bấm được `/phieu_...` trong tin báo khách từ landing (Apps Script có dòng "Dựng phiếu tính"), `npm run phieu`, `npm run phieu:mau` (6 phiếu kiểm UX). Lõi tính đọc lịch đợt từ `nguon/pttt-cdt.json` (Central Park và Newsky). Template hiện là bản tạm của em; chờ bản của AGY rồi anh duyệt (spec `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`).
 - [x] 11/11/2026 Landing Bcons Newsky (thiết kế AGY) đã tích hợp vào `du-an/bcons-newsky/landing/`: máy tính dùng lõi `calc.js` có test, form gửi thật về Apps Script, bỏ bản đồ Google nhúng và câu tiện ích chưa có nguồn. Dựng: `npm run landing -- --du-an bcons-newsky` (`--nhap` để xem thử khi chưa có `formUrl`).
 - [ ] 11/11/2026 Master_Data (kho khách tập trung): code Apps Script (`engine/master-data/`) dựng xong và test xanh trên máy, **chưa cài lên Sheet thật nào**.

@@ -11,6 +11,7 @@ var NHU_CAU = ['Mua để ở', 'Mua cho thuê', 'Tìm hiểu thêm'];
 var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
 var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '236 Phan Trung, Biên Hòa' }, 'bcons-newsky': { ten: 'Bcons Newsky', diaChi: 'Quốc lộ 13, phường Lái Thiêu, TP.HCM' } };
 /** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
+var SITE = { 'bcons-central-park': 'https://bcons-central-park-dsj.pages.dev', 'bcons-newsky': 'https://bcons-newsky-53r.pages.dev' };
 function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
 var CONSENT_VERSION = 'v1-2026-11-06';
 var MAX_LEADS_10M = 20; // quá số này trong 10 phút: vẫn ghi Sheet nhưng tạm dừng báo Telegram (chống nhồi tin)
@@ -90,6 +91,23 @@ function trieu_(n) {
 
 /** Tin báo khách mới gửi anh (l = lead đã làm sạch). */
 /** Lệnh bấm được cho bot: /phieu_<mã: '-'→'_', '.'→'p'>_<PTTT 2 chữ số>_<lãi: '.'→'p'>_<năm>. Telegram chỉ nhận chữ, số, gạch dưới. Không có mã/PTTT/lãi hoặc mã có chữ P thì không tạo. */
+/** Liên kết xem phiếu dựng ngay trong trình duyệt (hướng A, chạy khi máy anh tắt). Chỉ trỏ về trang của đúng dự án; không chứa tên, SĐT. */
+function phieuLink_(l) {
+  var site = SITE[l.duAn];
+  var m = /^PTTT (\d\d)$/.exec(l.pttt || '');
+  if (!site || !m || !(l.giaChuaVat > 0)) return '';
+  var q = ['k=' + m[1], 'g=' + Math.round(l.giaChuaVat)];
+  if (l.lai) q.push('l=' + l.lai);
+  if (l.nam) q.push('n=' + l.nam);
+  if (l.canMa) q.push('m=' + encodeURIComponent(l.canMa));
+  var loai = l.canLoai && l.canLoai !== 'Không rõ' ? l.canLoai : l.canMoTa;
+  if (loai) q.push('c=' + encodeURIComponent(loai));
+  var tt = /^tháp (.+), tầng (\d+)$/.exec(l.canMoTa || '');
+  if (tt) { q.push('th=' + encodeURIComponent(tt[1])); q.push('tg=' + tt[2]); }
+  if (l.dt > 0) q.push('d=' + l.dt);
+  return site + '/phieu.html?' + q.join('&');
+}
+
 function lenhPhieu_(l) {
   if (!l.canMa || /P/.test(l.canMa) || !/^PTTT \d\d$/.test(l.pttt) || !l.lai || !l.nam) return '';
   var ma = l.canMa.replace(/-/g, '_').replace(/\./g, 'p');
@@ -105,7 +123,8 @@ function formatTelegram_(l) {
     'Xem: ' + l.canLoai + ' ' + l.dt + 'm² (' + l.canMoTa + ') · ' + l.pttt,
     'Tự có đến nhận nhà: ' + money_(l.tuCo) + (l.vay ? ' · vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng (giả định ' + l.lai + '%/' + l.nam + ' năm)' : ' · không vay'),
     'Nguồn: ' + l.nguon,
-    lenh ? 'Dựng phiếu tính: ' + lenh : '',
+    phieuLink_(l) ? 'Xem phiếu tính (bấm, lưu ảnh gửi khách): ' + phieuLink_(l) : '',
+    lenh ? 'Hoặc dựng bằng bot: ' + lenh : '',
     'Đã tick đồng ý nhận tin. Kiểm tra căn còn bán trước khi báo giá. Tin Zalo soạn sẵn ở tin kế tiếp.',
   ].filter(function (x) { return x !== ''; }).join('\n');
 }

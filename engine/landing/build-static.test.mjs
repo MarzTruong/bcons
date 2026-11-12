@@ -87,3 +87,19 @@ test("anh chỉ lỗi 11/11: bản đồ nhúng, thẳng hàng 2 ô lãi/kỳ h�
   for (const f of pdfs) assert.ok(fs.existsSync(path.join(dir, f)), `thiếu ${f}`);
   assert.ok(!/Tiện ích hiện hữu xung quanh/.test(html));
 });
+
+test("trang phieu.html (hướng A) có trong bản dựng của cả hai dự án, đủ file chạy, template theo hợp đồng", () => {
+  for (const [proj, keys] of [[PROJ, ["08", "09", "10"]], [path.join(ROOT, "du-an", "bcons-central-park"), ["01", "02", "03", "04", "05"]]]) {
+    const d = buildLanding(proj, out, { draft: true });
+    for (const f of ["phieu.html", "phieu-web.js", "phieu-core.js", "phieu-trang.js", "calc.js"]) assert.ok(fs.existsSync(path.join(d, f)), `${path.basename(proj)} thiếu ${f}`);
+    const h = fs.readFileSync(path.join(d, "phieu.html"), "utf8");
+    assert.ok(!h.includes("__PHIEU_DATA__"));
+    assert.match(h, /id="phieu-du-lieu"/);
+    assert.match(h, /window\.veTheoDuLieu/, "template phải có hàm veTheoDuLieu (hợp đồng với lõi)");
+    const D = JSON.parse(h.match(/id="phieu-du-lieu">([\s\S]*?)<\/script>/)[1]);
+    assert.deepEqual(Object.keys(D.plans).sort(), [...keys].sort());
+    assert.ok(!/0938|hoaHong/.test(JSON.stringify(D)), "không SĐT/hoa hồng trong dữ liệu trang");
+    assert.ok(fs.readFileSync(path.join(d, "phieu-core.js"), "utf8").includes('from "./calc.js"'));
+    assert.ok(fs.readFileSync(path.join(d, "phieu-web.js"), "utf8").includes('from "./phieu-core.js"'));
+  }
+});

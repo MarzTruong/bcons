@@ -28,6 +28,15 @@ export async function themQr(phieu) {
   return { ...phieu, lienHe: { ...phieu.lienHe, qrSvg: svg } };
 }
 
+/** Mã QR dạng SVG, dựng đồng bộ (dùng khi build trang web). */
+export function qrSvgSync(link) {
+  const m = require("qrcode").create(link, { errorCorrectionLevel: "M" }).modules;
+  const n = m.size;
+  let d = "";
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (m.get(y, x)) d += `M${x} ${y}h1v1h-1z`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n} ${n}" shape-rendering="crispEdges"><path d="${d}" fill="#000"/></svg>`;
+}
+
 /** Chrome headless shell: tham số → REMOTION_BROWSER → bản Remotion đã tải (máy anh) → bản Playwright (cloud); null nếu không có. Chrome đầy đủ không dùng được ở chế độ dòng lệnh trên cloud (treo). */
 export function timChrome(browser) {
   const ung = [browser, process.env.REMOTION_BROWSER];
