@@ -185,3 +185,33 @@ test("mọi địa chỉ nối giữa các phần khớp nhau (không cần trì
   assert.deepEqual(JSON.parse(JSON.stringify(vm.runInContext("CAN_MAU", gs)["bcons-central-park"])), ca, "CAN_MAU trong Code.gs phải khớp thứ tự canMau trong landing.json");
   assert.equal(urls.size, 1, "hai landing phải gửi về cùng một Apps Script (script phân biệt theo duAn)");
 });
+
+test("mã theo dõi: ?utm_source + utm_campaign trên link thành cột Nguồn 'nguon.chiendich' ở cả hai landing; không có thì 'truc-tiep'", co, async () => {
+  const cacDuAn = [["bcons-central-park", "#cards .unit"], ["bcons-newsky", "#calcType"]];
+  const browser = await chromium.launch();
+  try {
+    for (const [ma] of cacDuAn) {
+      const proj = path.join(ROOT, "du-an", ma);
+      const d = buildLanding(proj, out);
+      const { sv, base } = await phucVu(d);
+      const data = JSON.parse(fs.readFileSync(path.join(proj, "landing", "landing.json"), "utf8"));
+      for (const [query, mong] of [
+        ["?utm_source=tiktok&utm_campaign=lai-vay", "tiktok.lai-vay"],
+        ["?utm_source=Facebook&utm_campaign=Bài%20Hạ%20Tầng!", "facebook.bai-ha-tang"],
+        ["?utm_source=qr", "qr"],
+        ["", "truc-tiep"],
+      ]) {
+        const page = await browser.newPage({ viewport: { width: 390, height: 900 } });
+        await page.clock.install();
+        await page.goto(base + "/" + query);
+        const payload = await guiForm(page, data.formUrl);
+        assert.equal(payload.nguon, mong, `${ma} ${query}`);
+        assert.equal(gs.validateLead_(payload).lead.nguon, mong, "Apps Script giữ nguyên nguồn đã làm sạch");
+        await page.close();
+      }
+      sv.close();
+    }
+  } finally {
+    await browser.close();
+  }
+});

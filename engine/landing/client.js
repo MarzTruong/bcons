@@ -71,7 +71,15 @@ const PHONE = /^(?:\+?84|0)\d{9,10}$/;
 
 function source() {
   const q = new URLSearchParams(location.search);
-  return q.get("utm_source") || q.get("nguon") || (document.referrer ? new URL(document.referrer).hostname : "truc tiep");
+  // Mã theo dõi gắn trên link: ?utm_source=tiktok&utm_campaign=ten-bai -> "tiktok.ten-bai" (cột Nguồn trong Sheet và tin Telegram).
+  const sach = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 28);
+  const nguon = sach(q.get("utm_source") || q.get("nguon"));
+  if (nguon) {
+    const chienDich = sach(q.get("utm_campaign"));
+    return chienDich ? `${nguon}.${chienDich}` : nguon;
+  }
+  const tuWeb = document.referrer ? new URL(document.referrer).hostname.toLowerCase().replace(/[^a-z0-9.-]/g, "") : "";
+  return tuWeb || "truc-tiep";
 }
 
 $("form").addEventListener("submit", async (e) => {

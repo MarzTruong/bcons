@@ -161,16 +161,25 @@ function formatZaloTelegram_(l) {
   return '💬 <b>Tin Zalo soạn sẵn</b> (chạm vào khung để chép)\n<pre>' + esc_(formatZalo_(l)) + '</pre>';
 }
 
-/** Tin Zalo soạn sẵn để anh chép gửi khách: giá cả 2 kiểu, các đợt đã gồm VAT, phí bảo trì riêng, ghi rõ ước tính. */
+/** Tin Zalo soạn sẵn để anh chép gửi khách: có bố cục và icon (Zalo không hiểu in đậm/markdown nên chỉ dùng xuống dòng và icon). Giá cả 2 kiểu, đợt đã gồm VAT, phí bảo trì riêng, ghi rõ ước tính. */
 function formatZalo_(l) {
-  var s = 'Chào anh/chị ' + l.ten + ', em là tư vấn viên dự án ' + duAnInfo_(l).ten + ' (' + duAnInfo_(l).diaChi + '). ' +
-    'Em gửi anh/chị bảng tính căn ' + l.canLoai + ' ' + l.dt + 'm² theo ' + l.pttt + ': ' +
-    'giá ' + money_(l.giaChuaVat) + ' chưa VAT, ' + money_(l.giaCoVat) + ' đã gồm VAT 10%. ' +
-    'Tiền tự có đến lúc nhận nhà khoảng ' + money_(l.tuCo);
-  if (l.vay) s += ', vay ngân hàng khoảng ' + money_(l.vay) + ', trả góp ước tính khoảng ' + trieu_(l.traGop) + '/tháng (giả định lãi ' + l.lai + '%/năm, ' + l.nam + ' năm)';
-  s += '. Các đợt thanh toán đã gồm VAT; phí bảo trì 2% (khoảng ' + money_(l.phiBaoTri) + ') đóng khi nhận nhà. ' +
-    'Số liệu là ước tính để tham khảo, em sẽ xác nhận căn còn bán và số chính xác khi anh/chị cần. Anh/chị tiện nghe máy lúc nào để em tư vấn kỹ hơn ạ?';
-  return s;
+  var xem = [l.canLoai && l.canLoai !== 'Không rõ' ? l.canLoai : '', l.dt > 0 ? String(l.dt).replace('.', ',') + ' m²' : ''].filter(function (x) { return x; }).join(' ');
+  var d = duAnInfo_(l);
+  var dong = [
+    'Chào anh/chị ' + l.ten + ' 👋',
+    'Em là tư vấn viên dự án ' + d.ten + ' (' + d.diaChi + ').',
+    '',
+    '📋 Em gửi anh/chị bảng tính' + (xem ? ' căn ' + xem : '') + ' theo ' + l.pttt + ':',
+    '💰 Giá ' + money_(l.giaChuaVat) + ' chưa VAT (' + money_(l.giaCoVat) + ' đã gồm VAT 10%)',
+    '💵 Tiền tự có đến lúc nhận nhà: khoảng ' + money_(l.tuCo),
+  ];
+  if (l.vay) dong.push('🏦 Vay ngân hàng: khoảng ' + money_(l.vay) + ' · trả góp ước tính ~' + trieu_(l.traGop) + '/tháng (giả định lãi ' + String(l.lai).replace('.', ',') + '%/năm, ' + l.nam + ' năm)');
+  dong.push('🧾 Các đợt thanh toán đã gồm VAT; phí bảo trì 2% (khoảng ' + money_(l.phiBaoTri) + ') đóng khi nhận nhà.');
+  dong.push('');
+  dong.push('ℹ️ Số liệu là ước tính để tham khảo; em sẽ xác nhận căn còn bán và số chính xác khi anh/chị cần.');
+  dong.push('');
+  dong.push('📞 Anh/chị tiện nghe máy lúc nào để em tư vấn kỹ hơn ạ?');
+  return dong.join('\n');
 }
 
 function rowFor_(l, now) {

@@ -216,3 +216,17 @@ test("tin Telegram viết số kiểu Việt Nam (dấu phẩy thập phân)", (
   assert.ok(tg.includes("62,02 m²"), "diện tích");
   assert.ok(tg.includes("giả định 9,5%/20 năm"), "lãi giả định");
 });
+
+test("tin Zalo soạn sẵn có bố cục và icon (gửi khách), vẫn đủ ý bắt buộc, không có câu hứa", () => {
+  const l = ctx.validateLead_({ ...lead, duAn: "bcons-central-park" }).lead;
+  const z = ctx.formatZalo_(l);
+  for (const icon of ["👋", "📋", "💰", "💵", "🏦", "🧾", "ℹ️", "📞"]) assert.ok(z.includes(icon), icon);
+  assert.ok(z.split("\n").length >= 9, "nhiều dòng, có dòng trống ngăn khối");
+  assert.ok(z.includes("\n\n"));
+  for (const s of ["Nguyễn Văn B", "ước tính", "chưa VAT", "đã gồm VAT 10%", "Các đợt thanh toán đã gồm VAT", "phí bảo trì 2%", "20,8 triệu", "9,5%", "Bcons Central Park"]) assert.ok(z.includes(s), s);
+  assert.ok(!/<|>|\*\*|cam kết|chắc chắn|tăng giá/i.test(z), "Zalo không hiểu định dạng: không thẻ, không dấu sao");
+  // không vay: không có dòng vay
+  const kv = ctx.formatZalo_(ctx.validateLead_({ ...lead, vay: 0, traGop: 0, pttt: "PTTT 01" }).lead);
+  assert.ok(!kv.includes("🏦"));
+  assert.ok(z.length < 1200);
+});
