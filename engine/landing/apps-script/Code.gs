@@ -11,6 +11,8 @@ var NHU_CAU = ['Mua để ở', 'Mua cho thuê', 'Tìm hiểu thêm'];
 var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
 var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '236 Phan Trung, Biên Hòa' }, 'bcons-newsky': { ten: 'Bcons Newsky', diaChi: 'Quốc lộ 13, phường Lái Thiêu, TP.HCM' } };
 /** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
+/** Mã căn mẫu theo thứ tự trên landing (trang không chứa mã căn: chỉ gửi số thứ tự, đây là nơi tra). Phải khớp du-an/<mã>/landing/landing.json → canMau (test kiểm). */
+var CAN_MAU = { 'bcons-central-park': ["A21-26", "A15-12", "E6-09", "A18-09", "A15-07"] };
 var SITE = { 'bcons-central-park': 'https://bcons-central-park-dsj.pages.dev', 'bcons-newsky': 'https://bcons-newsky-binhduong.pages.dev' };
 function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
 var CONSENT_VERSION = 'v1-2026-11-06';
@@ -43,6 +45,15 @@ function num_(v, lo, hi) {
  * Kiểm và làm sạch đăng ký (ai cũng gửi thẳng được tới link /exec, nên không tin dữ liệu nào).
  * Trả { ok, lead, error, spam }; lead là bản đã làm sạch, chỉ dùng lead từ đây trở đi.
  */
+/** Mã căn: từ canMa nếu gửi đúng dạng, không thì tra số thứ tự canStt trong CAN_MAU của dự án. */
+function canMaTu_(p) {
+  var m = String(p.canMa || '').toUpperCase();
+  if (/^[A-Z0-9.\-]{3,14}$/.test(m)) return m;
+  var ds = CAN_MAU[p.duAn];
+  var i = typeof p.canStt === 'number' ? p.canStt : NaN;
+  return ds && isFinite(i) && i >= 0 && i < ds.length && Math.floor(i) === i ? ds[i] : '';
+}
+
 function validateLead_(p) {
   if (!p || typeof p !== 'object') return { ok: false, error: 'Dữ liệu trống' };
   if (p.hp_x7) return { ok: false, spam: true, error: 'spam' };
@@ -59,7 +70,7 @@ function validateLead_(p) {
     canLoai: LOAI.indexOf(p.canLoai) >= 0 ? p.canLoai : 'Không rõ',
     canMoTa: clean_(p.canMoTa, 80),
     dt: num_(p.dt, 20, 200),
-    canMa: /^[A-Z0-9.\-]{3,14}$/.test(String(p.canMa || '').toUpperCase()) ? String(p.canMa).toUpperCase() : '',
+    canMa: canMaTu_(p),
     pttt: /^PTTT (0[1-9]|10)$/.test(p.pttt) ? p.pttt : 'Không rõ',
     giaChuaVat: num_(p.giaChuaVat, 1e9, 2e10),
     giaCoVat: num_(p.giaCoVat, 1e9, 2.2e10),

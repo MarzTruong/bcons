@@ -86,7 +86,7 @@ $("form").addEventListener("submit", async (e) => {
   const { u, c, lai, nam, monthly } = result();
   const payload = {
     ten, sdt, nhuCau: $("nhuCau").value, hp_x7: $("hp_x7").value, dongY: true, t: Date.now() - T0,
-    canMa: u.ma, canLoai: u.loai, canMoTa: `tháp ${u.thap}, tầng ${u.tang}`, dt: u.dtTimTuong, pttt: PLANS[S.k].name,
+    canStt: S.i, canLoai: u.loai, canMoTa: `tháp ${u.thap}, tầng ${u.tang}`, dt: u.dtTimTuong, pttt: PLANS[S.k].name,
     giaChuaVat: c.P, giaCoVat: c.G, phiBaoTri: c.fee, tuCo: c.ownBefore, vay: c.loan, traGop: Math.round(monthly), lai, nam,
     duAn: D.duAn, nguon: source(), trang: location.origin + location.pathname,
   };

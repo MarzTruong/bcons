@@ -9,6 +9,7 @@ if (!r.ok) {
   app.textContent = r.loi + " Anh/chị nhắn Zalo giúp em nhé.";
   document.documentElement.dataset.ready = "1";
 } else {
+  window.__phieu = r.phieu; // để test tự động đối chiếu số
   window.veTheoDuLieu(r.phieu);
   const ten = `phieu-tinh-${r.phieu.can.ma || r.phieu.pttt.ma}-PTTT${r.phieu.pttt.ma}`.replace(/[^A-Za-z0-9.-]/g, "_");
   const nut = document.getElementById("luu-anh");

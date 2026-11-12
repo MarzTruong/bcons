@@ -135,3 +135,12 @@ test("địa chỉ trang trong Code.gs (SITE) khớp link QR trong project.json 
     assert.equal(new URL(proj.watermark.link).origin.toLowerCase(), site[ma], ma);
   }
 });
+
+test("canStt (số thứ tự căn từ landing, không chứa mã căn) được tra ra mã căn; số lạ bị bỏ", () => {
+  const ok = (stt, duAn = "bcons-central-park") => ctx.validateLead_({ ...lead, duAn, canStt: stt }).lead.canMa;
+  assert.equal(ok(0), "A21-26");
+  assert.equal(ok(3), "A18-09");
+  for (const bad of [-1, 5, 99, 1.5, "x", null, undefined]) assert.equal(ok(bad), "", String(bad));
+  assert.equal(ok(0, "bcons-newsky"), "", "dự án chưa có danh sách căn mẫu thì không tra");
+  assert.equal(ctx.validateLead_({ ...lead, duAn: "bcons-central-park", canMa: "B1.3-01", canStt: 0 }).lead.canMa, "B1.3-01", "canMa gửi đúng dạng vẫn được ưu tiên (tương thích)");
+});

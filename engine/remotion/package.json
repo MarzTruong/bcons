@@ -35,6 +35,7 @@
     "phieu": "node scripts/phieu.mjs",
     "phieu:mau": "node scripts/phieu-mau.mjs",
     "phieu:qr": "node scripts/phieu-qr.mjs",
+    "kiem-mang": "node scripts/kiem-mang.mjs",
     "dev": "node scripts/with-env.mjs remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
