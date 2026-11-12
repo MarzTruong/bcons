@@ -7,6 +7,13 @@ Thiết kế **giao diện web app** cho một người dùng duy nhất (anh, n
 - Ít nhất **2 phương án khác hẳn nhau** kèm ảnh chụp iPad ngang, iPad dọc và điện thoại; chạy được **trên dữ liệu thật** (mẫu bên dưới), bấm được, không phải ảnh tĩnh. Anh chọn 1.
 - Ưu tiên: **thao tác bằng một tay, nhanh trước mặt khách**; bấm trúng căn trên mặt bằng; số đọc rõ dưới nắng ngoài trời; không rối.
 
+## Bổ sung của anh (12/11/2026, bắt buộc có)
+1. **Mặt bằng tầng hiện giá ngay trên từng căn** (đổi PTTT thì giá đổi).
+2. **Đánh dấu căn giá rẻ**: "rẻ nhất loại này trong block" và "rẻ nhất loại này trong tầng" là hai dấu khác nhau, nhìn là hiểu, không rối. Mặc định chỉ dấu mạnh nhất.
+3. **Bấm căn → thẻ căn:** giá (chưa VAT/có VAT), PTTT, tình trạng.
+4. **Bên dưới mặt bằng tầng có danh sách căn cùng vị trí của cả block.** Ví dụ khách chọn B2.4-04 thì dưới mặt bằng hiện căn 04 của mọi tầng trong block B2 (giá, tình trạng, dấu giá rẻ); bấm một dòng thì chuyển sang căn đó.
+Dùng hàm lõi có sẵn, **không tự viết lại**: `engine/banhang/giohang.mjs` (`matBangTang`, `danhDauGiaRe`, `cungViTri`, `theCan`; hàm thuần ESM, nhập bằng `import`). Mã căn `B2.4-04` = tháp B, block B2, tầng 4, vị trí 04.
+
 ## Dữ liệu và hợp đồng
 - Dữ liệu căn: `giohang.json` (cấu trúc ở mục "Dữ liệu" của spec). **AGY làm giao diện đọc file JSON này**; Claude làm phần lấy dữ liệu về (Apps Script, offline). Trong lúc làm, dùng file mẫu `du-an/bcons-newsky/ban-hang-mau/giohang-mau.json` (số liệu mô phỏng cấu trúc thật, **không** phải giá thật; anh có Master File thật để thử sau). Giao diện đọc dữ liệu qua một hàm duy nhất `window.layGioHang()` trả Promise của đối tượng giohang; Claude cắm nguồn thật vào hàm này.
 - **Mọi số tiền dùng lõi tính, không tự viết công thức:** `calc.js` (`calcWith`, `pmt`) và lịch đợt từ `du-an/bcons-newsky/nguon/pttt-cdt.json` (dạng `planFromJson`, như `du-an/bcons-newsky/landing/client.js`). PTTT 08, 09, 10; lãi giả định 9,5%/năm và 20 năm chỉnh được.

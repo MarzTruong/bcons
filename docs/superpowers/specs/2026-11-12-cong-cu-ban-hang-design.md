@@ -1,6 +1,6 @@
 # Công cụ hỗ trợ bán hàng khi gặp khách (Newsky trước): thiết kế
 
-> **Trạng thái:** Nháp chờ anh duyệt (12/11/2026). Anh chốt hướng: web app, Newsky làm trước, chỉ anh dùng, iPad/điện thoại ở ngoài có mạng, cập nhật tự động khi mở và có nút bấm cập nhật. Giao diện giao AGY (`agy/giao-viec/2026-11-12-cong-cu-ban-hang.md`).
+> **Trạng thái:** Anh đã duyệt hướng (12/11/2026) và bổ sung yêu cầu mặt bằng có giá, đánh dấu giá rẻ, danh sách cùng vị trí; lõi `engine/banhang/giohang.mjs` đã xong, giao diện đang chờ AGY. Anh chốt hướng: web app, Newsky làm trước, chỉ anh dùng, iPad/điện thoại ở ngoài có mạng, cập nhật tự động khi mở và có nút bấm cập nhật. Giao diện giao AGY (`agy/giao-viec/2026-11-12-cong-cu-ban-hang.md`).
 
 ## Mục tiêu
 Thay cách bán cũ (cầm tờ gấp, mặt bằng tầng, ghi chép lên giấy) bằng một công cụ số: **xem mặt bằng tầng, bấm chọn căn, thấy giá và tình trạng, tính phương án thanh toán, so sánh vài căn, rồi xuất ảnh/PDF "căn khách chọn" để gửi khách.** Dùng để check giá, tư vấn và giúp khách chọn căn ngay tại chỗ.
@@ -13,17 +13,22 @@ Thay cách bán cũ (cầm tờ gấp, mặt bằng tầng, ghi chép lên giấ
 - **Cập nhật:** tự tải lại khi mở ứng dụng nếu có mạng, và nút "Cập nhật" bấm tay. Khi anh sửa Sheet (dán giỏ hàng mới của CĐT) thì lần mở sau là thấy.
 
 ## Dữ liệu `giohang.json` (hợp đồng giữa Apps Script, lõi và giao diện)
-Mỗi căn: `ma` (vd. `B1.3-01`), `thap`, `tang`, `viTri` (số căn trên tầng), `loai` (2PN-2WC...), `dtTimTuong`, `dtThongThuy`, `giaChuaVat` theo PTTT `{ "08", "09", "10" }`, `tinhTrang`. Kèm `capNhat` (ISO) và `phienBan`.
+Mỗi căn: `ma` (dạng `B<block>.<tầng>-<vịTrí>`, vd. `B2.4-04` = tháp B, block B2, tầng 4, vị trí 04), `thap`, `block` (vd. `B2`), `tang`, `viTri` (số căn trên tầng), `loai` (2PN-2WC...), `dtTimTuong`, `dtThongThuy`, `giaChuaVat` theo PTTT `{ "08", "09", "10" }`, `tinhTrang`. Kèm `capNhat` (ISO) và `phienBan`.
 - Chỉ căn **"Trống"** chọn/tư vấn được. **Đã cọc** hiện mờ là "đã bán" trên mặt bằng, không chọn, không tư vấn. **CĐT LOCK** không hiện (chưa mở bán). Dữ liệu từ Master File sheet `GiaTongHop` (đã có hàm đọc cột: `engine/landing/phieu/can.mjs`).
 - Mặt bằng: ảnh tầng thật của CĐT (Drive `Bcons/data/bcons-newsky/tai-lieu-cdt/`, 9 ảnh Block B). Vùng bấm (SVG phủ lên ảnh) cho từng căn do AGY vẽ; khóa là `(mẫu tầng, viTri)`. Em cung cấp bảng ánh xạ mã căn → (mẫu tầng, viTri).
 
 ## Chức năng
-1. Chọn tháp/tầng, xem mặt bằng, căn trống sáng, đã bán mờ.
-2. Bấm căn → thẻ: mã, loại, diện tích tim tường/thông thủy, giá 3 PTTT (chưa VAT và có VAT), tự có đến nhận nhà, khoản vay, trả góp ước tính (lãi và kỳ hạn chỉnh được), bảng đợt thanh toán. Mọi số **dùng lõi `calc.js`**, không tự tính.
+1. Chọn block/tầng, xem **mặt bằng tầng có hiện giá ngay trên từng căn** (theo PTTT đang chọn); căn trống sáng, đã bán mờ.
+1b. **Đánh dấu căn giá rẻ:** quét cả giỏ hàng, căn **rẻ nhất theo loại căn trong block** và **rẻ nhất theo loại căn trong tầng** có dấu riêng (đồng giá thì cùng được đánh dấu; chỉ so căn Trống; đổi PTTT thì xếp lại). Lõi trả sẵn cờ và thứ hạng.
+1c. **Danh sách cùng vị trí cả block** nằm dưới mặt bằng tầng: khách chọn B2.4-04 thì bên dưới hiện căn 04 của mọi tầng trong block B2 (giá, PTTT, tình trạng, dấu giá rẻ), bấm căn nào chuyển sang căn đó.
+2. Bấm căn → thẻ: mã, loại, **tình trạng**, diện tích tim tường/thông thủy, giá 3 PTTT (chưa VAT và có VAT), tự có đến nhận nhà, khoản vay, trả góp ước tính (lãi và kỳ hạn chỉnh được), bảng đợt thanh toán. Mọi số **dùng lõi `calc.js`**, không tự tính.
 3. Lọc theo loại căn, diện tích, ngân sách (giá có VAT hoặc vốn tự có), PTTT.
 4. Danh sách rút gọn (2–4 căn) để so sánh cạnh nhau.
 5. Ghi chú tư vấn theo khách (lưu trong máy anh, không lên mạng).
 6. **Xuất ảnh/PDF** cho căn đã chọn (và bản so sánh): mặt bằng tầng khoanh căn đó + giá + phương án thanh toán, đúng quy tắc phiếu tính (một dòng giá, không hứa gì, không SĐT chữ; có tên + QR).
+
+## Lõi đã xong (Claude): `engine/banhang/giohang.mjs`
+`parseMa`, `trangThai`, `canHienThi` (bỏ CĐT LOCK), `danhDauGiaRe(ds,{pttt})`, `matBangTang(ds,block,tang)`, `cungViTri(ds,ma)`, `theCan(ds,ma)` (căn đã bán không trả giá). Hàm thuần ESM, giao diện nhập thẳng bằng `import`. Test: `engine/banhang/giohang.test.mjs` (10 test, có chạy trên file mẫu).
 
 ## Phân việc
 - **AGY:** toàn bộ giao diện: bố cục, mặt bằng tương tác, vùng bấm từng căn, thẻ căn, so sánh, mẫu ảnh/PDF xuất, trải nghiệm trên iPad ngang/dọc và điện thoại.
