@@ -8,3 +8,5 @@ Nguyên tắc duy nhất (anh chốt 11/11/2026):
 Giao diện và ảnh là việc của AGY (anh chốt 12/11/2026): bố cục, màu, chữ, ảnh minh họa, hiệu ứng, trang web, template phiếu; AGY đưa **bản demo cho anh duyệt** trước khi Claude tích hợp. Claude chỉ review/đề xuất UX bằng chữ và làm phần lõi (dữ liệu, tính toán, test).
 
 Việc AGY làm theo thế mạnh: thiết kế UI/UX, ảnh, cào tin thời gian thực, kiểm toán độc lập. Skill, workflow và nhiệm vụ do anh tạo và giao trực tiếp trong Antigravity (ngoài repo). Claude (Claude Code) là lõi hệ thống: khi anh báo "AGY xong", Claude kiểm nội dung (số liệu, link, quy tắc cứng) và code, rồi báo anh; phần UX/UI anh làm cùng AGY. Chi tiết phân vai: `docs/phan-vai-claude-antigravity.md`.
+
+Lời giao việc soạn sẵn (AGY đọc sau `git pull`): `agy/giao-viec/<ngày>-<việc>.md`. Anh chỉ cần nhắn AGY đọc đúng file.

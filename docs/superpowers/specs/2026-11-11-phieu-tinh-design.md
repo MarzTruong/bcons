@@ -46,7 +46,7 @@ Khách để lại thông tin trên landing, hoặc nhắn tin xin bảng giá (
 6. In PDF khổ A4 không vỡ bố cục.
 
 ## Giao việc cho AGY (anh dán)
-"Em `git pull` trong `E:\Claude\bcons-agy`, đọc `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md` và ba ảnh mẫu trong `docs/superpowers/specs/assets/phieu-mau/`. Thiết kế template phiếu tính (HTML/CSS thuần, nhận dữ liệu theo `data.json`) ở bề rộng 540 px, ít nhất 2 phương án khác hẳn nhau, kèm ảnh chụp từ dữ liệu của cả Bcons Central Park và Bcons Newsky (12 đợt). Không sửa file trong repo. Kết quả để ở Drive `Bcons/agy/den-claude/<ngày>-phieu-tinh/`."
+Lời giao đầy đủ (cập nhật 12/11/2026, gồm hợp đồng dữ liệu, nút lưu ảnh, trang web) nằm ở `agy/giao-viec/2026-11-12-phieu-tinh.md`. Anh dán cho AGY: "Em `git pull` trong `E:\Claude\bcons-agy`, đọc `agy/giao-viec/2026-11-12-phieu-tinh.md` và làm theo."
 
 ## Các giai đoạn thực hiện (sau khi anh duyệt spec)
 1. AGY trả template; Claude kiểm UX theo tiêu chí, nêu chỗ cần sửa; anh chọn.
