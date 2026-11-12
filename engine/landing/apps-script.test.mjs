@@ -117,14 +117,14 @@ test("needsHeaderRepair_: tab cũ 17 cột cần ghi lại tiêu đề, tab đ�
 
 test("nhiều dự án dùng chung một Apps Script: tin báo và tin Zalo ghi đúng dự án; payload cũ coi là Central Park", () => {
   const cp = ctx.validateLead_(lead).lead;
-  assert.match(ctx.formatTelegram_(cp), /landing Bcons Central Park/);
+  assert.match(ctx.formatTelegram_(cp), /KHÁCH MỚI<\/b> · Bcons Central Park/);
   assert.match(ctx.formatZalo_(cp), /Bcons Central Park \(236 Phan Trung/);
   const ns = ctx.validateLead_({ ...lead, duAn: "bcons-newsky", pttt: "PTTT 09" }).lead;
-  assert.match(ctx.formatTelegram_(ns), /landing Bcons Newsky/);
+  assert.match(ctx.formatTelegram_(ns), /KHÁCH MỚI<\/b> · Bcons Newsky/);
   const z = ctx.formatZalo_(ns);
   assert.match(z, /dự án Bcons Newsky/);
   assert.ok(!/Central Park|Phan Trung/.test(z), "không lẫn dự án khác");
-  assert.match(ctx.formatTelegram_(ctx.validateLead_({ ...lead, duAn: "du-an-la" }).lead), /landing Bcons Central Park/);
+  assert.match(ctx.formatTelegram_(ctx.validateLead_({ ...lead, duAn: "du-an-la" }).lead), /KHÁCH MỚI<\/b> · Bcons Central Park/);
 });
 
 test("địa chỉ trang trong Code.gs (SITE) khớp link QR trong project.json của từng dự án (đổi tên miền phải đổi cả hai)", () => {
@@ -148,6 +148,7 @@ test("canStt (số thứ tự căn từ landing, không chứa mã căn) đượ
 /** Chạy doPost thật của Code.gs với Google giả (Sheet, bộ nhớ đệm, Telegram) để thử cả luồng nhận lead. */
 function chayDoPost() {
   const gui = [];
+  const modes = [];
   const dong = [];
   const kho = {};
   const c = {
@@ -155,13 +156,13 @@ function chayDoPost() {
     LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
     SpreadsheetApp: { getActiveSpreadsheet: () => ({ getSheetByName: () => ({ getLastRow: () => 5, getLastColumn: () => 19, appendRow: (r) => dong.push(r), getRange: () => ({ setValues() {} }) }), insertSheet() {} }) },
     PropertiesService: { getScriptProperties: () => ({ getProperty: () => "x" }) },
-    UrlFetchApp: { fetch: (u, o) => { gui.push(JSON.parse(o.payload).text); return {}; } },
+    UrlFetchApp: { fetch: (u, o) => { const b = JSON.parse(o.payload); gui.push(b.text); modes.push(b.parse_mode); return {}; } },
     ContentService: { createTextOutput: (s) => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 1 } },
     Logger: { log() {} },
   };
   vm.createContext(c);
   vm.runInContext(fs.readFileSync(file, "utf8"), c);
-  return { gui, dong, post: (p) => JSON.parse(c.doPost({ postData: { contents: JSON.stringify(p) } }).s) };
+  return { gui, modes, dong, post: (p) => JSON.parse(c.doPost({ postData: { contents: JSON.stringify(p) } }).s) };
 }
 const tho = { ten: "Nguyễn Văn B", sdt: "0901234567", dongY: true, t: 6000, nhuCau: "Mua để ở", canLoai: "Không rõ", canMoTa: "2PN – 2WC", dt: 0, giaChuaVat: 3e9, giaCoVat: 3.3e9, phiBaoTri: 6e7, tuCo: 6.6e8, vay: 1.65e9, traGop: 15380165, lai: 9.5, nam: 20, nguon: "truc-tiep", trang: "https://x.pages.dev/" };
 
@@ -171,8 +172,8 @@ test("doPost: cùng SĐT gửi ở hai dự án khác nhau trong 2 phút: CẢ H
   assert.deepEqual(h.post({ ...tho, duAn: "bcons-newsky", pttt: "PTTT 09" }), { ok: true });
   assert.equal(h.dong.length, 2, "ghi 2 dòng Sheet");
   assert.equal(h.gui.length, 4, "2 tin cho mỗi lead");
-  assert.match(h.gui[0], /landing Bcons Central Park/);
-  assert.match(h.gui[2], /landing Bcons Newsky/);
+  assert.match(h.gui[0], /KHÁCH MỚI<\/b> · Bcons Central Park/);
+  assert.match(h.gui[2], /KHÁCH MỚI<\/b> · Bcons Newsky/);
 });
 
 test("doPost: cùng SĐT cùng dự án bấm gửi hai lần trong 2 phút: chỉ báo một lần", () => {
@@ -182,4 +183,30 @@ test("doPost: cùng SĐT cùng dự án bấm gửi hai lần trong 2 phút: ch�
   assert.equal(r.dup, true);
   assert.equal(h.dong.length, 1);
   assert.equal(h.gui.length, 2);
+});
+
+test("tin Telegram định dạng HTML có icon: đủ khối, tên khách chứa thẻ HTML không phá được tin", () => {
+  const l = ctx.validateLead_({ ...lead, ten: "Anh <b>Thử</b> & Em", canMa: "A18-09", duAn: "bcons-central-park" }).lead;
+  const tg = ctx.formatTelegram_(l);
+  for (const icon of ["🔥", "👤", "📞", "🎯", "🏠", "💰", "💵", "🏦", "📍", "🧾", "✅"]) assert.ok(tg.includes(icon), icon);
+  assert.ok(tg.includes("<b>KHÁCH MỚI</b>"));
+  assert.ok(tg.includes("Anh &lt;b&gt;Thử&lt;/b&gt; &amp; Em"), "chữ của khách phải được thoát thẻ");
+  assert.ok(!tg.includes("<b>Thử</b>"));
+  // mọi thẻ còn lại chỉ thuộc danh sách Telegram cho phép
+  const the = [...tg.matchAll(/<\/?([a-z]+)[^>]*>/g)].map((m) => m[1]);
+  assert.ok(the.length > 0 && the.every((t) => ["b", "i", "a", "code", "pre"].includes(t)), the.join());
+  // link phiếu nằm trong href, dấu & được thoát để Telegram đọc được
+  const href = tg.match(/<a href="([^"]+)">/)[1];
+  assert.ok(href.includes("&amp;") && !/&(?!amp;)/.test(href));
+  assert.ok(tg.length < 3500);
+});
+
+test("tin Zalo soạn sẵn gửi trong khung <pre> (chạm để chép), thoát thẻ; gửi Telegram bằng parse_mode HTML", () => {
+  const h = chayDoPost();
+  const l = { ...tho, ten: "Cô <i>Lan</i>", duAn: "bcons-newsky", pttt: "PTTT 09" };
+  h.post(l);
+  assert.equal(h.gui.length, 2);
+  assert.ok(h.gui[1].startsWith("💬 <b>Tin Zalo soạn sẵn</b>"));
+  assert.match(h.gui[1], /<pre>Chào anh\/chị Cô &lt;i&gt;Lan&lt;\/i&gt;/);
+  assert.ok(h.modes.every((m) => m === "HTML"), "mọi tin gửi bằng parse_mode HTML");
 });

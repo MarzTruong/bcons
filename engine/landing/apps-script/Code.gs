@@ -125,19 +125,40 @@ function lenhPhieu_(l) {
   return '/phieu_' + ma + '_' + l.pttt.slice(-2) + '_' + String(l.lai).replace('.', 'p') + '_' + l.nam;
 }
 
+/** Thoát <, >, & để chữ của khách (tên, nguồn...) không làm hỏng định dạng HTML của tin Telegram. */
+function esc_(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** Tin báo khách mới gửi anh, định dạng HTML của Telegram (đậm, nghiêng, link) và icon cho dễ đọc nhanh. */
 function formatTelegram_(l) {
+  var link = phieuLink_(l);
   var lenh = lenhPhieu_(l);
+  var xem = [l.canLoai && l.canLoai !== 'Không rõ' ? l.canLoai : '', l.dt > 0 ? l.dt + ' m²' : '', l.canMoTa].filter(function (x) { return x; }).map(esc_).join(' · ');
   return [
-    '🔥 KHÁCH MỚI – landing ' + duAnInfo_(l).ten,
-    'Tên: ' + l.ten + ' · SĐT/Zalo: ' + l.phone,
-    'Nhu cầu: ' + l.nhuCau,
-    'Xem: ' + l.canLoai + ' ' + l.dt + 'm² (' + l.canMoTa + ') · ' + l.pttt,
-    'Tự có đến nhận nhà: ' + money_(l.tuCo) + (l.vay ? ' · vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng (giả định ' + l.lai + '%/' + l.nam + ' năm)' : ' · không vay'),
-    'Nguồn: ' + l.nguon,
-    phieuLink_(l) ? 'Xem phiếu tính (bấm, lưu ảnh gửi khách): ' + phieuLink_(l) : '',
-    lenh ? 'Hoặc dựng bằng bot: ' + lenh : '',
-    'Đã tick đồng ý nhận tin. Kiểm tra căn còn bán trước khi báo giá. Tin Zalo soạn sẵn ở tin kế tiếp.',
-  ].filter(function (x) { return x !== ''; }).join('\n');
+    '🔥 <b>KHÁCH MỚI</b> · ' + esc_(duAnInfo_(l).ten),
+    '━━━━━━━━━━━━━━',
+    '👤 <b>' + esc_(l.ten) + '</b>',
+    '📞 <b>' + esc_(l.phone) + '</b> (gọi hoặc Zalo cùng số)',
+    '🎯 ' + esc_(l.nhuCau),
+    '',
+    '🏠 <b>Đang xem</b>',
+    xem + ' · ' + esc_(l.pttt),
+    '💰 Giá ' + money_(l.giaChuaVat) + ' chưa VAT · ' + money_(l.giaCoVat) + ' có VAT',
+    '💵 Tự có đến nhận nhà: <b>' + money_(l.tuCo) + '</b>',
+    l.vay ? '🏦 Vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng <i>(giả định ' + l.lai + '%/' + l.nam + ' năm)</i>' : '🏦 Không vay',
+    '📍 Nguồn: ' + esc_(l.nguon),
+    '',
+    link ? '🧾 <a href="' + esc_(link) + '">Xem phiếu tính, lưu ảnh gửi khách</a>' : '',
+    lenh ? '🤖 Hoặc dựng bằng bot: ' + lenh : '',
+    '✅ Đã tick đồng ý nhận tin · kiểm tra căn còn bán trước khi báo giá',
+    '⬇️ Tin Zalo soạn sẵn ở tin kế tiếp',
+  ].filter(function (x, i, a) { return x !== '' || (i > 0 && a[i - 1] !== ''); }).join('\n');
+}
+
+/** Tin Zalo soạn sẵn đặt trong khung <pre>: chạm vào khung là chép cả đoạn, dán vào Zalo gửi khách. */
+function formatZaloTelegram_(l) {
+  return '💬 <b>Tin Zalo soạn sẵn</b> (chạm vào khung để chép)\n<pre>' + esc_(formatZalo_(l)) + '</pre>';
 }
 
 /** Tin Zalo soạn sẵn để anh chép gửi khách: giá cả 2 kiểu, các đợt đã gồm VAT, phí bảo trì riêng, ghi rõ ước tính. */
@@ -168,7 +189,7 @@ function sendTelegram_(text) {
   if (!token || !chat) return;
   UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-    payload: JSON.stringify({ chat_id: chat, text: String(text).slice(0, 4000) }),
+    payload: JSON.stringify({ chat_id: chat, text: String(text).slice(0, 4000), parse_mode: 'HTML', disable_web_page_preview: true }),
   });
 }
 
@@ -198,7 +219,7 @@ function doPost(e) {
     }
     if (count <= MAX_LEADS_10M) {
       sendTelegram_(formatTelegram_(v.lead));
-      sendTelegram_(formatZalo_(v.lead));
+      sendTelegram_(formatZaloTelegram_(v.lead));
     } else if (count === MAX_LEADS_10M + 1) {
       sendTelegram_('⚠️ Hơn ' + MAX_LEADS_10M + ' đăng ký trong 10 phút (có thể bị spam). Tạm dừng báo từng khách; vẫn ghi vào Sheet tab Landing, anh kiểm tra.');
     }

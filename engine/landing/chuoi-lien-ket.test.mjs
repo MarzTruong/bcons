@@ -61,7 +61,8 @@ async function quaChuoi(browser, base, payload, site) {
   assert.equal(v.ok, true, `Apps Script từ chối: ${v.error}`);
   assert.equal(v.spam, undefined);
   const tin = gs.formatTelegram_(v.lead);
-  const m = tin.match(/(https:\/\/[^\s]+\/phieu\.html\?[^\s]+)/);
+  const m = tin.match(/<a href="(https:\/\/[^"]+\/phieu\.html\?[^"]+)">/);
+  if (m) m[1] = m[1].replaceAll("&amp;", "&");
   assert.ok(m, `tin Telegram phải có link phiếu:\n${tin}`);
   assert.ok(m[1].startsWith(site + "/phieu.html?"), `link phiếu trỏ sai trang: ${m[1]}`);
   const p = await browser.newPage({ viewport: { width: 390, height: 800 }, acceptDownloads: true });
