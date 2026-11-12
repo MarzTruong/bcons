@@ -83,7 +83,7 @@ test("anh chỉ lỗi 11/11: bản đồ nhúng, thẳng hàng 2 ô lãi/kỳ h�
   assert.equal([...html.matchAll(/class="promo-media"/g)].length, 3);
   assert.equal([...html.matchAll(/<img src="assets\/promo-[a-z]+\.jpg"/g)].length, 3);
   const pdfs = [...html.matchAll(/href="(tai-lieu\/[^"]+\.pdf)"/g)].map((m) => m[1]);
-  assert.ok(pdfs.length >= 3, "ít nhất 3 văn bản pháp lý có file");
+  assert.ok(pdfs.length >= 4, "ít nhất 4 văn bản pháp lý có file");
   for (const f of pdfs) assert.ok(fs.existsSync(path.join(dir, f)), `thiếu ${f}`);
   assert.ok(!/Tiện ích hiện hữu xung quanh/.test(html));
 });
