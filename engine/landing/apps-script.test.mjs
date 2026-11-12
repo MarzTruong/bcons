@@ -210,3 +210,9 @@ test("tin Zalo soạn sẵn gửi trong khung <pre> (chạm để chép), thoát
   assert.match(h.gui[1], /<pre>Chào anh\/chị Cô &lt;i&gt;Lan&lt;\/i&gt;/);
   assert.ok(h.modes.every((m) => m === "HTML"), "mọi tin gửi bằng parse_mode HTML");
 });
+
+test("tin Telegram viết số kiểu Việt Nam (dấu phẩy thập phân)", () => {
+  const tg = ctx.formatTelegram_(ctx.validateLead_({ ...lead, duAn: "bcons-central-park" }).lead);
+  assert.ok(tg.includes("62,02 m²"), "diện tích");
+  assert.ok(tg.includes("giả định 9,5%/20 năm"), "lãi giả định");
+});

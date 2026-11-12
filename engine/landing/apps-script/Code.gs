@@ -134,7 +134,7 @@ function esc_(s) {
 function formatTelegram_(l) {
   var link = phieuLink_(l);
   var lenh = lenhPhieu_(l);
-  var xem = [l.canLoai && l.canLoai !== 'Không rõ' ? l.canLoai : '', l.dt > 0 ? l.dt + ' m²' : '', l.canMoTa].filter(function (x) { return x; }).map(esc_).join(' · ');
+  var xem = [l.canLoai && l.canLoai !== 'Không rõ' ? l.canLoai : '', l.dt > 0 ? String(l.dt).replace('.', ',') + ' m²' : '', l.canMoTa].filter(function (x) { return x; }).map(esc_).join(' · ');
   return [
     '🔥 <b>KHÁCH MỚI</b> · ' + esc_(duAnInfo_(l).ten),
     '━━━━━━━━━━━━━━',
@@ -146,7 +146,7 @@ function formatTelegram_(l) {
     xem + ' · ' + esc_(l.pttt),
     '💰 Giá ' + money_(l.giaChuaVat) + ' chưa VAT · ' + money_(l.giaCoVat) + ' có VAT',
     '💵 Tự có đến nhận nhà: <b>' + money_(l.tuCo) + '</b>',
-    l.vay ? '🏦 Vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng <i>(giả định ' + l.lai + '%/' + l.nam + ' năm)</i>' : '🏦 Không vay',
+    l.vay ? '🏦 Vay ' + money_(l.vay) + ' · trả góp ~' + trieu_(l.traGop) + '/tháng <i>(giả định ' + String(l.lai).replace('.', ',') + '%/' + l.nam + ' năm)</i>' : '🏦 Không vay',
     '📍 Nguồn: ' + esc_(l.nguon),
     '',
     link ? '🧾 <a href="' + esc_(link) + '">Xem phiếu tính, lưu ảnh gửi khách</a>' : '',
