@@ -103,3 +103,29 @@ test("trang phieu.html (hướng A) có trong bản dựng của cả hai dự �
     assert.ok(fs.readFileSync(path.join(d, "phieu-web.js"), "utf8").includes('from "./phieu-core.js"'));
   }
 });
+
+test("build chạy được trên Cloudflare (không cài thư viện): chạy từ bản chép sạch không có node_modules", () => {
+  const tam = fs.mkdtempSync(path.join(os.tmpdir(), "cf-"));
+  const ds = execFileSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], { cwd: ROOT }).toString().split("\0").filter(Boolean);
+  for (const f of ds) {
+    if (!fs.existsSync(path.join(ROOT, f))) continue;
+    fs.mkdirSync(path.dirname(path.join(tam, f)), { recursive: true });
+    fs.copyFileSync(path.join(ROOT, f), path.join(tam, f));
+  }
+  for (const ma of ["bcons-newsky", "bcons-central-park"]) {
+    execFileSync(process.execPath, [path.join(tam, "engine", "landing", "build.mjs"), "--du-an", ma], { cwd: tam, stdio: "pipe" });
+    const h = fs.readFileSync(path.join(tam, "engine", "landing", "dist", ma, "phieu.html"), "utf8");
+    assert.match(h, /id="phieu-du-lieu"/);
+    assert.match(h, /qrSvg/, `${ma}: mã QR phải có sẵn dù không có thư viện`);
+  }
+});
+
+test("mã QR lưu sẵn (phieu-qr.json) khớp link QR trong project.json", async () => {
+  const { qrSvgSync } = await import("./phieu/render.mjs");
+  for (const ma of ["bcons-newsky", "bcons-central-park"]) {
+    const proj = JSON.parse(fs.readFileSync(path.join(ROOT, "du-an", ma, "project.json"), "utf8"));
+    const kho = JSON.parse(fs.readFileSync(path.join(ROOT, "du-an", ma, "landing", "phieu-qr.json"), "utf8"));
+    assert.equal(kho.link, proj.watermark.link, `${ma}: link QR đã đổi, chạy npm run phieu:qr`);
+    assert.equal(kho.svg, qrSvgSync(proj.watermark.link));
+  }
+});
