@@ -36,7 +36,7 @@ Thuật ngữ dùng trong bài: **Sheet id** = đoạn chữ dài giữa `/d/` v
    - Nhớ: bấm **Gộp ngay** sẽ ghi mã khách `KH-...` (hoặc `LOI`) vào cột S **Đã gộp** của Sheet landing nào đang có trong `CauHinh`. Muốn làm lại từ đầu thì xóa cột S của Sheet landing đó (khách khớp theo SĐT nên không bị nhân đôi).
    - `masterSheetId`: Sheet id của `Master_<mã> (thử)` dự án đó. Để trống thì dự án đó không được phân bổ (khách vẫn ở `KhachHang`, không mất).
    - Cách lấy Sheet id: mở Sheet đó, nhìn thanh địa chỉ `https://docs.google.com/spreadsheets/d/`**`1AbC...xyz`**`/edit`, chép đoạn in đậm.
-   - Phải có ít nhất một `landingSheetId`, nếu không lần chạy báo lỗi `LOI_TAB`.
+   - Phải có ít nhất một `landingSheetId`, nếu không **cả "Chạy thử" lẫn "Gộp ngay" đều báo `LOI_TAB`** (nên ở G1, khi cột này còn trống, báo `LOI_TAB` là bình thường). Chỉ dùng "Chạy thử" cho tới khi qua G4, đừng bấm "Gộp ngay".
 10. Các tab còn lại (`KhachHang`, `NhapCRM`, `Loi`, `TuChoi`, `NhatKy`) tự được tạo ở lần **ghi** đầu tiên (G4). Ở "Chạy thử" thì chúng chưa cần có.
 
 11. Đặt múi giờ **của chính Google Sheet** `Master_Data (thử)` là GMT+7: **Tệp → Cài đặt → Múi giờ** chọn "(GMT+07:00) Bangkok, Hà Nội, Jakarta" (em chưa kiểm tên nút). Việc này khác với múi giờ của script ở bước 6: cột ngày trong Sheet hiển thị đúng giờ Việt Nam, và ngày anh gõ ở `NgayGhi` không bị lệch một ngày. Với tab `TuChoi`, **để trống `NgayGhi` là an toàn nhất** (hệ thống tự điền ngày).
@@ -50,6 +50,7 @@ Bản `Code.gs` mới của landing thêm hai cột cuối: **Dự án** (cột 
 1. Trong Drive, chuột phải Sheet **Bcons - Khach quan tam Messenger** → **Tạo bản sao (Make a copy)**, đặt tên `Landing (thử)`.
 2. Mở bản sao → **Tiện ích mở rộng → Apps Script**. Bản sao có thể đã kèm một bản script cũ; xóa hết chữ trong file đó và dán nội dung mới của `engine/landing/apps-script/Code.gs` (GitHub → Raw → `Ctrl+A`, `Ctrl+C`). Lưu.
 3. Cài Script Properties `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` như Bước 2 trong `huong-dan-landing.md` (bản sao không giữ thuộc tính; có thể bỏ qua bước này nếu anh không muốn tin thử bắn vào Telegram thật, khi đó chỉ ghi Sheet).
+*(Các bước 3, 4, 5 dưới đây chỉ để thử gửi một khách thật qua đường landing; **không bắt buộc** để đi tiếp. Nếu bỏ qua, anh chỉ cần gõ tay `Dự án` vào R1 và `Đã gộp` vào S1 của bản sao `Landing (thử)` như ở bước 6, điền id bản sao đó vào cột `landingSheetId` của `CauHinh`, rồi sang G3.)*
 4. **Triển khai (Deploy) → Bản triển khai mới (New deployment)** → ⚙️ **Ứng dụng web (Web app)**, Execute as **Me**, Who has access **Anyone**. Chép link `/exec` (chỉ để thử).
 5. Gửi thử một khách: anh gửi em link `/exec` thử này (không phải khóa bí mật, nhưng **ai có link đều gửi được dòng vào Sheet thử**, nên xong G2 anh **xóa bản triển khai thử này**: Triển khai → Quản lý bản triển khai → lưu trữ/xóa). Em dựng một bản trang landing để thử (chế độ nháp, tên kỹ thuật `--nhap`, không phải trang khách thấy) trỏ vào link đó; anh mở trang, điền một khách thử (tên và SĐT giả) rồi bấm gửi. Kết quả mong đợi: tab **Landing** của bản sao có dòng mới với `Dự án` = mã dự án (vd `bcons-central-park`) ở cột R, cột S `Đã gộp` trống.
 6. Nếu tab Landing của bản sao còn tiêu đề cũ 17 cột: script **tự sửa hàng tiêu đề ở lần khách kế tiếp** (thêm `Dự án`, `Đã gộp`). Anh muốn chắc ngay thì gõ tay `Dự án` vào ô R1 và `Đã gộp` vào ô S1.
