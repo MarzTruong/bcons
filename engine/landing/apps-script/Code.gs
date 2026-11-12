@@ -12,6 +12,8 @@ var LOAI = ['Studio', '1PN-1WC', '2PN-1WC', '2PN-2WC', '3PN-2WC'];
 var DU_AN_TEN = { 'bcons-central-park': { ten: 'Bcons Central Park', diaChi: '236 Phan Trung, Biên Hòa' }, 'bcons-newsky': { ten: 'Bcons Newsky', diaChi: 'Quốc lộ 13, phường Lái Thiêu, TP.HCM' } };
 /** Tên và địa chỉ hiển thị trong tin báo; mã lạ hoặc thiếu (payload cũ) thì coi là Central Park như trước. */
 /** Mã căn mẫu theo thứ tự trên landing (trang không chứa mã căn: chỉ gửi số thứ tự, đây là nơi tra). Phải khớp du-an/<mã>/landing/landing.json → canMau (test kiểm). */
+/** Mã ngắn của dự án trong lệnh /phieu_<mã ngắn>_... (khớp project.json → maNgan; test chặn lệch). */
+var DU_AN_NGAN = {'bcons-central-park': 'cp', 'bcons-newsky': 'ns'};
 var CAN_MAU = { 'bcons-central-park': ["A21-26", "A15-12", "E6-09", "A18-09", "A15-07"] };
 var SITE = { 'bcons-central-park': 'https://bcons-central-park-bienhoa.pages.dev', 'bcons-newsky': 'https://bcons-newsky-binhduong.pages.dev' };
 function duAnInfo_(l) { return DU_AN_TEN[l.duAn] || DU_AN_TEN['bcons-central-park']; }
@@ -122,7 +124,9 @@ function phieuLink_(l) {
 function lenhPhieu_(l) {
   if (!l.canMa || /P/.test(l.canMa) || !/^PTTT \d\d$/.test(l.pttt) || !l.lai || !l.nam) return '';
   var ma = l.canMa.replace(/-/g, '_').replace(/\./g, 'p');
-  return '/phieu_' + ma + '_' + l.pttt.slice(-2) + '_' + String(l.lai).replace('.', 'p') + '_' + l.nam;
+  // Tin không ghi dự án (trang cũ) là của Central Park, cùng quy ước với duAnInfo_.
+  var ngan = (DU_AN_NGAN[l.duAn] || DU_AN_NGAN['bcons-central-park']) + '_';
+  return '/phieu_' + ngan + ma + '_' + l.pttt.slice(-2) + '_' + String(l.lai).replace('.', 'p') + '_' + l.nam;
 }
 
 /** Thoát <, >, & để chữ của khách (tên, nguồn...) không làm hỏng định dạng HTML của tin Telegram. */

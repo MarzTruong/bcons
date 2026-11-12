@@ -30,6 +30,8 @@ export function parseLenhPhieu(text) {
     args = args.slice(1);
     if (dau[1]) {
       const p = dau[1].split("_");
+      // Mã ngắn dự án ở đầu (vd. ns, cp; chỉ chữ, không số nên không lẫn với mã căn A18, B1p3).
+      if (p.length >= 5 && /^[a-z]{2,4}$/i.test(p[0])) out.duAnNgan = p.shift().toLowerCase();
       if (p.length < 4) throw new Error(CU_PHAP);
       const nam = p.pop(), lai = p.pop(), pttt = p.pop();
       const ma = p.join("-").replace(/p/g, ".").toUpperCase();
@@ -50,7 +52,7 @@ export function parseLenhPhieu(text) {
   }
   if (ten) out.ten = ten;
   const { ma, pttt, lai, nam, ten: t2, pdf: pd } = out;
-  return { ma, pttt, ...(lai !== undefined && { lai }), ...(nam !== undefined && { nam }), ...(t2 && { ten: t2 }), pdf: pd };
+  return { ma, pttt, ...(lai !== undefined && { lai }), ...(nam !== undefined && { nam }), ...(t2 && { ten: t2 }), pdf: pd, ...(out.duAnNgan && { duAnNgan: out.duAnNgan }) };
 }
 
 /** Lập phiếu. deps (để test): timCan, render. Trả {png, pdf?, cao, canhBao?, phieu}. */

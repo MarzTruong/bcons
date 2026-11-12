@@ -67,22 +67,25 @@ test("canMa: nhận mã căn đúng dạng, bỏ mã lạ; payload cũ không c�
 test("lenhPhieu_: lệnh bấm được chỉ gồm chữ, số, gạch dưới; khớp bộ đọc lệnh của bot", async () => {
   const { parseLenhPhieu } = await import("../remotion/scripts/phieu.mjs");
   const mau = [
-    ["A18-09", "PTTT 03", 9.5, 20, "/phieu_A18_09_03_9p5_20"],
-    ["B1.3-01", "PTTT 09", 9.5, 20, "/phieu_B1p3_01_09_9p5_20"],
-    ["E6-09", "PTTT 10", 9, 25, "/phieu_E6_09_10_9_25"],
+    ["A18-09", "PTTT 03", 9.5, 20, "/phieu_cp_A18_09_03_9p5_20", "bcons-central-park", "cp"],
+    ["B1.3-01", "PTTT 09", 9.5, 20, "/phieu_ns_B1p3_01_09_9p5_20", "bcons-newsky", "ns"],
+    ["B2.12-14", "PTTT 10", 10.5, 25, "/phieu_ns_B2p12_14_10_10p5_25", "bcons-newsky", "ns"],
+    ["E6-09", "PTTT 10", 9, 25, "/phieu_cp_E6_09_10_9_25", "bcons-central-park", "cp"],
   ];
-  for (const [canMa, pttt, lai, nam, mong] of mau) {
-    const l = ctx.validateLead_({ ...lead, canMa, pttt, lai, nam }).lead;
+  for (const [canMa, pttt, lai, nam, mong, duAn, ngan] of mau) {
+    const l = ctx.validateLead_({ ...lead, canMa, pttt, lai, nam, duAn }).lead;
     const lenh = ctx.lenhPhieu_(l);
     assert.equal(lenh, mong);
     assert.match(lenh, /^\/[A-Za-z0-9_]+$/);
+    assert.ok(lenh.length <= 33, "Telegram chỉ nhận lệnh tối đa 32 ký tự sau dấu /");
+    // Lệnh mang mã ngắn của dự án để bot dựng đúng dự án của khách (anh duyệt 12/11/2026).
     const a = parseLenhPhieu(lenh.toLowerCase());
-    assert.deepEqual([a.ma, a.pttt, a.lai, a.nam], [canMa, pttt.slice(-2), lai, nam]);
+    assert.deepEqual([a.ma, a.pttt, a.lai, a.nam, a.duAnNgan], [canMa, pttt.slice(-2), lai, nam, ngan]);
   }
   assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead }).lead), "", "payload cũ: không có dòng lệnh");
   assert.equal(ctx.lenhPhieu_(ctx.validateLead_({ ...lead, canMa: "P1-01" }).lead), "", "mã có chữ P không mã hóa được an toàn");
   const tg = ctx.formatTelegram_(ctx.validateLead_({ ...lead, canMa: "A18-09" }).lead);
-  assert.ok(tg.includes("Hoặc dựng bằng bot: /phieu_A18_09_02_9p5_20"));
+  assert.ok(tg.includes("Hoặc dựng bằng bot: /phieu_cp_A18_09_02_9p5_20"));
   assert.ok(!ctx.formatTelegram_(ctx.validateLead_(lead).lead).includes("bằng bot"));
 });
 

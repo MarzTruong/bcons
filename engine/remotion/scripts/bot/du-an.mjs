@@ -19,12 +19,15 @@ export function taoDuAn({ root = REPO_ROOT, file }) {
       .filter((d) => d.isDirectory() && NAME_RE.test(d.name) && fs.existsSync(path.join(base, d.name, "project.json")))
       .map((d) => {
         let ten = d.name;
+        let maNgan = "";
         try {
-          ten = JSON.parse(fs.readFileSync(path.join(base, d.name, "project.json"), "utf8")).ten || d.name;
+          const cfg = JSON.parse(fs.readFileSync(path.join(base, d.name, "project.json"), "utf8"));
+          ten = cfg.ten || d.name;
+          maNgan = cfg.maNgan || "";
         } catch {
           // project.json hỏng: vẫn hiện bằng mã
         }
-        return { ma: d.name, ten, dir: path.join(base, d.name) };
+        return { ma: d.name, ten, maNgan, dir: path.join(base, d.name) };
       })
       .sort((a, b) => a.ma.localeCompare(b.ma));
   };

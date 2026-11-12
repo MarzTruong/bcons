@@ -289,16 +289,23 @@ export function createBot(deps) {
       } catch (e) {
         return say(e.message);
       }
+      // Lệnh từ tin báo khách mang mã ngắn dự án: dựng theo dự án của khách, không đổi dự án đang làm.
+      let da = cur;
+      if (a.duAnNgan && duAn) {
+        da = duAn.list().find((d) => d.maNgan === a.duAnNgan);
+        if (!da) return say(`Không thấy dự án có mã "${a.duAnNgan}" trong lệnh phiếu. Gõ /duan chọn dự án rồi dùng /phieu <mã căn> <PTTT>.`);
+      }
+      const dir = da ? da.dir : projDir;
       return enqueue(`phiếu ${a.ma}`, async () => {
-        await sayP(`Đang dựng phiếu tính căn ${a.ma} (PTTT ${a.pttt})...`);
+        await say(`${da ? `🏢 ${da.ten}\n` : ""}Đang dựng phiếu tính căn ${a.ma} (PTTT ${a.pttt})...`);
         try {
-          const r = await (deps.chayPhieu ?? chayPhieuThat)({ ...a, projDir });
+          const r = await (deps.chayPhieu ?? chayPhieuThat)({ ...a, projDir: dir });
           const ten = r.png.split(/[\\/]/).pop();
           await tg.sendDocument(chatId, r.png, `Phiếu tính ${a.ma} – PTTT ${a.pttt}. Lưu ảnh này rồi gửi khách qua Zalo.`);
           if (r.pdf) await tg.sendDocument(chatId, r.pdf, `Bản PDF ${ten.replace(/\.png$/, "")}`);
           if (r.canhBao) await say(r.canhBao);
         } catch (e) {
-          await say(e.message + (cur ? `\n(Bot đang ở dự án ${cur.ten}. Căn thuộc dự án khác thì gõ /duan đổi rồi bấm lại.)` : ""));
+          await say(e.message + (da ? `\n(Đang dựng theo dự án ${da.ten}. Căn thuộc dự án khác thì gõ /duan đổi rồi dùng /phieu <mã căn> <PTTT>.)` : ""));
         }
       });
     },

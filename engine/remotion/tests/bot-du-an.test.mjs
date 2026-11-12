@@ -258,3 +258,41 @@ test("/huongdan và lệnh lạ: hướng dẫn theo nhóm, có dòng dự án �
   assert.match(s.last().text, /🏢 Bcons Newsky/);
   assert.match(s.last().text, /\/video/);
 });
+
+test("lệnh /phieu_<mã ngắn dự án>_... trong tin báo khách: dựng phiếu đúng dự án của khách dù bot đang ở dự án khác, không đổi dự án đang chọn", async () => {
+  const root = taoRepo();
+  for (const [ma, ngan] of [["bcons-newsky", "ns"], ["bcons-central-park", "cp"]]) {
+    const f = path.join(root, "du-an", ma, "project.json");
+    fs.writeFileSync(f, JSON.stringify({ ...JSON.parse(fs.readFileSync(f, "utf8")), maNgan: ngan }));
+  }
+  const s = setup(root);
+  const docs = [];
+  s.bot._tg.sendDocument = async (_c, file) => docs.push(file);
+  // bot đang ở Newsky, khách Central Park bấm lệnh (Telegram gửi nguyên chữ; bot hạ chữ thường)
+  await s.bot.handleUpdate(msg("/phieu_cp_A18_09_03_9p5_20"));
+  assert.match(docs[0], /bcons-central-park-A18-09\.png$/);
+  assert.match(s.said.find((x) => /Đang dựng phiếu/.test(x.text)).text, /🏢 Bcons Central Park/);
+  assert.equal(s.duAn.get().ma, "bcons-newsky", "không tự đổi dự án đang làm");
+  await s.bot.handleUpdate(msg("/phieu_ns_B1p3_01_09_9p5_20"));
+  assert.match(docs[1], /bcons-newsky-B1\.3-01\.png$/);
+  // lệnh kiểu cũ (tin báo gửi trước bản này, không có mã dự án) vẫn chạy theo dự án đang chọn
+  await s.bot.handleUpdate(msg("/phieu_B1p3_01_09_9p5_20"));
+  assert.match(docs[2], /bcons-newsky-B1\.3-01\.png$/);
+  // mã ngắn không có dự án nào: báo rõ, không dựng
+  await s.bot.handleUpdate(msg("/phieu_zz_A18_09_03_9p5_20"));
+  assert.equal(docs.length, 3);
+  assert.match(s.last().text, /Không thấy dự án/);
+});
+
+test("project.json thật: mỗi dự án có maNgan riêng (2–4 chữ thường, không số) và Code.gs dùng đúng mã đó", async () => {
+  const { REPO_ROOT } = await import("../scripts/project.mjs");
+  const ds = taoDuAn({ root: REPO_ROOT, file: path.join(os.tmpdir(), "khong-co.json") }).list();
+  assert.ok(ds.length >= 2);
+  for (const d of ds) assert.match(d.maNgan ?? "", /^[a-z]{2,4}$/, d.ma);
+  assert.equal(new Set(ds.map((d) => d.maNgan)).size, ds.length, "không trùng");
+  const gs = fs.readFileSync(path.join(REPO_ROOT, "engine", "landing", "apps-script", "Code.gs"), "utf8");
+  const m = gs.match(/var DU_AN_NGAN = (\{[^}]*\});/);
+  assert.ok(m, "Code.gs có DU_AN_NGAN");
+  const map = JSON.parse(m[1].replace(/'/g, '"'));
+  for (const d of ds) assert.equal(map[d.ma], d.maNgan, d.ma);
+});

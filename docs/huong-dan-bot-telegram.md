@@ -41,7 +41,7 @@ Gõ `/` trong Telegram chỉ còn 6 mục, phần còn lại bấm nút. Bot là
 | `/huy` | Dừng việc đang chạy. |
 
 - Hai dự án có thể trùng số video (Newsky 1, Central Park 1): số luôn hiểu theo dự án đang chọn. Nút của dự án khác trong tin cũ sẽ báo "thuộc dự án khác", không chạy nhầm.
-- Lệnh `/phieu_...` trong tin báo khách chạy theo dự án bot đang chọn; khách của dự án khác thì `/duan` đổi trước rồi bấm lại.
+- Lệnh `/phieu_<mã ngắn>_...` trong tin báo khách mang mã ngắn của dự án (`ns` = Newsky, `cp` = Central Park; `project.json` → `maNgan`): bot dựng phiếu đúng dự án của khách dù đang chọn dự án khác, và không đổi dự án đang làm. Tin báo cũ (không có mã ngắn) chạy theo dự án đang chọn. Dự án mới: thêm `maNgan` vào `project.json` và `DU_AN_NGAN` trong `Code.gs` (test chặn lệch).
 - Nhắn câu thường cho Claude: bot tự kèm tên dự án đang làm.
 - Các lệnh gõ tay ở bảng dưới **vẫn chạy như cũ**, chỉ không còn nằm trong menu.
 
