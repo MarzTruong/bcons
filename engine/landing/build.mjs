@@ -1,11 +1,11 @@
 // Xuất landing page tĩnh cho một dự án: engine/landing/dist/<mã>/
 // Chạy ở gốc repo: node engine/landing/build.mjs [--du-an <mã>] [--nhap]
 //   --nhap: cho phép thiếu tên/URL form (dải "BẢN NHÁP"), chỉ để xem thử, không đăng.
-// Cloudflare Pages: build command "node engine/landing/build.mjs", output "engine/landing/dist/bcons-central-park".
+// Cloudflare Pages: build command "node engine/landing/build.mjs" (không kèm --du-an thì xuất mọi dự án), output "engine/landing/dist/<mã>".
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { readProjectConfig, sharedDir, takeProjectFlag } from "../remotion/scripts/project.mjs";
+import { REPO_ROOT, readProjectConfig, sharedDir, takeProjectFlag } from "../remotion/scripts/project.mjs";
 import { renderPage, renderPolicy } from "./page.mjs";
 import { loadCdt, planFromJson } from "./plans-json.mjs";
 import { duLieuTrang } from "./phieu/du-lieu-trang.mjs";
@@ -131,9 +131,22 @@ export function buildLanding(projDir, outRoot, { draft = false } = {}) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    const { projDir, rest } = takeProjectFlag(process.argv.slice(2));
-    const out = buildLanding(projDir, path.join(HERE, "dist"), { draft: rest.includes("--nhap") });
-    console.log(`Đã xuất landing: ${path.relative(process.cwd(), out)}`);
+    const argv = process.argv.slice(2);
+    const draft = argv.includes("--nhap");
+    // Có --du-an: xuất đúng dự án đó. Không có: xuất MỌI dự án có thư mục landing, không phụ thuộc dự án đang bán
+    // trong config.json (mỗi trang Cloudflare lấy thư mục dist/<mã> của mình).
+    const duAnDir = path.join(REPO_ROOT, "du-an");
+    const dirs = argv.includes("--du-an")
+      ? [takeProjectFlag(argv).projDir]
+      : fs
+          .readdirSync(duAnDir, { withFileTypes: true })
+          .filter((d) => d.isDirectory() && /^[a-z0-9-]+$/.test(d.name) && fs.existsSync(path.join(duAnDir, d.name, "project.json")) && fs.existsSync(path.join(duAnDir, d.name, "landing")))
+          .map((d) => path.join(duAnDir, d.name));
+    if (!dirs.length) throw new Error("Không có dự án nào có thư mục landing.");
+    for (const projDir of dirs) {
+      const out = buildLanding(projDir, path.join(HERE, "dist"), { draft });
+      console.log(`Đã xuất landing: ${path.relative(process.cwd(), out)}`);
+    }
   } catch (e) {
     console.error(e.message);
     process.exit(1);

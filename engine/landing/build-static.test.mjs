@@ -118,6 +118,18 @@ test("build chạy được trên Cloudflare (không cài thư viện): chạy t
     assert.match(h, /id="phieu-du-lieu"/);
     assert.match(h, /qrSvg/, `${ma}: mã QR phải có sẵn dù không có thư viện`);
   }
+  // Cloudflare của Central Park chạy lệnh KHÔNG kèm --du-an: phải xuất mọi dự án có landing, để đổi dự án đang bán
+  // trong config.json không làm trang của dự án khác ngừng cập nhật (lỗi thật 12/11/2026: trang CP kẹt bản cũ).
+  fs.rmSync(path.join(tam, "engine", "landing", "dist"), { recursive: true, force: true });
+  for (const dangBan of ["bcons-newsky", "bcons-central-park"]) {
+    fs.writeFileSync(path.join(tam, "config.json"), JSON.stringify({ duAnDangBan: dangBan }));
+    execFileSync(process.execPath, [path.join(tam, "engine", "landing", "build.mjs")], { cwd: tam, stdio: "pipe" });
+    for (const ma of ["bcons-newsky", "bcons-central-park"]) {
+      assert.ok(fs.existsSync(path.join(tam, "engine", "landing", "dist", ma, "index.html")), `config=${dangBan}: thiếu trang ${ma}`);
+    }
+    assert.ok(!fs.existsSync(path.join(tam, "engine", "landing", "dist", "_mau")));
+    fs.rmSync(path.join(tam, "engine", "landing", "dist"), { recursive: true, force: true });
+  }
 });
 
 test("mã QR lưu sẵn (phieu-qr.json) khớp link QR trong project.json", async () => {
