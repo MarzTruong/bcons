@@ -58,6 +58,9 @@ Hook chặn commit vẫn chạy, nên không lo lỡ đưa `.env` hay video lên
 3. `npm run send:telegram -- --bai <cùng đường dẫn>` gửi 2 tin chữ (TikTok, FB) về Telegram; ảnh/video lấy từ Drive.
 4. Đăng như bước 6–7 ở trên.
 
+## Giờ đăng (anh dặn 13/11/2026)
+Anh nói "lên lịch đăng" mà không nêu giờ thì em **tự chọn giờ, không hỏi lại**: gọi Metricool `getBestTimeToPostByNetwork` cho từng kênh (Facebook, TikTok) trong 7 ngày tới, lấy giờ điểm cao nhất của ngày đăng (ngày gần nhất chưa có bài của kênh đó), rồi báo anh giờ đã chọn kèm điểm số. Anh nêu giờ cụ thể thì theo giờ anh. Số của Metricool là thói quen người dùng chung của nền tảng khi kênh còn ít người theo dõi; có đủ số liệu riêng của kênh thì báo cáo tuần chỉnh lại.
+
 ## Nhịp đăng giai đoạn 1 (đến 29/11)
 3–4 video tự làm mỗi tuần, các ngày còn lại bài công ty. Giờ đăng cụ thể để trống tới khi có số liệu tuần đầu (báo cáo tuần, kế hoạch 04).
 
