@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 11/11/2026 (Master_Data: đồng ý theo dự án, báo cáo, hướng dẫn)
+Cập nhật lần cuối: 12/11/2026 (dọn NOTES, báo cáo Facebook/TikTok, video 8 hẹn đăng, sửa chống trùng lead)
 
 ## Đã làm
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
@@ -14,22 +14,16 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
   - Anh làm: đi `docs/huong-dan-master-data.md` từ G1, duyệt G1–G6 bằng "OK" (G4 trên Sheet landing THẬT, có Bước 0 sao lưu).
   - Anh quyết còn lại: chữ trang chính sách landing (rút lại vs xóa), có gán dự án cho khách landing cũ hay không, "NGỪNG"/"dừng nhắn" là Rút lại và "xóa dữ liệu" là Xóa (chốt với pháp chế).
   - Thiết kế: mục 16 của `docs/superpowers/specs/2026-11-11-master-data-khach-hang-design.md`.
-- [ ] Cần anh: (1) dán lại `engine/landing/apps-script/Code.gs` vào Apps Script landing Central Park rồi đăng lại; (2) landing Newsky đã đăng tại https://bcons-newsky-binhduong.pages.dev/ (Cloudflare Pages; build `node engine/landing/build.mjs --du-an bcons-newsky`, output `engine/landing/dist/bcons-newsky`); Newsky dùng chung Apps Script và Sheet với Central Park (đã điền `formUrl`, script phân biệt theo cột Dự án); (3) trên bot `/capnhat`, thử `/phieu A21-26 03 pdf`; (4) giao AGY lời giao việc phiếu trong spec; (5) mở Master File Newsky sửa ô D4 thành "Vị trí" nếu muốn.
-- [ ] Landing Newsky chưa có mã căn trong form (máy tính theo khung giá), nên tin báo khách Newsky chưa có dòng lệnh `/phieu_...`; muốn có thì cần ô chọn căn thật. Khung giá 2PN/3PN trong `landing.json` là số AGY đưa, em chưa đối chiếu lại Master File.
-- [x] (đã xong 05/11: đã tạo lại giọng 2 video mới, anh nghe được) Giọng cảnh 2 bị lệch giọng cũ (nghe như miền Bắc, giọng gốc là `vi-southern`, giọng nhân bản). Đã tạo 4 bản thử trong `engine/remotion/audio-test/` (không lên git), chờ anh nghe và chọn; sau đó tạo lại 4 cảnh, render lại, commit. Bản đã commit vẫn là giọng cũ.
+- [ ] Cần anh: dán lại `engine/landing/apps-script/Code.gs` bản mới nhất vào Apps Script (có sửa chống trùng lead theo từng dự án, 12/11/2026) rồi triển khai phiên bản mới; thử lead Newsky bằng một số điện thoại khác số đã thử Central Park.
+- [x] Quyết định 12/11/2026: landing Newsky không có ô chọn căn cụ thể (không đưa mã căn lên trang công khai); chọn căn cụ thể làm trong công cụ bán hàng riêng của anh (web app sau mật khẩu, AGY thiết kế giao diện). Khung giá 2PN/3PN trong `landing.json` đã đối chiếu Master File: khớp.
 - [ ] Kiểm tra cách đọc FDI ("F D I") và Bcons Central Park ("Bee Cons Central Park") sau khi tạo lại giọng; em chưa nghe được.
 - [ ] Kịch bản video đợt 2 (giới thiệu ngày 29/11/2026) trong `du-an/bcons-central-park/video/dot-2/kich-ban.md`. Bản nháp, chờ anh duyệt.
-- [ ] Anh hoàn tất tạo fanpage: tải `cover.jpg` và `avatar.jpg`, nút "Nhắn tin", thêm quản trị viên dự phòng, bật xác thực 2 lớp, cài Meta Business Suite > Hộp thư > Tự động hóa theo `messenger-kich-ban.md`, thử bằng tài khoản khác, duyệt và đăng 5 bài đầu.
 
-- [x] Superpowers: đã chép 5 skill vào `.claude/skills/` (commit gốc `bb92a77`), chưa commit; mở phiên mới để dùng. ECC: anh quyết định không cài (04/11/2026). `/plugin` không chạy trong PowerShell/app.
-- [x] Quyết định 04/11/2026: bỏ CTA đọc/hiện số điện thoại; cuối video chỉ chạy thông tin dự án. Nếu sau này muốn dùng số, cần xác nhận quy định TikTok/Meta và công ty (hotline công ty an toàn hơn).
 - [ ] Anh duyệt `docs/quy-trinh-video.md`. Hai file prompt cũ vẫn untracked (có chứa SĐT cá nhân), chưa commit.
 
-- [ ] Anh xem trọn 2 video mới (`05-cho-thue-kcn-bien-hoa`, `06-tai-thiet-kcn-bien-hoa-1`) trước khi đăng. Lưu ý cho video B: Aeon Mall đang là **điểm tạm anh chọn** (10.927817, 106.835207), ghi "gần đúng"; vùng 21,5 / 44 / 286 / 51,6 ha là hình tròn minh họa (nét đứt), không phải ranh thật. Ranh OSM lệch số chính thức (Amata -19%, Biên Hòa 1 -11%) và chưa đối chiếu hồ sơ chủ đầu tư.
 - [ ] Cần tọa độ/ranh thật của Aeon Mall và, nếu có, ranh quy hoạch thật của các vùng 44/286/21,5/51,6 ha (GeoJSON/KMZ). Có thì sửa `scripts/build-geo.mjs` và bỏ `geo:derive` cho các vùng đó.
 - [ ] Thử thêm cơ chế tự thử lại 2-3 lần cho mỗi khu trong `geo-fetch.mjs` (Overpass hay quá giờ). Gắn nhãn km đã có; chưa kiểm cách đọc BIDV, FDI sau khi tạo lại giọng (anh đã nghe được giọng).
 
-- [ ] Video 8 `08-cuoi-nam-ve-dich` (anh chọn góc 09/11/2026): cổng 1 xong, đang ở cổng 2. **Chờ anh gửi tọa độ Google Maps của nút giao Tân Hiệp và nút giao Tân Vạn** (Overpass không trả, Mapbox chỉ ra tên khu vực). Chưa đo khoảng cách nút giao Tân Hiệp tới dự án, không nói "sát dự án".
 - [ ] Phiên "Landing Bcons" (landing nhiều dự án): chờ anh OK kế hoạch (Mapbox vệ tinh, bỏ file UQ, 5 tháp, OpenFreeMap) và tạo token Mapbox `pk.` mới cho web (giới hạn URL `https://bcons-central-park-bienhoa.pages.dev`) rồi gửi. Chưa có thay đổi nào chưa lưu trên GitHub.
 - [ ] Hạn mức Claude: lúc kiểm (09/11) phiên landing và phiên ảnh báo hạn mức 7 ngày đã vượt, đang dùng phần vượt mức. Hạn chế mở thêm phiên song song.
 - [ ] Dự án Bcons Newsky (11/11/2026): đã dựng `du-an/bcons-newsky/` (project.json, thong-tin.md, nguon/pttt-cdt.json: PTTT 08/09/10 của CĐT) từ tài liệu CĐT. Còn thiếu, hỏi anh: tọa độ và số nhà, số căn ở/thương mại, tình trạng khởi công, lịch mở bán, bảng giá tóm tắt, tên kênh, SĐT; chưa đổi `config.json`. Master File Newsky v2 (dựng từ khung Master File Central Park: 12 sheet gồm GHC, VayNH, HoaHong; tháp B 200 căn, 3 PTTT; hỗ trợ bổ sung theo TB 206) ở Drive `Bcons/data/bcons-newsky/gia/MasterFile_BconsNewsky.xlsx`; GHC Newsky = tab DS_CĂN; đã đọc slide kick-off và training: metro/QL13 và bảng tăng trưởng giá lỗi thời, không dùng. Hoa hồng cơ bản Newsky chưa có. Đơn vị cọc của anh trên GHC: BCONS PS. File giá CĐT là nguồn giá chính xác nhất (hơn slide/training).
@@ -37,14 +31,11 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 - [ ] Master_Data, việc kỹ thuật còn lại: (1) chưa kiểm thật trên Google: mã lỗi LOI_* theo chữ lỗi Google, nhãn giao diện Apps Script tiếng Việt; (2) trang landing thử `--nhap` (bước G2.5), chờ anh gửi link /exec; (3) gõ `Không` lên hồ sơ đang bị `Xóa` cùng lượt thì hồ sơ điền lại sau đó chỉ biết ngày dòng `Xóa`; (4) mọi loại lỗi báo Telegram (`LOI_TUCHOI`, `LOI_DONG_Y`...) dùng chung một khóa chống lặp 6 giờ.
 ## Chưa làm
 - [ ] `/capnhat` rồi `/kiemgia` lại (đã sửa lỗi đọc cột), gửi kết quả cho em. Thử `/chuyenmay`. Laptop: thêm `TEN_MAY=Laptop` vào `.env` (đang hiện tên Windows "Marz").
-- [ ] CN 8/11 và các ngày tới: kiểm Metricool đã tự đăng (TikTok + FB Reel) từng bài 8–12/11; cập nhật Sheet "Đã đăng" + link. Sau đó viết kế hoạch 04 (báo cáo tuần: lượt xem, bình luận, lượt quét QR `utm_source=qr`).
-- [ ] Từ 13/11 chưa có bài: làm video 8 (`/gemini <chủ đề>` → 🎬, hoặc nhắn chủ đề). Video đợt 2 (29/11) từ `video/dot-2/kich-ban.md`.
 - [ ] Các cảnh bản đồ / route-map / compare-bars vẫn mẫu cũ, chỉ đổi màu theo bộ `moi`; anh thấy lệch phong cách thì làm lại riêng cảnh đó (đưa ảnh mẫu trước).
 - [ ] Xóa 2 bản nháp video 4 cũ trong Metricool Planner (tùy anh). Video 1, 2 chưa render/duyệt bản mới, chưa lên lịch.
 - [ ] Cloud: biến môi trường giữ `REMOTION_MAPBOX_TOKEN`, nên xóa `ELEVENLABS_API_KEY`, `GEMINI_API_KEY`, `TELEGRAM_*` (khóa tiêu tiền không cần trên cloud). Phiên mới mới có Mapbox để em chụp storyboard bản đồ.
 - [ ] Anh gắn link landing: bio TikTok `?utm_source=tiktok`, nút fanpage `?utm_source=facebook`, bình luận đầu bài `?utm_source=fb-post`.
-- [ ] Anh duyệt caption bài 5 (cho thuê) và 6 (tái thiết). Bài cho thuê: lợi suất 4,4% chưa rõ kỳ dữ liệu.
-- [ ] Video đợt 2 (29/11/2026): kịch bản nháp `video/dot-2/kich-ban.md`, làm theo quy trình mới, sẽ là video số 7.
+- [ ] Video tiếp theo: Newsky (anh chọn 12/11/2026; cần anh xác nhận tình trạng khởi công, tên pháp lý và nguồn trước cổng 1). Video 8 Central Park đã hẹn đăng 13/11 (FB 12:00, TikTok 18:00). Video đợt 2 (29/11/2026): kịch bản nháp `video/dot-2/kich-ban.md`, làm theo quy trình mới, sẽ là video số 7.
 
 - [ ] Xác nhận cao tốc Biên Hòa - Vũng Tàu giai đoạn 1 đã thông xe 18/05/2026 chưa; khoảng cách từ 236 Phan Trung tới các tuyến chưa đo; Dat Xanh/PropertyGuru chỉ dựa một bài VnExpress.
 - [ ] Việc nhỏ hoãn lại: tên file xuất của render-drive chưa kiểm tra (shell:true), CompareBars lỗi NaN khi mọi giá trị bằng 0, key React có thể trùng, chưa có watermark DRAFT, chưa có kiểm tra số điện thoại bằng regex, `.env` nạp trước cổng trong render-drive. `package.json` engines `^20.19` nhưng cần Node >= 22.18 (type stripping khi test).
@@ -53,7 +44,6 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 - [ ] Chạy thử `/bcons-video` trọn vòng với chủ đề thật (chưa chạy; chưa tạo giọng cho spec mới).
 - [ ] Tin nhắn tự động hàng loạt: chọn kênh, làm bộ mẫu tin, tool gửi từ file danh sách.
 - [ ] Dựng video thật (cần ảnh/render/video gốc, công cụ AI hoặc CapCut).
-- [ ] **VAT 10%**: công cụ tính nhanh và Master File dùng VAT 10% trên cả giá căn (theo file giá CĐT). Skill nội dung ghi VAT căn hộ có thể không tính trên phần giá trị quyền sử dụng đất, file giá không tách riêng. Anh xác nhận với bộ phận tài chính trước khi gửi khách "giá có VAT".
 - [ ] Đối chiếu còn thiếu: trường b.school (Q&A chỉ có nhà trẻ tầng 2), khoảng cách 236 Phan Trung tới trung tâm hành chính / Aeon Mall Biên Hòa / ga metro dự kiến, ngày chính xác TP. Đồng Nai trực thuộc TW (24/4 và 30/4/2026 mới từ tóm tắt tìm kiếm), mốc khởi công và hoàn thành cầu Cát Lái, Long Hưng, tiến độ Aeon Mall năm 2026; lợi suất cho thuê 4,4%/năm của Gemini chưa mở bài gốc.
 - [ ] Công cụ tính nhanh: cập nhật khi bảng giá hoặc giỏ hàng chung đổi (cần Master File mới); chưa có tháp C, D; lãi vay 9,5%/năm và kỳ hạn 20 năm là giả định lấy từ sheet VayNH.
 - [ ] Giờ làm việc của tư vấn viên (điền vào tin ngoài giờ); có dùng hotline công ty không.
