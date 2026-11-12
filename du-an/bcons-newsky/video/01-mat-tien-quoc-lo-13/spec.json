@@ -1,0 +1,66 @@
+{
+  "name": "01-mat-tien-quoc-lo-13",
+  "so": 1,
+  "tieuDe": "Newsky mặt tiền Quốc lộ 13",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Quốc lộ 13 qua Bình Dương cũ đang được làm rộng từ 6{sáu} lên 8{tám} làn xe, từ cầu Vĩnh Bình đến ngã tư Lê Hồng Phong.",
+      "cues": { "value": "8" },
+      "nhan": ["làn xe,"],
+      "props": {
+        "badge": "Nguồn: Tuổi Trẻ 12/10/2026",
+        "titleLines": ["Quốc lộ 13", "mở rộng"],
+        "cardLabel": "Từ 6 lên 8 làn xe",
+        "value": 8,
+        "decimals": 0,
+        "unit": "làn xe",
+        "sourceId": "ql13-6-len-8",
+        "image": { "file": "assets/images/phoi-canh-quoc-lo-13.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-ql13" }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "data-cards",
+      "markup": "Tổng vốn đầu tư 6.255{sáu ngàn hai trăm năm mươi lăm} tỉ đồng.{} Đoạn khoảng 10{mười} km{ki-lô-mét} từ cầu Ông Bố đến Lê Hồng Phong đã xong lớp thảm nhựa, còn dải phân cách và chiếu sáng.",
+      "cues": { "c1": "Tổng", "c2": "Đoạn" },
+      "props": {
+        "kicker": "Quốc lộ 13 qua Bình Dương cũ",
+        "title": "Tiến độ mở rộng",
+        "cards": [
+          { "tag": "Tổng vốn đầu tư", "big": "6.255 tỉ đồng", "sub": "dự án mở rộng Quốc lộ 13", "cueKey": "c1", "offset": -5, "sourceId": "ql13-von" },
+          { "tag": "Đã thảm nhựa", "big": "khoảng 10 km", "sub": "cầu Ông Bố đến ngã tư Lê Hồng Phong", "cueKey": "c2", "offset": -5, "sourceId": "ql13-10km" }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "stat-hero",
+      "markup": "Phía TP.HCM, đoạn 6{sáu} km{ki-lô-mét} từ cầu Bình Triệu đến cầu Vĩnh Bình đã bàn giao 84,37%{tám mươi bốn phẩy ba mươi bảy phần trăm} mặt bằng, tính đến ngày 1/11.{mùng một tháng mười một.}",
+      "cues": { "value": "84,37%" },
+      "props": {
+        "badge": "Nguồn: Tuổi Trẻ 04/11/2026",
+        "titleLines": ["Đoạn Bình Triệu", "đến Vĩnh Bình"],
+        "cardLabel": "Mặt bằng đã bàn giao, tính đến 1/11",
+        "value": 84.37,
+        "decimals": 2,
+        "unit": "%",
+        "sourceId": "ql13-gpmb"
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Bcons{Bee Cons} Newsky{Niu-xki} nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp 29{hai mươi chín} tầng, dự kiến bàn giao quý II{hai} năm 2028.{hai ngàn không trăm hai mươi tám.}",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · hai tháp 29 tầng · dự kiến bàn giao Quý II/2028",
+        "image": { "file": "assets/images/phoi-canh-tong-the.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-tong-the" }
+      }
+    }
+  ]
+}
