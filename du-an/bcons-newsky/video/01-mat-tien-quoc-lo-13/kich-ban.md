@@ -1,6 +1,6 @@
 # Video Newsky 1 "Mặt tiền Quốc lộ 13" (bản nháp cổng 1, 12/11/2026)
 
-**Trạng thái: cổng 1 anh đã duyệt 12/11/2026 (góc + 4 số, dự án đã khởi công); cổng 2 (chữ + số + caption + storyboard) chờ anh duyệt.** `spec.json` đang `draft`; chưa có giọng, chưa render. Làm theo `docs/quy-trinh-video.md`.
+**Trạng thái: cổng 1 anh đã duyệt 12/11/2026 (góc + 4 số, dự án đã khởi công); cổng 2 anh đã duyệt 12/11/2026.** `spec.json` đã `approved`; chưa có giọng, chưa render. Làm theo `docs/quy-trinh-video.md`.
 
 Góc: Quốc lộ 13 đang được làm rộng từ 6 lên 8 làn; Bcons Newsky nằm mặt tiền tuyến này. Nói tiến độ đường bằng số có nguồn, kết bằng thông tin dự án. **Không dùng metro** (anh dặn 11/11/2026: tuyến metro đã dời khỏi trục Quốc lộ 13), không nói tăng giá.
 

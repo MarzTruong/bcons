@@ -29,7 +29,7 @@ Tỷ lệ thực tế đến 13/11: **A 1/7 (14%), B 6/7 (86%)**, ngược với
 Thời gian xem TB và tỷ lệ xem hết (giữ chân), bình luận, tin nhắn/form/quét QR từ kênh (cột Nguồn Sheet Landing), người theo dõi mới. Lượt xem chỉ là chỉ số phụ.
 
 ## Quyết định 12/11/2026
-- **Một trang chung** cho cả hai dự án (tên trang: chờ anh chọn).
+- **Một trang chung** cho cả hai dự án (tên trang: đang chọn, anh hỏi gợi ý "Chuyên BĐS Bcons" 12/11).
 - **Chỉ dùng video công ty** cho phần cắt ghép (nhiều loại: dựng sẵn, video thô, flycam); video tự làm bằng pipeline vẫn giữ.
 - **Mã theo dõi:** link trong caption gắn `?utm_source=<tiktok|facebook>&utm_campaign=<tên bài>`; Sheet cột Nguồn ghi `tiktok.<tên bài>`.
 - Báo cáo tuần: `bao-cao/2026-11-12-hieu-suat-tuan.md`.
