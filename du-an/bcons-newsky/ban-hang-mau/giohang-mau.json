@@ -1,0 +1,1687 @@
+{
+ "_ghiChu": "DỮ LIỆU MẪU MÔ PHỎNG, không phải giá thật. Chỉ để dựng giao diện.",
+ "capNhat": "2026-11-12T00:00:00+07:00",
+ "phienBan": 1,
+ "can": [
+  {
+   "ma": "B1.5-01",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2560000000.0,
+    "08": 2415000000.0,
+    "10": 2505000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-02",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3000000000.0,
+    "08": 2830000000.0,
+    "10": 2936000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-03",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4100000000.0,
+    "08": 3868000000.0,
+    "10": 4012000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.5-04",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4400000000.0,
+    "08": 4151000000.0,
+    "10": 4305000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-05",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2560000000.0,
+    "08": 2415000000.0,
+    "10": 2505000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-06",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3000000000.0,
+    "08": 2830000000.0,
+    "10": 2936000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-07",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4100000000.0,
+    "08": 3868000000.0,
+    "10": 4012000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-08",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4400000000.0,
+    "08": 4151000000.0,
+    "10": 4305000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-09",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2560000000.0,
+    "08": 2415000000.0,
+    "10": 2505000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-10",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3000000000.0,
+    "08": 2830000000.0,
+    "10": 2936000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-11",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4100000000.0,
+    "08": 3868000000.0,
+    "10": 4012000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.5-12",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4400000000.0,
+    "08": 4151000000.0,
+    "10": 4305000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.5-13",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2560000000.0,
+    "08": 2415000000.0,
+    "10": 2505000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.5-14",
+   "thap": "B",
+   "tang": 5,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3000000000.0,
+    "08": 2830000000.0,
+    "10": 2936000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-01",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2586000000.0,
+    "08": 2440000000.0,
+    "10": 2530000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-02",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3030000000.0,
+    "08": 2859000000.0,
+    "10": 2965000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-03",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4141000000.0,
+    "08": 3907000000.0,
+    "10": 4052000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.6-04",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4444000000.0,
+    "08": 4193000000.0,
+    "10": 4348000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-05",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2586000000.0,
+    "08": 2440000000.0,
+    "10": 2530000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-06",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3030000000.0,
+    "08": 2859000000.0,
+    "10": 2965000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-07",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4141000000.0,
+    "08": 3907000000.0,
+    "10": 4052000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-08",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4444000000.0,
+    "08": 4193000000.0,
+    "10": 4348000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.6-09",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2586000000.0,
+    "08": 2440000000.0,
+    "10": 2530000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-10",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3030000000.0,
+    "08": 2859000000.0,
+    "10": 2965000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-11",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4141000000.0,
+    "08": 3907000000.0,
+    "10": 4052000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-12",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4444000000.0,
+    "08": 4193000000.0,
+    "10": 4348000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-13",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2586000000.0,
+    "08": 2440000000.0,
+    "10": 2530000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.6-14",
+   "thap": "B",
+   "tang": 6,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3030000000.0,
+    "08": 2859000000.0,
+    "10": 2965000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.7-01",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2611000000.0,
+    "08": 2463000000.0,
+    "10": 2555000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-02",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3060000000.0,
+    "08": 2887000000.0,
+    "10": 2994000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-03",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4182000000.0,
+    "08": 3946000000.0,
+    "10": 4092000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-04",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4488000000.0,
+    "08": 4234000000.0,
+    "10": 4392000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-05",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2611000000.0,
+    "08": 2463000000.0,
+    "10": 2555000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-06",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3060000000.0,
+    "08": 2887000000.0,
+    "10": 2994000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-07",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4182000000.0,
+    "08": 3946000000.0,
+    "10": 4092000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-08",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4488000000.0,
+    "08": 4234000000.0,
+    "10": 4392000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-09",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2611000000.0,
+    "08": 2463000000.0,
+    "10": 2555000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-10",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3060000000.0,
+    "08": 2887000000.0,
+    "10": 2994000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-11",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4182000000.0,
+    "08": 3946000000.0,
+    "10": 4092000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.7-12",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4488000000.0,
+    "08": 4234000000.0,
+    "10": 4392000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.7-13",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2611000000.0,
+    "08": 2463000000.0,
+    "10": 2555000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.7-14",
+   "thap": "B",
+   "tang": 7,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3060000000.0,
+    "08": 2887000000.0,
+    "10": 2994000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-01",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2637000000.0,
+    "08": 2488000000.0,
+    "10": 2580000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.8-02",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3090000000.0,
+    "08": 2915000000.0,
+    "10": 3024000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.8-03",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4223000000.0,
+    "08": 3984000000.0,
+    "10": 4132000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-04",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4532000000.0,
+    "08": 4276000000.0,
+    "10": 4435000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-05",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2637000000.0,
+    "08": 2488000000.0,
+    "10": 2580000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-06",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3090000000.0,
+    "08": 2915000000.0,
+    "10": 3024000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-07",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4223000000.0,
+    "08": 3984000000.0,
+    "10": 4132000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-08",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4532000000.0,
+    "08": 4276000000.0,
+    "10": 4435000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-09",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2637000000.0,
+    "08": 2488000000.0,
+    "10": 2580000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-10",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3090000000.0,
+    "08": 2915000000.0,
+    "10": 3024000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.8-11",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4223000000.0,
+    "08": 3984000000.0,
+    "10": 4132000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-12",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4532000000.0,
+    "08": 4276000000.0,
+    "10": 4435000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.8-13",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2637000000.0,
+    "08": 2488000000.0,
+    "10": 2580000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.8-14",
+   "thap": "B",
+   "tang": 8,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3090000000.0,
+    "08": 2915000000.0,
+    "10": 3024000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-01",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2662000000.0,
+    "08": 2512000000.0,
+    "10": 2605000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-02",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3120000000.0,
+    "08": 2944000000.0,
+    "10": 3053000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.9-03",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4264000000.0,
+    "08": 4023000000.0,
+    "10": 4172000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-04",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4576000000.0,
+    "08": 4317000000.0,
+    "10": 4478000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-05",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2662000000.0,
+    "08": 2512000000.0,
+    "10": 2605000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-06",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3120000000.0,
+    "08": 2944000000.0,
+    "10": 3053000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.9-07",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4264000000.0,
+    "08": 4023000000.0,
+    "10": 4172000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.9-08",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4576000000.0,
+    "08": 4317000000.0,
+    "10": 4478000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-09",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2662000000.0,
+    "08": 2512000000.0,
+    "10": 2605000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-10",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3120000000.0,
+    "08": 2944000000.0,
+    "10": 3053000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-11",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4264000000.0,
+    "08": 4023000000.0,
+    "10": 4172000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-12",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4576000000.0,
+    "08": 4317000000.0,
+    "10": 4478000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.9-13",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2662000000.0,
+    "08": 2512000000.0,
+    "10": 2605000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.9-14",
+   "thap": "B",
+   "tang": 9,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3120000000.0,
+    "08": 2944000000.0,
+    "10": 3053000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.10-01",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2688000000.0,
+    "08": 2536000000.0,
+    "10": 2630000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-02",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3150000000.0,
+    "08": 2972000000.0,
+    "10": 3082000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-03",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4305000000.0,
+    "08": 4062000000.0,
+    "10": 4212000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-04",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4620000000.0,
+    "08": 4359000000.0,
+    "10": 4521000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.10-05",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2688000000.0,
+    "08": 2536000000.0,
+    "10": 2630000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-06",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3150000000.0,
+    "08": 2972000000.0,
+    "10": 3082000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-07",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4305000000.0,
+    "08": 4062000000.0,
+    "10": 4212000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-08",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4620000000.0,
+    "08": 4359000000.0,
+    "10": 4521000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.10-09",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2688000000.0,
+    "08": 2536000000.0,
+    "10": 2630000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-10",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3150000000.0,
+    "08": 2972000000.0,
+    "10": 3082000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.10-11",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4305000000.0,
+    "08": 4062000000.0,
+    "10": 4212000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-12",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4620000000.0,
+    "08": 4359000000.0,
+    "10": 4521000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.10-13",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2688000000.0,
+    "08": 2536000000.0,
+    "10": 2630000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.10-14",
+   "thap": "B",
+   "tang": 10,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3150000000.0,
+    "08": 2972000000.0,
+    "10": 3082000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-01",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2714000000.0,
+    "08": 2561000000.0,
+    "10": 2656000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-02",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3180000000.0,
+    "08": 3000000000.0,
+    "10": 3112000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-03",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4346000000.0,
+    "08": 4100000000.0,
+    "10": 4253000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.11-04",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4664000000.0,
+    "08": 4400000000.0,
+    "10": 4564000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-05",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2714000000.0,
+    "08": 2561000000.0,
+    "10": 2656000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-06",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3180000000.0,
+    "08": 3000000000.0,
+    "10": 3112000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-07",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4346000000.0,
+    "08": 4100000000.0,
+    "10": 4253000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-08",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4664000000.0,
+    "08": 4400000000.0,
+    "10": 4564000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-09",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2714000000.0,
+    "08": 2561000000.0,
+    "10": 2656000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.11-10",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3180000000.0,
+    "08": 3000000000.0,
+    "10": 3112000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.11-11",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4346000000.0,
+    "08": 4100000000.0,
+    "10": 4253000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.11-12",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4664000000.0,
+    "08": 4400000000.0,
+    "10": 4564000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-13",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2714000000.0,
+    "08": 2561000000.0,
+    "10": 2656000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.11-14",
+   "thap": "B",
+   "tang": 11,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3180000000.0,
+    "08": 3000000000.0,
+    "10": 3112000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.12-01",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 1,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2739000000.0,
+    "08": 2584000000.0,
+    "10": 2680000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.12-02",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 2,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3210000000.0,
+    "08": 3029000000.0,
+    "10": 3141000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-03",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 3,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4387000000.0,
+    "08": 4139000000.0,
+    "10": 4293000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-04",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 4,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4708000000.0,
+    "08": 4442000000.0,
+    "10": 4607000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.12-05",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 5,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2739000000.0,
+    "08": 2584000000.0,
+    "10": 2680000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-06",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 6,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3210000000.0,
+    "08": 3029000000.0,
+    "10": 3141000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.12-07",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 7,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4387000000.0,
+    "08": 4139000000.0,
+    "10": 4293000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-08",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 8,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4708000000.0,
+    "08": 4442000000.0,
+    "10": 4607000000.0
+   },
+   "tinhTrang": "ĐÃ CỌC"
+  },
+  {
+   "ma": "B1.12-09",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 9,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2739000000.0,
+    "08": 2584000000.0,
+    "10": 2680000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-10",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 10,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3210000000.0,
+    "08": 3029000000.0,
+    "10": 3141000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-11",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 11,
+   "loai": "3PN-2WC",
+   "dtTimTuong": 77.8,
+   "dtThongThuy": 70.4,
+   "giaChuaVat": {
+    "09": 4387000000.0,
+    "08": 4139000000.0,
+    "10": 4293000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-12",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 12,
+   "loai": "3PN-3WC",
+   "dtTimTuong": 96.0,
+   "dtThongThuy": 86.0,
+   "giaChuaVat": {
+    "09": 4708000000.0,
+    "08": 4442000000.0,
+    "10": 4607000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-13",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 13,
+   "loai": "2PN-1WC",
+   "dtTimTuong": 47.4,
+   "dtThongThuy": 42.2,
+   "giaChuaVat": {
+    "09": 2739000000.0,
+    "08": 2584000000.0,
+    "10": 2680000000.0
+   },
+   "tinhTrang": "Trống"
+  },
+  {
+   "ma": "B1.12-14",
+   "thap": "B",
+   "tang": 12,
+   "viTri": 14,
+   "loai": "2PN-2WC",
+   "dtTimTuong": 65.5,
+   "dtThongThuy": 59.5,
+   "giaChuaVat": {
+    "09": 3210000000.0,
+    "08": 3029000000.0,
+    "10": 3141000000.0
+   },
+   "tinhTrang": "Trống"
+  }
+ ]
+}
