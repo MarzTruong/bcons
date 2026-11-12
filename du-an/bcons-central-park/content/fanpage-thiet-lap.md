@@ -8,7 +8,7 @@ Quyết định của anh (04/11/2026): tên trang như tiêu đề; kênh thôn
 |---|---|
 | Ảnh đại diện 960×960 (phối cảnh + logo Central Park, chữ logo đổi sang trắng) | `du-an/bcons-central-park/content/fanpage/avatar.png` |
 | Ảnh bìa 1640×624 (khối vàng kính mờ + logo Central Park, phối cảnh xa; file nguồn HTML ở `fanpage/nguon/`) | `du-an/bcons-central-park/content/fanpage/cover.png` |
-| Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `du-an/bcons-central-park/content/fanpage/anh/` (11 ảnh) |
+| Ảnh phối cảnh và nhà mẫu đã thu nhỏ cho Facebook | `du-an/bcons-central-park/content/fanpage/anh/` (7 ảnh), thêm các ảnh nhà mẫu B4 và phối cảnh hồ bơi ở `du-an/bcons-central-park/assets/images/` |
 | Ảnh bài ghim: so sánh 5 PTTT | `du-an/bcons-central-park/content/messenger-qua/so-sanh-5-pttt.png` |
 | Kịch bản Messenger tự trả lời | `du-an/bcons-central-park/content/messenger-kich-ban.md` |
 | Bảng Sheets lưu khách | "Bcons - Khach quan tam Messenger" |
@@ -74,7 +74,7 @@ Thông tin tham khảo theo chính sách chủ đầu tư tại 04/11/2026; chi�
 #BconsCentralPark #CănHộBiênHòa #PhanTrung
 ```
 
-**Bài 2, loại căn hộ.** Ảnh (đăng nhiều ảnh): `anh/nha-mau-A1-phong-khach.jpg` (A1, 3PN, 88 m2), `anh/nha-mau-A1-phong-ngu.jpg`, `anh/nha-mau-B4-phong-khach.jpg` (B4, 2PN-2WC, 73 m2), `anh/nha-mau-B4-phong-ngu.jpg`, `anh/nha-mau-C1-phong-khach.jpg` (C1, 2PN-1WC, 52 m2):
+**Bài 2, loại căn hộ.** Ảnh (đăng nhiều ảnh): `anh/nha-mau-A1-phong-khach.jpg` (A1, 3PN, 88 m2), `anh/nha-mau-A1-phong-ngu.jpg`, `assets/images/nha-mau-B4-phong-khach.jpg` (B4, 2PN-2WC, 73 m2), `assets/images/nha-mau-B4-phong-ngu.jpg`, `anh/nha-mau-C1-phong-khach.jpg` (C1, 2PN-1WC, 52 m2):
 ```
 Căn hộ ở Bcons Central Park có những loại nào?
 
@@ -123,7 +123,7 @@ Thông tin tham khảo theo chính sách chủ đầu tư tại 04/11/2026; chi 
 #BconsCentralPark #CănHộBiênHòa
 ```
 
-**Bài 5, tiện ích hồ bơi.** Ảnh: `anh/phoi-canh-ho-boi.jpg` (hình phối cảnh minh họa):
+**Bài 5, tiện ích hồ bơi.** Ảnh: `assets/images/phoi-canh-ho-boi.jpg` (hình phối cảnh minh họa):
 ```
 Hồ bơi ở Bcons Central Park gồm những gì?
 

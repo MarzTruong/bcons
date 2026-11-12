@@ -31,6 +31,6 @@ Nguồn Drive `agy/den-claude/`: `2026-11-12-demo-cach-a-newsky/`, `2026-11-11-b
 | `2026-11-11-thiet-ke-landing-bcons-newsky-v2` | Phương án khác, anh không chọn (demo Cách A dựng trên bản đã chốt) | Lưu trữ (chưa có biên bản kiểm) |
 | `2026-11-11-nghien-cuu-quy-hoach-binh-duong-ql13-metro` | Đã kiểm (`kiem-toan/2026-11-11-nghien-cuu-binh-duong/KIEM.md`), đã dùng | Lưu trữ |
 | `2026-11-10-thiet-ke-landing-v2` | Landing Central Park v2, đã kiểm (`kiem-toan/2026-11-10-agy-landing-v2`) | Lưu trữ nếu anh đã chọn xong |
-| `2026-11-10-zalo-tu-kich-ban-video` | Thử nghiệm đã so sánh (`kiem-toan/2026-11-10-zalo-so-sanh`) | Lưu trữ |
+| `2026-11-10-zalo-tu-kich-ban-video` | Thử nghiệm đã so sánh (biên bản đã xóa 12/11/2026, xem lịch sử git) | Lưu trữ |
 
 Không di chuyển file trên Drive khi anh chưa đồng ý (thư mục đích đề nghị: `Bcons/_luu-tru/agy/`).

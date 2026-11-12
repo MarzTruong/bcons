@@ -51,7 +51,6 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 - [ ] Hình tuyến cao tốc Bến Lức - Long Thành thật và ranh giới Biên Hòa / khu thương mại tự do Long Thành: máy chủ OpenStreetMap không trả dữ liệu ngày 04/11, Mapbox Directions không đi qua cao tốc này. Hiện bản đồ dùng tuyến thẳng và tam giác **minh họa**. Cần dữ liệu chính thức (GeoJSON) hoặc thử lại OSM sau.
 - [ ] Bổ sung link/ngày nguồn gốc cho 5 số trong `du-an/bcons-central-park/video/01-dong-nai-ha-tang/kich-ban.md` (video cũ làm trước khi có bảng nguồn; hiện ghi "chưa có link").
 - [ ] Chạy thử `/bcons-video` trọn vòng với chủ đề thật (chưa chạy; chưa tạo giọng cho spec mới).
-- [ ] `du-an/bcons-central-park/video/mau-lai-suat/spec.json` là spec thử bằng số mẫu (draft), chỉ để xem bố cục `compare-bars`, không đăng.
 - [ ] Tin nhắn tự động hàng loạt: chọn kênh, làm bộ mẫu tin, tool gửi từ file danh sách.
 - [ ] Dựng video thật (cần ảnh/render/video gốc, công cụ AI hoặc CapCut).
 - [ ] **VAT 10%**: công cụ tính nhanh và Master File dùng VAT 10% trên cả giá căn (theo file giá CĐT). Skill nội dung ghi VAT căn hộ có thể không tính trên phần giá trị quyền sử dụng đất, file giá không tách riêng. Anh xác nhận với bộ phận tài chính trước khi gửi khách "giá có VAT".
