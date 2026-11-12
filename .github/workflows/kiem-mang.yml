@@ -1,0 +1,18 @@
+# Mỗi ngày (và khi anh bấm chạy tay): kiểm các trang landing ĐANG CHẠY trên mạng có đúng bản mới nhất của main không,
+# file nào thiếu hoặc bị Cloudflare trả trang chủ giả, mã QR. Lỗi thì có dấu ❌ đỏ + email (như bước test).
+name: Kiem tra trang tren mang
+on:
+  schedule:
+    - cron: "30 22 * * *" # 05:30 giờ Việt Nam
+  workflow_dispatch:
+jobs:
+  mang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node engine/remotion/scripts/kiem-mang.mjs --cho

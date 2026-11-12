@@ -84,6 +84,7 @@ Sản phẩm phải trông và nghe như người làm có chủ ý, không như
 
 ## Quy ước làm việc
 - Làm việc trên nhánh `main`. Không tạo PR nếu anh chưa yêu cầu.
+- **Liên kết giữa các phần phải test cả chuỗi** (anh dặn 12/11/2026): đổi một đầu nối (landing, `Code.gs`, `project.json`, tên miền, phiếu, bot) thì chạy `npm test` (có `chuoi-lien-ket.test.mjs`: landing → Apps Script → Telegram → link phiếu → trang phiếu) và, sau khi push, `npm run kiem-mang -- --cho` (trang đang chạy trên mạng đúng bản main, đủ file, mã QR). Có lỗi ở một đầu nối thì sửa và thêm test cho đầu nối đó, không chỉ sửa chỗ vừa thấy. GitHub tự chạy kiểm mạng mỗi sáng (`.github/workflows/kiem-mang.yml`).
 - Tài liệu: mục lục và trạng thái ở `docs/README.md`. Xong/đổi một kế hoạch thì sửa dòng **Trạng thái** đầu file và mục lục cùng lúc với code; đổi tên/xóa file thì sửa chỗ nhắc tới nó (`npm test` có test docs chặn lệch).
 - Nội dung dự án viết Markdown trong `du-an/<mã>/` (bài đăng ở `content/`, kịch bản ở `video/<tên>/`); `docs/` chỉ chứa tài liệu chung (quy trình, thiết kế, kế hoạch, hướng dẫn).
 - Lịch mở bán: xem `du-an/bcons-central-park/thong-tin.md` (đợt 2 giới thiệu 29/11/2026, đợt 3 ngày 27/12/2026).
