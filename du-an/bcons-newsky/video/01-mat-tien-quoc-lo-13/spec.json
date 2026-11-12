@@ -55,7 +55,7 @@
     {
       "id": "scene4",
       "template": "project-close",
-      "markup": "Bcons{Bee Cons} Newsky{Niu-xki} nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp 29{hai mươi chín} tầng, dự kiến bàn giao quý II{hai} năm 2028.{hai ngàn không trăm hai mươi tám.}",
+      "markup": "Bcons{Bee Cons} Newsky{New Sky} nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Dự án đã khởi công, hai tháp 29{hai mươi chín} tầng, dự kiến bàn giao quý II{hai} năm 2028.{hai ngàn không trăm hai mươi tám.}",
       "cues": {},
       "props": {
         "message": "Mặt tiền Quốc lộ 13 · hai tháp 29 tầng · dự kiến bàn giao Quý II/2028",
