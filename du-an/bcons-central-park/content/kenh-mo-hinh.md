@@ -29,7 +29,9 @@ Tỷ lệ thực tế đến 13/11: **A 1/7 (14%), B 6/7 (86%)**, ngược với
 Thời gian xem TB và tỷ lệ xem hết (giữ chân), bình luận, tin nhắn/form/quét QR từ kênh (cột Nguồn Sheet Landing), người theo dõi mới. Lượt xem chỉ là chỉ số phụ.
 
 ## Quyết định 12/11/2026
-- **Một trang chung** cho cả hai dự án (tên trang: đang chọn, anh hỏi gợi ý "Chuyên BĐS Bcons" 12/11).
+- **Một trang chung** cho cả hai dự án (tên trang: **Tuấn Trương | BĐS Bcons**, anh chốt 13/11/2026; cần đổi tên trang Facebook đang là "Căn hộ Phan Trung – Bcons Central Park Biên Hòa").
 - **Chỉ dùng video công ty** cho phần cắt ghép (nhiều loại: dựng sẵn, video thô, flycam); video tự làm bằng pipeline vẫn giữ.
 - **Mã theo dõi:** link trong caption gắn `?utm_source=<tiktok|facebook>&utm_campaign=<tên bài>`; Sheet cột Nguồn ghi `tiktok.<tên bài>`.
 - Báo cáo tuần: `bao-cao/2026-11-12-hieu-suat-tuan.md`.
+- **Kho video công ty** (anh up 13/11/2026): Drive `Bcons/data/bcons-newsky/video-cong-ty/` gồm `1-da-dung-san`, `2-video-tho`, `3-flycam`.
+- **Link theo dõi cố định** (gắn một lần): bio TikTok `https://bcons-newsky-binhduong.pages.dev/?utm_source=tiktok&utm_campaign=bio`; nút/nút liên hệ fanpage `...?utm_source=facebook&utm_campaign=trang`; bình luận đầu mỗi bài `...?utm_source=fb-post&utm_campaign=<tên bài>`. Link trong caption từng bài gắn `utm_campaign=<tên bài>`.
