@@ -53,7 +53,7 @@ export function taoNguon({ localStorage, fetch, location, history, navigator = {
     const r = await fetch(url, { cache: "no-store" });
     if (!r.ok) throw Object.assign(new Error(`Máy chủ trả lỗi ${r.status}`), { ma: "mang" });
     const d = await r.json();
-    if (d && d.loi) throw Object.assign(new Error(d.loi === "khoa" ? "Sai khóa: mở lại liên kết cài đặt mới." : String(d.loi)), { ma: d.loi === "khoa" ? "sai-khoa" : "may-chu" });
+    if (d && d.loi) throw Object.assign(new Error(d.loi === "khoa" ? "Sai khóa: mở lại liên kết cài đặt mới." : d.loi === "may-chu" ? "Apps Script không đọc được Sheet: kiểm tab phải tên đúng GiaTongHop (không có chữ \"Bản sao của\") và hàng tiêu đề có \"Mã căn\"." : String(d.loi)), { ma: d.loi === "khoa" ? "sai-khoa" : "may-chu" });
     if (!giohangHopLe(d)) throw Object.assign(new Error("Dữ liệu giỏ hàng trống hoặc sai dạng."), { ma: "du-lieu" });
     ghi(KHOA_GIO_HANG, d);
     return d;

@@ -135,3 +135,8 @@ test("nhập tay link + khóa trên thiết bị: chặn link lạ, khóa quá n
   assert.equal(d.can.length, 2);
   assert.equal(m.goi[0].u, `${URL_GAS}?khoa=khoa-dai-du-dung`);
 });
+
+test("Apps Script báo may-chu (tab đổi tên): thông báo chỉ rõ tên tab GiaTongHop, không để nguyên mã lỗi", async () => {
+  const m = moiTruong({ hash: lienKet(), tra: () => ({ ok: true, json: async () => ({ loi: "may-chu" }) }) });
+  await assert.rejects(taoNguon(m.env).layGioHang(), /tab phải tên đúng GiaTongHop/);
+});
