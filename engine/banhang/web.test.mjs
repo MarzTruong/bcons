@@ -81,6 +81,7 @@ test("quy tắc cứng trong chữ của giao diện: không 'sắp hết', khô
     assert.ok(!re.test(txt), `còn câu cấm: ${re}`);
   }
   assert.ok(!/LS trần 6,9%/.test(txt), "trần 6,9% không được ghi cứng cho mọi PTTT");
+  assert.ok(!/1PN\+/.test(txt), "không có nhóm '1PN+': CĐT ghi căn 47 m² là 2PN-1WC (anh chốt bỏ 13/11/2026)");
   assert.ok(!/fillText\([^)]*agentInfo\.phone/.test(doc("app.js")), "ảnh xuất cho khách không ghi SĐT chữ");
   assert.ok(!/Đã trừ CK PTTT/.test(txt), "chiết khấu chỉ hiện khi PTTT có chiết khấu");
 });

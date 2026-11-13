@@ -288,13 +288,18 @@
     color: var(--gold);
   }
 
-  /* Main Workspace (Split layout) */
+  /* Main Workspace (Split layout — maximize floorplan, compact right panel) */
   .workspace {
     flex: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(370px, 0.95fr);
+    grid-template-columns: minmax(0, 1fr) 318px;
     overflow: hidden;
     position: relative;
+  }
+  @media (max-width: 1120px) and (min-width: 901px) {
+    .workspace {
+      grid-template-columns: minmax(0, 1fr) 294px;
+    }
   }
 
   /* Left Pane: Floor Switcher + Architectural Vector Floorplan + Cùng Vị Trí */
@@ -469,13 +474,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 4px 6px;
     min-height: 280px;
   }
   .architectural-board {
     position: relative;
     width: 100%;
-    max-width: 1160px;
+    max-width: none;
     background: var(--card);
     border-radius: 8px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
@@ -510,9 +515,9 @@
   .cung-vi-tri-pane {
     background: var(--card);
     border-top: 1px solid var(--line);
-    padding: 8px 14px 10px;
+    padding: 6px 10px 8px;
     flex-shrink: 0;
-    max-height: 180px;
+    max-height: 126px;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -566,25 +571,25 @@
   .right-scroll-area {
     flex: 1;
     overflow-y: auto;
-    padding: 12px 14px 12px;
+    padding: 8px 10px 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
   .right-sticky-top {
     position: sticky;
-    top: -12px;
+    top: -8px;
     z-index: 8;
     background: var(--card);
-    padding: 10px 0 8px;
+    padding: 6px 0 6px;
     border-bottom: 1px solid var(--line);
-    margin: -12px 0 2px;
+    margin: -8px 0 2px;
   }
   .right-sticky-bottom {
     flex-shrink: 0;
     background: var(--card);
     border-top: 1px solid var(--line);
-    padding: 10px 14px;
+    padding: 8px 10px;
     box-shadow: 0 -4px 14px rgba(0,0,0,0.06);
     z-index: 9;
   }
@@ -592,24 +597,25 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: 4px;
+    margin-bottom: 6px;
     background: var(--card);
     border: 1px solid var(--line);
-    padding: 4px 6px;
+    padding: 4px 5px;
     border-radius: 7px;
   }
-  .loan-toggle-bar span { font-size: 11px; font-weight: 700; color: var(--mute); }
-  .loan-pills { display: flex; gap: 3px; }
+  .loan-toggle-bar span { font-size: 10px; font-weight: 700; color: var(--mute); white-space: nowrap; }
+  .loan-pills { display: flex; gap: 2px; flex-wrap: wrap; justify-content: flex-end; }
   .loan-pill {
     border: 1px solid var(--line);
     background: var(--card-sub);
     color: var(--ink);
-    padding: 3px 8px;
+    padding: 3px 5.5px;
     border-radius: 4px;
-    font: 700 11px inherit;
+    font: 700 10px inherit;
     cursor: pointer;
     transition: all .12s;
+    white-space: nowrap;
   }
   .loan-pill.active {
     background: var(--navy);
@@ -723,32 +729,33 @@
     background: var(--card-sub);
     border: 1px solid var(--line);
     border-radius: 10px;
-    padding: 14px;
+    padding: 10px;
     position: relative;
   }
   .detail-head {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 6px;
+    margin-bottom: 6px;
   }
   .detail-ma {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 800;
     color: var(--navy);
     line-height: 1.1;
   }
   .detail-loai {
-    font-size: 13px;
+    font-size: 11.5px;
     color: var(--mute);
     margin-top: 2px;
   }
   .status-tag {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
-    padding: 3px 8px;
+    padding: 2px 7px;
     border-radius: 999px;
+    white-space: nowrap;
   }
   .status-tag.trong { background: var(--green-bg); color: var(--green); }
   .status-tag.daban { background: var(--line); color: var(--mute); }
@@ -757,32 +764,32 @@
   .price-banner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin: 10px 0 8px;
+    gap: 6px;
+    margin: 6px 0;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 8px 10px;
+    padding: 6px 8px;
   }
-  .price-banner span { font-size: 11px; color: var(--mute); display: block; }
-  .price-banner b { font-size: 17px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .price-banner span { font-size: 10px; color: var(--mute); display: block; }
+  .price-banner b { font-size: 15.5px; font-weight: 800; color: var(--ink); white-space: nowrap; }
   .price-banner .co-vat b { color: var(--navy); }
 
   /* Milestones */
   .kpi-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: 5px;
+    margin-bottom: 6px;
   }
   .kpi-item {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 6px 8px;
+    padding: 5px 7px;
   }
-  .kpi-item span { color: var(--mute); font-size: 10.5px; display: block; }
-  .kpi-item b { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .kpi-item span { color: var(--mute); font-size: 10px; display: block; }
+  .kpi-item b { font-size: 12.5px; font-weight: 700; color: var(--ink); }
 
   /* Schedule Table */
   .sched-box {
@@ -793,14 +800,14 @@
   .sched-tbl {
     width: 100%;
     border-collapse: collapse;
-    font-size: 12px;
+    font-size: 11px;
   }
   .sched-tbl th, .sched-tbl td {
-    padding: 6px 9px;
+    padding: 5px 6px;
     border-bottom: 1px solid var(--line);
     text-align: left;
   }
-  .sched-tbl th { background: var(--card-sub); color: var(--navy); font-weight: 700; font-size: 11px; }
+  .sched-tbl th { background: var(--card-sub); color: var(--navy); font-weight: 700; font-size: 10.5px; }
   .sched-tbl td.r { text-align: right; font-weight: 700; white-space: nowrap; }
   .sched-tbl tr.bank td { background: var(--gold-soft); color: var(--navy); }
 
@@ -808,22 +815,23 @@
   .btn-action-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 6px;
+    gap: 6px;
+    margin-top: 2px;
   }
   .btn-export {
     background: var(--navy);
     color: #fff;
     border: 0;
     border-radius: 8px;
-    padding: 10px;
-    font: 700 13px inherit;
+    padding: 8px 6px;
+    font: 700 11.5px inherit;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
     transition: all .15s;
+    white-space: nowrap;
   }
   .btn-export:hover { opacity: 0.9; }
   .btn-compare {
@@ -831,10 +839,11 @@
     color: var(--navy);
     border: 1.5px solid var(--navy);
     border-radius: 8px;
-    padding: 10px;
-    font: 700 13px inherit;
+    padding: 8px 6px;
+    font: 700 11.5px inherit;
     cursor: pointer;
     transition: all .15s;
+    white-space: nowrap;
   }
 
   /* Compare Drawer Modal */
@@ -892,27 +901,333 @@
     opacity: 1;
   }
 
-  /* Responsive Mobile View */
-  @media (max-width: 900px) {
-    .workspace {
-      grid-template-columns: 1fr;
-      grid-template-rows: minmax(280px, 1fr) auto;
+  /* Mobile-only UI helpers (hidden on Desktop >= 1024px) */
+  .mobile-swipe-hint {
+    display: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--gold-soft);
+    border-bottom: 1px solid var(--line);
+    padding: 5px 10px;
+    text-align: center;
+  }
+  .btn-toggle-floors {
+    display: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--navy);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font: 700 11px inherit;
+    cursor: pointer;
+    order: 4;
+    width: 100%;
+    text-align: center;
+    margin-top: 2px;
+  }
+  .mobile-bottom-bar {
+    display: none;
+  }
+  .mobile-drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 55;
+  }
+  .mobile-drawer-backdrop.open { display: block; }
+  .mobile-drawer-header {
+    display: none;
+  }
+
+  /* Tablet & Mobile Responsive Layout (< 1024px) */
+  @media (max-width: 1023px) {
+    html, body {
+      height: auto;
+      min-height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
-    .left-pane { border-right: 0; border-bottom: 1px solid var(--line); }
+    body {
+      padding-bottom: 84px;
+    }
+    .workspace {
+      display: block;
+      overflow: visible;
+    }
+    .left-pane {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      overflow: visible;
+    }
+    .mobile-swipe-hint {
+      display: block;
+    }
+    .map-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      min-height: 440px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 8px;
+      display: block;
+    }
+    .architectural-board {
+      min-width: 980px;
+      width: 980px;
+    }
+    .architectural-board.single-block {
+      min-width: 560px;
+      width: 560px;
+    }
+    .cung-vi-tri-pane {
+      max-height: none;
+      overflow-y: visible;
+    }
+
+    /* Slide-up Bottom Sheet Drawer for Right Pane */
     .right-pane {
-      max-height: 50vh;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      max-height: 85vh;
+      z-index: 60;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
+      transform: translateY(108%);
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+    .right-pane.drawer-open {
+      transform: translateY(0);
+    }
+    .mobile-drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--navy-deep);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .mobile-drawer-header span {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .btn-close-drawer {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font: 700 11.5px inherit;
+      cursor: pointer;
+    }
+    .right-scroll-area {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
+      padding: 10px 12px;
+    }
+    .right-sticky-top {
+      position: static;
+      margin: 0 0 6px;
+      padding: 0 0 8px;
+    }
+
+    /* Collapsible Bottom Bar (~72px) */
+    .mobile-bottom-bar {
+      display: flex;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 74px;
+      background: var(--card);
+      border-top: 2px solid var(--gold-border);
+      box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.18);
+      padding: 8px 12px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      z-index: 45;
+    }
+    .mobile-bottom-bar.hidden {
+      display: none;
+    }
+    .mb-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .mb-ma {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .mb-gia {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold-border);
+      white-space: nowrap;
+    }
+    .btn-open-drawer {
+      background: var(--navy);
+      color: #fff;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font: 700 12.5px inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
   }
-  @media (max-width: 540px) {
-    .topbar { padding: 6px 10px; }
-    .topbar-controls { gap: 6px; }
-    .pttt-btn { padding: 4px 7px; font-size: 11px; }
-    .quick-finder-bar { padding: 6px 8px; }
-    .floor-bar { padding: 5px 8px; }
-    .right-pane { padding: 12px 14px 18px; max-height: 52vh; }
-    .price-banner b { font-size: 15px; }
-    .btn-export, .btn-compare { padding: 9px; font-size: 12px; }
+
+  /* Mobile Phone Layout (< 768px) */
+  @media (max-width: 767px) {
+    /* 1. Mobile Header Fix (No right-edge overflow) */
+    .topbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      padding: 8px 10px;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    .brand {
+      justify-content: space-between;
+      width: 100%;
+    }
+    .brand .pill {
+      font-size: 10px;
+      padding: 2px 7px;
+    }
+    .topbar-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+      width: 100%;
+    }
+    .topbar-actions-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      width: 100%;
+    }
+    .sync-badge { display: none; }
+    .agent-badge {
+      width: 100%;
+      justify-content: center;
+      padding: 5px 8px;
+      font-size: 11px;
+      text-align: center;
+    }
+    .pttt-chips {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+      gap: 4px;
+    }
+    .pttt-btn {
+      padding: 6px 4px;
+      font-size: 10.5px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-theme-toggle, .btn-refresh {
+      padding: 5px 9px;
+      font-size: 11px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* 2. Compact Mobile Filters */
+    .quick-finder-bar {
+      padding: 7px 10px;
+      gap: 6px;
+    }
+    .finder-top-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+    }
+    .finder-query-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+    .finder-query-controls label {
+      display: none;
+    }
+    .select-qf {
+      width: 100%;
+      min-width: 0;
+      padding: 5px 6px;
+      font-size: 11px;
+    }
+    .finder-result-badge {
+      grid-column: 1 / -1;
+      justify-content: space-between;
+      width: 100%;
+      padding: 5px 8px;
+    }
+    .btn-reset-filter.visible {
+      grid-column: 1 / -1;
+      width: 100%;
+      text-align: center;
+    }
+    .quick-chips-row {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+      padding: 2px 0 4px;
+      scrollbar-width: none;
+    }
+    .quick-chips-row::-webkit-scrollbar { display: none; }
+
+    /* 5. Optimize Floor Selector (T2..T29) */
+    .floor-bar {
+      padding: 6px 10px;
+      gap: 6px;
+    }
+    .tang-pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 2px 0;
+      gap: 4px;
+    }
+    .tang-pills::-webkit-scrollbar { display: none; }
+    .tang-pills.expanded {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      overflow-x: visible;
+    }
+    .tang-pills.expanded .tang-btn {
+      text-align: center;
+      padding: 4px 2px;
+      font-size: 10.5px;
+    }
+    .btn-toggle-floors {
+      display: block;
+    }
   }
 </style>
 </head>
@@ -934,12 +1249,14 @@
       <button class="agent-badge" id="btnEditAgent" type="button" title="Bấm để sửa Tên / SĐT chuyên viên tư vấn">
         <span>👤 Chuyên viên tư vấn: <b id="agentNameHdr">Tuấn Trương</b> • 📞 <b id="agentPhoneHdr">0938.32.31.39</b></span>
       </button>
-      <!-- Nút bật/tắt chế độ ban đêm -->
-      <button class="btn-theme-toggle" id="btnThemeToggle" type="button" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">🌙</span> <span id="themeText">Ban đêm</span>
-      </button>
-      <span class="sync-badge" id="syncStatus">Cập nhật lúc 08:30</span>
-      <button class="btn-refresh" id="btnRefresh" type="button">↻ Làm mới</button>
+      <div class="topbar-actions-mobile" style="display:flex;gap:6px;align-items:center;">
+        <!-- Nút bật/tắt chế độ ban đêm -->
+        <button class="btn-theme-toggle" id="btnThemeToggle" type="button" title="Chuyển chế độ Sáng / Tối">
+          <span id="themeIcon">🌙</span> <span id="themeText">Ban đêm</span>
+        </button>
+        <span class="sync-badge" id="syncStatus">Cập nhật lúc 08:30</span>
+        <button class="btn-refresh" id="btnRefresh" type="button">↻ Làm mới</button>
+      </div>
     </div>
   </header>
 
@@ -1014,7 +1331,10 @@
         <div class="tang-pills" id="tangPills">
           <!-- Populated dynamically by JS for floors 2..29 (flex-wrap, no scroll) -->
         </div>
+        <button type="button" class="btn-toggle-floors" id="btnToggleFloors">Mở rộng tất cả tầng ▾</button>
       </div>
+
+      <div class="mobile-swipe-hint">↔️ Vuốt ngang để xem toàn bộ sơ đồ (hoặc bấm chọn riêng Block B1 / B2 để xem to hơn)</div>
 
       <!-- Architectural Vector Floorplan Map -->
       <div class="map-container">
@@ -1034,7 +1354,12 @@
     </section>
 
     <!-- Right Pane: Sticky Top (Header + 6 KPIs) + Scrollable Schedule + Sticky Bottom Actions -->
+    <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop"></div>
     <aside class="right-pane" id="rightPane">
+      <div class="mobile-drawer-header">
+        <span>CHI TIẾT CĂN HỘ &amp; BÁO GIÁ</span>
+        <button type="button" class="btn-close-drawer" id="btnCloseMobileDrawer">✕ Đóng / Quay lại sơ đồ</button>
+      </div>
       <div class="right-scroll-area">
         <!-- Rank & Sales Pitch Callout -->
         <div class="rank-banner" id="rankBanner">
@@ -1131,6 +1456,15 @@
       </div>
     </aside>
   </main>
+
+  <!-- Mobile Collapsible Bottom Bar (< 1024px) -->
+  <div class="mobile-bottom-bar" id="mobileBottomBar">
+    <div class="mb-info">
+      <div class="mb-ma" id="mbCanMa">B2.4-12</div>
+      <div class="mb-gia" id="mbCanGia">2,56 tỷ</div>
+    </div>
+    <button type="button" class="btn-open-drawer" id="btnOpenMobileDrawer">🔼 Xem chi tiết &amp; Báo giá</button>
+  </div>
 
   <!-- Floating Tooltip for Floorplan Hover -->
   <div class="svg-tooltip" id="svgTooltip"></div>

@@ -182,18 +182,22 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     const ch3PN = getCheapestUnit({ loai: "3PN", scope: currentBlock === "ALL" ? "all" : currentBlock });
     const chTang = getCheapestUnit({ loai: "all", scope: "tang" });
 
-    // Dynamic viewBox & compass placement per block view (compact 705px height)
-    let vb = "0 0 1845 705";
+    const boardEl = document.getElementById("archBoard");
+    if (boardEl) boardEl.classList.toggle("single-block", currentBlock === "B1" || currentBlock === "B2");
+
+    // Dynamic viewBox & compass placement per block view (tightened margins for larger unit cards)
+    const leftEdge = layout.type === "tang4" ? 6 : 42;
+    let vb = `${leftEdge} 2 ${1794 - leftEdge} 696`;
     let compassX = 1715, compassY = 125;
-    let legendX = 460;
+    let legendX = 435;
     if (currentBlock === "B1") {
-      vb = "15 0 885 705";
+      vb = `${leftEdge} 2 ${804 - leftEdge} 696`;
       compassX = 838;
-      legendX = 40;
+      legendX = 48;
     } else if (currentBlock === "B2") {
-      vb = "775 0 1075 705";
+      vb = "792 2 1002 696";
       compassX = 1715;
-      legendX = 850;
+      legendX = 830;
     }
 
     const renderCoreBox = (x, y, label) => `
@@ -366,48 +370,48 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
           <rect x="${geom.x + 1}" y="${geom.y + 1}" width="${geom.w - 2}" height="4.5" fill="${catColor}" rx="3" opacity="0.9"/>
 
           <!-- Line 1: Code pill + SV/Corner icons + Champion badge -->
-          <g transform="translate(${geom.x + 6}, ${labelY + 1})">
-            <rect width="38" height="17" rx="4" fill="${catColor}" />
-            <text x="19" y="11.5" font-family="'Be Vietnam Pro', system-ui" font-size="9.5" font-weight="800" fill="#FFFFFF" text-anchor="middle">${pillLabel}</text>
-            ${svArea ? `<text x="44" y="12" font-size="10.5" title="Có sân vườn">🌱</text>` : (isCorner ? `<text x="43" y="12" font-size="10" title="Căn góc">📐</text>` : '')}
+          <g transform="translate(${geom.x + 6}, ${labelY})">
+            <rect width="42" height="19" rx="4" fill="${catColor}" />
+            <text x="21" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">${pillLabel}</text>
+            ${svArea ? `<text x="46" y="13" font-size="11" title="Có sân vườn">🌱</text>` : (isCorner ? `<text x="45" y="13" font-size="10.5" title="Căn góc">📐</text>` : '')}
           </g>
           ${isChamp2PN ? `
-            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 40 : 52)}, ${labelY + 1})">
-              <rect width="${geom.w < 105 ? 35 : 47}" height="17" rx="4" fill="var(--gold)" />
-              <text x="${geom.w < 105 ? 17.5 : 23.5}" y="11.5" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#052F57" text-anchor="middle">${geom.w < 105 ? '★ RẺ' : '★ RẺ 2PN'}</text>
+            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 40 : 52)}, ${labelY})">
+              <rect width="${geom.w < 105 ? 35 : 47}" height="19" rx="4" fill="var(--gold)" />
+              <text x="${geom.w < 105 ? 17.5 : 23.5}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#052F57" text-anchor="middle">${geom.w < 105 ? '★ RẺ' : '★ RẺ 2PN'}</text>
             </g>
           ` : (isChamp3PN ? `
-            <g transform="translate(${geom.x + geom.w - 52}, ${labelY + 1})">
-              <rect width="47" height="17" rx="4" fill="var(--gold)" />
-              <text x="23.5" y="11.5" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#052F57" text-anchor="middle">★ RẺ 3PN</text>
+            <g transform="translate(${geom.x + geom.w - 52}, ${labelY})">
+              <rect width="47" height="19" rx="4" fill="var(--gold)" />
+              <text x="23.5" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#052F57" text-anchor="middle">★ RẺ 3PN</text>
             </g>
           ` : (isChampTang ? `
-            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 38 : 48)}, ${labelY + 1})">
-              <rect width="${geom.w < 105 ? 33 : 43}" height="17" rx="4" fill="var(--green)" />
-              <text x="${geom.w < 105 ? 16.5 : 21.5}" y="11.5" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#FFFFFF" text-anchor="middle">${geom.w < 105 ? 'RẺ' : 'RẺ TẦNG'}</text>
+            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 38 : 48)}, ${labelY})">
+              <rect width="${geom.w < 105 ? 33 : 43}" height="19" rx="4" fill="var(--green)" />
+              <text x="${geom.w < 105 ? 16.5 : 21.5}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#FFFFFF" text-anchor="middle">${geom.w < 105 ? 'RẺ' : 'RẺ TẦNG'}</text>
             </g>
           ` : ''))}
 
           <!-- Line 2: Type & Area -->
-          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="10.5" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${shortLoai} • ${areaText}</text>
+          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="${geom.w < 105 ? '10.5' : '11.5'}" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${shortLoai} • ${areaText}</text>
 
           <!-- Line 3: Prominent Price Pill -->
-          <g transform="translate(${geom.x + 6}, ${geom.y + 62})">
-            <rect width="${geom.w - 12}" height="24" rx="4" 
+          <g transform="translate(${geom.x + 5}, ${geom.y + 60})">
+            <rect width="${geom.w - 10}" height="27" rx="4" 
                   fill="${isSelected ? 'var(--navy)' : ((isDaBan || isOutOfStock) ? 'var(--card-sub)' : 'var(--svg-price-bg)')}" 
                   stroke="var(--line)" stroke-width="1"/>
-            <text x="${(geom.w - 12) / 2}" y="16" 
-                  font-family="'Be Vietnam Pro', system-ui" font-size="${isOutOfStock ? '8.5' : '11.5'}" font-weight="800" 
+            <text x="${(geom.w - 10) / 2}" y="18.5" 
+                  font-family="'Be Vietnam Pro', system-ui" font-size="${isOutOfStock ? '9.5' : '14'}" font-weight="800" 
                   fill="${isSelected ? 'var(--gold)' : ((isDaBan || isOutOfStock) ? 'var(--sold)' : 'var(--svg-price-ink)')}" text-anchor="middle">${priceText}</text>
           </g>
 
           ${svArea ? `
             <g transform="translate(${geom.x + 7}, ${geom.y + geom.h - 23})">
               <rect width="${geom.w - 14}" height="17" rx="3" fill="#059669" />
-              <text x="${(geom.w - 14) / 2}" y="12" font-family="'Be Vietnam Pro', system-ui" font-size="8.5" font-weight="800" fill="#FFFFFF" text-anchor="middle">+ SV ${svArea} m²</text>
+              <text x="${(geom.w - 14) / 2}" y="12" font-family="'Be Vietnam Pro', system-ui" font-size="9" font-weight="800" fill="#FFFFFF" text-anchor="middle">+ SV ${svArea} m²</text>
             </g>
           ` : `
-            <text x="${midX}" y="${geom.y + geom.h - 10}" font-family="'Be Vietnam Pro', system-ui" font-size="8.5" font-weight="600" fill="var(--mute)" text-anchor="middle">${huongText}</text>
+            <text x="${midX}" y="${geom.y + geom.h - 9}" font-family="'Be Vietnam Pro', system-ui" font-size="9.5" font-weight="600" fill="var(--mute)" text-anchor="middle">${huongText}</text>
           `}
         </g>
       `;
@@ -416,18 +420,23 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     if (layout.type === "tang2") {
       for (const u of TANG2_UNITS) {
         const blk = u.x < 793 ? "B1" : "B2";
+        if (currentBlock !== "ALL" && blk !== currentBlock) continue;
         s += drawUnit(blk, 0, u, null, { isRefOnly: true, ma: u.ma, label: u.label, loai: "Tầng 2", tt: u.tt, ll: u.ll, orient: u.orient });
       }
     } else {
-      for (let viTri = 1; viTri <= 12; viTri++) {
-        if (layout.type === "tang3" && (viTri === 5 || viTri === 6 || viTri === 7)) continue;
-        if ((layout.type === "tang19" || layout.type === "tang20") && (viTri === 5 || viTri === 6)) continue;
-        const geom = B1_GEOM[viTri];
-        if (geom) s += drawUnit("B1", viTri, geom, mapB1.get(viTri));
+      if (currentBlock === "ALL" || currentBlock === "B1") {
+        for (let viTri = 1; viTri <= 12; viTri++) {
+          if (layout.type === "tang3" && (viTri === 5 || viTri === 6 || viTri === 7)) continue;
+          if ((layout.type === "tang19" || layout.type === "tang20") && (viTri === 5 || viTri === 6)) continue;
+          const geom = B1_GEOM[viTri];
+          if (geom) s += drawUnit("B1", viTri, geom, mapB1.get(viTri));
+        }
       }
-      for (let viTri = 1; viTri <= 15; viTri++) {
-        const geom = B2_GEOM[viTri];
-        if (geom) s += drawUnit("B2", viTri, geom, mapB2.get(viTri));
+      if (currentBlock === "ALL" || currentBlock === "B2") {
+        for (let viTri = 1; viTri <= 15; viTri++) {
+          const geom = B2_GEOM[viTri];
+          if (geom) s += drawUnit("B2", viTri, geom, mapB2.get(viTri));
+        }
       }
     }
 
@@ -487,7 +496,12 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
             : `Căn ${ma} hiện không còn trong giỏ hàng (đã bán hoặc chưa mở bán).`);
           return;
         }
-        if (ma) selectCan(ma);
+        if (ma) {
+          selectCan(ma);
+          if (window.innerWidth < 1024 && typeof openMobileDrawer === "function") {
+            openMobileDrawer();
+          }
+        }
       });
       if (tooltip) {
         el.addEventListener("mouseenter", () => {
@@ -666,7 +680,6 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     const groupTypes = [
       { label: "🔥 2PN Rẻ nhất", loai: "2PN", huong: "all", scope: activeScope, isHot: true },
       { label: "👑 3PN Rẻ nhất", loai: "3PN", huong: "all", scope: activeScope, isHot: true },
-      { label: "1PN+", loai: "1PN", huong: "all", scope: activeScope },
       { label: "2PN-1WC", loai: "2PN-1WC", huong: "all", scope: activeScope },
       { label: "2PN-2WC", loai: "2PN-2WC", huong: "all", scope: activeScope },
       { label: "3PN-2WC", loai: "3PN-2WC", huong: "all", scope: activeScope },
@@ -796,6 +809,11 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
     setTxt("canMa", c.ma);
     setTxt("canLoai", `${c.loai} · ${c.dtTimTuong} m² tim tường (${c.dtThongThuy || '—'} m² thông thủy)`);
+    setTxt("mbCanMa", c.ma);
+    const mbGia = c.trangThai === "trong" && c.gia?.[currentPttt]?.chuaVat
+      ? `${fmtTy(c.gia[currentPttt].chuaVat)} · ${c.loai}`
+      : (c.trangThai === "daBan" ? "ĐÃ BÁN" : "CHƯA RÕ");
+    setTxt("mbCanGia", mbGia);
 
     const stEl = document.getElementById("canStatus");
     if (stEl) {
@@ -1572,6 +1590,28 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
         : (idx - 1 + floorUnits.length) % floorUnits.length;
       selectCan(floorUnits[nextIdx].ma);
     }
+  });
+
+  // Mobile Bottom Sheet Drawer & Floor Expansion
+  function openMobileDrawer() {
+    document.getElementById("rightPane")?.classList.add("drawer-open");
+    document.getElementById("mobileDrawerBackdrop")?.classList.add("open");
+    document.getElementById("mobileBottomBar")?.classList.add("hidden");
+  }
+  function closeMobileDrawer() {
+    document.getElementById("rightPane")?.classList.remove("drawer-open");
+    document.getElementById("mobileDrawerBackdrop")?.classList.remove("open");
+    document.getElementById("mobileBottomBar")?.classList.remove("hidden");
+  }
+  document.getElementById("btnOpenMobileDrawer")?.addEventListener("click", openMobileDrawer);
+  document.getElementById("btnCloseMobileDrawer")?.addEventListener("click", closeMobileDrawer);
+  document.getElementById("mobileDrawerBackdrop")?.addEventListener("click", closeMobileDrawer);
+
+  document.getElementById("btnToggleFloors")?.addEventListener("click", (e) => {
+    const pills = document.getElementById("tangPills");
+    if (!pills) return;
+    const expanded = pills.classList.toggle("expanded");
+    e.currentTarget.textContent = expanded ? "Thu gọn tầng ▴" : "Mở rộng tất cả tầng ▾";
   });
 
   // Initial Boot
