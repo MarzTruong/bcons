@@ -15,7 +15,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
   let compareList = [];
   let loanOverride = "auto"; // "auto" | "0.7" | "0.5" | "0"
 
-  const DEFAULT_AGENT = { name: lienHe.ten || "Trương Tuấn", phone: lienHe.sdtHienThi || "0938.32.31.39", team: "Bcons PS Land" };
+  const DEFAULT_AGENT = { name: lienHe.ten || "Tuấn Trương", phone: lienHe.sdtHienThi || "0938.32.31.39", team: "Bcons PS Land" };
   let agentInfo = (() => {
     try {
       const saved = JSON.parse(localStorage.getItem("bcons_agent_info") || "null");

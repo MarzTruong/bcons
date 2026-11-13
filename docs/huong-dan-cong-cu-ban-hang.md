@@ -29,4 +29,4 @@ Xem thử không cần khóa: mở `<trang>/#demo` (giỏ hàng mẫu mô phỏn
 - Ô căn không có trong giỏ hàng (CĐT LOCK hoặc chưa mở) đang ghi "ĐÃ BÁN / KHÓA": nên đổi chữ trung tính, vì căn LOCK không phải căn đã bán.
 - Form nhập link + khóa (`main.js`, id `formCaiDat`) mới làm tối giản, cần AGY thiết kế lại; icon `du-an/bcons-newsky/ban-hang/icon-192.png`/`icon-512.png` đang là logo thu nhỏ tạm.
 - Phông Be Vietnam Pro đang tải từ Google Fonts; mất mạng lần đầu thì dùng phông hệ thống. Nên nhúng phông vào trang.
-- Tên chuyên viên: `project.json` ghi "Tuấn Trương", bản AGY ghi "Trương Tuấn". Em lấy theo `project.json`; anh chốt tên nào.
+- Tên chuyên viên: anh đã chốt 13/11/2026 theo `project.json` là "Tuấn Trương" (đã sửa chỗ viết cứng "Trương Tuấn" trong bản AGY).
