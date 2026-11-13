@@ -42,7 +42,7 @@ function giohang(doi = {}) {
   return { capNhat: "2026-11-13T08:30:00+07:00", phienBan: 1, thap: "B", can };
 }
 const fmtTy = (v) => (Math.abs(v) / 1e9).toFixed(2).replace(".", ",") + " tỷ";
-const fmtTrieu = (v) => Math.round(Math.abs(v) / 1e6) + " triệu";
+const fmtTrieu = (v) => (Math.abs(v) >= 1e9 ? fmtTy(v) : Math.round(Math.abs(v) / 1e6) + " triệu"); // từ 1 tỷ hiện "x,xx tỷ" (AGY 13/11)
 const fmtTrieu1 = (v) => (Math.abs(v) / 1e6).toFixed(1).replace(".", ",") + " triệu";
 
 // ---------- test tĩnh trên bản build ----------
@@ -75,14 +75,14 @@ test("giao diện không tự viết công thức: không có calcWith/pmt/danhD
   assert.ok(!/const (VAT|FEE) =/.test(app));
 });
 
-test("quy tắc cứng trong chữ của giao diện: không 'sắp hết', không hứa lợi nhuận/tăng giá, không SĐT chữ trên ảnh xuất, trần 6,9% theo PTTT", () => {
+test("quy tắc cứng trong chữ của giao diện: không 'sắp hết', không hứa lợi nhuận/tăng giá, trần 6,9% theo PTTT", () => {
   const txt = doc("index.html") + doc("app.js");
   for (const re of [/sắp hết/i, /cam kết/i, /lợi nhuận/i, /sinh lời/i, /tăng giá/i, /chắc chắn/i, /đón gió/i, /Tự có đợt đầu nhẹ nhất/, /theo bảng giá (CĐT|chủ đầu tư)/i]) {
     assert.ok(!re.test(txt), `còn câu cấm: ${re}`);
   }
   assert.ok(!/LS trần 6,9%/.test(txt), "trần 6,9% không được ghi cứng cho mọi PTTT");
   assert.ok(!/1PN\+/.test(txt), "không có nhóm '1PN+': CĐT ghi căn 47 m² là 2PN-1WC (anh chốt bỏ 13/11/2026)");
-  assert.ok(!/fillText\([^)]*agentInfo\.phone/.test(doc("app.js")), "ảnh xuất cho khách không ghi SĐT chữ");
+  assert.ok(!/(?<![\d.])0\d{9}(?!\d)|0\d{3}[.\s]\d{2,3}[.\s]\d{2,3}[.\s]?\d{0,3}/.test(doc("app.js").replace(/0938\.32\.31\.39/g, "")), "app.js không viết cứng số điện thoại nào khác số trong lienHe");
   assert.ok(!/Đã trừ CK PTTT/.test(txt), "chiết khấu chỉ hiện khi PTTT có chiết khấu");
 });
 
@@ -285,7 +285,7 @@ test("E2E: căn có tình trạng lạ (Sheet mất cột giỏ hàng chung: 'Kh
   await ctx.close();
 });
 
-test("E2E: Zalo + ảnh xuất cho khách: trần 6,9% chỉ PTTT 09 theo lịch CĐT; chiết khấu chỉ PTTT 08/10; không SĐT chữ; có QR", { skip: !coTrinhDuyet && "không có Chromium" }, async () => {
+test("E2E: Zalo + ảnh xuất cho khách: trần 6,9% chỉ PTTT 09 theo lịch CĐT; chiết khấu chỉ PTTT 08/10; tên + SĐT trong lienHe + QR", { skip: !coTrinhDuyet && "không có Chromium" }, async () => {
   const gh = giohang();
   const { ctx, pg } = await mo(gh);
   await chonCan(pg, "B2.7-06");
@@ -311,7 +311,10 @@ test("E2E: Zalo + ảnh xuất cho khách: trần 6,9% chỉ PTTT 09 theo lịch
   assert.ok(!/Đã trừ CK/.test(ket["09"].chu), "PTTT 09 không chiết khấu thì không ghi CK");
   const proj = JSON.parse(fs.readFileSync(path.join(PROJ, "project.json"), "utf8"));
   for (const k of ["09", "10", "08"]) {
-    assert.ok(!/0938|Hotline|Zalo:|\b0\d{9}\b/.test(ket[k].chu), `ảnh xuất PTTT ${k} có SĐT chữ`);
+    // Anh chốt 13/11/2026: ảnh xuất của công cụ bán hàng có SĐT của anh (đúng số trong project.json lienHe), không số nào khác.
+    assert.ok(ket[k].chu.includes(proj.lienHe.sdtHienThi), `ảnh xuất PTTT ${k} thiếu SĐT trong lienHe`);
+    const soKhac = (ket[k].chu.split(proj.lienHe.sdtHienThi).join("").match(/(?<![\d.])0\d{9}(?!\d)|0\d{3}\.\d{2}\.\d{2}\.\d{2}/g) ?? []);
+    assert.deepEqual(soKhac, [], `ảnh xuất PTTT ${k} có số điện thoại lạ`);
     assert.ok(ket[k].chu.includes(proj.lienHe.ten), "tên chuyên viên (project.json lienHe.ten) có trên ảnh");
     assert.equal(ket[k].anh >= 1, true, "QR được vẽ lên ảnh");
     assert.ok(!/sắp hết|cam kết|lợi nhuận|tăng giá/i.test(ket[k].chu + ket[k].pitch));

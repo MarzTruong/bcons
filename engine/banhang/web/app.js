@@ -2,7 +2,7 @@
 // Mọi công thức đi qua lõi: giohang.mjs (xếp hạng, mặt bằng, thẻ căn) và tai-chinh.mjs (số tiền, dùng calc.mjs).
 // Dữ liệu vào qua khoiDong({ giohang, plans, lienHe, nguon }); không có giá nào nằm trong file này.
 import { parseMa, trangThai, canHienThi, danhDauGiaRe, cungViTri, matBangTang, theCan } from "./core/giohang.mjs";
-import { phuongAn } from "./core/tai-chinh.mjs";
+import { phuongAn, giaCoVat } from "./core/tai-chinh.mjs";
 
 // UI Controller
 export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = null }) {
@@ -24,10 +24,14 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
   })();
 
   const nf = new Intl.NumberFormat("vi-VN");
-  const fmtTy = (v) => (Math.abs(v) / 1e9).toFixed(2).replace(".", ",") + " tỷ";
-  const fmtTrieu = (v) => Math.round(Math.abs(v) / 1e6) + " triệu";
-  const fmtTrieu1 = (v) => (Math.abs(v) / 1e6).toFixed(1).replace(".", ",") + " triệu";
-  const fmtDong = (v) => nf.format(Math.round(Math.abs(v))) + " đ";
+  const fmtTy = (v) => ((Math.abs(Number(v) || 0)) / 1e9).toFixed(2).replace(".", ",") + " tỷ";
+  const fmtTrieu = (v) => {
+    const absV = Math.abs(Number(v) || 0);
+    if (absV >= 1e9) return fmtTy(absV);
+    return Math.round(absV / 1e6) + " triệu";
+  };
+  const fmtTrieu1 = (v) => ((Math.abs(Number(v) || 0)) / 1e6).toFixed(1).replace(".", ",") + " triệu";
+  const fmtDong = (v) => nf.format(Math.round(Math.abs(Number(v) || 0))) + " đ";
 
   // Compact 3-tier staggered geometry (~25% shorter cards for crisp square-ish proportions, viewBox 1845x705)
   const B1_GEOM = {
@@ -350,50 +354,54 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
       const labelY = geom.y + 8;
       const pillLabel = customOpts.label || `${block}.${geom.label}`;
+      const rawDt = customOpts.isRefOnly ? Number(customOpts.tt) : Number(unit ? unit.dtTimTuong : geom.dt);
       const areaText = customOpts.isRefOnly
-        ? `TT ${customOpts.tt}m²`
-        : `${unit ? unit.dtTimTuong : geom.dt}m²`;
-      const shortLoai = geom.w < 105 ? loai.replace("1WC", "1W").replace("2WC", "2W").replace("3WC", "3W") : loai;
+        ? `TT ${rawDt.toFixed(1)}m²`
+        : `${rawDt.toFixed(1)}m²`;
+      const compactLoai = loai.replace("-1WC", "").replace("-2WC", "").replace("-3WC", "");
 
       // Căn đã cọc không mang giá trong dữ liệu của ô (không để lộ giá căn đã bán)
-      const giaVatNum = isAvailable ? (unit?.giaVat?.[currentPttt] || 0) : 0;
       const giaChuaVatNum = isAvailable ? (unit?.giaChuaVat?.[currentPttt] || 0) : 0;
+      const giaVatNum = isAvailable ? (unit?.giaVat?.[currentPttt] || (giaChuaVatNum > 0 ? giaCoVat(giaChuaVatNum) : 0)) : 0;
+      const clipId = `clip-${ma.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
 
       return `
         <g class="unit-vector ${isSelected ? 'active' : ''} ${(isDaBan || isOutOfStock) ? 'sold' : ''}" 
            data-ma="${ma}" data-vt="${viTri || 0}" data-loai="${loai}" data-avail="${isAvailable ? '1' : '0'}"
            data-dt="${areaText}" data-huong="${huongText}" data-giacv="${giaChuaVatNum}" data-giavat="${giaVatNum}" data-sv="${svArea || ''}"
            style="${unitFilterStyle}">
+          <defs><clipPath id="${clipId}"><rect x="${geom.x}" y="${geom.y}" width="${geom.w}" height="${geom.h}" rx="6"/></clipPath></defs>
           <rect x="${geom.x}" y="${geom.y}" width="${geom.w}" height="${geom.h}" 
                 fill="${fillColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" rx="6" ${filterAttr}/>
+          <g clip-path="url(#${clipId})">
           <!-- Top color-coded category bar -->
           <rect x="${geom.x + 1}" y="${geom.y + 1}" width="${geom.w - 2}" height="4.5" fill="${catColor}" rx="3" opacity="0.9"/>
 
           <!-- Line 1: Code pill + SV/Corner icons + Champion badge -->
-          <g transform="translate(${geom.x + 6}, ${labelY})">
-            <rect width="42" height="19" rx="4" fill="${catColor}" />
-            <text x="21" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">${pillLabel}</text>
-            ${svArea ? `<text x="46" y="13" font-size="11" title="Có sân vườn">🌱</text>` : (isCorner ? `<text x="45" y="13" font-size="10.5" title="Căn góc">📐</text>` : '')}
+          <g transform="translate(${geom.x + 5}, ${labelY})">
+            <rect width="46" height="19" rx="4" fill="${catColor}" />
+            <text x="23" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="11" font-weight="800" fill="#FFFFFF" text-anchor="middle">${pillLabel}</text>
+            ${svArea ? `<text x="49" y="13" font-size="10.5" title="Có sân vườn">🌱</text>` : (isCorner ? `<text x="49" y="13" font-size="10" title="Căn góc">📐</text>` : '')}
           </g>
           ${isChamp2PN ? `
-            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 40 : 52)}, ${labelY})">
-              <rect width="${geom.w < 105 ? 35 : 47}" height="19" rx="4" fill="var(--gold)" />
-              <text x="${geom.w < 105 ? 17.5 : 23.5}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#052F57" text-anchor="middle">${geom.w < 105 ? '★ RẺ' : '★ RẺ 2PN'}</text>
+            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 38 : 50)}, ${labelY})">
+              <rect width="${geom.w < 105 ? 34 : 46}" height="19" rx="4" fill="var(--gold)" />
+              <text x="${geom.w < 105 ? 17 : 23}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#052F57" text-anchor="middle">${geom.w < 105 ? '★ RẺ' : '★ RẺ 2PN'}</text>
             </g>
           ` : (isChamp3PN ? `
-            <g transform="translate(${geom.x + geom.w - 52}, ${labelY})">
-              <rect width="47" height="19" rx="4" fill="var(--gold)" />
-              <text x="23.5" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#052F57" text-anchor="middle">★ RẺ 3PN</text>
+            <g transform="translate(${geom.x + geom.w - 50}, ${labelY})">
+              <rect width="46" height="19" rx="4" fill="var(--gold)" />
+              <text x="23" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#052F57" text-anchor="middle">★ RẺ 3PN</text>
             </g>
           ` : (isChampTang ? `
-            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 38 : 48)}, ${labelY})">
-              <rect width="${geom.w < 105 ? 33 : 43}" height="19" rx="4" fill="var(--green)" />
-              <text x="${geom.w < 105 ? 16.5 : 21.5}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="8" font-weight="800" fill="#FFFFFF" text-anchor="middle">${geom.w < 105 ? 'RẺ' : 'RẺ TẦNG'}</text>
+            <g transform="translate(${geom.x + geom.w - (geom.w < 105 ? 36 : 46)}, ${labelY})">
+              <rect width="${geom.w < 105 ? 32 : 42}" height="19" rx="4" fill="var(--green)" />
+              <text x="${geom.w < 105 ? 16 : 21}" y="13" font-family="'Be Vietnam Pro', system-ui" font-size="7.5" font-weight="800" fill="#FFFFFF" text-anchor="middle">${geom.w < 105 ? 'RẺ' : 'RẺ TẦNG'}</text>
             </g>
           ` : ''))}
 
-          <!-- Line 2: Type & Area -->
-          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="${geom.w < 105 ? '10.5' : '11.5'}" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${shortLoai} • ${areaText}</text>
+          <!-- Line 2: Type & Area (compact, never overflows) -->
+          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="${geom.w < 105 ? '10' : '11'}" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${compactLoai} • ${areaText}</text>
 
           <!-- Line 3: Prominent Price Pill -->
           <g transform="translate(${geom.x + 5}, ${geom.y + 60})">
@@ -401,18 +409,19 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
                   fill="${isSelected ? 'var(--navy)' : ((isDaBan || isOutOfStock) ? 'var(--card-sub)' : 'var(--svg-price-bg)')}" 
                   stroke="var(--line)" stroke-width="1"/>
             <text x="${(geom.w - 10) / 2}" y="18.5" 
-                  font-family="'Be Vietnam Pro', system-ui" font-size="${isOutOfStock ? '9.5' : '14'}" font-weight="800" 
+                  font-family="'Be Vietnam Pro', system-ui" font-size="${isOutOfStock ? '9' : '13.5'}" font-weight="800" 
                   fill="${isSelected ? 'var(--gold)' : ((isDaBan || isOutOfStock) ? 'var(--sold)' : 'var(--svg-price-ink)')}" text-anchor="middle">${priceText}</text>
           </g>
 
           ${svArea ? `
-            <g transform="translate(${geom.x + 7}, ${geom.y + geom.h - 23})">
-              <rect width="${geom.w - 14}" height="17" rx="3" fill="#059669" />
-              <text x="${(geom.w - 14) / 2}" y="12" font-family="'Be Vietnam Pro', system-ui" font-size="9" font-weight="800" fill="#FFFFFF" text-anchor="middle">+ SV ${svArea} m²</text>
+            <g transform="translate(${geom.x + 6}, ${geom.y + geom.h - 23})">
+              <rect width="${geom.w - 12}" height="17" rx="3" fill="#059669" />
+              <text x="${(geom.w - 12) / 2}" y="12" font-family="'Be Vietnam Pro', system-ui" font-size="9" font-weight="800" fill="#FFFFFF" text-anchor="middle">+ SV ${svArea} m²</text>
             </g>
           ` : `
             <text x="${midX}" y="${geom.y + geom.h - 9}" font-family="'Be Vietnam Pro', system-ui" font-size="9.5" font-weight="600" fill="var(--mute)" text-anchor="middle">${huongText}</text>
           `}
+          </g>
         </g>
       `;
     };
@@ -484,10 +493,14 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
     container.innerHTML = s;
 
-    // Floating Hover Tooltip + Click events on SVG units
+    // Floating Hover Tooltip (Desktop >= 1024px with fine pointer ONLY) + Click events on SVG units
     const tooltip = document.getElementById("svgTooltip");
+    if (tooltip) tooltip.classList.remove("show");
+    const canHoverTooltip = window.innerWidth >= 1024 && window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
     container.querySelectorAll(".unit-vector").forEach(el => {
       el.addEventListener("click", () => {
+        if (tooltip) tooltip.classList.remove("show");
         const ma = el.dataset.ma;
         const avail = el.dataset.avail === "1";
         if (!avail) {
@@ -503,14 +516,15 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
           }
         }
       });
-      if (tooltip) {
+      if (tooltip && canHoverTooltip) {
         el.addEventListener("mouseenter", () => {
+          if (document.querySelector(".modal-overlay.open") || document.getElementById("rightPane")?.classList.contains("drawer-open")) return;
           const ma = el.dataset.ma;
           const loai = el.dataset.loai;
           const dt = el.dataset.dt;
           const huong = el.dataset.huong;
           const giacv = Number(el.dataset.giacv || 0);
-          const giavat = Number(el.dataset.giavat || 0);
+          const giavat = Number(el.dataset.giavat || 0) || (giacv > 0 ? giaCoVat(giacv) : 0);
           const sv = el.dataset.sv;
           const avail = el.dataset.avail === "1";
           tooltip.innerHTML = `
@@ -523,10 +537,10 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
         });
         el.addEventListener("mousemove", (e) => {
           const pad = 14;
-          let tx = e.clientX + pad;
-          let ty = e.clientY + pad;
-          if (tx + 240 > window.innerWidth) tx = e.clientX - 240;
-          if (ty + 110 > window.innerHeight) ty = e.clientY - 110;
+          let tx = Math.max(10, e.clientX + pad);
+          let ty = Math.max(10, e.clientY + pad);
+          if (tx + 245 > window.innerWidth) tx = Math.max(10, e.clientX - 245);
+          if (ty + 115 > window.innerHeight) ty = Math.max(10, e.clientY - 115);
           tooltip.style.left = tx + "px";
           tooltip.style.top = ty + "px";
         });
@@ -762,7 +776,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     const grid = document.getElementById("cungVtGrid") || document.getElementById("stripGrid");
     if (!grid) return;
 
-    grid.innerHTML = list.map(c => {
+    const htmlCards = list.map(c => {
       const isSel = c.ma === selectedMa;
       const isDaBan = c.trangThai === "daBan";
       const isReBlock = re[c.ma]?.reNhatBlock;
@@ -789,15 +803,21 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
       </div>`;
     }).join("");
 
-    grid.querySelectorAll(".vt-card, .strip-pill").forEach(el => {
-      el.addEventListener("click", () => {
-        const targetMa = el.dataset.ma;
-        const targetTang = Number(el.dataset.tang);
-        if (targetTang && targetTang !== currentTang) {
-          currentTang = targetTang;
-          updateTangUI();
-        }
-        selectCan(targetMa);
+    grid.innerHTML = htmlCards;
+    const drawerGrid = document.getElementById("drawerCungVtGrid");
+    if (drawerGrid) drawerGrid.innerHTML = htmlCards;
+
+    [grid, drawerGrid].filter(Boolean).forEach(containerEl => {
+      containerEl.querySelectorAll(".vt-card, .strip-pill").forEach(el => {
+        el.addEventListener("click", () => {
+          const targetMa = el.dataset.ma;
+          const targetTang = Number(el.dataset.tang);
+          if (targetTang && targetTang !== currentTang) {
+            currentTang = targetTang;
+            updateTangUI();
+          }
+          selectCan(targetMa);
+        });
       });
     });
   }
@@ -1200,12 +1220,12 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
-    canvas.height = 1360;
+    canvas.height = 1380;
     const ctx = canvas.getContext("2d");
 
     // Background
     ctx.fillStyle = "#F8FAFC";
-    ctx.fillRect(0, 0, 1080, 1360);
+    ctx.fillRect(0, 0, 1080, 1380);
 
     // Top Navy Banner
     ctx.fillStyle = "#0F2942";
@@ -1343,22 +1363,26 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
       ty += rh;
     });
 
-    // Framed Agent Footer
-    const fy = 1230;
+    // Framed Agent Footer (3 lines + Hotline/Zalo)
+    const fy = 1222;
     ctx.fillStyle = "#0F2942";
-    ctx.fillRect(44, fy, 992, 92);
+    ctx.fillRect(44, fy, 992, 118);
     ctx.strokeStyle = "#D4AF37";
     ctx.lineWidth = 2.5;
-    ctx.strokeRect(44, fy, 992, 92);
+    ctx.strokeRect(44, fy, 992, 118);
 
     ctx.fillStyle = "#D4AF37";
-    ctx.font = "bold 15px 'Be Vietnam Pro', system-ui, sans-serif";
-    ctx.fillText("CHUYÊN VIÊN TƯ VẤN TRỰC TIẾP", 70, fy + 34);
+    ctx.font = "bold 14px 'Be Vietnam Pro', system-ui, sans-serif";
+    ctx.fillText("CHUYÊN VIÊN TƯ VẤN TRỰC TIẾP", 70, fy + 28);
 
     ctx.fillStyle = "#FFFFFF";
-    ctx.font = "800 24px 'Be Vietnam Pro', system-ui, sans-serif";
-    ctx.fillText(`${agentInfo.name} (${agentInfo.team})`, 70, fy + 68);
-    veQr(ctx, 44 + 992 - 84, fy + 8, 76);
+    ctx.font = "800 23px 'Be Vietnam Pro', system-ui, sans-serif";
+    ctx.fillText(`${agentInfo.name} (${agentInfo.team})`, 70, fy + 62);
+
+    ctx.fillStyle = "#FDE047";
+    ctx.font = "800 22px 'Be Vietnam Pro', system-ui, sans-serif";
+    ctx.fillText(`📞 Hotline / Zalo: ${agentInfo.phone}`, 70, fy + 98);
+    veQr(ctx, 44 + 992 - 98, fy + 15, 88);
 
     return canvas;
   }
@@ -1366,11 +1390,11 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
   function buildCompareCanvas(items) {
     const canvas = document.createElement("canvas");
     canvas.width = 1080;
-    canvas.height = 760;
+    canvas.height = 790;
     const ctx = canvas.getContext("2d");
 
     ctx.fillStyle = "#F8FAFC";
-    ctx.fillRect(0, 0, 1080, 760);
+    ctx.fillRect(0, 0, 1080, 790);
     ctx.fillStyle = "#0F2942";
     ctx.fillRect(0, 0, 1080, 110);
     ctx.fillStyle = "#D4AF37";
@@ -1403,7 +1427,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
       ["Giá gồm VAT 10%", ...calcs.map(r => r ? fmtTy(r.G) : "ĐÃ BÁN")],
       ["Vốn tự có đợt đầu", ...calcs.map(r => r ? fmtTrieu(r.tuCo) : "—")],
       ["Khoản vay NH", ...calcs.map(r => r ? (r.khoanVay > 0 ? fmtTy(r.khoanVay) : "Không vay") : "—")],
-      ["Trả góp/tháng", ...calcs.map(r => r && r.khoanVay > 0 ? `~${fmtTrieu1(r.traGopThang)}/th` : "—")],
+      ["Trả góp/tháng", ...calcs.map(r => r && r.khoanVay > 0 ? `~${fmtTrieu1(r.traGopThang).replace(/-/g, "")}/th` : "—")],
       ["Nhận nhà (+2% BT)", ...calcs.map(r => r ? fmtTrieu(r.handover + r.fee) : "—")],
     ];
 
@@ -1425,17 +1449,20 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
     const fy = 640;
     ctx.fillStyle = "#0F2942";
-    ctx.fillRect(40, fy, 1000, 86);
+    ctx.fillRect(40, fy, 1000, 116);
     ctx.strokeStyle = "#D4AF37";
     ctx.lineWidth = 2.5;
-    ctx.strokeRect(40, fy, 1000, 86);
+    ctx.strokeRect(40, fy, 1000, 116);
     ctx.fillStyle = "#D4AF37";
     ctx.font = "bold 14px 'Be Vietnam Pro', system-ui, sans-serif";
-    ctx.fillText("CHUYÊN VIÊN TƯ VẤN TRỰC TIẾP", 64, fy + 32);
+    ctx.fillText("CHUYÊN VIÊN TƯ VẤN TRỰC TIẾP", 64, fy + 28);
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "800 22px 'Be Vietnam Pro', system-ui, sans-serif";
-    ctx.fillText(`${agentInfo.name} (${agentInfo.team})`, 64, fy + 64);
-    veQr(ctx, 40 + 1000 - 82, fy + 5, 76);
+    ctx.fillText(`${agentInfo.name} (${agentInfo.team})`, 64, fy + 62);
+    ctx.fillStyle = "#FDE047";
+    ctx.font = "800 21px 'Be Vietnam Pro', system-ui, sans-serif";
+    ctx.fillText(`📞 Hotline / Zalo: ${agentInfo.phone}`, 64, fy + 96);
+    veQr(ctx, 40 + 1000 - 96, fy + 15, 86);
 
     return canvas;
   }
@@ -1455,6 +1482,8 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     const modal = document.getElementById("compareModal");
     const body = document.getElementById("compareBody");
     if (!modal || !body) return;
+    document.getElementById("svgTooltip")?.classList.remove("show");
+    document.body.style.overflow = "hidden";
     modal.classList.add("open");
     const items = compareList.map(m => theCan(rawGioHang.can, m, { pttt: currentPttt })).filter(Boolean);
     const plan = PLANS[currentPttt];
@@ -1469,17 +1498,17 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
       <table class="compare-table">
         <thead>
           <tr>
-            <th>Tiêu chí so sánh</th>
+            <th>Tiêu chí</th>
             ${items.map(c => `<th>${c.ma}</th>`).join("")}
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Loại &amp; Diện tích</td>
+            <td>Diện tích</td>
             ${items.map(c => `<td class="${Number(c.dtTimTuong) === maxDt ? 'best-val' : ''}">${c.loai} · ${c.dtTimTuong} m²</td>`).join("")}
           </tr>
           <tr>
-            <td>Hướng ban công</td>
+            <td>Hướng view</td>
             ${items.map(c => `<td>${c.huong || '—'}</td>`).join("")}
           </tr>
           <tr>
@@ -1487,11 +1516,11 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
             ${calcs.map(r => `<td class="${r && r.P === minP ? 'best-val' : ''}">${r ? fmtTy(r.P) : 'ĐÃ BÁN'}</td>`).join("")}
           </tr>
           <tr>
-            <td>Giá gồm VAT 10%</td>
+            <td>Giá có VAT</td>
             ${calcs.map(r => `<td class="${r && r.G === minG ? 'best-val' : ''}">${r ? fmtTy(r.G) : 'ĐÃ BÁN'}</td>`).join("")}
           </tr>
           <tr>
-            <td>Vốn tự có đợt đầu</td>
+            <td>Vốn tự có</td>
             ${calcs.map(r => `<td class="${r && r.tuCo === minOwn ? 'best-val' : ''}">${r ? fmtTrieu(r.tuCo) : '—'}</td>`).join("")}
           </tr>
           <tr>
@@ -1499,8 +1528,8 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
             ${calcs.map(r => `<td>${r ? (r.khoanVay > 0 ? fmtTy(r.khoanVay) : 'Không vay') : '—'}</td>`).join("")}
           </tr>
           <tr>
-            <td>Ước tính trả góp/tháng</td>
-            ${calcs.map(r => `<td>${r && r.khoanVay > 0 ? '~' + fmtTrieu1(r.traGopThang) + '/tháng' : '—'}</td>`).join("")}
+            <td>Trả góp/tháng</td>
+            ${calcs.map(r => `<td>${r && r.khoanVay > 0 ? '~' + fmtTrieu1(r.traGopThang).replace(/-/g, '') + '/th' : '—'}</td>`).join("")}
           </tr>
           <tr>
             <td>Nhận nhà (+2% BT)</td>
@@ -1508,15 +1537,16 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
           </tr>
         </tbody>
       </table>
-      <div style="margin-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-        <button id="btnClearComp" style="background:var(--card);border:1px solid var(--line);color:var(--ink);padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:700;">Xóa danh sách so sánh</button>
-        <button id="btnExportCompareImg" style="background:var(--navy);border:none;color:#fff;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:800;">🖼️ Xuất Ảnh So Sánh Gửi Zalo</button>
+      <div class="compare-actions-grid">
+        <button id="btnClearComp" class="btn-compare-clear">Xóa danh sách</button>
+        <button id="btnExportCompareImg" class="btn-compare-export">🖼️ Xuất Ảnh Zalo</button>
       </div>
     `;
     document.getElementById("btnClearComp")?.addEventListener("click", () => {
       compareList = [];
       btnCompare.textContent = `+ Thêm So Sánh (0)`;
       modal.classList.remove("open");
+      document.body.style.overflow = "";
     });
     document.getElementById("btnExportCompareImg")?.addEventListener("click", () => {
       modal.classList.remove("open");
@@ -1527,6 +1557,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
   document.getElementById("btnCloseCompare")?.addEventListener("click", () => {
     document.getElementById("compareModal")?.classList.remove("open");
+    document.body.style.overflow = "";
   });
 
   document.getElementById("btnExport")?.addEventListener("click", () => {
@@ -1541,6 +1572,9 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
   document.getElementById("btnCloseQuote")?.addEventListener("click", () => {
     document.getElementById("quoteModal")?.classList.remove("open");
+    if (!document.getElementById("rightPane")?.classList.contains("drawer-open")) {
+      document.body.style.overflow = "";
+    }
   });
   document.getElementById("btnCopyQuoteImg")?.addEventListener("click", async () => {
     if (!lastQuoteBlob) return;
@@ -1594,18 +1628,37 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
   // Mobile Bottom Sheet Drawer & Floor Expansion
   function openMobileDrawer() {
+    document.getElementById("svgTooltip")?.classList.remove("show");
     document.getElementById("rightPane")?.classList.add("drawer-open");
     document.getElementById("mobileDrawerBackdrop")?.classList.add("open");
     document.getElementById("mobileBottomBar")?.classList.add("hidden");
+    document.body.style.overflow = "hidden";
   }
   function closeMobileDrawer() {
     document.getElementById("rightPane")?.classList.remove("drawer-open");
     document.getElementById("mobileDrawerBackdrop")?.classList.remove("open");
     document.getElementById("mobileBottomBar")?.classList.remove("hidden");
+    document.body.style.overflow = "";
   }
   document.getElementById("btnOpenMobileDrawer")?.addEventListener("click", openMobileDrawer);
   document.getElementById("btnCloseMobileDrawer")?.addEventListener("click", closeMobileDrawer);
   document.getElementById("mobileDrawerBackdrop")?.addEventListener("click", closeMobileDrawer);
+
+  // Swipe-down gesture on mobile drawer header to close
+  (function initDrawerSwipe() {
+    const header = document.getElementById("mobileDrawerHeader");
+    if (!header) return;
+    let startY = 0;
+    header.addEventListener("touchstart", (e) => {
+      if (e.touches && e.touches.length === 1) startY = e.touches[0].clientY;
+    }, { passive: true });
+    header.addEventListener("touchend", (e) => {
+      if (!startY || !e.changedTouches || !e.changedTouches.length) return;
+      const deltaY = e.changedTouches[0].clientY - startY;
+      startY = 0;
+      if (deltaY > 50) closeMobileDrawer();
+    }, { passive: true });
+  })();
 
   document.getElementById("btnToggleFloors")?.addEventListener("click", (e) => {
     const pills = document.getElementById("tangPills");

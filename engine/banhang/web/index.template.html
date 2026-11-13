@@ -942,6 +942,9 @@
   }
 
   /* Tablet & Mobile Responsive Layout (< 1024px) */
+  @media (max-width: 1023px), (hover: none) {
+    .svg-tooltip { display: none !important; }
+  }
   @media (max-width: 1023px) {
     html, body {
       height: auto;
@@ -975,68 +978,99 @@
       display: block;
     }
     .architectural-board {
-      min-width: 980px;
-      width: 980px;
+      min-width: 1120px;
+      width: 1120px;
     }
     .architectural-board.single-block {
-      min-width: 560px;
-      width: 560px;
+      min-width: 620px;
+      width: 620px;
     }
     .cung-vi-tri-pane {
       max-height: none;
       overflow-y: visible;
     }
 
-    /* Slide-up Bottom Sheet Drawer for Right Pane */
+    /* Full-screen Slide-up Sheet (100dvh) for Right Pane */
     .right-pane {
       position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      max-height: 85vh;
-      z-index: 60;
-      border-radius: 16px 16px 0 0;
+      inset: 0;
+      width: 100%;
+      height: 100dvh;
+      max-height: 100dvh;
+      z-index: 9999;
+      border-radius: 0;
       box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
-      transform: translateY(108%);
+      transform: translateY(105%);
       transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
     }
     .right-pane.drawer-open {
       transform: translateY(0);
     }
     .mobile-drawer-header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px 12px 10px;
       background: var(--navy-deep);
       color: #fff;
       flex-shrink: 0;
+      touch-action: pan-y;
+    }
+    .mobile-drag-handle {
+      width: 40px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.35);
+      margin: 0 auto;
+    }
+    .mobile-drawer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
     }
     .mobile-drawer-header span {
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 800;
       color: var(--gold);
     }
     .btn-close-drawer {
       background: rgba(255, 255, 255, 0.16);
       border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 6px;
       font: 700 11.5px inherit;
       cursor: pointer;
     }
     .right-scroll-area {
       overflow-y: auto;
+      overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
       flex: 1;
-      padding: 10px 12px;
+      min-height: 0;
+      padding: 12px 12px 28px;
     }
     .right-sticky-top {
       position: static;
       margin: 0 0 6px;
       padding: 0 0 8px;
+    }
+    .right-sticky-bottom {
+      flex-shrink: 0;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+    .drawer-cung-vt {
+      display: block !important;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
     }
 
     /* Collapsible Bottom Bar (~72px) */
@@ -1228,6 +1262,73 @@
     .btn-toggle-floors {
       display: block;
     }
+
+    /* 5. OrigPlan Lightbox Header & Stage on Mobile */
+    #origPlanModal .modal-head {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      padding: 10px 12px;
+    }
+    .orig-head-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .lightbox-toolbar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+    .lightbox-btn {
+      white-space: nowrap;
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 11px;
+    }
+    .lightbox-stage {
+      height: 55vh;
+    }
+
+    /* 6. Compare Table & 7. Loan Toggle Bar + Header Pill */
+    .brand .pill {
+      max-width: 56%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .loan-toggle-bar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 5px;
+      padding: 6px 8px;
+    }
+    .loan-pills {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      width: 100%;
+    }
+    .loan-pill {
+      text-align: center;
+      padding: 5px 2px;
+      font-size: 10px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 8px 6px;
+      font-size: 11.5px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .compare-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
   }
 </style>
 </head>
@@ -1356,9 +1457,12 @@
     <!-- Right Pane: Sticky Top (Header + 6 KPIs) + Scrollable Schedule + Sticky Bottom Actions -->
     <div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop"></div>
     <aside class="right-pane" id="rightPane">
-      <div class="mobile-drawer-header">
-        <span>CHI TIẾT CĂN HỘ &amp; BÁO GIÁ</span>
-        <button type="button" class="btn-close-drawer" id="btnCloseMobileDrawer">✕ Đóng / Quay lại sơ đồ</button>
+      <div class="mobile-drawer-header" id="mobileDrawerHeader">
+        <div class="mobile-drag-handle"></div>
+        <div class="mobile-drawer-top">
+          <span>CHI TIẾT CĂN HỘ &amp; BÁO GIÁ</span>
+          <button type="button" class="btn-close-drawer" id="btnCloseMobileDrawer">✕ Đóng / Quay lại sơ đồ</button>
+        </div>
       </div>
       <div class="right-scroll-area">
         <!-- Rank & Sales Pitch Callout -->
@@ -1440,6 +1544,12 @@
             <tbody id="schedBody"></tbody>
           </table>
         </div>
+
+        <!-- Mobile-only mirror of Căn cùng vị trí inside full-screen drawer -->
+        <div class="drawer-cung-vt" id="drawerCungVtWrap" style="display:none;">
+          <div class="pane-title"><span>CĂN CÙNG VỊ TRÍ CẢ BLOCK</span></div>
+          <div class="cung-vt-grid" id="drawerCungVtGrid"></div>
+        </div>
       </div>
 
       <!-- Sticky Bottom Action Row -->
@@ -1484,12 +1594,14 @@
   <div class="modal-overlay" id="origPlanModal">
     <div class="modal-card" style="max-width:1100px;">
       <div class="modal-head">
-        <h3 style="font-size:15px;" id="origPlanTitle">🖼️ MẶT BẰNG GỐC CHỦ ĐẦU TƯ</h3>
+        <div class="orig-head-row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <h3 style="font-size:14.5px;margin:0;" id="origPlanTitle">🖼️ MẶT BẰNG GỐC CHỦ ĐẦU TƯ</h3>
+          <button type="button" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;line-height:1;" id="btnCloseOrigPlan">✕</button>
+        </div>
         <div class="lightbox-toolbar">
-          <button type="button" class="lightbox-btn" id="btnZoomIn">＋ Phóng to</button>
-          <button type="button" class="lightbox-btn" id="btnZoomOut">－ Thu nhỏ</button>
+          <button type="button" class="lightbox-btn" id="btnZoomIn">🔍+ Phóng to</button>
+          <button type="button" class="lightbox-btn" id="btnZoomOut">🔍- Thu nhỏ</button>
           <button type="button" class="lightbox-btn" id="btnZoomReset">↺ 100%</button>
-          <button type="button" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;margin-left:6px;" id="btnCloseOrigPlan">✕</button>
         </div>
       </div>
       <div class="lightbox-stage" id="lightboxStage">
