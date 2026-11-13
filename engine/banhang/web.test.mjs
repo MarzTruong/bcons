@@ -81,6 +81,7 @@ test("quy tắc cứng trong chữ của giao diện: không 'sắp hết', khô
     assert.ok(!re.test(txt), `còn câu cấm: ${re}`);
   }
   assert.ok(!/LS trần 6,9%/.test(txt), "trần 6,9% không được ghi cứng cho mọi PTTT");
+  assert.ok(!/buildEffectiveSchedule|class="loan-pill|id="loanPills"|data-loan=/.test(txt), "không vay tùy chọn, giao diện không tự chia lại đợt");
   assert.ok(!/1PN\+/.test(txt), "không có nhóm '1PN+': CĐT ghi căn 47 m² là 2PN-1WC (anh chốt bỏ 13/11/2026)");
   assert.ok(!/(?<![\d.])0\d{9}(?!\d)|0\d{3}[.\s]\d{2,3}[.\s]\d{2,3}[.\s]?\d{0,3}/.test(doc("app.js").replace(/0938\.32\.31\.39/g, "")), "app.js không viết cứng số điện thoại nào khác số trong lienHe");
   assert.ok(!/Đã trừ CK PTTT/.test(txt), "chiết khấu chỉ hiện khi PTTT có chiết khấu");
@@ -231,18 +232,28 @@ test("E2E: mở bằng liên kết cài đặt, khóa bị xóa khỏi thanh đ�
   await ctx.close();
 });
 
-test("E2E: vay tùy chọn 70%/50%/Không vay dùng lõi (tự có không lọt đợt sổ hồng); trả góp lãi 9,5%/20 năm", { skip: !coTrinhDuyet && "không có Chromium" }, async () => {
+test("E2E: không có vay tùy chọn; bảng đợt = lịch CĐT qua lõi từng đồng, tổng khoản vay trong bảng = ô tóm tắt (PTTT 09, 10, 08)", { skip: !coTrinhDuyet && "không có Chromium" }, async () => {
   const gh = giohang();
   const { ctx, pg } = await mo(gh);
+  assert.equal(await pg.$$eval(".loan-pill, #loanPills, .loan-toggle-bar", (e) => e.length), 0, "anh chốt 13/11/2026: bỏ nút Vay 70%/50%/Không vay");
   const c = gh.can.find((x) => x.ma === "B1.7-04");
   await chonCan(pg, c.ma);
-  await pg.click('.pttt-btn[data-pttt="09"]');
-  for (const t of [0.7, 0.5, 0]) {
-    await pg.click(`.loan-pill[data-loan="${t}"]`);
-    const pa = phuongAn(plans["09"], c.giaChuaVat["09"], { vay: t });
-    assert.equal(await doc1(pg, "tuCo"), fmtTrieu(pa.tuCo), `vay ${t}`);
+  const dong = (v) => new Intl.NumberFormat("vi-VN").format(Math.round(v)) + " đ";
+  for (const k of ["09", "10", "08"]) {
+    await pg.click(`.pttt-btn[data-pttt="${k}"]`);
+    const pa = phuongAn(plans[k], c.giaChuaVat[k]);
+    const bang = await pg.$$eval("#schedBody tr", (trs) => trs.map((tr) => ({ bank: tr.classList.contains("bank"), o: [...tr.children].map((td) => td.textContent.replace(/\s+/g, " ").trim()) })));
+    assert.equal(bang.length, pa.rows.length + 1);
+    pa.rows.forEach((r, i) => {
+      assert.equal(bang[i].o[3].replace(/\u00a0/g, " "), dong(r.amt), `PTTT ${k} đợt ${i + 1} số tiền`);
+      assert.equal(bang[i].o[2], `${r.p}%`, `PTTT ${k} đợt ${i + 1} tỷ lệ`);
+      assert.ok(bang[i].o[1].startsWith(r.l), `PTTT ${k} đợt ${i + 1} nhãn theo CĐT`);
+      assert.equal(bang[i].bank, r.bank);
+    });
+    assert.ok(pa.rows.every((r) => r.amt > 0), "không đợt nào 0 đồng");
+    assert.equal(pa.rows.filter((r) => r.bank).reduce((t, r) => t + r.amt, 0), pa.khoanVay);
     assert.equal(await doc1(pg, "khoanVay"), pa.khoanVay > 0 ? fmtTy(pa.khoanVay) : "Không vay");
-    assert.ok(pa.tuCo + pa.khoanVay + pa.handover + pa.so - pa.G <= 2);
+    assert.equal(bang.at(-1).o[3].replace(/\u00a0/g, " "), dong(pa.fee));
   }
   await ctx.close();
 });
@@ -292,7 +303,6 @@ test("E2E: Zalo + ảnh xuất cho khách: trần 6,9% chỉ PTTT 09 theo lịch
   const ket = {};
   for (const k of ["09", "10", "08"]) {
     await pg.click(`.pttt-btn[data-pttt="${k}"]`);
-    await pg.click('.loan-pill[data-loan="auto"]');
     await pg.evaluate(() => { window.__clip.length = 0; window.__chu.length = 0; window.__anh = 0; });
     await pg.click("#btnCopyPitch");
     ket[k] = { pitch: await pg.evaluate(() => window.__clip.join("\n")) };

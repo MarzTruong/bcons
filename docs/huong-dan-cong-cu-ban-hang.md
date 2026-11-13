@@ -25,7 +25,11 @@ Xem thử không cần khóa: mở `<trang>/#demo` (giỏ hàng mẫu mô phỏn
 - Mã, loại căn, diện tích của 24 vị trí B1/B2 khớp mặt bằng CĐT (test `web.test.mjs`).
 - **Đã sửa:** (1) "Vay 70%/50%/Không vay" cộng nhầm đợt sổ hồng vào vốn tự có (lệch 128 đến 236 triệu mỗi căn PTTT 09); (2) "LS trần 6,9%" hiện cho cả PTTT 08/10 và vay tùy chọn; (3) "Đã trừ CK PTTT" hiện cho cả PTTT 09 (không có chiết khấu); (4) ảnh xuất cho khách: thêm mã QR cạnh tên; SĐT của anh (số trong `lienHe`) được giữ trên ảnh theo anh chốt 13/11/2026; (5) hướng view mất giữa chừng nên thẻ căn luôn hiện "Đang cập nhật"; (6) sửa tên/SĐT chuyên viên không lưu được (đọc và ghi khác khóa); (7) nút "Làm mới" chỉ đổi giờ, không tải gì; (8) giá căn đã cọc còn nằm trong dữ liệu ô; (9) bỏ hai câu không có trong tài liệu CĐT ("hướng đón gió", "phù hợp tầng trung view thoáng").
 
+## Khoản vay luôn theo PTTT (anh chốt 13/11/2026)
+Bỏ ba nút "Vay 70% / Vay 50% / Không vay". PTTT 09 và 10 tính khoản vay đúng theo các đợt "Ngân hàng giải ngân" của CĐT, PTTT 08 là không vay. Bảng đợt, ô tóm tắt và ảnh phiếu đều lấy từ lõi theo `pttt-cdt.json`; giao diện không tự chia lại đợt (test chặn).
+
 ## Việc gửi lại AGY (lỗi hiển thị/chữ, em không tự chỉnh)
+- CSS `.loan-toggle-bar`, `.loan-pills`, `.loan-pill` trong `index.template.html` còn thừa sau khi bỏ nút vay tùy chọn; AGY dọn khi sửa lần tới.
 - Ô căn không có trong giỏ hàng (CĐT LOCK hoặc chưa mở) đang ghi "ĐÃ BÁN / KHÓA": nên đổi chữ trung tính, vì căn LOCK không phải căn đã bán.
 - Form nhập link + khóa (`main.js`, id `formCaiDat`) mới làm tối giản, cần AGY thiết kế lại; icon `du-an/bcons-newsky/ban-hang/icon-192.png`/`icon-512.png` đang là logo thu nhỏ tạm.
 - Phông Be Vietnam Pro đang tải từ Google Fonts; mất mạng lần đầu thì dùng phông hệ thống. Nên nhúng phông vào trang.

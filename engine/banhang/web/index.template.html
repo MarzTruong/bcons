@@ -559,6 +559,12 @@
   .vt-badge { font-size: 9.5px; font-weight: 800; padding: 1px 4px; border-radius: 3px; align-self: flex-start; }
   .badge-re-block { background: var(--gold); color: #0C2340; }
   .badge-re-tang { background: var(--green-bg); color: var(--green); }
+  .vt-diff { font-size: 10.5px; font-weight: 700; color: #D97706; }
+  body.dark .vt-diff { color: #FBBF24; }
+  .vt-diff.cheaper { color: #059669; }
+  body.dark .vt-diff.cheaper { color: #34D399; }
+  .vt-diff.same { color: var(--mute); font-weight: 600; }
+  .vt-card.active .vt-diff { color: #FDE68A; }
 
   /* Right: Detail Card + Payment Schedule + Copy Pitch (Sticky Top & Sticky Bottom) */
   .right-pane {
@@ -597,25 +603,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
-    margin-bottom: 6px;
+    gap: 5px;
+    margin-bottom: 5px;
     background: var(--card);
     border: 1px solid var(--line);
-    padding: 4px 5px;
+    padding: 4px 6px;
     border-radius: 7px;
   }
-  .loan-toggle-bar span { font-size: 10px; font-weight: 700; color: var(--mute); white-space: nowrap; }
-  .loan-pills { display: flex; gap: 2px; flex-wrap: wrap; justify-content: flex-end; }
+  .loan-toggle-bar span { font-size: 10.5px; font-weight: 700; color: var(--mute); white-space: nowrap; flex-shrink: 0; }
+  .loan-pills { display: grid; grid-template-columns: 1.25fr 0.9fr 0.9fr 1.15fr; gap: 3px; flex: 1; min-width: 0; }
   .loan-pill {
     border: 1px solid var(--line);
     background: var(--card-sub);
     color: var(--ink);
-    padding: 3px 5.5px;
+    padding: 3.5px 2px;
     border-radius: 4px;
-    font: 700 10px inherit;
+    font: 700 9.5px inherit;
     cursor: pointer;
     transition: all .12s;
     white-space: nowrap;
+    text-align: center;
   }
   .loan-pill.active {
     background: var(--navy);
@@ -803,9 +810,20 @@
     font-size: 11px;
   }
   .sched-tbl th, .sched-tbl td {
-    padding: 5px 6px;
+    padding: 4px 5px;
     border-bottom: 1px solid var(--line);
     text-align: left;
+    vertical-align: middle;
+  }
+  .sched-tbl th:first-child, .sched-tbl td:first-child {
+    white-space: nowrap;
+    min-width: 48px;
+    width: 48px;
+    font-weight: 700;
+  }
+  .sched-tbl th:nth-child(3), .sched-tbl td:nth-child(3) {
+    white-space: nowrap;
+    min-width: 36px;
   }
   .sched-tbl th { background: var(--card-sub); color: var(--navy); font-weight: 700; font-size: 10.5px; }
   .sched-tbl td.r { text-align: right; font-weight: 700; white-space: nowrap; }
@@ -877,6 +895,58 @@
     align-items: center;
   }
   .modal-body { padding: 14px; overflow-y: auto; flex: 1; }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .compare-table th, .compare-table td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .compare-table th:first-child, .compare-table td:first-child {
+    font-weight: 700;
+    color: var(--mute);
+    white-space: nowrap;
+    padding-right: 18px;
+  }
+  .compare-table thead th {
+    background: var(--card-sub);
+    color: var(--navy);
+    font-weight: 800;
+    border-bottom: 2px solid var(--line);
+  }
+  .compare-table td.best-val {
+    color: var(--green);
+    font-weight: 800;
+  }
+  .compare-actions-grid {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn-compare-clear {
+    background: var(--card-sub);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 9px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .btn-compare-export {
+    background: var(--navy);
+    border: none;
+    color: #fff;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 800;
+  }
 
   /* Toast Notification */
   .toast {
@@ -1486,17 +1556,6 @@
               <div class="detail-loai" id="canLoai">2PN-1WC · 47,25 m² tim tường (42,05 m² thông thủy)</div>
             </div>
             <span class="status-tag trong" id="canStatus">CÒN TRỐNG</span>
-          </div>
-
-          <!-- Quick Loan Ratio Toggle -->
-          <div class="loan-toggle-bar">
-            <span>Tỷ lệ vay NH:</span>
-            <div class="loan-pills" id="loanPills">
-              <button type="button" class="loan-pill active" data-loan="auto">Theo PTTT</button>
-              <button type="button" class="loan-pill" data-loan="0.7">Vay 70%</button>
-              <button type="button" class="loan-pill" data-loan="0.5">Vay 50%</button>
-              <button type="button" class="loan-pill" data-loan="0">Không vay</button>
-            </div>
           </div>
 
           <div class="price-banner">

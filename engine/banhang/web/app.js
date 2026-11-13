@@ -13,7 +13,8 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
   let currentPttt = "09";
   let selectedMa = "B2.4-12";
   let compareList = [];
-  let loanOverride = "auto"; // "auto" | "0.7" | "0.5" | "0"
+  // Khoản vay luôn theo lịch "Ngân hàng giải ngân" của PTTT (anh chốt 13/11/2026: bỏ vay tùy chọn 70%/50%/không vay).
+  const loanOverride = "auto";
 
   const DEFAULT_AGENT = { name: lienHe.ten || "Tuấn Trương", phone: lienHe.sdtHienThi || "0938.32.31.39", team: "Bcons PS Land" };
   let agentInfo = (() => {
@@ -359,6 +360,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
         ? `TT ${rawDt.toFixed(1)}m²`
         : `${rawDt.toFixed(1)}m²`;
       const compactLoai = loai.replace("-1WC", "").replace("-2WC", "").replace("-3WC", "");
+      const shortAreaText = geom.w < 105 ? `${Math.round(rawDt)}m²` : areaText;
 
       // Căn đã cọc không mang giá trong dữ liệu của ô (không để lộ giá căn đã bán)
       const giaChuaVatNum = isAvailable ? (unit?.giaChuaVat?.[currentPttt] || 0) : 0;
@@ -401,7 +403,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
           ` : ''))}
 
           <!-- Line 2: Type & Area (compact, never overflows) -->
-          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="${geom.w < 105 ? '10' : '11'}" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${compactLoai} • ${areaText}</text>
+          <text x="${midX}" y="${geom.y + 49}" font-family="'Be Vietnam Pro', system-ui" font-size="${geom.w < 105 ? '9.5' : '10.5'}" font-weight="700" fill="var(--svg-unit-text)" text-anchor="middle">${compactLoai}•${shortAreaText}</text>
 
           <!-- Line 3: Prominent Price Pill -->
           <g transform="translate(${geom.x + 5}, ${geom.y + 60})">
@@ -788,7 +790,9 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
       let diffHtml = "";
       if (!isSel && !isDaBan && unitPrice > 0 && curPrice > 0) {
         const diffTr = Math.round((unitPrice - curPrice) / 1e6);
-        if (diffTr !== 0) {
+        if (diffTr === 0) {
+          diffHtml = `<div class="vt-diff same">(Bằng giá)</div>`;
+        } else {
           const sign = diffTr > 0 ? "+" : "";
           const cls = diffTr < 0 ? "cheaper" : "";
           diffHtml = `<div class="vt-diff ${cls}">(${sign}${diffTr}tr)</div>`;
@@ -882,12 +886,13 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     setTxt("tuCo", fmtTrieu(effectiveOwn));
     setTxt("khoanVay", effectiveLoan > 0 ? fmtTy(effectiveLoan) : "Không vay");
     setTxt("banGiao", fmtTrieu(calcRes.handover + calcRes.fee));
-    setTxt("traGop", effectiveLoan > 0 ? `~${fmtTrieu1(monthly)}/tháng` : "Không vay");
+    setTxt("traGop", effectiveLoan > 0 ? `~${fmtTrieu1(monthly).replace(/-/g, "")}/tháng` : "Không vay");
 
-    // Schedule
+    // Bảng đợt: đúng lịch CĐT từ lõi
+    const effRows = calcRes.rows;
     const schedBody = document.getElementById("schedBody");
     if (schedBody) {
-      schedBody.innerHTML = calcRes.rows.map((r, i) => `
+      schedBody.innerHTML = effRows.map((r, i) => `
         <tr class="${r.bank ? 'bank' : ''}">
           <td>Đợt ${i + 1}</td>
           <td>${r.l}<br><small style="color:var(--mute)">${r.w}</small></td>
@@ -979,15 +984,6 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
   });
 
   // Quick Loan Ratio Toggle
-  document.querySelectorAll("#loanPills .loan-pill").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("#loanPills .loan-pill").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      loanOverride = btn.dataset.loan || "auto";
-      renderDetailCard(selectedMa);
-    });
-  });
-
   // Sales Agent Branding Badge & Modal
   function syncAgentHeader() {
     const nEl = document.getElementById("agentNameHdr");
