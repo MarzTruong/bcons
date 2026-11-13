@@ -799,7 +799,7 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
     const stEl = document.getElementById("canStatus");
     if (stEl) {
-      stEl.textContent = c.trangThai === "trong" ? "CÒN TRỐNG" : "ĐÃ BÁN";
+      stEl.textContent = c.trangThai === "trong" ? "CÒN TRỐNG" : (c.trangThai === "daBan" ? "ĐÃ BÁN" : "CHƯA RÕ TÌNH TRẠNG");
       stEl.className = "status-tag " + c.trangThai;
     }
 
@@ -822,14 +822,14 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     }
 
     if (c.trangThai !== "trong" || !c.gia) {
-      setTxt("giaChuaVat", "ĐÃ BÁN");
+      setTxt("giaChuaVat", c.trangThai === "daBan" ? "ĐÃ BÁN" : "CHƯA RÕ");
       setTxt("giaCoVat", "—");
       setTxt("tuCo", "—");
       setTxt("khoanVay", "—");
       setTxt("banGiao", "—");
       setTxt("traGop", "—");
       const sb = document.getElementById("schedBody") || document.getElementById("schedList");
-      if (sb) sb.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:18px;color:#999;">Căn đã cọc / đã bán. Không lập phiếu tính.</td></tr>`;
+      if (sb) sb.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:18px;color:#999;">${c.trangThai === 'daBan' ? 'Căn đã cọc / đã bán.' : 'Chưa rõ tình trạng trong giỏ hàng (kiểm cột tình trạng trong Sheet).'} Không lập phiếu tính.</td></tr>`;
       return;
     }
 

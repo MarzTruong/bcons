@@ -26,7 +26,7 @@ const LOAI = {
   B1: { 1: ["3PN-2WC", 77.81, "TN - ĐN"], 2: ["2PN-2WC", 55.15, "Tây Nam"], 3: ["2PN-2WC", 55.15, "Tây Nam"], 4: ["3PN-2WC", 74.82, "TN - TB"], 5: ["3PN-2WC", 74.68, "TB - ĐB"], 6: ["2PN-2WC", 55.13, "Đông Bắc"], 7: ["3PN-2WC", 77.83, "TB - ĐB"], 8: ["2PN-2WC", 55.17, "Đông Bắc"], 9: ["2PN-2WC", 54.76, "Đông Bắc"], 10: ["3PN-2WC", 74.86, "Đông Bắc"], 11: ["3PN-2WC", 74.86, "Tây Nam"], 12: ["2PN-2WC", 55.05, "Tây Nam"] },
   B2: { 1: ["2PN-2WC", 55.05, "Tây Nam"], 3: ["3PN-2WC", 74.86, "Đông Bắc"], 5: ["2PN-2WC", 55.17, "Đông Bắc"], 6: ["3PN-2WC", 77.83, "ĐB - ĐN"], 7: ["2PN-2WC", 55.13, "Đông Bắc"], 9: ["3PN-3WC", 94.7, "ĐB - ĐN"], 10: ["3PN-2WC", 80.47, "TN - ĐN"], 11: ["2PN-1WC", 47.37, "Tây Nam"], 12: ["2PN-1WC", 47.25, "Tây Nam"], 13: ["2PN-2WC", 65.54, "Tây Nam"], 14: ["2PN-2WC", 65.69, "Tây Nam"], 15: ["3PN-2WC", 77.83, "TN - TB"] },
 };
-const TINH_TRANG = { "B1.5-03": "ĐÃ CỌC", "B1.8-01": "ĐÃ CỌC", "B1.6-01": "CĐT LOCK", "B2.5-05": "ĐÃ CỌC" };
+const TINH_TRANG = { "B1.9-01": "Không có trong GHC", "B1.5-03": "ĐÃ CỌC", "B1.8-01": "ĐÃ CỌC", "B1.6-01": "CĐT LOCK", "B2.5-05": "ĐÃ CỌC" };
 function giohang(doi = {}) {
   const can = [];
   for (const [block, vts] of Object.entries(LOAI)) {
@@ -268,6 +268,19 @@ test("E2E: căn đã cọc hiện 'ĐÃ BÁN', không giá, không tư vấn; c�
   const lockTrongSvg = await pg.$$eval('.unit-vector[data-ma="B1.6-01"]', (els) => els.map((e) => ({ avail: e.dataset.avail, gia: e.dataset.giacv })));
   for (const e of lockTrongSvg) assert.ok(e.avail === "0" && (!e.gia || e.gia === "0"), "nếu có ô thì không có giá và không chọn được");
   assert.ok(!(await pg.content()).includes("CĐT LOCK"));
+  await ctx.close();
+});
+
+test("E2E: căn có tình trạng lạ (Sheet mất cột giỏ hàng chung: 'Không có trong GHC') ghi rõ 'CHƯA RÕ TÌNH TRẠNG', không ghi 'ĐÃ BÁN', không giá, không lập phiếu", { skip: !coTrinhDuyet && "không có Chromium" }, async () => {
+  const gh = giohang();
+  const { ctx, pg } = await mo(gh);
+  await chonCan(pg, "B1.5-01");
+  await pg.click('#cungVtGrid .vt-card[data-ma="B1.9-01"]').catch(() => {});
+  await pg.evaluate(() => document.querySelector('#cungVtGrid [data-ma="B1.9-01"]')?.click());
+  assert.equal(await doc1(pg, "canMa"), "B1.9-01");
+  assert.equal(await doc1(pg, "canStatus"), "CHƯA RÕ TÌNH TRẠNG");
+  assert.equal(await doc1(pg, "giaChuaVat"), "CHƯA RÕ");
+  assert.match(await pg.textContent("#schedBody"), /Chưa rõ tình trạng/);
   await ctx.close();
 });
 

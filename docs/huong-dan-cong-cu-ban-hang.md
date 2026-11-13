@@ -9,7 +9,7 @@ Trang web chạy trên iPad/điện thoại của anh: chọn tầng, bấm căn
 - **Offline:** mở được khi mất mạng bằng bản giỏ hàng lưu lần cập nhật gần nhất; góc trên ghi "Dữ liệu cập nhật lúc ... · đang offline". Đổi khóa thì máy cũ **không** dùng dữ liệu cũ nữa (tránh bán theo giá cũ).
 
 ## Việc anh làm một lần (em chưa làm được vì cần tài khoản của anh)
-1. **Tạo Sheet giỏ hàng riêng**: từ Master File Newsky tạo một Google Sheet mới chỉ giữ tab `GiaTongHop` (dán giá trị), **không** để tab KhachHang/HoaHong trong file này.
+1. **Tạo Sheet giỏ hàng riêng** từ Master File Newsky, giữ hai tab `GiaTongHop` và `GHC` (giỏ hàng chung của CĐT) cùng `ThamSo`, **không** để tab KhachHang/HoaHong. Cột "Tình trạng trên GIỎ HÀNG CHUNG" là công thức đọc tab `GHC`: thiếu `GHC` thì mọi căn ghi "Không có trong GHC" và công cụ coi là chưa rõ tình trạng (không chọn được).
 2. Trong Sheet: Tiện ích mở rộng > Apps Script, dán nội dung `Code.gs`. Cài đặt dự án > Thuộc tính tập lệnh: thêm `KHOA` = một chuỗi dài ngẫu nhiên (không gửi cho em, không dán vào chat).
 3. Triển khai > Ứng dụng web: chạy bằng "Tôi", truy cập "Bất kỳ ai". Chép link `/exec`.
 4. Tạo project Cloudflare Pages `bcons-ban-hang` nối repo `MarzTruong/bcons`: build command `node engine/banhang/build.mjs`, output `engine/banhang/dist/bcons-newsky`.
