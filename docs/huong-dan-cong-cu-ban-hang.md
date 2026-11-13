@@ -5,7 +5,7 @@ Trang web chạy trên iPad/điện thoại của anh: chọn tầng, bấm căn
 ## Cách chạy
 - **Trang (code):** `engine/banhang/web/` (giao diện AGY + phần nối của em). Dựng bằng `node engine/banhang/build.mjs` ra `engine/banhang/dist/bcons-newsky/` (không lên git, Cloudflare tự dựng).
 - **Số tiền:** mọi số đi qua `engine/banhang/tai-chinh.mjs` (dùng `calc.mjs` + `pttt-cdt.json`). Giao diện không có công thức riêng; test chặn.
-- **Giỏ hàng:** Apps Script `engine/banhang/apps-script/Code.gs` đọc sheet `GiaTongHop`, chỉ trả mã, loại, tầng, hướng, diện tích, giá 3 PTTT, tình trạng. Không trả cột khách hay hoa hồng (test chặn).
+- **Giỏ hàng:** Apps Script `engine/banhang/apps-script/Code.gs` đọc sheet `GiaTongHop`, chỉ trả căn hộ **tháp B** (bỏ tháp A và shophouse dù Sheet có), chỉ trả mã, loại, tầng, hướng, diện tích, giá 3 PTTT, tình trạng. Không trả cột khách hay hoa hồng (test chặn).
 - **Offline:** mở được khi mất mạng bằng bản giỏ hàng lưu lần cập nhật gần nhất; góc trên ghi "Dữ liệu cập nhật lúc ... · đang offline". Đổi khóa thì máy cũ **không** dùng dữ liệu cũ nữa (tránh bán theo giá cũ).
 
 ## Việc anh làm một lần (em chưa làm được vì cần tài khoản của anh)

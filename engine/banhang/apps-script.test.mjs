@@ -16,11 +16,11 @@ Object.assign(HEADER, {
 });
 const hang = (ma, over = {}) => {
   const r = Array(36).fill("");
-  const m = /^B(\d)\.(\d+)-(\d+)$/i.exec(ma);
-  Object.assign(r, { 0: ma, 1: `B${m[1]}`, 2: Number(m[2]), 3: "KHÔNG DÙNG", 4: "2PN-2WC", 7: 55.15, 8: 49.8, 9: 2_800_000_000, 12: 2_968_000_000, 21: 2_904_000_000, 25: "Trống", 34: "Tây Nam", 30: "HOA HỒNG NỘI BỘ 123", 31: "Nguyễn Văn Khách 0909 000 000" }, over);
+  const m = /^[AB](\d)\.(\d+)-(\d+)$/i.exec(ma);
+  Object.assign(r, { 0: ma, 1: `${ma[0].toUpperCase()}${m[1]}`, 2: Number(m[2]), 3: "KHÔNG DÙNG", 4: "2PN-2WC", 7: 55.15, 8: 49.8, 9: 2_800_000_000, 12: 2_968_000_000, 21: 2_904_000_000, 25: "Trống", 34: "Tây Nam", 30: "HOA HỒNG NỘI BỘ 123", 31: "Nguyễn Văn Khách 0909 000 000" }, over);
   return r;
 };
-const SHEET = [["Bảng giá tổng hợp"], [], [], HEADER, hang("B1.3-02"), hang("b2.10-3", { 25: "ĐÃ CỌC" }), hang("B2.4-01", { 25: "CĐT LOCK" }), ["", "", "tổng"], hang("B1.29-12", { 9: "", 34: "" })];
+const SHEET = [["Bảng giá tổng hợp"], [], [], HEADER, hang("B1.3-02"), hang("b2.10-3", { 25: "ĐÃ CỌC" }), hang("B2.4-01", { 25: "CĐT LOCK" }), ["", "", "tổng"], hang("B1.29-12", { 9: "", 34: "" }), hang("A1.12-06"), hang("A2.1-05", { 4: "Shophouse" }), hang("B1.1-01", { 4: "Shophouse" })];
 
 function chay({ khoa = "BI-MAT", dua = "BI-MAT", values = SHEET } = {}) {
   const ctx = {
@@ -46,6 +46,13 @@ test("đúng khóa: trả giỏ hàng đúng hợp đồng, bỏ dòng tổng, c
   assert.equal(d.can[3].huong, null);
   assert.ok(!("08" in d.can[3].giaChuaVat));
   assert.ok(Date.parse(d.capNhat) > 0);
+});
+
+test("Sheet có tháp A và shophouse: chỉ trả căn hộ tháp B (công cụ bán hàng chỉ dùng tháp B)", () => {
+  const d = chay();
+  assert.ok(!d.can.some((c) => c.ma.startsWith("A")), "không trả tháp A");
+  assert.ok(!d.can.some((c) => c.loai === "Shophouse" || c.ma === "B1.1-01"), "không trả shophouse");
+  assert.equal(d.can.length, 4);
 });
 
 test("không rò cột nội bộ: không có hoa hồng, tên/SĐT khách trong kết quả", () => {

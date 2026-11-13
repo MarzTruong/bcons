@@ -8,6 +8,7 @@
  * Logic dò cột giống engine/landing/phieu/can.mjs (timCotMaster); test: engine/banhang/apps-script.test.mjs.
  */
 var SHEET_GIA = "GiaTongHop";
+var THAP = "B"; // công cụ này chỉ dùng tháp B; Sheet có thể chứa thêm tháp A và shophouse (không trả ra)
 
 function doGet(e) {
   var khoa = PropertiesService.getScriptProperties().getProperty("KHOA");
@@ -68,7 +69,8 @@ function docGioHang_(values) {
     var v = values[i];
     var ma = String(v[cot.ma] == null ? "" : v[cot.ma]).trim().toUpperCase();
     var m = /^([A-Z])(\d+)\.(\d+)-(\d+)$/.exec(ma);
-    if (!m) continue;
+    if (!m || m[1] !== THAP) continue;
+    if (cot.loai !== undefined && /^shophouse$/i.test(String(v[cot.loai] || "").trim())) continue;
     var gia = {};
     for (var k in cot.gia) if (Number(v[cot.gia[k]]) > 0) gia[k] = Number(v[cot.gia[k]]);
     can.push({
