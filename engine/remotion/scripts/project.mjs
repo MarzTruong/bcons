@@ -43,6 +43,15 @@ export function sharedDir(rel, opts = {}) {
   return root ? path.join(root, ...parts) : path.join(REPO_ROOT, ...parts);
 }
 
+/** Thư mục Drive nhận video render của một dự án: "<Drive>/video/<mã>" (tách theo dự án từ 13/11/2026). Không có Drive thì null. */
+export function driveVideoDir(ma, opts = {}) {
+  assertName(ma, "Mã dự án");
+  const env = opts.env ?? process.env;
+  if (env.DRIVE_VIDEO_DIR) return path.join(env.DRIVE_VIDEO_DIR, ma);
+  const root = findDriveRoot(opts);
+  return root ? path.join(root, "video", ma) : null;
+}
+
 /** Kiểm tên video/mã dự án: chỉ a-z, 0-9, gạch ngang. */
 export function assertName(value, what = "Tên video") {
   if (!NAME_RE.test(value ?? "")) {

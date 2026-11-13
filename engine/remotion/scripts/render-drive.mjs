@@ -8,7 +8,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { applyWatermark, checkTimestamps, prepareRun } from "./spec-tools.mjs";
 import { loadMapboxEnv } from "./env.mjs";
-import { findDriveRoot, readProjectConfig, takeProjectFlag } from "./project.mjs";
+import { driveVideoDir, readProjectConfig, takeProjectFlag } from "./project.mjs";
 import { prepareAudio } from "./am-thanh.mjs";
 
 try {
@@ -57,13 +57,8 @@ fs.writeFileSync(
   JSON.stringify({ spec: applyWatermark(spec, readProjectConfig(projDir)), timestamps, amThanh }),
 );
 
-function findDriveDir() {
-  if (process.env.DRIVE_VIDEO_DIR) return process.env.DRIVE_VIDEO_DIR;
-  const root = findDriveRoot();
-  return root ? path.join(root, "video") : null;
-}
-
-const target = findDriveDir();
+const target = driveVideoDir(path.basename(projDir));
+if (target && fs.existsSync(path.dirname(target))) fs.mkdirSync(target, { recursive: true });
 if (!target || !fs.existsSync(target)) {
   console.error(
     "Không thấy thư mục Drive. Cài Google Drive for desktop hoặc đặt DRIVE_VIDEO_DIR trong .env.",
