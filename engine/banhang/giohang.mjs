@@ -81,7 +81,7 @@ export function theCan(ds, ma, opt = {}) {
     g = {};
     for (const [k, v] of Object.entries(x.giaChuaVat || {})) g[k] = { chuaVat: v, coVat: Math.round(v * (1 + VAT)) };
   }
-  return { ma: t.ma, block: t.block, tang: t.tang, viTri: t.viTri, loai: x.loai, dtTimTuong: x.dtTimTuong, dtThongThuy: x.dtThongThuy,
+  return { ma: t.ma, block: t.block, tang: t.tang, viTri: t.viTri, loai: x.loai, huong: x.huong ?? null, dtTimTuong: x.dtTimTuong, dtThongThuy: x.dtThongThuy,
     trangThai: t.trangThai, gia: g, reNhatBlock: !!re.reNhatBlock, reNhatTang: !!re.reNhatTang, hangBlock: re.hangBlock ?? null, hangTang: re.hangTang ?? null,
     cungViTri: cungViTri(ds, ma) };
 }

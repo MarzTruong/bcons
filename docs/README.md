@@ -5,6 +5,7 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 ## Hướng dẫn đang dùng
 | File | Nội dung |
 |---|---|
+| `huong-dan-cong-cu-ban-hang.md` | Công cụ bán hàng (iPad/điện thoại): cài một lần, dùng hằng ngày, dán giỏ hàng mới, đổi khóa, việc gửi lại AGY |
 | `huong-dan-bot-telegram.md` | Bot Telegram: lệnh, cài, chạy trên PC/laptop |
 | `huong-dan-dang-bai.md` | Duyệt caption/video, hẹn giờ Metricool |
 | `huong-dan-landing.md` | Landing, Apps Script, Cloudflare Pages, gắn link |
@@ -21,7 +22,7 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | File | Trạng thái |
 |---|---|
 | `superpowers/specs/2026-11-05-bcons-automation-pipeline-design.md` | Thiết kế tổng. Còn: kế hoạch 04, giai đoạn 2–3 |
-| `superpowers/specs/2026-11-12-cong-cu-ban-hang-design.md` | Công cụ bán hàng khi gặp khách (web app, Newsky trước): thiết kế nháp chờ anh duyệt; giao diện giao AGY |
+| `superpowers/specs/2026-11-12-cong-cu-ban-hang-design.md` | Công cụ bán hàng khi gặp khách (web app, Newsky trước): giao diện pa1 của AGY đã tích hợp và test (13/11/2026); còn anh tạo Sheet + Apps Script + Cloudflare Pages và thử iPad |
 | `superpowers/specs/2026-11-11-phieu-tinh-design.md` | Phiếu tính gửi khách (PNG + PDF): thiết kế đã duyệt 11/11/2026; UI/UX giao AGY |
 | `superpowers/plans/2026-11-11-phieu-tinh.md` | Kế hoạch thực hiện phiếu tính (8 task), Task 1–7 xong, Task 8 chờ template AGY |
 | `superpowers/specs/2026-11-11-master-data-khach-hang-design.md` | Thiết kế kho khách tập trung Master_Data. Đã duyệt 11/11/2026. Code đã dựng và test trên máy, gồm đồng ý theo dự án và rút lại giữ hồ sơ (mục 16; chưa cài lên Sheet thật, chờ cổng G1–G6) |

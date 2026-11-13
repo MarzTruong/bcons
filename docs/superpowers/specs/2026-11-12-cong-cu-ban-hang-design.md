@@ -1,6 +1,6 @@
 # Công cụ hỗ trợ bán hàng khi gặp khách (Newsky trước): thiết kế
 
-> **Trạng thái:** Anh đã duyệt hướng (12/11/2026) và bổ sung yêu cầu mặt bằng có giá, đánh dấu giá rẻ, danh sách cùng vị trí; lõi `engine/banhang/giohang.mjs` đã xong, giao diện đang chờ AGY. Anh chốt hướng: web app, Newsky làm trước, chỉ anh dùng, iPad/điện thoại ở ngoài có mạng, cập nhật tự động khi mở và có nút bấm cập nhật. Giao diện giao AGY (`agy/giao-viec/2026-11-12-cong-cu-ban-hang.md`).
+> **Trạng thái:** Anh đã duyệt hướng (12/11/2026) và chọn giao diện **pa1** của AGY (13/11/2026). Đã tích hợp vào repo (`engine/banhang/web/`, build `engine/banhang/build.mjs`), số tiền đi qua lõi `tai-chinh.mjs`, có Apps Script giỏ hàng, lưu offline, test cả chuỗi (CĐT → Sheet → Apps Script → trang → ảnh xuất). Còn chờ anh: tạo Google Sheet giỏ hàng và dán Apps Script, tạo project Cloudflare Pages `bcons-ban-hang`, thử trên iPad (`docs/huong-dan-cong-cu-ban-hang.md`). Còn của AGY: lỗi hiển thị ghi ở mục "Việc gửi lại AGY" của hướng dẫn.
 
 ## Mục tiêu
 Thay cách bán cũ (cầm tờ gấp, mặt bằng tầng, ghi chép lên giấy) bằng một công cụ số: **xem mặt bằng tầng, bấm chọn căn, thấy giá và tình trạng, tính phương án thanh toán, so sánh vài căn, rồi xuất ảnh/PDF "căn khách chọn" để gửi khách.** Dùng để check giá, tư vấn và giúp khách chọn căn ngay tại chỗ.

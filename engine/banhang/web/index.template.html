@@ -1,0 +1,1216 @@
+<!doctype html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#074580">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Bcons Newsky — Bán Hàng Tháp B (Mặt Bằng Vector Chuẩn CAD & Đa Tầng)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #074580;
+    --navy-deep: #052F57;
+    --sky: #0B63B6;
+    --gold: #F7C11A;
+    --gold-soft: #FFF5CC;
+    --gold-border: #D97706;
+    --green: #0E8A42;
+    --green-bg: #E8F5EC;
+    --bg: #F4F7FB;
+    --card: #FFFFFF;
+    --card-sub: #F8FAFD;
+    --ink: #0C2340;
+    --mute: #54687F;
+    --line: #D9E4F0;
+    --sold: #98A7B8;
+    --svg-bg: #FAFCFE;
+    --svg-grid: #F1F5F9;
+    --svg-corridor: #EDF3F9;
+    --svg-corridor-border: #CBDCEB;
+    --svg-wall: #074580;
+    --svg-unit-bg: #FFFFFF;
+    --svg-unit-text: #334E68;
+    --svg-price-bg: #EDF4FC;
+    --svg-price-ink: #074580;
+  }
+
+  /* Dark Mode (Chế độ ban đêm Blueprint CAD) */
+  [data-theme="dark"] {
+    --navy: #38BDF8;
+    --navy-deep: #0B132B;
+    --sky: #60A5FA;
+    --gold: #FBBF24;
+    --gold-soft: rgba(251, 191, 36, 0.15);
+    --gold-border: #F59E0B;
+    --green: #34D399;
+    --green-bg: rgba(52, 211, 153, 0.15);
+    --bg: #090E17;
+    --card: #111827;
+    --card-sub: #1F2937;
+    --ink: #F9FAFB;
+    --mute: #9CA3AF;
+    --line: #374151;
+    --sold: #6B7280;
+    --svg-bg: #0C1527;
+    --svg-grid: #16243D;
+    --svg-corridor: #152238;
+    --svg-corridor-border: #243B5C;
+    --svg-wall: #38BDF8;
+    --svg-unit-bg: #111D33;
+    --svg-unit-text: #E2E8F0;
+    --svg-price-bg: #1A2E4C;
+    --svg-price-ink: #FBBF24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.45;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  /* Topbar */
+  .topbar {
+    background: var(--navy-deep);
+    color: #fff;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 14.5px;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .brand .pill {
+    background: var(--gold);
+    color: #052F57;
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .pttt-chips {
+    display: inline-flex;
+    background: rgba(255,255,255,0.12);
+    padding: 2px;
+    border-radius: 6px;
+  }
+  .pttt-btn {
+    background: transparent;
+    border: 0;
+    color: rgba(255,255,255,0.85);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font: 600 12.5px inherit;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .pttt-btn.active {
+    background: var(--gold);
+    color: #052F57;
+    font-weight: 700;
+  }
+
+  /* Dark mode toggle */
+  .btn-theme-toggle {
+    background: rgba(255,255,255,0.15);
+    border: 0;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font: 600 12px inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all .15s;
+  }
+  .btn-theme-toggle:hover { background: rgba(255,255,255,0.25); }
+
+  .sync-badge {
+    font-size: 11.5px;
+    color: #B9D5F2;
+  }
+  .btn-refresh {
+    background: rgba(255,255,255,0.15);
+    border: 0;
+    color: #fff;
+    padding: 5px 9px;
+    border-radius: 4px;
+    font: 600 12px inherit;
+    cursor: pointer;
+  }
+
+  /* Dynamic Smart Finder Bar (UX: Khách hỏi bất kỳ loại căn/hướng/khoảng tầng nào đều tìm trong 1 giây) */
+  .quick-finder-bar {
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .finder-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .finder-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .finder-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .finder-query-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .select-qf {
+    background: var(--card-sub);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font: 600 12px inherit;
+    outline: none;
+    cursor: pointer;
+  }
+  .finder-result-badge {
+    background: var(--gold-soft);
+    border: 1.5px solid var(--gold-border);
+    color: var(--ink);
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .finder-result-badge b {
+    color: #D97706;
+    font-size: 13px;
+  }
+  .btn-jump-cheapest {
+    background: #D97706;
+    color: #FFFFFF;
+    border: 0;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font: 700 11.5px inherit;
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .btn-jump-cheapest:hover { background: #B45309; }
+
+  /* Quick Pills Carousel */
+  .quick-chips-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .quick-chips-row::-webkit-scrollbar { display: none; }
+  .qf-chip {
+    background: var(--card-sub);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 4px 9px;
+    border-radius: 6px;
+    font: 600 11.5px inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all .15s;
+  }
+  .qf-chip:hover {
+    border-color: var(--navy);
+    background: var(--card);
+  }
+  .qf-chip.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .qf-chip .chip-price {
+    color: var(--gold-border);
+    font-weight: 700;
+  }
+  .qf-chip.active .chip-price {
+    color: var(--gold);
+  }
+
+  /* Main Workspace (Split layout) */
+  .workspace {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(370px, 0.95fr);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Left Pane: Floor Switcher + Architectural Vector Floorplan + Cùng Vị Trí */
+  .left-pane {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-right: 1px solid var(--line);
+    background: var(--card);
+  }
+  .floor-bar {
+    padding: 7px 12px;
+    background: var(--card-sub);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 10px;
+    flex-shrink: 0;
+  }
+  .tang-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    width: 100%;
+    order: 3;
+    padding-top: 2px;
+  }
+  .block-tabs {
+    display: inline-flex;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .block-btn {
+    background: transparent;
+    border: 0;
+    color: var(--mute);
+    padding: 4px 9px;
+    border-radius: 4px;
+    font: 700 11.5px inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .12s;
+  }
+  .block-btn:hover { color: var(--ink); }
+  .block-btn.active {
+    background: var(--gold);
+    color: #0F172A;
+  }
+  .tang-btn {
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 3px 6.5px;
+    border-radius: 4px;
+    font: 600 11px inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .12s;
+  }
+  .tang-btn:hover { border-color: var(--navy); }
+  .tang-btn.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+    font-weight: 700;
+  }
+  .tang-layout-badge {
+    font-size: 11px;
+    color: var(--mute);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tang-layout-badge b { color: var(--navy); }
+  .btn-orig-plan {
+    background: var(--card);
+    border: 1.5px solid var(--navy);
+    color: var(--navy);
+    padding: 3px 9px;
+    border-radius: 5px;
+    font: 700 11px inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all .15s;
+  }
+  .btn-orig-plan:hover {
+    background: var(--navy);
+    color: #fff;
+  }
+
+  /* Agent Brand Badge */
+  .agent-badge {
+    background: rgba(247, 193, 26, 0.14);
+    border: 1px solid rgba(247, 193, 26, 0.45);
+    color: #FDE68A;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font: 600 11.5px inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .agent-badge:hover {
+    background: rgba(247, 193, 26, 0.25);
+    border-color: var(--gold);
+  }
+  .qf-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--line);
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+  .btn-reset-filter {
+    background: #FEE2E2;
+    color: #B91C1C;
+    border: 1px solid #FCA5A5;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font: 700 11px inherit;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-reset-filter.visible { display: inline-flex; }
+  [data-theme="dark"] .btn-reset-filter {
+    background: rgba(239, 68, 68, 0.18);
+    color: #FCA5A5;
+    border-color: rgba(239, 68, 68, 0.45);
+  }
+
+  /* Floating Hover Tooltip for SVG Units */
+  .svg-tooltip {
+    position: fixed;
+    z-index: 120;
+    pointer-events: none;
+    background: var(--card);
+    border: 1.5px solid var(--gold-border);
+    border-radius: 8px;
+    padding: 9px 11px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+    font-size: 11.5px;
+    color: var(--ink);
+    min-width: 220px;
+    display: none;
+  }
+  .svg-tooltip.show { display: block; }
+  .svg-tooltip .tt-head { font-weight: 800; font-size: 13px; color: var(--navy); margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; }
+  .svg-tooltip .tt-row { display: flex; justify-content: space-between; gap: 10px; line-height: 1.45; }
+  .svg-tooltip .tt-row span:first-child { color: var(--mute); }
+  .svg-tooltip .tt-row b { color: var(--ink); }
+
+  /* Architectural Vector Floorplan Container */
+  .map-container {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    min-height: 280px;
+  }
+  .architectural-board {
+    position: relative;
+    width: 100%;
+    max-width: 1160px;
+    background: var(--card);
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .architectural-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+  }
+
+  /* Interactive SVG Styling */
+  .unit-vector {
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .unit-vector:hover rect:first-child {
+    fill: var(--gold-soft) !important;
+  }
+  .unit-vector.active rect:first-child {
+    fill: var(--gold-soft) !important;
+    stroke: var(--gold) !important;
+    stroke-width: 3.5px !important;
+  }
+  .unit-vector.sold {
+    cursor: not-allowed;
+  }
+
+  /* Bottom Drawer: Cùng vị trí cả block */
+  .cung-vi-tri-pane {
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    padding: 8px 14px 10px;
+    flex-shrink: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .cung-vi-tri-pane::-webkit-scrollbar { display: none; }
+  .pane-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .cung-vt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    gap: 6px;
+  }
+  .vt-card {
+    background: var(--card-sub);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 11.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: all .12s;
+  }
+  .vt-card:hover { border-color: var(--navy); background: var(--card); }
+  .vt-card.active { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .vt-card.active .vt-price { color: var(--gold); }
+  .vt-card.active .vt-badge { background: var(--gold); color: #052F57; }
+  .vt-card.daban { opacity: 0.55; cursor: not-allowed; background: var(--card-sub); }
+  .vt-head { display: flex; justify-content: space-between; font-weight: 700; }
+  .vt-price { font-weight: 700; color: var(--navy); font-size: 12px; }
+  .vt-badge { font-size: 9.5px; font-weight: 800; padding: 1px 4px; border-radius: 3px; align-self: flex-start; }
+  .badge-re-block { background: var(--gold); color: #0C2340; }
+  .badge-re-tang { background: var(--green-bg); color: var(--green); }
+
+  /* Right: Detail Card + Payment Schedule + Copy Pitch (Sticky Top & Sticky Bottom) */
+  .right-pane {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--card);
+    padding: 0;
+  }
+  .right-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .right-sticky-top {
+    position: sticky;
+    top: -12px;
+    z-index: 8;
+    background: var(--card);
+    padding: 10px 0 8px;
+    border-bottom: 1px solid var(--line);
+    margin: -12px 0 2px;
+  }
+  .right-sticky-bottom {
+    flex-shrink: 0;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    padding: 10px 14px;
+    box-shadow: 0 -4px 14px rgba(0,0,0,0.06);
+    z-index: 9;
+  }
+  .loan-toggle-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 8px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 4px 6px;
+    border-radius: 7px;
+  }
+  .loan-toggle-bar span { font-size: 11px; font-weight: 700; color: var(--mute); }
+  .loan-pills { display: flex; gap: 3px; }
+  .loan-pill {
+    border: 1px solid var(--line);
+    background: var(--card-sub);
+    color: var(--ink);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font: 700 11px inherit;
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .loan-pill.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+  .kpi-sub { font-size: 9.5px; color: var(--mute); font-weight: 500; margin-top: 1px; display: block; }
+
+  /* Lightbox Zoom/Pan Stage */
+  .lightbox-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lightbox-btn {
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font: 700 12px inherit;
+    cursor: pointer;
+  }
+  .lightbox-btn:hover { background: rgba(255,255,255,0.28); }
+  .lightbox-stage {
+    position: relative;
+    width: 100%;
+    height: 74vh;
+    overflow: hidden;
+    background: #0F172A;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+  .lightbox-stage:active { cursor: grabbing; }
+  .lightbox-stage img {
+    max-width: 96%;
+    max-height: 96%;
+    transform-origin: center center;
+    transition: transform 0.08s ease-out;
+    pointer-events: none;
+  }
+  .quote-preview-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    padding: 12px;
+    border-radius: 8px;
+  }
+  .quote-preview-wrap img, .quote-preview-wrap canvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+  }
+  .cmp-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .cmp-table th, .cmp-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+  .cmp-table th { background: var(--card-sub); color: var(--mute); font-weight: 700; font-size: 11.5px; }
+  .cmp-best { color: var(--green); font-weight: 800; background: var(--green-bg); border-radius: 4px; padding: 2px 6px; display: inline-block; }
+
+  /* Price Rank & Pitch Callout */
+  .rank-banner {
+    background: var(--gold-soft);
+    border: 1.5px solid var(--gold-border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .rank-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .rank-badge {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--gold-border);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .rank-desc {
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  .btn-copy-pitch {
+    background: var(--gold-border);
+    color: #FFFFFF;
+    border: 0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font: 700 11px inherit;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all .12s;
+  }
+  .btn-copy-pitch:hover { opacity: 0.9; }
+
+  .detail-card {
+    background: var(--card-sub);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    position: relative;
+  }
+  .detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .detail-ma {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+  .detail-loai {
+    font-size: 13px;
+    color: var(--mute);
+    margin-top: 2px;
+  }
+  .status-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .status-tag.trong { background: var(--green-bg); color: var(--green); }
+  .status-tag.daban { background: var(--line); color: var(--mute); }
+
+  /* Price Highlight */
+  .price-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 10px 0 8px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .price-banner span { font-size: 11px; color: var(--mute); display: block; }
+  .price-banner b { font-size: 17px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .price-banner .co-vat b { color: var(--navy); }
+
+  /* Milestones */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .kpi-item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+  .kpi-item span { color: var(--mute); font-size: 10.5px; display: block; }
+  .kpi-item b { font-size: 13px; font-weight: 700; color: var(--ink); }
+
+  /* Schedule Table */
+  .sched-box {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .sched-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .sched-tbl th, .sched-tbl td {
+    padding: 6px 9px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .sched-tbl th { background: var(--card-sub); color: var(--navy); font-weight: 700; font-size: 11px; }
+  .sched-tbl td.r { text-align: right; font-weight: 700; white-space: nowrap; }
+  .sched-tbl tr.bank td { background: var(--gold-soft); color: var(--navy); }
+
+  /* Action Buttons */
+  .btn-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .btn-export {
+    background: var(--navy);
+    color: #fff;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px;
+    font: 700 13px inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .15s;
+  }
+  .btn-export:hover { opacity: 0.9; }
+  .btn-compare {
+    background: var(--card);
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+    border-radius: 8px;
+    padding: 10px;
+    font: 700 13px inherit;
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  /* Compare Drawer Modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-card {
+    background: var(--card);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 880px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 12px 16px;
+    background: var(--navy-deep);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-body { padding: 14px; overflow-y: auto; flex: 1; }
+
+  /* Toast Notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #052F57;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 12.5px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    z-index: 999;
+    opacity: 0;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* Responsive Mobile View */
+  @media (max-width: 900px) {
+    .workspace {
+      grid-template-columns: 1fr;
+      grid-template-rows: minmax(280px, 1fr) auto;
+    }
+    .left-pane { border-right: 0; border-bottom: 1px solid var(--line); }
+    .right-pane {
+      max-height: 50vh;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+    }
+  }
+  @media (max-width: 540px) {
+    .topbar { padding: 6px 10px; }
+    .topbar-controls { gap: 6px; }
+    .pttt-btn { padding: 4px 7px; font-size: 11px; }
+    .quick-finder-bar { padding: 6px 8px; }
+    .floor-bar { padding: 5px 8px; }
+    .right-pane { padding: 12px 14px 18px; max-height: 52vh; }
+    .price-banner b { font-size: 15px; }
+    .btn-export, .btn-compare { padding: 9px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <span>BCONS NEWSKY</span>
+      <span class="pill">THÁP B · B1 (12 căn) &amp; B2 (15 căn)</span>
+    </div>
+    <div class="topbar-controls">
+      <div class="pttt-chips" role="tablist" aria-label="Chọn PTTT">
+        <button class="pttt-btn active" data-pttt="09" type="button" title="Vay ngân hàng tới 70%, hỗ trợ lãi suất trần 6,9%/năm">PTTT 09 (Trần 6,9%)</button>
+        <button class="pttt-btn" data-pttt="08" type="button" title="Thanh toán nhanh nhận chiết khấu -5,65% giá bán">PTTT 08 (-5,65%)</button>
+        <button class="pttt-btn" data-pttt="10" type="button" title="Thanh toán theo tiến độ chuẩn chiết khấu -2,15%">PTTT 10 (-2,15%)</button>
+      </div>
+      <!-- Badge thương hiệu cá nhân Chuyên viên tư vấn -->
+      <button class="agent-badge" id="btnEditAgent" type="button" title="Bấm để sửa Tên / SĐT chuyên viên tư vấn">
+        <span>👤 Chuyên viên tư vấn: <b id="agentNameHdr">Trương Tuấn</b> • 📞 <b id="agentPhoneHdr">0938.32.31.39</b></span>
+      </button>
+      <!-- Nút bật/tắt chế độ ban đêm -->
+      <button class="btn-theme-toggle" id="btnThemeToggle" type="button" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">🌙</span> <span id="themeText">Ban đêm</span>
+      </button>
+      <span class="sync-badge" id="syncStatus">Cập nhật lúc 08:30</span>
+      <button class="btn-refresh" id="btnRefresh" type="button">↻ Làm mới</button>
+    </div>
+  </header>
+
+  <!-- Dynamic Smart Finder Bar (Khách hỏi bất kỳ căn loại nào, hướng nào, tầng nào đều tìm được ngay) -->
+  <section class="quick-finder-bar">
+    <div class="finder-top-row">
+      <div class="finder-title-group">
+        <div class="finder-title">⚡ TÌM CĂN RẺ NHẤT THEO NHU CẦU:</div>
+      </div>
+      
+      <!-- Dynamic Selectors: Loại căn + Hướng + Phạm vi tầng -->
+      <div class="finder-query-controls">
+        <label style="font-size:11.5px;color:var(--mute);font-weight:600;">Loại căn:</label>
+        <select class="select-qf" id="qfSelectLoai">
+          <option value="all">Tất cả loại căn</option>
+          <option value="2PN-1WC">2PN - 1WC</option>
+          <option value="2PN-2WC">2PN - 2WC</option>
+          <option value="3PN-2WC">3PN - 2WC</option>
+          <option value="3PN-3WC">3PN - 3WC</option>
+        </select>
+
+        <label style="font-size:11.5px;color:var(--mute);font-weight:600;">Hướng view:</label>
+        <select class="select-qf" id="qfSelectHuong">
+          <option value="all">Tất cả hướng</option>
+          <option value="Bắc">Hướng Bắc (ĐB / TB - ĐB)</option>
+          <option value="Nam">Hướng Nam (TN / TN - ĐN)</option>
+          <option value="Đông">Hướng Đông (ĐB / ĐB - ĐN)</option>
+          <option value="Tây">Hướng Tây (TN - TB / TB - ĐB)</option>
+        </select>
+
+        <label style="font-size:11.5px;color:var(--mute);font-weight:600;">Phạm vi:</label>
+        <select class="select-qf" id="qfSelectScope">
+          <option value="all">Toàn Tháp B (B1 + B2)</option>
+          <option value="B1">Block B1 (12 căn/tầng)</option>
+          <option value="B2">Block B2 (15 căn/tầng)</option>
+          <option value="tang">Tầng đang xem</option>
+          <option value="thap">Tầng thấp (3–9)</option>
+          <option value="trung">Tầng trung (10–18)</option>
+          <option value="cao">Tầng cao (19–29)</option>
+        </select>
+
+        <!-- Dynamic Answer Pill + Reset Filter -->
+        <div class="finder-result-badge" id="qfResultBox">
+          <span>Rẻ nhất:</span>
+          <b id="qfResultMa">B2.4-12</b> · <b id="qfResultPrice">2,56 tỷ</b>
+          <button type="button" class="btn-jump-cheapest" id="btnJumpCheapest">⚡ Chọn ngay</button>
+        </div>
+        <button type="button" class="btn-reset-filter" id="btnResetFilter">✕ Xóa bộ lọc</button>
+      </div>
+    </div>
+
+    <!-- Quick Chips Carousel (Tự động sinh & chia nhóm có divider) -->
+    <div class="quick-chips-row" id="quickChipsRow">
+      <!-- Generated dynamically by JS -->
+    </div>
+  </section>
+
+  <!-- Workspace -->
+  <main class="workspace">
+    <!-- Left Pane: Floor Switcher + Architectural Vector Floorplan + Cùng Vị Trí -->
+    <section class="left-pane">
+      <div class="floor-bar">
+        <div class="block-tabs" id="blockTabs" role="tablist" aria-label="Chọn Block">
+          <button class="block-btn active" data-block="ALL" type="button">Toàn Tháp B</button>
+          <button class="block-btn" data-block="B1" type="button">Block B1 (12)</button>
+          <button class="block-btn" data-block="B2" type="button">Block B2 (15)</button>
+        </div>
+        <div class="tang-layout-badge" id="tangLayoutDesc">
+          <span>Sơ đồ: <b id="layoutName">Tầng Điển Hình (5–9)</b></span>
+          <button type="button" class="btn-orig-plan" id="btnOrigPlan">🖼️ Xem mặt bằng gốc CĐT</button>
+        </div>
+        <div class="tang-pills" id="tangPills">
+          <!-- Populated dynamically by JS for floors 2..29 (flex-wrap, no scroll) -->
+        </div>
+      </div>
+
+      <!-- Architectural Vector Floorplan Map -->
+      <div class="map-container">
+        <div class="architectural-board" id="archBoard">
+          <div id="svgContainer"></div>
+        </div>
+      </div>
+
+      <!-- Căn cùng vị trí cả Block -->
+      <div class="cung-vi-tri-pane">
+        <div class="pane-title">
+          <span id="cungVtTitle">CĂN CÙNG VỊ TRÍ CẢ BLOCK (ĐANG CHỌN: ...)</span>
+          <span style="font-size:11px;color:var(--mute);font-weight:400;">Bấm căn để đổi tầng · Phím ⬅️➡️⬆️⬇️</span>
+        </div>
+        <div class="cung-vt-grid" id="cungVtGrid"></div>
+      </div>
+    </section>
+
+    <!-- Right Pane: Sticky Top (Header + 6 KPIs) + Scrollable Schedule + Sticky Bottom Actions -->
+    <aside class="right-pane" id="rightPane">
+      <div class="right-scroll-area">
+        <!-- Rank & Sales Pitch Callout -->
+        <div class="rank-banner" id="rankBanner">
+          <div class="rank-header">
+            <div class="rank-badge" id="rankBadge">🏆 CĂN 2PN RẺ NHẤT TOÀN BLOCK</div>
+            <button type="button" class="btn-copy-pitch" id="btnCopyPitch">
+              📋 Copy tư vấn Zalo
+            </button>
+          </div>
+          <div class="rank-desc" id="rankDesc">
+            Hạng 1 về giá trong dòng căn.
+          </div>
+        </div>
+
+        <!-- Sticky Top Header + 6 Core Financial KPIs -->
+        <div class="right-sticky-top">
+          <div class="detail-head">
+            <div>
+              <div class="detail-ma" id="canMa">B2.4-12</div>
+              <div class="detail-loai" id="canLoai">2PN-1WC · 47,25 m² tim tường (42,05 m² thông thủy)</div>
+            </div>
+            <span class="status-tag trong" id="canStatus">CÒN TRỐNG</span>
+          </div>
+
+          <!-- Quick Loan Ratio Toggle -->
+          <div class="loan-toggle-bar">
+            <span>Tỷ lệ vay NH:</span>
+            <div class="loan-pills" id="loanPills">
+              <button type="button" class="loan-pill active" data-loan="auto">Theo PTTT</button>
+              <button type="button" class="loan-pill" data-loan="0.7">Vay 70%</button>
+              <button type="button" class="loan-pill" data-loan="0.5">Vay 50%</button>
+              <button type="button" class="loan-pill" data-loan="0">Không vay</button>
+            </div>
+          </div>
+
+          <div class="price-banner">
+            <div>
+              <span>Giá chưa VAT</span>
+              <b id="giaChuaVat">2,56 tỷ</b>
+            </div>
+            <div class="co-vat">
+              <span>Giá có VAT 10%</span>
+              <b id="giaCoVat">2,82 tỷ</b>
+            </div>
+          </div>
+
+          <div class="kpi-row">
+            <div class="kpi-item">
+              <span>Tự có trước nhận nhà</span>
+              <b id="tuCo">564 triệu</b>
+            </div>
+            <div class="kpi-item">
+              <span>Khoản vay ngân hàng</span>
+              <b id="khoanVay">1,41 tỷ</b>
+            </div>
+            <div class="kpi-item">
+              <span>Bàn giao (gồm 2% bảo trì)</span>
+              <b id="banGiao">769 triệu</b>
+            </div>
+            <div class="kpi-item">
+              <span>Ước tính trả góp/tháng</span>
+              <b id="traGop">~13,2 triệu/tháng</b>
+              <span class="kpi-sub">Gốc + lãi dự kiến sau ân hạn</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sched-box">
+          <table class="sched-tbl">
+            <thead>
+              <tr>
+                <th>Đợt</th>
+                <th>Nội dung thanh toán</th>
+                <th class="r">%</th>
+                <th class="r">Số tiền (đ)</th>
+              </tr>
+            </thead>
+            <tbody id="schedBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sticky Bottom Action Row -->
+      <div class="right-sticky-bottom">
+        <div class="btn-action-row" style="margin-top:0;">
+          <button class="btn-export" id="btnExport" type="button">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+            Xuất Phiếu Gửi Zalo
+          </button>
+          <button class="btn-compare" id="btnCompare" type="button">
+            + Thêm So Sánh (0)
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Floating Tooltip for Floorplan Hover -->
+  <div class="svg-tooltip" id="svgTooltip"></div>
+
+  <!-- Modal So Sánh -->
+  <div class="modal-overlay" id="compareModal">
+    <div class="modal-card" style="max-width:960px;">
+      <div class="modal-head">
+        <h3 style="font-size:15.5px;">⚖️ SO SÁNH TRỰC DIỆN CÁC CĂN KHÁCH ĐANG CÂN NHẮC</h3>
+        <button style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;" id="btnCloseCompare">✕</button>
+      </div>
+      <div class="modal-body" id="compareBody"></div>
+    </div>
+  </div>
+
+  <!-- Modal Lightbox Mặt Bằng Gốc CĐT -->
+  <div class="modal-overlay" id="origPlanModal">
+    <div class="modal-card" style="max-width:1100px;">
+      <div class="modal-head">
+        <h3 style="font-size:15px;" id="origPlanTitle">🖼️ MẶT BẰNG GỐC CHỦ ĐẦU TƯ</h3>
+        <div class="lightbox-toolbar">
+          <button type="button" class="lightbox-btn" id="btnZoomIn">＋ Phóng to</button>
+          <button type="button" class="lightbox-btn" id="btnZoomOut">－ Thu nhỏ</button>
+          <button type="button" class="lightbox-btn" id="btnZoomReset">↺ 100%</button>
+          <button type="button" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;margin-left:6px;" id="btnCloseOrigPlan">✕</button>
+        </div>
+      </div>
+      <div class="lightbox-stage" id="lightboxStage">
+        <img id="origPlanImg" src="" alt="Mặt bằng gốc CĐT">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Xuất Phiếu Báo Giá Gửi Zalo -->
+  <div class="modal-overlay" id="quoteModal">
+    <div class="modal-card" style="max-width:740px;">
+      <div class="modal-head">
+        <h3 style="font-size:15px;" id="quoteModalTitle">📄 PHIẾU BÁO GIÁ &amp; DÒNG TIỀN GỬI ZALO</h3>
+        <button style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;" id="btnCloseQuote">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="quote-preview-wrap" id="quotePreviewWrap"></div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+          <button type="button" class="btn-export" style="flex:0 1 240px;" id="btnCopyQuoteImg">📋 Copy Ảnh vào Clipboard</button>
+          <button type="button" class="btn-compare" style="flex:0 1 240px;background:var(--navy);color:#fff;border-color:var(--navy);" id="btnDownloadQuoteImg">⬇️ Tải ảnh PNG chất lượng cao</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chỉnh sửa Chuyên viên tư vấn -->
+  <div class="modal-overlay" id="agentModal">
+    <div class="modal-card" style="max-width:420px;">
+      <div class="modal-head">
+        <h3 style="font-size:15px;">👤 THÔNG TIN CHUYÊN VIÊN TƯ VẤN</h3>
+        <button style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer;" id="btnCloseAgent">✕</button>
+      </div>
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:10px;">
+        <label style="font-size:12px;font-weight:700;">Họ tên Chuyên viên:
+          <input id="inpAgentName" type="text" style="width:100%;margin-top:4px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card-sub);color:var(--ink);font:600 13px inherit;">
+        </label>
+        <label style="font-size:12px;font-weight:700;">Số điện thoại / Zalo:
+          <input id="inpAgentPhone" type="text" style="width:100%;margin-top:4px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card-sub);color:var(--ink);font:600 13px inherit;">
+        </label>
+        <label style="font-size:12px;font-weight:700;">Đơn vị / Sàn phân phối:
+          <input id="inpAgentTeam" type="text" style="width:100%;margin-top:4px;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card-sub);color:var(--ink);font:600 13px inherit;">
+        </label>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;">
+          <button type="button" class="btn-compare" id="btnResetAgent">Khôi phục mặc định</button>
+          <button type="button" class="btn-export" style="flex:0 0 130px;" id="btnSaveAgent">Lưu thông tin</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Đã copy nội dung tư vấn!</div>
+
+  <!-- Scripts -->
+  <div id="loiDuLieu" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff;color:#0F2942;align-items:center;justify-content:center;padding:24px;text-align:center;font:600 18px system-ui,sans-serif;"></div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

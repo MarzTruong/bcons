@@ -111,3 +111,10 @@ test("dữ liệu mẫu giohang-mau.json (mô phỏng): chạy được cả chu
   const t = theCan(g.can, "B1.5-01");
   assert.ok(t.cungViTri.length > 1 && t.cungViTri.every((x) => x.viTri === 1 && x.block === "B1"));
 });
+
+test("thẻ căn mang hướng view của Master File (lỗi cũ: giao diện luôn hiện 'Đang cập nhật')", () => {
+  const g = [{ ...G[0], huong: "TN - ĐN" }, G[1]];
+  assert.equal(theCan(g, "B2.4-01").huong, "TN - ĐN");
+  assert.equal(theCan(g, "B2.4-02").huong, null); // giỏ hàng chưa có cột hướng thì null, không bịa
+  assert.equal(theCan(g, "B2.4-01").cungViTri.find((x) => x.ma === "B2.4-01").huong, "TN - ĐN");
+});
