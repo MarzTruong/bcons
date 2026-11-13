@@ -1,6 +1,6 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 12/11/2026 (dọn NOTES, báo cáo Facebook/TikTok, video 8 hẹn đăng, sửa chống trùng lead)
+Cập nhật lần cuối: 13/11/2026 (Master_Data đã chạy thật G1–G6; còn chờ anh thử đường Xóa và chốt 3 việc)
 
 ## Đã làm
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
@@ -72,6 +72,7 @@ Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đ
 7. Phối cảnh, ảnh nhà mẫu: anh nói cứ dùng cho fanpage; TVC (`TVC Bcons Central Park.mp4`, 570MB) có được dùng để cắt video ngắn không thì chưa hỏi.
 8. Tên và số liên hệ trên trang: có dùng hotline công ty không? Giờ làm việc tư vấn viên?
 9. VAT 10% trên giá căn hộ có đúng với cách CĐT thu không (xem mục Chưa làm)?
+10. **Master_Data** (chờ anh): (a) chữ 2 trang chính sách landing về giữ dữ liệu (rút lại giữ hồ sơ, xóa thì xóa dữ liệu, chỉ giữ SĐT); (b) khách nhắn "NGỪNG"/"dừng nhắn" là Rút lại hay Xóa (hỏi pháp chế); (c) điền mã dự án cho khách landing cũ hay để "Chưa rõ"; (d) thử đường Xóa trên Google (ô D3 tab `TuChoi` gõ `Xóa`, Gộp ngay) và kiểm tin Telegram báo cáo sáng 8–9 giờ.
 
 ## Ghi chú kỹ thuật
 - Skill Superpowers (brainstorming, writing-plans, executing-plans, TDD, systematic-debugging, verification) không còn chép trong `.claude/skills/` (12/11/2026): dùng bản plugin Superpowers cài trên máy (cloud và laptop đã có). Máy mới phải cài plugin này.
