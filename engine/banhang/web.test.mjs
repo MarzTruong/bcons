@@ -254,6 +254,15 @@ test("E2E: không có vay tùy chọn; bảng đợt = lịch CĐT qua lõi từ
     assert.equal(pa.rows.filter((r) => r.bank).reduce((t, r) => t + r.amt, 0), pa.khoanVay);
     assert.equal(await doc1(pg, "khoanVay"), pa.khoanVay > 0 ? fmtTy(pa.khoanVay) : "Không vay");
     assert.equal(bang.at(-1).o[3].replace(/\u00a0/g, " "), dong(pa.fee));
+    // Anh dặn 14/11/2026: bảng đợt phải xem được đủ mọi dòng cho cả 3 PTTT (cuộn tới dòng cuối là thấy trọn, không bị cắt).
+    const cuoi = await pg.evaluate(() => {
+      const tr = document.querySelector("#schedBody tr:last-child");
+      tr.scrollIntoView({ block: "nearest" });
+      const r = tr.getBoundingClientRect();
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return { trong: r.top >= 0 && r.bottom <= innerHeight + 1, thay: Boolean(hit && tr.contains(hit)) };
+    });
+    assert.deepEqual(cuoi, { trong: true, thay: true }, `PTTT ${k}: dòng cuối bảng đợt bị che/cắt`);
   }
   await ctx.close();
 });

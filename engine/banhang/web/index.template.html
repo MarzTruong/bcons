@@ -772,11 +772,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px;
-    margin: 6px 0;
+    margin: 4px 0;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 6px 8px;
+    padding: 5px 8px;
   }
   .price-banner span { font-size: 10px; color: var(--mute); display: block; }
   .price-banner b { font-size: 15.5px; font-weight: 800; color: var(--ink); white-space: nowrap; }
@@ -786,14 +786,14 @@
   .kpi-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-bottom: 6px;
+    gap: 4px;
+    margin-bottom: 2px;
   }
   .kpi-item {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 5px 7px;
+    padding: 4px 6px;
   }
   .kpi-item span { color: var(--mute); font-size: 10px; display: block; }
   .kpi-item b { font-size: 12.5px; font-weight: 700; color: var(--ink); }
@@ -802,12 +802,31 @@
   .sched-box {
     border: 1px solid var(--line);
     border-radius: 8px;
-    overflow: hidden;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 220px;
+    padding-right: 2px;
+    padding-bottom: 10px;
+    scrollbar-width: thin;
   }
+  .sched-box::-webkit-scrollbar { width: 5px; }
+  .sched-box::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
   .sched-tbl {
     width: 100%;
     border-collapse: collapse;
     font-size: 11px;
+  }
+  .sched-tbl thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--card-sub);
+  }
+  @media (min-width: 1024px) {
+    .right-pane { height: 100%; min-height: 0; overflow: hidden; }
+    .right-scroll-area { overflow: hidden; padding: 8px 10px 4px; gap: 6px; }
+    .rank-callout { flex-shrink: 0; padding: 6px 8px; gap: 2px; }
+    .right-sticky-top { position: static; flex-shrink: 0; margin: 0; padding: 0 0 6px; }
   }
   .sched-tbl th, .sched-tbl td {
     padding: 4px 5px;
@@ -869,7 +888,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 50;
+    z-index: 10000;
     display: none;
     align-items: center;
     justify-content: center;
@@ -961,7 +980,7 @@
     font-size: 12.5px;
     font-weight: 600;
     box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-    z-index: 999;
+    z-index: 10001;
     opacity: 0;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
@@ -1004,7 +1023,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
-    z-index: 55;
+    z-index: 999;
   }
   .mobile-drawer-backdrop.open { display: block; }
   .mobile-drawer-header {
@@ -1067,7 +1086,7 @@
       width: 100%;
       height: 100dvh;
       max-height: 100dvh;
-      z-index: 9999;
+      z-index: 1000;
       border-radius: 0;
       box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.35);
       transform: translateY(105%);
@@ -1127,8 +1146,16 @@
     }
     .right-sticky-top {
       position: static;
+      flex-shrink: 0;
       margin: 0 0 6px;
       padding: 0 0 8px;
+    }
+    .sched-box {
+      flex: none;
+      min-height: auto;
+      max-height: none;
+      overflow: visible;
+      padding-bottom: 0;
     }
     .right-sticky-bottom {
       flex-shrink: 0;
@@ -1158,7 +1185,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      z-index: 45;
+      z-index: 40;
     }
     .mobile-bottom-bar.hidden {
       display: none;
@@ -1620,6 +1647,9 @@
           </button>
           <button class="btn-compare" id="btnCompare" type="button">
             + Thêm So Sánh (0)
+          </button>
+          <button class="btn-compare" id="btnOpenCompareNow" type="button" style="display:none;grid-column:1 / -1;background:var(--gold);color:#052F57;border-color:var(--gold-border);font-weight:800;">
+            ⚖️ Mở Bảng So Sánh (0 căn)
           </button>
         </div>
       </div>

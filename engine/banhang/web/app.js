@@ -1465,12 +1465,29 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
 
   // Compare & Export
   const btnCompare = document.getElementById("btnCompare");
+  const btnOpenCompareNow = document.getElementById("btnOpenCompareNow");
+  function syncCompareButtons() {
+    if (btnCompare) btnCompare.textContent = `+ Thêm So Sánh (${compareList.length})`;
+    if (btnOpenCompareNow) {
+      if (compareList.length >= 2) {
+        btnOpenCompareNow.style.display = "";
+        btnOpenCompareNow.textContent = `⚖️ Mở Bảng So Sánh (${compareList.length} căn)`;
+      } else {
+        btnOpenCompareNow.style.display = "none";
+      }
+    }
+  }
   if (btnCompare) {
     btnCompare.addEventListener("click", () => {
       if (!compareList.includes(selectedMa)) compareList.push(selectedMa);
-      btnCompare.textContent = `+ Thêm So Sánh (${compareList.length})`;
+      syncCompareButtons();
       if (compareList.length >= 2) openCompareModal();
       else showToast(`Đã thêm ${selectedMa} vào danh sách so sánh. Chọn thêm 1 căn nữa để đối chiếu!`);
+    });
+  }
+  if (btnOpenCompareNow) {
+    btnOpenCompareNow.addEventListener("click", () => {
+      if (compareList.length >= 2) openCompareModal();
     });
   }
 
@@ -1540,9 +1557,11 @@ export async function khoiDong({ giohang, plans: PLANS, lienHe = {}, nguon = nul
     `;
     document.getElementById("btnClearComp")?.addEventListener("click", () => {
       compareList = [];
-      btnCompare.textContent = `+ Thêm So Sánh (0)`;
+      syncCompareButtons();
       modal.classList.remove("open");
-      document.body.style.overflow = "";
+      if (!document.getElementById("rightPane")?.classList.contains("drawer-open")) {
+        document.body.style.overflow = "";
+      }
     });
     document.getElementById("btnExportCompareImg")?.addEventListener("click", () => {
       modal.classList.remove("open");
