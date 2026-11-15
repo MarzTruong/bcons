@@ -18,7 +18,11 @@ Ví dụ dùng thật: "5 phương thức thanh toán", "3 công trình về đ�
 - Chỉ dùng đếm khi có trình tự thật; không đánh số cho nội dung không phải trình tự (quy tắc No AI Slop).
 - Mỗi mục: tên ngắn + một số liệu (lấy từ spec, không tự viết số).
 
+## Việc 3: khung "nguồn" cuối video (anh đồng ý dùng, 15/11/2026)
+Một khung ngắn (2–3 giây) trước cảnh cuối, ghi nguồn số liệu chính của video (tên nguồn + tháng/năm, tối đa 3 dòng), chữ nhỏ nhưng đọc được trên điện thoại. Claude chọn nguồn nào hiện từ bảng nguồn của kịch bản; không ghi câu "thông tin mang tính tham khảo" (hỏi anh riêng), không ghi link dài. Chỉ cần mẫu khung; nội dung do spec điền.
+
 ## Ràng buộc
+- **Không dùng bản "blueprint" Remotion do AGY làm lần trước làm đầu vào** (nền lưới, thẻ kính mờ, neon trái No AI Slop; chưa ai duyệt). Làm lại từ phong cách Bcons.
 - **Quy tắc nội dung (`CLAUDE.md`):** không hứa lợi nhuận/tăng giá, không "sắp hết", không SĐT chữ trên hình (đã có QR góc), phối cảnh có nhãn "Hình ảnh minh họa" ngay trên ảnh, nhắc giá thì chưa VAT/có VAT, số liệu chỉ lấy từ spec.
 - **No AI Slop:** video tham khảo dùng nền tối kẻ lưới, thẻ bo góc viền sáng, nhãn chữ hoa kiểu mã, đánh số mọi thứ. **Không bắt chước những thứ đó**; chỉ học nhịp (mục mới đều đặn) và cấu trúc (hứa ngay đầu, đếm tiến độ, gom lại cuối). Một điểm nhấn rõ mỗi cảnh, chữ không dính/đè/lem.
 - Kỹ thuật dựng: vẫn là mẫu cảnh Remotion (React) 30 fps, 1080×1920, chạy được với `engine/remotion`. AGY làm bản demo (HTML/CSS động hoặc clip ngắn) để anh duyệt; **Claude là người lắp vào mẫu cảnh thật** sau khi anh chọn, không tự sửa `engine/` trong repo.

@@ -12,6 +12,7 @@ import {
   checkTimestamps,
   checkSourceLinks,
   checkSources,
+  checkPacing,
   parseMarkup,
   resolveSpecPath,
 } from "./spec-tools.mjs";
@@ -52,6 +53,8 @@ for (const name of names) {
     if (!links.ok) {
       console.warn(`CẢNH BÁO ${name}: nguồn chưa có link http(s): ${links.unlinked.join(", ")} (tạo giọng/render sẽ bị chặn)`);
     }
+    const pace = checkPacing(spec);
+    if (pace.length) console.warn(`CẢNH BÁO ${name} nhịp/hook: ${pace.join("; ")}`);
     // Caption (nếu có): bản nháp có lỗi chỉ cảnh báo; bản đã duyệt có lỗi là lỗi.
     const capPath = videoPaths(name, projDir).caption;
     if (fs.existsSync(capPath)) {

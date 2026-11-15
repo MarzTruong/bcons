@@ -1,54 +1,51 @@
 # Phân tích video tham khảo (15/11/2026)
 
-**Trạng thái:** đã phân tích 1/5 video; 4 video còn lại chưa xem được (xem mục 1). Đề xuất mục 4 chờ anh duyệt trước khi sửa code.
+**Trạng thái:** đã phân tích 5/5 video (AGY tách khung và nghe, em kiểm lại: biên bản `kiem-toan/2026-11-15-phan-tich-video-tham-khao/bien-ban.md`). Checklist hook/nhịp đã vào quy trình và skill; cảnh báo nhịp đã vào `check-spec`; việc hình giao AGY (`agy/giao-viec/2026-11-15-hook-va-nhip-video.md`).
 
-Nguồn: Drive `Bcons/tham-khao/video`. Chỉ học **kỹ thuật** (nhịp, cấu trúc, cách dùng chữ); không dùng lại nội dung, tên, hình của họ. Khung hình chỉ xem ở thư mục tạm, không đưa vào repo.
+Nguồn: Drive `Bcons/tham-khao/video` (5 file mp4, bản sao AGY ở `video-tham-khao/`, không lên git). Chỉ học **kỹ thuật** (nhịp, cấu trúc, cách dùng chữ); không dùng nội dung, tên thương hiệu, số liệu hay hình của họ. Khung hình để ở Drive `Bcons/agy/den-claude/2026-11-15-phan-tich-video-tham-khao/khung/`, không vào repo. Video tham khảo gọi theo 4 ký tự đầu của tên file.
 
-## 1. Xem được gì, chưa xem được gì
-| File | Dung lượng | Tình trạng |
-|---|---|---|
-| `cabf191e…mp4` | 4,6 MB | **Đã xem** (64 s, 576x1024, 30 fps) |
-| `green skyline.mp4` | 21 MB | Chưa xem: connector Drive chỉ tải được file dưới 10 MB |
-| `2c51aca2…mp4` | 16 MB | Chưa xem (như trên) |
-| `9f134aa0…mp4` | 53 MB | Chưa xem (như trên) |
-| `810f287c…mp4` | 58 MB | Chưa xem (như trên) |
-
-Cách mở khóa (anh chọn một): (a) anh nén 4 file xuống dưới 10 MB (HandBrake/CapCut xuất 540p, vài phút mỗi file) rồi để vào `tham-khao/video/nho/`; (b) mở host `www.googleapis.com` trong Environment cloud và gắn khóa Drive để em tải file lớn; (c) anh chạy phiên trên máy anh, nơi em đọc thẳng `G:\My Drive\Bcons\tham-khao\video`. Em không có tai: chỉ đo được độ lớn tiếng và khoảng lặng, không nghe được giọng/nhạc.
+## 1. Thông số
+| Video | Độ dài | Khung | Âm thanh (độ lớn) |
+|---|---|---|---|
+| `cabf` | 64 s | 9:16 | giọng nam AI + beat nhẹ + tiếng click mỗi thẻ (-15,8 LUFS) |
+| `green skyline` | 75 s | bản quay màn hình Reels, còn thanh giao diện | giọng nữ miền Nam nhanh + nhạc dồn (-33,8, thấp do quay màn hình) |
+| `2c51` | 140 s | 9:16 | giọng nam điềm tĩnh + piano, đổi nhạc ở giây 110 (-13,0) |
+| `810f` | 126 s | 9:16 | giọng bản tin + tiếng ting/whoosh mỗi lần lật số (-19,7) |
+| `9f13` | 275 s | 9:16 | giọng nữ kể chuyện + nhạc tài liệu, 7 khoảng nghỉ (-24,8) |
 
 ## 2. Từng video
-| Video | Chủ đề | Hook 3 giây đầu | Cấu trúc và nhịp | Chữ trên hình | Cách kết | Hay | Dở (so với quy tắc của mình) |
+| Video | Chủ đề | Hook 3 giây đầu | Nhịp | Chữ | Kết | Hay | Dở |
 |---|---|---|---|---|---|---|---|
-| `cabf191e…` (64 s, dọc) | Danh sách "20 repo để AI tự dựng video" | Khung đầu **đã có chữ**: "20 repo" hiện ở 0,0 s, "để Opus 5.5" hiện từng từ ở 0,3–0,6 s, dòng phụ "tự dựng video từ A đến Z" ở 0,7 s, gạch nhấn chạy dưới tiêu đề ở 1,0 s. Một con số + một lời hứa, 5 chữ. Góc phải có đếm "00/20" ngay từ giây 0 | 6 chương (nạp skill, thiết kế, hoạt ảnh, dựng 2D, dựng 3D, âm thanh), mỗi chương 8–12 s. Trong chương, **mỗi 2–3 s xuất hiện thêm một mục** (thẻ rơi vào, thanh tiến độ phía dưới nhích, đếm "n/20" tăng). Không cắt cảnh theo kiểu chuyển clip (dò cảnh 0 điểm cắt); nhịp đến từ vật mới xuất hiện đều đặn. Tiêu đề chương đổi mỗi ~10 s | Tiêu đề rất to (1 hàng, 2–3 chữ), một dòng phụ nhỏ, thẻ tên mục chữ trắng trên nền xanh đậm. Chữ chính nằm nửa trên, vùng giữa và dưới để cho mục xếp dần | Chương cuối "Đủ 20/20" gom cả 20 mục vào một khung, rồi "Lưu lại" kèm câu hỏi "Bạn muốn … dựng video gì?", rồi cảnh tên kênh trong ô tìm kiếm TikTok (mời tìm kênh) | Hứa con số cụ thể ngay từ chữ đầu; đếm "n/N" cho người xem biết còn bao lâu; vật mới mỗi 2–3 s chống bỏ đi; cảnh cuối gom lại + câu hỏi mời bình luận; lời hứa "A đến Z" rõ lợi ích | Độ lớn tiếng -15,8 LUFS, lên xuống ít (LRA 3,9 LU), gần như không có khoảng lặng: tiếng nền/giọng đều, chưa rõ nhịp nhạc. Hình: nền tối kẻ lưới, thẻ bo góc, nhãn chữ hoa kiểu mã, đánh số: **đúng những thứ checklist "No AI Slop" của mình cấm**, không sao chép. Video 64 s cho chủ đề liệt kê là dài |
-| `green skyline.mp4` | chưa xem | | | | | | |
-| `2c51aca2…mp4` | chưa xem | | | | | | |
-| `9f134aa0…mp4` | chưa xem | | | | | | |
-| `810f287c…mp4` | chưa xem | | | | | | |
+| `cabf` | Danh sách "20 mục để AI tự dựng video" | Khung 0 đã có tiêu đề (số + lời hứa, 5 chữ) và bộ đếm; chữ vào từng từ, gạch nhấn chạy ở 1 s | 6 chương 8–10 s; thẻ mới cứ 1,5–2,2 s; không cắt cứng | Tiêu đề to nửa trên, không phụ đề đáy | gom cả danh sách; chữ "Lưu lại" + câu hỏi mở; hình tìm kênh | hứa con số ngay; đếm tiến độ; vật mới đều | nền kẻ lưới, thẻ viền sáng, nhãn chữ hoa, đánh số mọi thứ (trái No AI Slop); dài |
+| `green skyline` | Giới thiệu căn hộ xây xong | bản đồ + ghim ảnh; lời mở dài ~10 s mới vào ý | xen bản đồ và flycam/nhà mẫu, 2–3 s một cảnh | 2 tầng: dòng dẫn nhỏ + từ khóa to tô màu đặt cao (~58% chiều cao), né thanh giao diện đáy | lời mời nhận báo giá | chữ 1–3 từ đặt vùng an toàn; cắt ảnh thật xen bản đồ | giục "tốt nhất", so dự án khác không nguồn (trái quy tắc); mốc giây không tin được (quay màn hình) |
+| `2c51` | Phân tích trục đường lớn và vành đai | khung 0 gần đen, tiêu đề đủ ở ~0,5 s; bù bằng câu hỏi "Tại sao…?" ở giây 0,2 | 7 chặng; thưa: 4,5–7 s mới vẽ thêm một tuyến; 1 cú cắt lớn sang bản đồ 3D | nhãn tên đường trỏ vào tuyến thay phụ đề; chữ 2 font ở đoạn cuối | hẹn "sẽ tiếp tục vẽ bản đồ"; hình tìm kênh | mở bằng câu hỏi nguyên nhân; nét đứt nhấp nháy cho đoạn chưa xong; vệt sáng chạy dọc tuyến | khung 0 tối; quá dài; nhiều đoạn 6–10 s không có gì mới |
+| `810f` | Điểm tin hạ tầng/quy hoạch | khung 0 là poster đủ chữ (cũng là bìa) + câu hỏi móc; 0,5 s chuyển vào cảnh, số đếm nhanh; lời vào thẳng con số + phép so sánh trong 4 s | thẻ số liệu mới cứ 2,5–4,5 s; chi tiết mới 1,5–2,5 s; 8 chặng | 3 tầng cố định: tiêu đề trên, thẻ số liệu giữa, phụ đề 1 dòng 3–6 chữ trong pill đáy | câu chọn 1 trong 2 ("vùng đỏ hay vùng vàng?") + mũi tên bình luận; bảng ghi chú nguồn | khung 0 kiêm bìa; ghim rõ "ý tưởng, chưa phải quy hoạch" và "còn 5 bước"; số mới liên tục | chữ hoa dày đặc ở giữa; có dòng hotline chạy mờ (không học) |
+| `9f13` | Phóng sự mô hình đô thị quanh ga và một dự án | khung 0 trống (chỉ một chữ), gõ tiêu đề mất 2,5 s; ~6 s mới tới con số đầu | 7 chặng đa chất liệu; bản đồ giữ 7–15 s, ảnh thật cắt 1,2–2,2 s | thanh dọc màu cạnh chữ khi nền tối; chữ viền đen khi trên ảnh/bản đồ | MC chốt, không có câu hỏi mời bình luận | MC thật giữa bài tạo tin cậy; nhãn đo khoảng cách trên bản đồ; lưới 3 ảnh ngang cho tiện ích | khung 0 trống; 275 s quá dài; thiếu câu hỏi kết |
 
-## 3. Đối chiếu với kênh mình (số thật)
-- Báo cáo 06–12/11: thời gian xem trung bình TikTok **1–4 s** (Facebook 3–9 s) trên video 49–58 s; 0 bình luận; 93–100% người xem TikTok đến từ "Dành cho bạn" (người lạ lướt qua, quyết định trong 1–2 s).
-- Đo spec hiện có (9 video): cảnh 1 có **20–42 chữ lời** (trung bình ~30 chữ, khoảng 10 s đọc) trước khi tới con số đầu tiên; mỗi video 4–5 cảnh, mỗi cảnh 20–53 chữ (khoảng 7–17 s). Tức người xem phải nghe hết một câu dài mới biết video nói gì, trong khi họ bỏ đi sau 1–4 s.
-- Video tham khảo làm ngược lại: lời hứa + con số hiện trong 1 s, rồi vật mới cứ 2–3 s.
-- Giới hạn: tham khảo chỉ 1 video, kênh mình mẫu nhỏ (4 video trong tuần). Đây là giả thuyết để thử, chưa phải kết luận.
+## 3. Đối chiếu với kênh mình
+- Báo cáo 06–12/11: thời gian xem trung bình TikTok 1–4 s (Facebook 3–9 s) trên video 49–58 s; 0 bình luận; 0 người theo dõi mới; 93–100% người xem TikTok là người lạ từ "Dành cho bạn"; 2/13 ô lưới hồ sơ trắng.
+- Cảnh 1 của 9 video mình đã làm có 20–42 chữ lời (~10 s) trước con số đầu; mỗi cảnh 20–53 chữ (7–17 s).
+- Hai video mạnh nhất ở khung 0 là `810f` và `cabf` (chữ + số có mặt ở 0,00 s, lời vào thẳng ý trong ~0,2–0,5 s). Hai video yếu nhất là `9f13` và `2c51` (khung 0 trống/tối).
+- Mẫu nhỏ (1 video mình đo được, 5 video người khác không có số giữ chân): đây là giả thuyết để thử.
 
 ## 4. Kỹ thuật → áp dụng cho Bcons
-Ký hiệu: **Em** = lõi (quy trình, skill, spec, kiểm); **AGY** = hình; **Anh** = quyết định/nghe thử. Ưu tiên P1 làm ngay, P2 tuần sau, P3 thử.
+Em = lõi (quy trình, skill, kiểm); AGY = hình; Anh = quyết định. P1 làm ngay, P2 tuần sau, P3 thử.
 
-| # | Kỹ thuật (học từ video `cabf191e…`) | Số kênh chứng minh | Áp dụng thế nào | Ai | Ưu tiên | Trạng thái |
-|---|---|---|---|---|---|---|
-| 1 | **Khung đầu có chữ ngay từ 0,0 s**, tiêu đề tối đa 6 chữ gồm 1 con số + 1 lời hứa | TikTok xem TB 1–4 s; lưới hồ sơ có 2/13 ô trắng | Thêm vào cổng kiểm cổng 2: "khung 0 có chữ và hình, hook ≤ 6 chữ, có số". Khung đầu cũng là bìa (khớp brief bìa của AGY) | Em (checklist), AGY (hình) | P1 | Đã ghi vào skill và quy trình |
-| 2 | **Lời bình cảnh 1 ngắn**: tới con số đầu trong ≤ 12 chữ (~4 s) | Cảnh 1 hiện 20–42 chữ, TB ~30 | Quy tắc viết kịch bản + cổng kiểm `check-spec` cảnh báo khi cảnh 1 dài hơn 14 chữ (đề xuất mục 5) | Em | P1 | Quy tắc đã ghi; cổng kiểm chờ anh OK |
-| 3 | **Rút video xuống 25–35 s** (khoảng 70–95 chữ lời) | Video 49–58 s, người xem bỏ đi sau 1–9 s; báo cáo đã đề xuất | Độ dài mục tiêu mới; cảnh mỗi cảnh ≤ 8 s | Em | P1 | Đã ghi vào skill và quy trình |
-| 4 | **Vật mới mỗi 2–3 s** thay vì một cảnh đứng 10–17 s | Cảnh hiện 7–17 s mỗi cảnh | Trong storyboard mỗi cảnh ghi "điểm đổi" (số hiện, thẻ vào, vùng sáng) cứ 2–3 s; soát ở cổng 2 | Em (storyboard), AGY (mẫu cảnh nếu cần hiệu ứng mới) | P1 | Đã ghi vào skill; hiệu ứng mới giao AGY |
-| 5 | **3 phương án hook** cho mỗi kịch bản (anh chọn) | Chưa biết hook nào giữ chân: cần thử | Cổng 1/2: em đưa 3 hook (con số / câu hỏi / kết quả), anh chọn; ghi lại hook đã dùng + số xem TB vào báo cáo tuần để học | Em, Anh | P1 | Đã ghi vào skill |
-| 6 | **Câu hỏi một con số ở cuối** thay "comment …", gom lại ý chính ở khung cuối | 0 bình luận / 4 video | Cảnh cuối có 1 câu hỏi đơn giản trả lời bằng một số hoặc một chữ (vd. "Vốn của anh chị đang là bao nhiêu?"), kèm QR đã có | Em (lời), Anh (duyệt) | P2 | Đã ghi vào skill |
-| 7 | **Bộ đếm tiến độ "n/N" và thanh chạy** cho video dạng danh sách (vd. "5 phương thức thanh toán", "3 công trình về đích") | Chưa đo; giả thuyết: biết còn bao lâu thì xem hết | Chỉ dùng khi nội dung thật sự là trình tự/danh sách (giữ quy tắc "không đánh số khi không phải trình tự") | AGY dựng mẫu; Em thêm trường dữ liệu | P2 | Giao AGY: `agy/giao-viec/2026-11-15-hook-va-nhip-video.md` |
-| 8 | **Chữ hiện từng từ + gạch nhấn chạy** ở 1 s đầu | Chưa đo | Hoạt họa chữ mở đầu của hook | AGY | P2 | Giao AGY |
-| 9 | **Cảnh cuối mời theo dõi bằng hình tìm kênh** | 0 người theo dõi mới trong tuần | Thử ở 1–2 video; hiện đã có QR góc + tên và QR cảnh cuối nên chỉ thêm khi anh muốn | Anh quyết, AGY dựng | P3 | Chờ anh |
-| 10 | Đo độ lớn tiếng (~-16 LUFS, ít dao động) làm chuẩn so | Chưa có số loudness của video mình | Em đo bản render hiện có rồi so; không đổi cài đặt giọng | Em | P3 | Chưa làm |
+| # | Kỹ thuật | Học từ | Số kênh | Áp dụng | Ai | Ưu tiên | Trạng thái |
+|---|---|---|---|---|---|---|---|
+| 1 | Khung 0 đủ chữ, tiêu đề ≤ 6 chữ có con số, kiêm bìa | `810f`, `cabf` | TikTok xem TB 1–4 s; 2/13 ô lưới trắng | mục 3b quy trình + skill; mẫu mở đầu giao AGY, khớp brief bìa | Em, AGY | P1 | Đã ghi; AGY chờ giao |
+| 2 | Lời 0–4 s vào thẳng con số/phép so sánh/câu hỏi, ≤ 12 chữ | `810f`, `2c51` | cảnh 1 dài 20–42 chữ | quy tắc kịch bản + cảnh báo `check-spec` (ngưỡng 14 chữ trước con số đầu) | Em | P1 | Đã làm |
+| 3 | Rút xuống 25–35 s (70–95 chữ), cảnh ≤ 8 s | `cabf` (64 s) so với `9f13` (275 s) | video 49–58 s, bỏ đi sau 1–9 s | độ dài mục tiêu + cảnh báo tổng > 100 chữ, cảnh > 8 s | Em | P1 | Đã làm |
+| 4 | Vật mới mỗi 2–3 s (số hiện, thẻ vào, vùng sáng, nhãn khoảng cách, nét đứt nhấp nháy, vệt sáng chạy) | `cabf`, `810f`, `2c51` | cảnh đứng 7–17 s | storyboard ghi "điểm đổi"; hiệu ứng bản đồ dùng sẵn `vetChay`/`vienChay`/`illustrative` | Em (storyboard), AGY (hiệu ứng mới) | P1 | Đã ghi |
+| 5 | 3 phương án hook, anh chọn | các video | chưa biết hook nào giữ chân | cổng 2; ghi hook đã dùng vào báo cáo tuần để đo | Em, Anh | P1 | Đã ghi |
+| 6 | Cuối video: câu hỏi chọn 1 trong 2, hoặc trả lời bằng một con số/chữ | `810f`, `cabf` | 0 bình luận / 4 video | lời cảnh cuối + QR sẵn có; không SĐT chữ | Em, Anh | P1 | Đã ghi |
+| 7 | Hạ tầng/quy hoạch: nói rõ tình trạng ("ý tưởng", "chủ trương", "đã duyệt") và còn mấy bước | `810f` | quy tắc không hứa | mục 3b; dùng trình tự thật, không đánh số khi không phải trình tự | Em | P1 | Đã ghi |
+| 8 | Chữ 2 tầng, 1–3 chữ, đặt vùng an toàn; phụ đề 1 dòng ngắn khi cảnh nhiều số | `green skyline`, `810f` | | giao AGY, chưa chốt số đo vùng an toàn | AGY | P2 | Giao AGY |
+| 9 | Lưới 3 ảnh ngang cho tiện ích/nhà mẫu (ảnh có nhãn "Hình ảnh minh họa") | `9f13` | | mẫu cảnh mới | AGY | P2 | Giao AGY |
+| 10 | Bộ đếm tiến độ và danh sách xuất hiện từng mục (chỉ khi là danh sách/trình tự thật) | `cabf` | | mẫu cảnh mới | AGY | P2 | Giao AGY |
+| 11 | Khung "nguồn" cuối video (nguồn ngắn, anh đã đồng ý dùng 15/11/2026) | `810f` | | giao AGY dựng; em chọn nguồn nào hiện | AGY, Em | P2 | Giao AGY |
+| 12 | Cảnh cuối hiện ô tìm kênh để mời theo dõi | `cabf`, `2c51`, `9f13` | 0 người theo dõi mới | thử 1–2 video | Anh quyết | P3 | Chờ anh |
+| 13 | Đo độ lớn tiếng bản render của mình rồi so (5 video đo -13 đến -25; chưa có chuẩn) | | | chưa đặt chuẩn | Em | P3 | Chưa làm |
 
-## 5. Đề xuất sửa code (chờ anh "OK", chưa làm)
-Thêm vào `engine/remotion/scripts/check-spec.mjs` (theo TDD, test dùng spec thật của 9 video):
-1. **Cảnh báo** (không chặn) khi cảnh 1 có hơn 14 chữ lời trước con số đầu tiên, hoặc tổng lời hơn 100 chữ, hoặc một cảnh hơn 8 s ước tính.
-2. Trường mới tùy chọn `hook` trong spec (dòng tiêu đề ≤ 6 chữ + `soHook` đã chọn trong 3 phương án): cổng kiểm đòi có khi `status: approved` cho video mới (video cũ miễn).
-3. Cần chụp khung trước/sau (`frame-hashes.mjs`) để chắc 9 video cũ không đổi; không đụng cài đặt giọng, 30 fps, 1080x1920.
-Cảnh báo vì 9 video cũ đều vượt ngưỡng; chặn cứng sẽ làm `npm run lint` hỏng ngay.
+## 5. Cảnh báo trong `check-spec` (đã làm 15/11/2026)
+`npm run check:spec` và `npm run lint` in cảnh báo (không chặn) khi: cảnh 1 có hơn 14 chữ lời trước con số đầu tiên (hoặc cả cảnh nếu không có số), tổng hơn 100 chữ lời, hoặc một cảnh ước tính hơn 8 giây. Ngưỡng ở `PACING` trong `engine/remotion/scripts/spec-tools.mjs`, test ở `engine/remotion/tests/spec-tools.test.mjs`. Chỉ cảnh báo vì cả 9 video đã làm đều vượt ngưỡng; chặn cứng sẽ làm lint hỏng ngay. Chưa thêm trường `hook` vào spec: chờ anh chọn mẫu mở đầu của AGY rồi mới chốt hợp đồng dữ liệu.

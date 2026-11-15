@@ -41,7 +41,9 @@ Căn cứ: báo cáo tuần 06–12/11 (thời gian xem TB TikTok 1–4 s trên 
 - [ ] **Lời cảnh 1 tới con số đầu trong 12 chữ** (khoảng 4 giây). Hiện cảnh 1 của 9 video đã làm dài 20–42 chữ.
 - [ ] **Độ dài mục tiêu 25–35 giây** (70–95 chữ lời); mỗi cảnh không quá 8 giây. Dài hơn phải có lý do.
 - [ ] **Nhịp: cứ 2–3 giây có một thứ mới** trên hình (số hiện, thẻ vào, vùng sáng); storyboard ghi "điểm đổi" từng cảnh. Không để một cảnh đứng yên 10 giây.
-- [ ] **Cảnh cuối có một câu hỏi dễ trả lời** (một con số hoặc một chữ), thay lời mời "comment …"; QR đã tự thêm.
+- [ ] **Cảnh cuối có một câu hỏi dễ trả lời** (chọn 1 trong 2, hoặc trả lời bằng một con số/một chữ), thay lời mời "comment …"; QR đã tự thêm.
+- [ ] **Video hạ tầng/quy hoạch:** nói rõ tình trạng thật (ý tưởng / chủ trương / đã duyệt / đang thi công) và còn mấy bước; không để người xem hiểu ý tưởng là đã chắc chắn.
+- [ ] `npm run check:spec` in cảnh báo nhịp/hook (cảnh 1 > 14 chữ trước con số đầu, tổng > 100 chữ, cảnh > 8 s): không chặn, nhưng vượt thì ghi lý do trong kịch bản.
 - [ ] Hình/chữ dựng: không bắt chước kiểu nền tối kẻ lưới, thẻ viền sáng, nhãn chữ hoa của video tham khảo (trái "No AI Slop"). Chỉ học nhịp và cấu trúc.
 
 ## 4. Công cụ hỗ trợ

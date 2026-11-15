@@ -360,3 +360,34 @@ export function checkGeoFiles(spec, publicDir /* = thư mục dự án */) {
   }
   return errors;
 }
+
+/**
+ * Ngưỡng nhịp và hook (anh duyệt 15/11/2026, căn cứ docs/phan-tich-video-tham-khao.md).
+ * Chỉ là CẢNH BÁO để thử, không chặn: 9 video đã làm đều vượt ngưỡng.
+ */
+export const PACING = { openingWords: 14, totalWords: 100, sceneSeconds: 8 };
+
+/** Trả danh sách cảnh báo (chuỗi): cảnh 1 dài trước con số đầu, tổng lời dài, cảnh ước tính quá lâu. */
+export function checkPacing(spec) {
+  const warn = [];
+  const tokens = spec.scenes.map((s) => parseMarkup(s.markup));
+  if (tokens.length) {
+    const first = tokens[0];
+    const k = first.findIndex((t) => /\d/.test(t.show));
+    const before = k === -1 ? first.length : k;
+    if (before > PACING.openingWords) {
+      warn.push(
+        `cảnh 1 có ${before} chữ lời ${k === -1 ? "(không có con số nào)" : "trước con số đầu tiên"}, nên ≤ ${PACING.openingWords}`,
+      );
+    }
+  }
+  const total = tokens.reduce((n, t) => n + t.length, 0);
+  if (total > PACING.totalWords) warn.push(`tổng ${total} chữ lời, nên ≤ ${PACING.totalWords} (khoảng 35 giây)`);
+  const est = estimateTimestamps(spec).scenes;
+  est.forEach((s) => {
+    if (s.durationSec > PACING.sceneSeconds) {
+      warn.push(`${s.id} ước tính ${s.durationSec.toFixed(1)} giây, nên ≤ ${PACING.sceneSeconds}`);
+    }
+  });
+  return warn;
+}

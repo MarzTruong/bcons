@@ -130,3 +130,51 @@ test("checkDoubledNumber: số đứng trước đơn vị có ngoặc đọc l�
   assert.deepEqual(checkDoubledNumber(mk(moi)), []);
   assert.deepEqual(checkDoubledNumber(mk("thấp hơn mức 9,5{chín phẩy năm} đến 11,5%{mười một phẩy năm phần trăm} của quý III.{ba.}")), []);
 });
+
+// --- Kiểm nhịp và hook (cảnh báo, không chặn; 15/11/2026) ---
+import fs from "node:fs";
+import { checkPacing, PACING } from "../scripts/spec-tools.mjs";
+
+const mk = (markups) => ({
+  name: "demo",
+  status: "draft",
+  scenes: markups.map((m, i) => ({ id: `scene${i + 1}`, template: "stat-hero", markup: m, cues: {}, props: {} })),
+});
+const words = (n) => Array.from({ length: n }, () => "chữ").join(" ");
+
+test("PACING giữ đúng ngưỡng đã duyệt", () => {
+  assert.deepEqual(PACING, { openingWords: 14, totalWords: 100, sceneSeconds: 8 });
+});
+
+test("cảnh 1 gọn, có số sớm, không cảnh báo", () => {
+  assert.deepEqual(checkPacing(mk(["Quốc lộ 13 lên 8{tám} làn xe.", words(20)])), []);
+});
+
+test("cảnh 1 dài hơn 14 chữ trước con số đầu thì cảnh báo", () => {
+  const w = checkPacing(mk([`${words(15)} 8{tám} làn.`]));
+  assert.equal(w.length > 0, true);
+  assert.match(w.join(" "), /cảnh 1/i);
+});
+
+test("cảnh 1 không có số nào: tính cả cảnh", () => {
+  assert.match(checkPacing(mk([words(20)])).join(" "), /cảnh 1/i);
+  assert.deepEqual(checkPacing(mk([words(10)])), []);
+});
+
+test("tổng lời hơn 100 chữ thì cảnh báo", () => {
+  const w = checkPacing(mk(["8{tám} làn.", words(50), words(50)]));
+  assert.match(w.join(" "), /tổng/i);
+});
+
+test("một cảnh ước tính hơn 8 giây thì cảnh báo", () => {
+  // 40 chữ x 0,23 s ≈ 9,2 s
+  const w = checkPacing(mk(["8{tám} làn.", words(40)]));
+  assert.match(w.join(" "), /scene2/);
+});
+
+test("video thật: Newsky 01 (4 cảnh) chạy được và chỉ trả cảnh báo là chuỗi", () => {
+  const p = path.join(REPO_ROOT, "du-an/bcons-newsky/video/01-mat-tien-quoc-lo-13/spec.json");
+  const w = checkPacing(JSON.parse(fs.readFileSync(p, "utf8")));
+  assert.ok(Array.isArray(w) && w.every((x) => typeof x === "string"));
+  assert.match(w.join(" "), /tổng/i); // video này 109 chữ lời, vượt ngưỡng 100
+});
