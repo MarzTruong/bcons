@@ -1,6 +1,6 @@
 # Video Newsky 2 "Căn 3 tỷ, bước đầu chỉ 150 triệu" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 1 anh đã duyệt 15/11/2026 (chọn câu mở số 1, bỏ câu "Căn của anh chị thì số khác", không xác minh căn 3 tỷ); cổng 2 (chữ + số + caption + storyboard) chờ anh duyệt.** `spec.json` đang `draft`; chưa có giọng, chưa render. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án). Tên thư mục giữ `02-von-mua-can-nao`.
+**Trạng thái: cổng 1 anh đã duyệt 15/11/2026 (chọn câu mở số 1, bỏ câu "Căn của anh chị thì số khác", không xác minh căn 3 tỷ); cổng 2 anh đã duyệt 15/11/2026.** `spec.json` đã `approved`; chưa có giọng, chưa render. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án). Tên thư mục giữ `02-von-mua-can-nao`.
 
 Góc (anh đề xuất 15/11/2026): **hook "bước đầu chỉ từ 150 triệu"** (5% đợt 1 của căn ví dụ 3 tỷ, PTTT 09), rồi nói thẳng cả lộ trình tiền để khách không hiểu nhầm. Không nói lợi nhuận, không nói tăng giá, không giục mua. Lời bình viết lại lần 2 (15/11/2026, mục "Viết lại" bên dưới).
 
