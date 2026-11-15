@@ -28,6 +28,8 @@ Ghi chú nội dung:
 | ql13-bt-vb | Đoạn cầu Bình Triệu – cầu Vĩnh Bình khởi công ngày 29/08/2026, dài khoảng 5,9 km, nâng cấp lên 10–14 làn, mặt cắt ngang 60 m, dự kiến hoàn thành 2028 | 05/10/2026 | Tuổi Trẻ | https://tuoitre.vn/sau-4-nam-thi-cong-tien-do-du-an-mo-rong-quoc-lo-13-qua-binh-duong-cu-ra-sao-100261004141833922.htm | Em mở link và khớp nguyên văn 15/11/2026 |
 | ql13-phu-long | Giao lộ QL13 dẫn vào cầu Phú Long (phường Lái Thiêu) mở lại trước ngày 10/10 | 05/10/2026 | Tuổi Trẻ (cùng bài) | như trên | Khớp |
 | newsky-vi-tri | Mặt tiền QL13, phường Lái Thiêu | 09/10/2024 | GPXD 3288 | `du-an/bcons-newsky/thong-tin.md` | |
+| geo-newsky | Vị trí dự án 10.890026, 106.703699 | 11/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.890026400573376,106.70369904755647 | `du-an/bcons-newsky/assets/geo/NGUON.md` |
+| geo-ql13-osm | Đường lái xe Newsky – cầu Vĩnh Bình – cầu Bình Triệu, điểm hai cầu | 15/11/2026 | OpenStreetMap (OSRM) | https://router.project-osrm.org | Hình đường là dữ liệu OSM, không phải ranh dự án mở rộng QL13; chi tiết `assets/geo/NGUON.md` |
 | phoi-canh-ql13 | Phối cảnh dự án nhìn từ Quốc lộ 13 (file hero-main, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 | phoi-canh-tong-the | Phối cảnh tổng thể dự án (file overview-aerial, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 Không dùng: "đường trên cao" (AGY ghi, không thấy trong bài); bài Báo Đầu Tư 17/10/2025 (đã cũ, ghi "10 làn", "quý IV/2026").

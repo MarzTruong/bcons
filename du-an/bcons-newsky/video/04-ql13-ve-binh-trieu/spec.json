@@ -33,21 +33,94 @@
     },
     {
       "id": "scene2",
-      "template": "data-cards",
-      "markup": "Từ 10{mười} đến 14{mười bốn} làn xe, dự kiến hoàn thành trong năm 2028.{hai ngàn không trăm hai mươi tám.}",
+      "template": "geo-map",
+      "markup": "Đoạn từ cầu Vĩnh Bình về cầu Bình Triệu: từ 10{mười} đến 14{mười bốn} làn xe, dự kiến hoàn thành trong năm 2028.{hai ngàn không trăm hai mươi tám.}",
       "cues": {
-        "c1": "làn",
-        "c2": "hoàn"
+        "doan": "Đoạn",
+        "lan": "làn",
+        "hoan": "hoàn"
       },
       "props": {
-        "kicker": "Cầu Bình Triệu – cầu Vĩnh Bình",
-        "title": "Quốc lộ 13 nâng cấp",
+        "kicker": "Quốc lộ 13",
+        "title": "Từ Lái Thiêu về Bình Triệu",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "newsky",
+            "cau-vinh-binh",
+            "cau-binh-trieu"
+          ],
+          "padding": {
+            "top": 740,
+            "bottom": 560,
+            "left": 110,
+            "right": 110
+          }
+        },
+        "points": [
+          {
+            "key": "newsky",
+            "label": "BCONS NEWSKY",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "newsky",
+            "color": "red",
+            "big": true,
+            "cueKey": "doan",
+            "offset": 0,
+            "sourceId": "geo-newsky"
+          },
+          {
+            "key": "cau-vinh-binh",
+            "label": "Cầu Vĩnh Bình",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "cau-vinh-binh",
+            "color": "white",
+            "cueKey": "doan",
+            "offset": 40,
+            "sourceId": "geo-ql13-osm"
+          },
+          {
+            "key": "cau-binh-trieu",
+            "label": "Cầu Bình Triệu",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "cau-binh-trieu",
+            "color": "white",
+            "cueKey": "doan",
+            "offset": 70,
+            "sourceId": "geo-ql13-osm"
+          }
+        ],
+        "lines": [
+          {
+            "key": "ql13-newsky-binh-trieu",
+            "file": "assets/geo/ql13-newsky-binh-trieu.geojson",
+            "kind": "official",
+            "color": "white",
+            "width": 5,
+            "cueKey": "doan",
+            "drawFrames": 70,
+            "sourceId": "geo-ql13-osm"
+          },
+          {
+            "key": "ql13-doan",
+            "file": "assets/geo/ql13-doan-vinh-binh-binh-trieu.geojson",
+            "kind": "official",
+            "color": "gold",
+            "width": 10,
+            "cueKey": "doan",
+            "offset": 45,
+            "drawFrames": 60,
+            "vetChay": true,
+            "sourceId": "geo-ql13-osm"
+          }
+        ],
+        "areas": [],
         "cards": [
           {
             "tag": "Số làn xe",
             "big": "10–14 làn",
             "sub": "nâng cấp tuyến hiện hữu",
-            "cueKey": "c1",
+            "cueKey": "lan",
             "offset": -5,
             "sourceId": "ql13-bt-vb"
           },
@@ -55,11 +128,19 @@
             "tag": "Dự kiến hoàn thành",
             "big": "năm 2028",
             "sub": "đoạn khoảng 5,9 km",
-            "cueKey": "c2",
+            "cueKey": "hoan",
             "offset": -5,
             "sourceId": "ql13-bt-vb"
           }
-        ]
+        ],
+        "image": {
+          "file": "assets/images/bang-chung-bao-tuoitre-ql13.png",
+          "label": "Tuổi Trẻ, 05/10/2026",
+          "cueKey": "hoan",
+          "offset": 45,
+          "sourceId": "ql13-bt-vb"
+        },
+        "note": "Điểm theo dữ liệu bản đồ; hình đường lấy từ OpenStreetMap, không phải ranh dự án"
       }
     },
     {

@@ -23,6 +23,7 @@ Ghi chú nội dung:
 | gia-bd-60 | Giá căn hộ sơ cấp Bình Dương cũ quý II/2026 khoảng 60 triệu đồng/m², tăng 4 triệu so với quý I (One Mount Group) | 23/09/2026 | VnExpress | https://vnexpress.net/kho-kiem-chung-cu-duoi-45-trieu-dong-moi-m2-tai-binh-duong-cu-5122953.html | Em mở link, khớp nguyên văn 15/11/2026 |
 | gia-bd-35-40 | "Từng là vùng giá phổ biến 35–40 triệu đồng/m²"; nay gần như không còn ở nguồn cung mới | 23/09/2026 | VnExpress (cùng bài) | https://vnexpress.net/kho-kiem-chung-cu-duoi-45-trieu-dong-moi-m2-tai-binh-duong-cu-5122953.html | Khớp. Bài nói về dự án mới tại Dĩ An, Thuận An |
 | newsky-2pn | 2PN-1WC từ 2,56 tỷ (PTTT 09, chưa VAT, chưa phí bảo trì 2%; 2PN-2WC từ 2,75 tỷ) | 06/10/2026 | CĐT: file check giá tháp B | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Kiểm giỏ hàng ngày đăng; chép trong `du-an/bcons-newsky/thong-tin.md` |
+| geo-newsky | Vị trí dự án 10.890026, 106.703699 | 11/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.890026400573376,106.70369904755647 | `du-an/bcons-newsky/assets/geo/NGUON.md` |
 | phoi-canh-tong-the | Phối cảnh tổng thể dự án (file overview-aerial, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 Không dùng: "thấp hơn thị trường 20–25%", số CBRE 76 triệu và Knight Frank 110 triệu (khác phạm vi), "hiếm hoi dưới 45 triệu" (45,2 không phải dưới 45).
 

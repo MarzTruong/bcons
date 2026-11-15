@@ -8,15 +8,40 @@
   "scenes": [
     {
       "id": "scene1",
-      "template": "data-cards",
+      "template": "geo-map",
       "markup": "Căn hộ mới ở Bình Dương cũ từng quanh 35–40{từ ba mươi lăm đến bốn mươi} triệu đồng mỗi m²{mét vuông}. Quý II{hai} năm nay, mặt bằng đã khoảng 60{sáu mươi} triệu. Vậy 2{hai} phòng ngủ ở Lái Thiêu đang ở mức nào?",
       "cues": {
         "c1": "từng",
-        "c2": "Quý"
+        "c2": "Quý",
+        "q": "Vậy"
       },
       "props": {
         "kicker": "Căn hộ mới, Bình Dương cũ",
         "title": "Giá mỗi mét vuông",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "center": [
+            106.7037,
+            10.89
+          ],
+          "zoom": 11.2,
+          "shiftY": -150
+        },
+        "points": [
+          {
+            "key": "newsky",
+            "label": "BCONS NEWSKY · LÁI THIÊU",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "newsky",
+            "color": "red",
+            "big": true,
+            "cueKey": "c2",
+            "offset": 0,
+            "sourceId": "geo-newsky"
+          }
+        ],
+        "lines": [],
+        "areas": [],
         "cards": [
           {
             "tag": "Trước đây",
@@ -34,7 +59,15 @@
             "offset": -5,
             "sourceId": "gia-bd-60"
           }
-        ]
+        ],
+        "image": {
+          "file": "assets/images/bang-chung-bao-vnexpress-gia.png",
+          "label": "VnExpress, 23/09/2026",
+          "cueKey": "q",
+          "offset": 0,
+          "sourceId": "gia-bd-60"
+        },
+        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
       }
     },
     {

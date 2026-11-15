@@ -1,0 +1,53 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "newsky",
+        "name": "Bcons Newsky",
+        "sourceId": "geo-newsky",
+        "fetchedAt": "2026-11-15"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.70369904755647,
+          10.890026400573376
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "cau-vinh-binh",
+        "name": "Cầu Vĩnh Bình",
+        "sourceId": "geo-ql13-osm",
+        "fetchedAt": "2026-11-15"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.713971,
+          10.869167
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "cau-binh-trieu",
+        "name": "Cầu Bình Triệu",
+        "sourceId": "geo-ql13-osm",
+        "fetchedAt": "2026-11-15"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.713054,
+          10.819732
+        ]
+      }
+    }
+  ]
+}

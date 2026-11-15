@@ -64,8 +64,55 @@
     },
     {
       "id": "scene3",
+      "template": "geo-map",
+      "markup": "Đây là thông báo của chủ đầu tư, ngày 12/11{mười hai tháng mười một}, cho một số căn ở Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13.",
+      "cues": {
+        "d": "Đây"
+      },
+      "props": {
+        "kicker": "Phường Lái Thiêu",
+        "title": "Bcons Newsky",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "center": [
+            106.70369904755647,
+            10.890026400573376
+          ],
+          "zoom": 14.2,
+          "shiftY": -200
+        },
+        "points": [
+          {
+            "key": "newsky",
+            "label": "BCONS NEWSKY",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "newsky",
+            "color": "red",
+            "big": true,
+            "cueKey": "d",
+            "offset": 20,
+            "sourceId": "geo-newsky"
+          }
+        ],
+        "lines": [],
+        "areas": [],
+        "cards": [
+          {
+            "tag": "Vị trí",
+            "big": "Mặt tiền Quốc lộ 13",
+            "sub": "phường Lái Thiêu",
+            "cueKey": "d",
+            "offset": 30,
+            "sourceId": "geo-newsky"
+          }
+        ],
+        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
+      }
+    },
+    {
+      "id": "scene4",
       "template": "project-close",
-      "markup": "Con số đó là gì? Anh chị đoán thử trong phần bình luận. Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13, phường Lái Thiêu.",
+      "markup": "Con số đó là gì? Anh chị đoán thử trong phần bình luận.",
       "cues": {},
       "props": {
         "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
