@@ -1,17 +1,31 @@
-# Video Newsky 2 "Vốn tự có mua được căn nào" (bản nháp cổng 1, 15/11/2026)
+# Video Newsky 2 "Căn 3 tỷ, bước đầu chỉ 150 triệu" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 1 (số liệu và góc), chờ anh duyệt.** Chưa có `spec.json`, giọng, hình. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án).
+**Trạng thái: cổng 1 (số liệu và góc), chờ anh duyệt.** Chưa có `spec.json`, giọng, hình. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án). Tên thư mục giữ `02-von-mua-can-nao`.
 
-Góc: khách hay hỏi "em có khoảng X trăm triệu thì mua được căn nào". Video trả lời bằng số thật của phương thức thanh toán 09 (giá gốc của CĐT): vốn tự có **trước đợt nhận nhà** của từng loại căn, phần còn lại do vay ngân hàng và đợt nhận nhà. Không nói lợi nhuận, không nói tăng giá, không nói "sắp hết". Kết bằng "xem phiếu tính từng căn" (landing + QR).
+Góc (anh đề xuất 15/11/2026): **hook "bước đầu chỉ từ 150 triệu"** (5% đợt 1 của căn ví dụ 3 tỷ, PTTT 09), rồi nói thẳng cả lộ trình tiền để khách không hiểu nhầm. Không nói lợi nhuận, không nói tăng giá, không "sắp hết".
 
-## Dàn ý 4 cảnh (khoảng 40–45 giây)
-| Cảnh | Mẫu | Hình hiển thị | Lời bình (nháp) |
+## Cần chỉnh khi dùng hook này (em đối chiếu `pttt-cdt.json`)
+- 150 triệu là **đợt 1 "Ký thỏa thuận đăng ký" (5%, chưa VAT)**, không phải đợt "ký HĐMB". Đợt ký HĐMB là đợt 2: 5% + VAT của hai đợt đầu = **180 triệu** (căn 3 tỷ). Hai đợt này đến liền nhau, và **7 ngày sau HĐMB ngân hàng giải ngân 50% (1,65 tỷ)**.
+- Vì vậy hook phải nói "bước đầu" và **nói luôn đợt 2 trong cùng cảnh/cảnh kế**, không để câu "chỉ 150 triệu" đứng một mình (đọc như "chỉ cần 150 triệu là sở hữu căn 3 tỷ" thì gây hiểu nhầm). Tổng tự có trước đợt nhận nhà của căn 3 tỷ là **660 triệu**, đợt nhận nhà khoảng **900 triệu** (đã gồm phí bảo trì 2%).
+- "Căn 3 tỷ" chỉ là căn ví dụ (giá chưa VAT, nằm trong khoảng giá 2PN-2WC 2,75–3,50 tỷ). Trước khi đăng kiểm giỏ hàng có căn trống ở mức giá này.
+- Chỉ PTTT 09 (giá gốc, có vay). PTTT 08 và 10 cũng có đợt 1 là 5% nhưng khác lịch sau đó: không nhồi vào video này.
+
+## Ba phương án câu mở (3 giây đầu), anh chọn
+1. "Căn ba tỷ ở Bcons Newsky, bước đầu chỉ một trăm năm mươi triệu." (ngắn nhất, em đề xuất)
+2. "Một trăm năm mươi triệu: đó là bước đầu để giữ một căn ba tỷ ở Newsky." (hợp chữ "giữ căn")
+3. "Muốn mua căn ba tỷ, tháng đầu mình cần bao nhiêu tiền?" (câu hỏi, giữ chân hơn; hết câu trả lời ở cảnh 1)
+
+## Dàn ý 4 cảnh (khoảng 40 giây)
+| Cảnh | Mẫu | Hình hiển thị | Lời bình (nháp, phương án 1) |
 |---|---|---|---|
-| 1 | `stat-hero` | "Vốn tự có trước đợt nhận nhà" · số 563 triệu · "căn 2PN-1WC, giá từ 2,56 tỷ chưa VAT"; ảnh phối cảnh (minh họa) | Có khoảng năm trăm sáu mươi triệu vốn tự có, mua được căn nào ở Bcons Newsky? Với căn hai phòng ngủ một WC, giá từ hai phẩy năm sáu tỷ chưa VAT, phương thức thanh toán chín, phần tự có trước đợt nhận nhà khoảng năm trăm sáu mươi ba triệu, đã gồm VAT. |
-| 2 | `data-cards` | 3 thẻ: "2PN-1WC từ 2,56 tỷ · tự có ~563 triệu", "2PN-2WC từ 2,75 tỷ · ~605 triệu", "3PN-2WC từ 3,87 tỷ · ~851 triệu" | Căn hai phòng ngủ hai WC giá từ hai phẩy bảy lăm tỷ cần khoảng sáu trăm lẻ năm triệu. Căn ba phòng ngủ hai WC giá từ ba phẩy tám bảy tỷ cần khoảng tám trăm năm mươi mốt triệu. |
-| 3 | `data-cards` | 2 thẻ: "Ngân hàng giải ngân 50%" (vay) · "Nhận nhà: 25% + phí bảo trì 2%" (căn 2PN-1WC ~768 triệu) | Phần còn lại: ngân hàng giải ngân năm mươi phần trăm giá căn, lãi không vượt sáu phẩy chín phần trăm một năm trong thời hạn ưu đãi, CĐT bù chênh lệch. Đến lúc nhận nhà đóng thêm hai mươi lăm phần trăm cộng phí bảo trì hai phần trăm, căn hai phòng ngủ một WC khoảng bảy trăm sáu mươi tám triệu. |
-| 4 | `project-close` | Phối cảnh tổng thể (minh họa), thẻ dự án; tên + QR | Muốn xem phiếu tính đúng căn mình chọn, quét mã QR. Bcons Newsky, mặt tiền Quốc lộ 13, phường Lái Thiêu, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi tám. |
+| 1 | `stat-hero` | "Bước đầu chỉ" · số 150 triệu · "căn ví dụ 3 tỷ chưa VAT · đợt ký thỏa thuận đăng ký (5%)"; phối cảnh (minh họa) | Căn ba tỷ ở Bcons Newsky, bước đầu chỉ một trăm năm mươi triệu: năm phần trăm giá căn, đợt ký thỏa thuận đăng ký, phương thức thanh toán chín, chưa VAT. |
+| 2 | `data-cards` | 3 thẻ theo thứ tự thời gian: "Ký thỏa thuận: 150 triệu" · "Ký hợp đồng mua bán: thêm 180 triệu" · "7 ngày sau: ngân hàng giải ngân 1,65 tỷ (50%)" | Đến khi ký hợp đồng mua bán, mình đóng thêm một trăm tám mươi triệu, gồm năm phần trăm và thuế VAT hai đợt đầu. Bảy ngày sau, ngân hàng giải ngân năm mươi phần trăm giá căn, khoảng một phẩy sáu lăm tỷ. |
+| 3 | `data-cards` | 2 thẻ: "Đợt 4 và 5: 165 triệu mỗi đợt (sau HĐMB 2 và 4 tháng)" · "Nhận nhà: ~900 triệu (25% + phí bảo trì 2%)" | Hai và bốn tháng sau, mỗi đợt một trăm sáu mươi lăm triệu. Cộng lại, vốn tự có trước đợt nhận nhà khoảng sáu trăm sáu mươi triệu. Đến lúc nhận nhà, đóng thêm khoảng chín trăm triệu, gồm phí bảo trì hai phần trăm. |
+| 4 | `project-close` | Phối cảnh tổng thể (minh họa), thẻ dự án; tên + QR | Muốn xem lộ trình tiền đúng căn mình chọn, quét mã QR. Bcons Newsky, mặt tiền Quốc lộ 13, phường Lái Thiêu, dự kiến bàn giao quý hai năm hai ngàn không trăm hai mươi tám. |
 
+Cảnh 3 nói "vốn tự có trước đợt nhận nhà" cùng cách gọi với công cụ tính trên landing. Lãi vay không nói trong video (lãi và kỳ hạn là giả định, để công cụ tính); không nhắc trần 6,9% ở bản này (tránh nhồi, PTTT 09 có điều kiện kèm theo), nếu anh muốn thì thêm 1 câu ở cảnh 2.
+
+### Số theo từng loại căn (dùng cho caption/phiếu tính, không đọc hết trong video)
 Cách tính (chạy ngày 15/11/2026): lõi `engine/banhang/tai-chinh.mjs` (`phuongAn`) + `engine/landing/calc.mjs` + `du-an/bcons-newsky/nguon/pttt-cdt.json`, theo giá thấp nhất mỗi loại trong khoảng giá `thong-tin.md` (chưa VAT), PTTT 09, lãi giả định 9,5%/năm, 20 năm. Kết quả (triệu đồng, đã gồm VAT 10%):
 
 | Loại căn | Giá chưa VAT (tỷ) | Giá có VAT | Tự có trước đợt nhận nhà | Vay (theo lịch CĐT) | Đợt nhận nhà (25% + phí bảo trì 2%) |
@@ -39,8 +53,8 @@ Ghi chú nội dung:
 | phoi-canh-tong-the | Phối cảnh tổng thể dự án (ghi minh họa) | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | |
 
 ## Việc cần anh quyết ở cổng 1
-1. Duyệt góc "Vốn tự có mua được căn nào" và bốn con số tự có (563, 605, 851 triệu; đợt nhận nhà 768 triệu).
-2. Nói "tự có trước đợt nhận nhà" như trên có làm khách hiểu nhầm là tổng vốn cần bỏ ra không? (Tổng tiền tự bỏ đến lúc nhận nhà là phần tự có cộng đợt nhận nhà: ví dụ 2PN-1WC khoảng 563 + 768 = 1.331 triệu, vì khoản vay 50% do ngân hàng giải ngân.) Em đề xuất nói cả hai con số trong cảnh 3 như dàn ý.
-3. Căn giá thấp nhất còn trống ngày đăng là căn nào (em không đọc được tình trạng từng căn trong repo): anh báo, hoặc em đọc từ Sheet giỏ hàng khi anh cho phép.
+1. Duyệt góc "bước đầu chỉ 150 triệu" cùng cách nói rõ cả lộ trình (150 + 180 triệu, 660 triệu trước nhận nhà, ~900 triệu nhận nhà).
+2. Chọn câu mở: phương án 1, 2 hoặc 3.
+3. Căn ví dụ 3 tỷ có thật không (còn trống ở mức giá gần 3 tỷ)? Em không đọc được tình trạng từng căn trong repo: anh báo, hoặc em đọc Sheet giỏ hàng khi anh cho phép.
 
 Sau khi anh duyệt: em viết `spec.json`, `caption.md`, `caption-icon.md`, `zalo.md`, `storyboard.md` (cổng 2), rồi giọng (cổng 3, tốn credit) và render (cổng 4) qua bot.
