@@ -1,6 +1,6 @@
 # Video Newsky 4 "Quốc lộ 13 về phía Bình Triệu" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 1, chờ anh duyệt.** Trụ cột A. Slug đề xuất `04-ql13-ve-binh-trieu`.
+**Trạng thái: cổng 1 anh đã duyệt 15/11/2026 (anh giao em chọn hook: hook A "Quốc lộ 13 phía Bình Triệu sắp rộng 60 mét", vì có con số và khác video 1).** Trụ cột A. Slug đề xuất `04-ql13-ve-binh-trieu`.
 
 **Cảnh báo trùng:** Video Newsky 1 (đã đăng 14/11) đã nói "Quốc lộ 13 từ 6 lên 8 làn" và 84,37% mặt bằng đoạn Bình Triệu – Vĩnh Bình. Hook "từ 6 lên 8 làn" sẽ lặp video 1. Em đổi trọng tâm sang phần chưa nói: đoạn phía TP.HCM **khởi công 29/08/2026**, dài ~5,9 km, mặt cắt 60 m, **10–14 làn**, dự kiến xong 2028.
 
@@ -30,6 +30,5 @@ Ghi chú nội dung:
 | newsky-vi-tri | Mặt tiền QL13, phường Lái Thiêu | 09/10/2024 | GPXD 3288 | `du-an/bcons-newsky/thong-tin.md` | |
 Không dùng: "đường trên cao" (AGY ghi, không thấy trong bài); bài Báo Đầu Tư 17/10/2025 (đã cũ, ghi "10 làn", "quý IV/2026").
 
-## Việc cần anh quyết
-1. Chọn hook A/B/C; đồng ý đổi trọng tâm vì video 1 đã nói 6→8 làn.
-2. Có thêm thẻ cầu Phú Long không.
+## Việc còn lại
+Hook đã chọn (A). Thẻ cầu Phú Long: bỏ cho gọn (khoảng 30 giây), để dành ý cho video khác.
