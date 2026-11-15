@@ -13,6 +13,7 @@ Quy ước: xong một kế hoạch thì sửa dòng **Trạng thái** ở đầ
 | `huong-dan-mcp.md` | MCP (không bắt buộc), hook chặn commit |
 | `quy-trinh-video.md` | Các cổng làm video |
 | `quy-tac-caption.md` | Cách viết caption tự nhiên |
+| `phan-tich-video-tham-khao.md` | Phân tích video tham khảo (15/11/2026): hook, nhịp, kỹ thuật học được, việc em/AGY/anh; mới xem 1/5 video |
 | `quy-tac-so-phu-de.md` | Quy tắc viết số trên màn hình (ITN): 11%/năm, 9.363, quý II/2029 |
 | `prompt-gemini-nghien-cuu.md` | Khung prompt nghiên cứu số liệu |
 | `phan-vai-claude-antigravity.md` | Phân vai Claude Code (Lead) và Antigravity (rà soát, chỉ đọc) trên cùng repo |

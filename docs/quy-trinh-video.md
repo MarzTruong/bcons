@@ -34,6 +34,16 @@ Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` củ
 - [x] Cảnh cuối: **không đọc và không hiện số điện thoại** (anh quyết định 04/11/2026). Cuối video chỉ chạy thông tin dự án (tên, địa chỉ, tin nhắn/liên hệ qua kênh anh chọn). Không dùng cụm "Liên hệ: Tuấn - ..." của prompt cũ.
 - [ ] Công ty chưa gửi quy định nội dung chính thức → anh duyệt toàn bộ.
 
+## 3b. Kiểm hook và nhịp (bắt buộc ở cổng 2, thêm 15/11/2026)
+Căn cứ: báo cáo tuần 06–12/11 (thời gian xem TB TikTok 1–4 s trên video 49–58 s, 0 bình luận) và `docs/phan-tich-video-tham-khao.md`. Là mục tiêu để thử, chưa phải kết luận; đo lại ở báo cáo tuần.
+- [ ] **3 phương án hook** (một con số / một câu hỏi / một kết quả), anh chọn một; ghi hook đã chọn vào đầu `kich-ban.md`.
+- [ ] **Khung 0 có chữ và hình** (không ô trắng/đen): khung đầu cũng là ảnh bìa lưới TikTok. Tiêu đề hook tối đa 6 chữ, có con số hoặc kết quả, hiện trong 1 giây đầu.
+- [ ] **Lời cảnh 1 tới con số đầu trong 12 chữ** (khoảng 4 giây). Hiện cảnh 1 của 9 video đã làm dài 20–42 chữ.
+- [ ] **Độ dài mục tiêu 25–35 giây** (70–95 chữ lời); mỗi cảnh không quá 8 giây. Dài hơn phải có lý do.
+- [ ] **Nhịp: cứ 2–3 giây có một thứ mới** trên hình (số hiện, thẻ vào, vùng sáng); storyboard ghi "điểm đổi" từng cảnh. Không để một cảnh đứng yên 10 giây.
+- [ ] **Cảnh cuối có một câu hỏi dễ trả lời** (một con số hoặc một chữ), thay lời mời "comment …"; QR đã tự thêm.
+- [ ] Hình/chữ dựng: không bắt chước kiểu nền tối kẻ lưới, thẻ viền sáng, nhãn chữ hoa của video tham khảo (trái "No AI Slop"). Chỉ học nhịp và cấu trúc.
+
 ## 4. Công cụ hỗ trợ
 - **Superpowers** (cài theo mục 5): dùng `brainstorming` khi lên ý tưởng/kịch bản mới, `writing-plans` + `verification-before-completion` khi sửa code Remotion/script, `systematic-debugging` khi render hoặc giọng đọc lỗi.
 - **Plugin Remotion** (đã cài): quy chuẩn viết composition.
