@@ -23,17 +23,17 @@ Nhịp: cứ 2–3 giây có một thứ mới; cả cảnh 7–9 giây. Làm **
 ## Dữ liệu và ảnh có sẵn (trong repo, sau `git pull`)
 | Dùng cho | File | Ghi chú |
 |---|---|---|
-| Popup video 4 | `du-an/bcons-newsky/assets/images/bang-chung-bao-tuoitre-ql13.png` | Chụp tiêu đề + đoạn dẫn bài Tuổi Trẻ 05/10/2026 (đã ghép nền; AGY cần bản chụp gốc không nền: nhờ anh gửi hoặc chụp lại từ link) |
-| Popup video 5 | `du-an/bcons-newsky/assets/images/bang-chung-bao-vnexpress-gia.png` | Tiêu đề + đoạn dẫn bài VnExpress 23/09/2026; **không** lấy phần dưới bài (có nhắc dự án khác) |
-| Popup video 3 | thông báo 34/TB-SHQT: trang 1, **cắt**: giữ tiêu đề, dòng "Chủ đầu tư cam kết thuê lại", mức 2PN 11 triệu và 13 triệu; **che** mức 3PN và shophouse | Anh đang gửi bản trang 1; sẽ bổ sung vào `assets/images/` |
-| Nền | `phoi-canh-quoc-lo-13.jpg`, `phoi-canh-tong-the.jpg` | Phối cảnh (ghi minh họa). **Ảnh hiện trạng thi công Quốc lộ 13 mới nhất: anh cung cấp** (hoặc AGY xin anh); không dùng ảnh bản quyền khác khi chưa hỏi |
+| Popup video 4 | `bang-chung-bao-tuoitre-ql13-goc.png` (không nền) và `bang-chung-bao-tuoitre-ql13.png` (bản tạm ghép nền) | Tiêu đề + đoạn dẫn bài Tuổi Trẻ 05/10/2026 |
+| Popup video 5 | `bang-chung-bao-vnexpress-gia-goc.png` (không nền) và `bang-chung-bao-vnexpress-gia.png` (bản tạm ghép nền) | Tiêu đề + đoạn dẫn bài VnExpress 23/09/2026; **không** lấy phần dưới bài (có nhắc dự án khác) |
+| Popup video 3 | `bang-chung-thong-bao-34-goc.png` (cắt không nền) và `bang-chung-thong-bao-34.png` (bản tạm ghép nền) | Thông báo 34/TB-SHQT, đã cắt đến hết mức 2PN (11 và 13 triệu); phần mức 3PN và shophouse bị cắt bỏ theo anh chốt 15/11/2026 |
+| Nền | `phoi-canh-quoc-lo-13.jpg`, `phoi-canh-tong-the.jpg` | Phối cảnh (ghi minh họa). **Ảnh hiện trạng:** `hien-trang-ql13-tuoitre-1.jpg` (công nhân đặt cọc tiêu trên Quốc lộ 13) và `hien-trang-ql13-tuoitre-2.jpg` (cổng chào Bình Dương cũ đang tháo dỡ), cả hai từ bài Tuổi Trẻ 05/10/2026, anh cho dùng với ghi nguồn: hiện chữ "Ảnh: Tuổi Trẻ" trên hình. Video 5 dùng chung hai ảnh này làm nền (chưa lấy được ảnh VnExpress: máy chủ ảnh `vcdn1-vnexpress.vnecdn.net` bị chặn) |
 
 ## Hợp đồng dữ liệu (để Claude lắp vào Remotion)
 Mỗi cảnh sẽ có dạng (Claude điền từ `spec.json`):
 ```json
 { "template": "bang-chung",
   "kicker": "Quốc lộ 13", "title": "Từ Lái Thiêu về Bình Triệu",
-  "anhNen": { "file": "assets/images/hien-trang-ql13.jpg", "nhan": "Hiện trạng thi công, 10/2026" },
+  "anhNen": { "file": "assets/images/hien-trang-ql13-tuoitre-1.jpg", "nhan": "Ảnh: Tuổi Trẻ, 10/2026" },
   "popup": { "file": "assets/images/bang-chung-bao-tuoitre-ql13-goc.png", "nguon": "Tuổi Trẻ", "ngay": "05/10/2026" },
   "bieuDo": { "don_vi": "triệu/m²", "cot": [ { "nhan": "Trước đây", "tu": 35, "den": 40 }, { "nhan": "Quý II/2026", "gia_tri": 60 } ], "nguon": "One Mount Group, VnExpress 23/09/2026" } }
 ```

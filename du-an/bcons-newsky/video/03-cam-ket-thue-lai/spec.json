@@ -106,7 +106,14 @@
             "sourceId": "geo-newsky"
           }
         ],
-        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
+        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)",
+        "image": {
+          "file": "assets/images/bang-chung-thong-bao-34.png",
+          "label": "Thông báo 34/TB-SHQT, 12/11/2026",
+          "cueKey": "d",
+          "offset": 150,
+          "sourceId": "thue-24t"
+        }
       }
     },
     {
