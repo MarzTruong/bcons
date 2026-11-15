@@ -3,10 +3,10 @@
 Anh dán cho AGY: "Em `git pull` trong `E:\Claude\bcons-agy`, đọc `agy/giao-viec/2026-11-15-phan-tich-video-tham-khao.md`, rồi làm theo."
 
 ## Vì sao
-Claude chạy trên cloud, không đọc được `E:\Claude\video-tham-khao` và connector Drive chỉ tải được file dưới 10 MB. Claude mới phân tích được 1 video (kết quả ở `docs/phan-tich-video-tham-khao.md`, đọc trước để biết khung phân tích và cách ghi). Còn lại là việc của AGY: xem trực tiếp từng video, tách khung hình, ghi kỹ thuật học được cho video Bcons.
+Claude chạy trên cloud, không đọc được `E:\Claude\bcons-agy\video-tham-khao` và connector Drive chỉ tải được file dưới 10 MB. Claude mới phân tích được 1 video (kết quả ở `docs/phan-tich-video-tham-khao.md`, đọc trước để biết khung phân tích và cách ghi). Còn lại là việc của AGY: xem trực tiếp từng video, tách khung hình, ghi kỹ thuật học được cho video Bcons.
 
 ## Việc cần làm
-Với **mỗi video** trong `E:\Claude\video-tham-khao` (khoảng 5 file mp4, kể cả `green skyline.mp4`; nếu anh bỏ thêm file mới thì làm luôn):
+Thư mục này nằm ngay trong bản sao `bcons-agy` nhưng **không lên git** (`.gitignore` đã chặn `video-tham-khao/`). Với **mỗi video** trong `E:\Claude\bcons-agy\video-tham-khao` (khoảng 5 file mp4, kể cả `green skyline.mp4`; nếu anh bỏ thêm file mới thì làm luôn):
 1. Ghi thông số: thời lượng, tỉ lệ khung, fps.
 2. **Tách khung hình** (ffmpeg hoặc công cụ AGY có): dày ở 3 giây đầu (4 khung mỗi giây), sau đó 1 khung mỗi giây. Ghép thành lưới theo từng đoạn để xem.
 3. Ghi theo từng video (dùng đúng các cột của bảng mục 2 `docs/phan-tich-video-tham-khao.md`): chủ đề; **hook 3 giây đầu** (hình, chữ, âm thanh, khung 0 có gì); cấu trúc và nhịp (mấy cảnh, mỗi cảnh bao lâu, cắt hay chuyển cảnh thế nào, **mỗi bao nhiêu giây có thứ mới trên hình**); cách dùng chữ (cỡ, vị trí, phụ đề, nhấn chữ); loại hình (bản đồ, phối cảnh, flycam, đồ họa, người); âm thanh nếu nghe được (giọng, nhạc, hiệu ứng, chỗ nhạc đổi nhịp); cách kết (CTA, câu hỏi, QR); điểm hay; điểm dở.

@@ -25,3 +25,6 @@ engine/banhang/dist/
 /am-thanh/
 du-an/*/.am-thanh/
 .superpowers/
+
+# Video tham khảo của người khác (chỉ để trong bản sao của AGY, không lên git)
+video-tham-khao/
