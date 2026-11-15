@@ -2,53 +2,110 @@
   "name": "02-von-mua-can-nao",
   "so": 2,
   "tieuDe": "Mua căn 3 tỷ cần bao nhiêu tiền",
-  "status": "approved",
+  "status": "draft",
   "style": "anh",
   "motion": "classic",
   "scenes": [
     {
       "id": "scene1",
       "template": "stat-hero",
-      "markup": "Mua căn 3{ba} tỷ, có phải cầm sẵn 3{ba} tỷ không? Không. Em lấy căn ví dụ 3{ba} tỷ chưa VAT{vê a tê}: bước đầu chỉ 150{một trăm năm mươi} triệu.",
-      "cues": { "value": "150" },
-      "nhan": ["Không."],
+      "markup": "Mua căn 3{ba} tỷ, có phải cầm sẵn 3{ba} tỷ không? Không. Bước đầu chỉ 150{một trăm năm mươi} triệu.",
+      "cues": {
+        "value": "150"
+      },
+      "nhan": [
+        "Không."
+      ],
       "props": {
         "badge": "Căn ví dụ 3 tỷ, chưa VAT",
-        "titleLines": ["Mua căn 3 tỷ", "cần bao nhiêu?"],
+        "titleLines": [
+          "Mua căn 3 tỷ",
+          "cần bao nhiêu?"
+        ],
         "cardLabel": "Bước đầu, lúc ký thỏa thuận giữ căn (5%)",
         "value": 150,
         "decimals": 0,
         "unit": "triệu",
         "sourceId": "pttt-09",
-        "image": { "file": "assets/images/phoi-canh-goc-thap.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-goc-thap" }
+        "image": {
+          "file": "assets/images/phoi-canh-goc-thap.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-goc-thap"
+        }
       }
     },
     {
       "id": "scene2",
-      "template": "data-cards",
-      "markup": "Tới lúc ký hợp đồng, mình đóng thêm 180{một trăm tám mươi} triệu. 7{Bảy} ngày sau, nếu mình vay, ngân hàng giải ngân một nửa giá căn.",
-      "cues": { "c1": "Tới", "c2": "180", "c3": "ngân" },
+      "template": "compare-bars",
+      "markup": "Cả căn chia ra ba phần. Ngân hàng lo khoảng 1{một} nửa. Phần mình là vốn tự có trước khi nhận nhà, và 1{một} đợt cuối lúc nhận nhà.",
+      "cues": {
+        "b1": "Ngân",
+        "b2": "vốn",
+        "b3": "đợt"
+      },
       "props": {
-        "kicker": "Căn ví dụ 3 tỷ",
-        "title": "Ba mốc đầu tiên",
-        "cards": [
-          { "tag": "Ký thỏa thuận", "big": "150 triệu", "sub": "giữ căn, 5% chưa VAT", "cueKey": "c1", "offset": -5, "sourceId": "pttt-09" },
-          { "tag": "Ký hợp đồng", "big": "thêm 180 triệu", "sub": "5% cộng VAT hai đợt đầu", "cueKey": "c2", "offset": -5, "sourceId": "tinh-toan-von" },
-          { "tag": "7 ngày sau", "big": "1,65 tỷ", "sub": "ngân hàng giải ngân 50% nếu vay", "cueKey": "c3", "offset": -5, "sourceId": "pttt-09" }
+        "kicker": "Căn ví dụ 3 tỷ, chưa VAT",
+        "title": "Tiền đến từ đâu",
+        "unit": "triệu đồng",
+        "bars": [
+          {
+            "label": "Ngân hàng giải ngân (nếu vay)",
+            "value": 1650,
+            "cueKey": "b1",
+            "sourceId": "pttt-09"
+          },
+          {
+            "label": "Vốn tự có trước khi nhận nhà",
+            "value": 660,
+            "cueKey": "b2",
+            "sourceId": "tinh-toan-von"
+          },
+          {
+            "label": "Nhận nhà (gồm phí bảo trì 2%)",
+            "value": 900,
+            "cueKey": "b3",
+            "sourceId": "tinh-toan-von"
+          }
         ]
       }
     },
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "2{Hai} tháng, 4{bốn} tháng sau, mỗi lần 165{một trăm sáu mươi lăm} triệu. Cộng lại, vốn tự có khoảng 660{sáu trăm sáu mươi} triệu. Nhận nhà dự kiến quý II{hai} năm 2028,{hai ngàn không trăm hai mươi tám,} đóng thêm khoảng 900{chín trăm} triệu. Tức là tiền nằm đó gần 2{hai} năm.",
-      "cues": { "c1": "660", "c2": "900" },
+      "markup": "Tiền đóng rải từng đợt, từ lúc ký tới lúc nhận nhà. Em nói luôn: tiền sẽ nằm đó gần 2{hai} năm, anh chị tính trước nha.",
+      "cues": {
+        "c1": "Tiền",
+        "c2": "lúc",
+        "c3": "nằm"
+      },
       "props": {
         "kicker": "Căn ví dụ 3 tỷ",
-        "title": "Tiền đi thế nào",
+        "title": "Lộ trình các đợt",
         "cards": [
-          { "tag": "Tự có trước khi nhận nhà", "big": "660 triệu", "sub": "4 đợt: 150 + 180 + 165 + 165", "cueKey": "c1", "offset": -5, "sourceId": "tinh-toan-von" },
-          { "tag": "Nhận nhà, dự kiến Quý II/2028", "big": "~900 triệu", "sub": "25% giá căn, đã gồm phí bảo trì 2%", "cueKey": "c2", "offset": -5, "sourceId": "tinh-toan-von" }
+          {
+            "tag": "Ký thỏa thuận",
+            "big": "150 triệu",
+            "sub": "giữ căn, 5% chưa VAT",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "pttt-09"
+          },
+          {
+            "tag": "Ký hợp đồng, rồi 2 và 4 tháng sau",
+            "big": "180 + 165 + 165 triệu",
+            "sub": "ký hợp đồng gồm VAT hai đợt đầu",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "tinh-toan-von"
+          },
+          {
+            "tag": "Nhận nhà, dự kiến Quý II/2028",
+            "big": "~900 triệu",
+            "sub": "25% giá căn, đã gồm phí bảo trì 2%",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "tinh-toan-von"
+          }
         ]
       }
     },
@@ -59,7 +116,11 @@
       "cues": {},
       "props": {
         "message": "Quét mã xem lộ trình tiền đúng căn bạn chọn · Mặt tiền Quốc lộ 13, phường Lái Thiêu",
-        "image": { "file": "assets/images/phoi-canh-tong-the.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-tong-the" }
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
       }
     }
   ]
