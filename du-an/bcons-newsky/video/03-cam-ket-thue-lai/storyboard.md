@@ -6,7 +6,7 @@ Thời lượng ước tính khi chưa có giọng: khoảng 29 giây. Ảnh ch�
 |---|---|---|---|---|
 | 1 (~5 s) | Căn hộ này, chủ đầu tư thuê lại của anh chị 24 tháng. | Phối cảnh nền; tiêu đề "Chủ đầu tư / thuê lại" (0 s); số 24 "tháng" khi đọc "24" (~3 s) | "Nguồn: Thông báo chủ đầu tư 12/11/2026"; "Phối cảnh minh họa" | thue-24t |
 | 2 (~9 s) | Cùng là 2 phòng ngủ, có mức thuê 11 triệu mỗi tháng, có 13 triệu. Chênh nhau ở đúng 1 con số trên bản vẽ. | Thẻ "11 triệu/tháng" (~2 s), thẻ "13 triệu/tháng" (~5 s) | | thue-2pn |
-| 3 (~9 s) | Đây là thông báo của chủ đầu tư, ngày 12/11, cho một số căn ở Bcons Newsky, mặt tiền Quốc lộ 13. | Bản đồ vệ tinh bay tới dự án, chấm đỏ Newsky (~1 s), thẻ "Mặt tiền Quốc lộ 13" (~2 s); cuối cảnh chuyển sang **ảnh chụp thông báo 34/TB-SHQT làm minh chứng** (chờ file thông báo từ anh) | "Vị trí theo tọa độ dự án"; © Mapbox © OpenStreetMap | geo-newsky, thue-24t |
+| 3 (~9 s) | Đây là thông báo của chủ đầu tư, ngày 12/11, cho một số căn ở Bcons Newsky, mặt tiền Quốc lộ 13. | Bản đồ vệ tinh bay tới dự án, chấm đỏ Newsky (~1 s), thẻ "Mặt tiền Quốc lộ 13" (~2 s); cuối cảnh chuyển sang **ảnh chụp thông báo 34/TB-SHQT làm minh chứng** (anh chốt 15/11/2026: **cắt**, chỉ giữ tiêu đề, dòng cam kết thuê lại và mức 2 phòng ngủ 11 và 13 triệu; che mức 3 phòng ngủ và shophouse; chờ anh gửi trang 1 thông báo; kiểu popup do AGY làm) | "Vị trí theo tọa độ dự án"; © Mapbox © OpenStreetMap | geo-newsky, thue-24t |
 | 4 (~5 s) | Con số đó là gì? Anh chị đoán thử trong phần bình luận. | Phối cảnh tổng thể (minh họa), tên dự án, "Mặt tiền Quốc lộ 13 · phường Lái Thiêu"; tên + QR | | phoi-canh-tong-the |
 
 Không chữ nhỏ về danh sách căn (anh quyết 15/11/2026): caption nói "một số căn". Không SĐT chữ, không quà tặng, không "bù lãi vay".
