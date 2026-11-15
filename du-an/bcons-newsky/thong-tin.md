@@ -18,7 +18,7 @@ Nguồn: tài liệu CĐT và sàn trên Drive `Bcons/data/bcons-newsky/tai-lieu
 - 2 tháp A và B, mỗi tháp 29 tầng nổi (gồm 3 tầng để chung), 2 tầng hầm. Cao 99,9 m. Khối đế: 29 căn thương mại dịch vụ, nhà trẻ, sinh hoạt cộng đồng, bể bơi ngoài trời, gym.
 - Căn hộ ở khoảng 42–91 m² (tháp A) và 42–89 m² (tháp B). Thang máy: tháp A 18, tháp B 12.
 - Tổng diện tích khu đất 19.779,5 m². Cơ cấu sản phẩm (anh cung cấp 11/11/2026, chép từ chỉ tiêu quy hoạch): **1.536 căn hộ chung cư và 29 căn thương mại dịch vụ**. Mật độ xây dựng: khối đế 42,49%, khối tháp 31,27%. Chiều cao tối đa 99,9 m.
-- Thông báo 213/TB-BPS ghi "594 sản phẩm" (mốc bốc thăm), chưa rõ là phần đang mở bán hay tổng; không nhầm với tổng 1.565. (Báo cáo môi trường cũ ghi 1.632 căn cho tên cũ Tecco City: không dùng.)
+- "594 sản phẩm" (213/TB-BPS, mốc bốc thăm) chính là danh sách căn đính kèm thông báo 34/TB-SHQT (12/11/2026): 132 căn tháp A + 462 căn tháp B (đã đếm 14/11/2026); không nhầm với tổng 1.565. (Báo cáo môi trường cũ ghi 1.632 căn cho tên cũ Tecco City: không dùng.)
 - Bàn giao: **dự kiến Quý II/2028** (thông báo PTTT; anh xác nhận 11/11/2026). Quyết định 3759 ghi hoàn thành dự án đưa vào hoạt động Quý I/2029 (xây dựng Quý III/2025 – Quý IV/2028): đó là mốc hoàn thành toàn dự án, không dùng khi nói với khách về bàn giao căn hộ.
 
 - Tiến độ: slide training ghi "đã có GPXD, khởi công tháng 10/2025"; slide kick-off 11/12/2025 ghi "mới khởi công trong T12/2025". Dùng mốc khởi công tháng 10/2025 (tài liệu mới hơn), hỏi anh nếu cần mốc chốt.
@@ -40,6 +40,8 @@ MB (độc quyền gói trần 6,9%), OCB, BIDV, Public Bank, ACB, Vietcombank, 
 
 ## Chính sách của sàn (công khai cho khách)
 - Thông báo 213/TB-BPS (06/11/2026): quà tặng bốc thăm 1 xe Toyota Camry 2.0 cho khách của hệ thống Bcons PS có thỏa thuận quyền chọn thành công từ 06/11/2026; chỉ bốc thăm khi dự án đạt tối thiểu 95%/594 sản phẩm (565) đến hết 30/06/2027; phải thanh toán đủ, ký HĐMB đúng hạn, có mặt trực tiếp nhận. Hỏi anh trước khi nhắc trong nội dung.
+- **Cam kết thuê lại 24 tháng** (34/TB-SHQT, CĐT Song Hỷ Quốc Tế, 12/11/2026; anh đồng ý nêu trong nội dung 15/11/2026): chỉ căn trong danh sách 594 căn, khách chọn khi ký Thỏa thuận đăng ký. Mức theo diện tích thông thủy: 2PN <65 m² 11 triệu/tháng; 2PN ≥65 m² 13 triệu; 3PN <80 m² 14 triệu; 3PN ≥80 m² 15 triệu; shophouse ≥80 m² 15 triệu. Trong 24 tháng kể từ ngày CĐT phát hành thông báo bàn giao, trả hàng tháng, đã gồm thuế phí, không khấu trừ tại nguồn; điều kiện thanh toán đúng hạn và tuân thủ HĐMB; chuyển nhượng HĐMB thì người nhận kế thừa nếu vẫn đáp ứng điều kiện. Chỉ nói đúng nguyên văn, không tính lợi suất, không nói "bù lãi vay".
+- **Quà tặng giao dịch thành công** (thay 191/TB-BPS; số trên bản scan đọc ra 224/TB-BPS, tên file 221TB: kiểm lại bản gốc): 01 chỉ vàng SBJ/giao dịch; 50 giao dịch sớm nhất voucher 30 triệu, 50 giao dịch tiếp theo 20 triệu (quy đổi tiền mặt); trao 30–45 ngày sau ký HĐMB; áp dụng cho quyền chọn thành công từ 06/10/2026, thanh toán đúng hạn 7 ngày. Khách chọn cam kết thuê lại thì không nhận quà này. Anh đồng ý nêu trong nội dung 15/11/2026.
 - Quà tặng giao dịch thành công (191/TB-BPS, thay 122/TB-BPS): 01 chỉ vàng SBJ/giao dịch (trao 30–45 ngày sau ký HĐMB); 50 giao dịch sớm nhất voucher 30 triệu, 50 giao dịch tiếp theo 20 triệu; áp dụng cho quyền chọn thành công từ 06/10/2026 và thanh toán đúng hạn 07 ngày. Hỏi anh trước khi nhắc trong nội dung.
 - Chính sách hoa hồng/hỗ trợ bổ sung (193TB, 206TB) và thưởng nóng: nội bộ, **không chép vào repo**; đã nhập vào Master File Newsky trên Drive.
 
