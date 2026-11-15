@@ -1,6 +1,6 @@
 # Video Newsky 2 "Căn 3 tỷ, bước đầu chỉ 150 triệu" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 1 (số liệu và góc), chờ anh duyệt.** Chưa có `spec.json`, giọng, hình. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án). Tên thư mục giữ `02-von-mua-can-nao`.
+**Trạng thái: cổng 1 anh đã duyệt 15/11/2026 (chọn câu mở số 1, bỏ câu "Căn của anh chị thì số khác", không xác minh căn 3 tỷ); cổng 2 (chữ + số + caption + storyboard) chờ anh duyệt.** `spec.json` đang `draft`; chưa có giọng, chưa render. Làm theo `docs/quy-trinh-video.md`. Trụ cột A (dự án). Tên thư mục giữ `02-von-mua-can-nao`.
 
 Góc (anh đề xuất 15/11/2026): **hook "bước đầu chỉ từ 150 triệu"** (5% đợt 1 của căn ví dụ 3 tỷ, PTTT 09), rồi nói thẳng cả lộ trình tiền để khách không hiểu nhầm. Không nói lợi nhuận, không nói tăng giá, không giục mua. Lời bình viết lại lần 2 (15/11/2026, mục "Viết lại" bên dưới).
 
@@ -28,13 +28,14 @@ Bản đầu đọc như đọc bảng: nhồi "ký thỏa thuận đăng ký, p
 | 1 (0–9 s) | `stat-hero` + phối cảnh | **150 triệu** · "bước đầu" | "Căn ví dụ 3 tỷ, chưa VAT · đợt giữ căn (5%)" | Mua căn ba tỷ, có phải cầm sẵn ba tỷ không? Không. Em lấy căn ví dụ ba tỷ chưa VAT: bước đầu chỉ một trăm năm mươi triệu. |
 | 2 (9–20 s) | `data-cards` 3 thẻ theo thứ tự | "150 triệu" → "+180 triệu" → "1,65 tỷ" | "Lúc ký thỏa thuận" · "Lúc ký hợp đồng (đã gồm VAT hai đợt đầu)" · "7 ngày sau, ngân hàng giải ngân 50%" | Tới lúc ký hợp đồng, mình đóng thêm một trăm tám mươi triệu. Bảy ngày sau, nếu mình vay, ngân hàng giải ngân một nửa giá căn. |
 | 3 (20–32 s) | `data-cards` 2 thẻ | "660 triệu" · "~900 triệu" | "Tự có trước khi nhận nhà (4 đợt)" · "Nhận nhà, đã gồm phí bảo trì 2%" | Hai tháng, bốn tháng sau, mỗi lần một trăm sáu mươi lăm triệu. Cộng lại, vốn tự có khoảng sáu trăm sáu mươi triệu. Nhận nhà dự kiến quý hai năm hai ngàn không trăm hai mươi tám, đóng thêm khoảng chín trăm triệu. Tức là tiền nằm đó gần hai năm. |
-| 4 (32–40 s) | `project-close` + QR | "Bcons Newsky" | "Mặt tiền Quốc lộ 13, phường Lái Thiêu" | Căn của anh chị thì số khác. Quét mã, em tính từng đợt cho đúng căn mình chọn. |
+| 4 (32–40 s) | `project-close` + QR | "Bcons Newsky" | "Mặt tiền Quốc lộ 13, phường Lái Thiêu" | Quét mã, em tính từng đợt cho đúng căn anh chị chọn. |
 
 Ghi chú kịch bản:
 - Cảnh 3 có điểm đánh đổi ("tiền nằm đó gần hai năm"): giữ, đó là câu làm người xem tin phần còn lại. Tính từ tháng 11/2026 đến Quý II/2028 dự kiến là khoảng 19 tháng; nói "gần hai năm", không nói chắc.
 - Không nói số tiền trả góp hằng tháng và trần lãi 6,9% trong bản 40 giây (lãi và kỳ hạn là giả định, trần 6,9% có điều kiện riêng của PTTT 09). Hỏi qua QR hoặc phiếu tính. Nếu anh muốn có câu về lãi: thêm vào cảnh 2 "ngân hàng cho vay theo gói chủ đầu tư công bố, lãi theo điều kiện từng gói".
 - Chữ hiển thị tối đa 8 từ mỗi thẻ; số to, chữ nhỏ ghi rõ chưa VAT/đã gồm VAT.
-- Câu "Căn của anh chị thì số khác" nhắc đây là ví dụ, tránh hiểu nhầm là báo giá.
+- Anh chọn bỏ câu "Căn của anh chị thì số khác" (15/11/2026). "Căn ví dụ 3 tỷ" ghi rõ trên hình: đây là ví dụ tính, không quảng cáo một căn cụ thể.
+- Anh quyết 15/11/2026: không xác minh căn 3 tỷ còn trống trước khi đăng (nội dung kéo khách; có khách thật hỏi căn cụ thể thì kiểm giỏ hàng rồi tư vấn). Vì không báo giá hay mã căn, đây không phải quảng cáo căn đã cọc/LOCK.
 
 ## SEO / tìm kiếm (TikTok và Facebook đều có ô tìm kiếm)
 - **Từ khóa chính:** "mua căn hộ cần bao nhiêu tiền" (câu người thật gõ). **Phụ:** "căn hộ Bình Dương", "thanh toán căn hộ", "vay mua căn hộ", "Bcons Newsky".
@@ -63,10 +64,11 @@ Ghi chú nội dung:
 | id | Số liệu | Ngày công bố | Nguồn | Link | Ghi chú kiểm |
 |---|---|---|---|---|---|
 | gia-tu-loai-can | Giá thấp nhất mỗi loại căn tháp B: 2PN-1WC 2,56 tỷ; 2PN-2WC 2,75; 3PN-2WC 3,87; 3PN-3WC 4,28 (PTTT 09, chưa VAT) | 06/10/2026 | CĐT: file check giá tháp B (Master File trên Drive) | `du-an/bcons-newsky/thong-tin.md` (bảng Giá) | Chưa có link công khai; kiểm lại căn còn trống ngày đăng |
-| pttt-09 | Lịch PTTT 09: 5% + 5% + 50% ngân hàng giải ngân + 5% + 5% + 25% bàn giao + 5% GCN; lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; MB gói cố định tối đa 30 tháng | 05/10/2026 | Thông báo PTTT 09 của CĐT | `du-an/bcons-newsky/nguon/pttt-cdt.json` | Khớp file nguồn |
+| pttt-09 | Lịch PTTT 09: 5% + 5% + 50% ngân hàng giải ngân + 5% + 5% + 25% bàn giao + 5% GCN; lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; MB gói cố định tối đa 30 tháng | 05/10/2026 | Thông báo PTTT 09 của CĐT (30/TB-SHQT) | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ (bản chép: `du-an/bcons-newsky/nguon/pttt-cdt.json`) | Khớp file nguồn |
 | vat-bao-tri | VAT 10%; phí bảo trì 2% giá chưa VAT đóng khi nhận nhà | 05/10/2026 | Thông báo PTTT của CĐT; anh xác nhận VAT 10% ngày 12/11/2026 | `du-an/bcons-newsky/nguon/pttt-cdt.json` | |
-| tinh-toan-von | Vốn tự có và đợt nhận nhà theo bảng trên | 15/11/2026 | Tính bằng lõi `engine/banhang/tai-chinh.mjs` | `engine/banhang/tai-chinh.mjs` | Làm lại khi giá hoặc PTTT đổi |
+| tinh-toan-von | Vốn tự có và đợt nhận nhà theo bảng trên | 15/11/2026 | Tính bằng lõi `engine/banhang/tai-chinh.mjs` (căn ví dụ 3 tỷ, PTTT 09) | https://github.com/MarzTruong/bcons/blob/main/engine/banhang/tai-chinh.mjs | Làm lại khi giá hoặc PTTT đổi |
 | newsky-ban-giao | Bàn giao dự kiến Quý II/2028 | 11/11/2026 | Thông báo PTTT của CĐT; anh xác nhận 12/11/2026 | `du-an/bcons-newsky/nguon/pttt-cdt.json` | Nói "dự kiến" |
+| phoi-canh-goc-thap | Phối cảnh góc nhìn tháp (file sky-angle, ghi minh họa) | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 | phoi-canh-tong-the | Phối cảnh tổng thể dự án (ghi minh họa) | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | |
 
 ## Việc cần anh quyết ở cổng 1

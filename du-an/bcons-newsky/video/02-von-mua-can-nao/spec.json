@@ -1,0 +1,66 @@
+{
+  "name": "02-von-mua-can-nao",
+  "so": 2,
+  "tieuDe": "Mua căn 3 tỷ cần bao nhiêu tiền",
+  "status": "draft",
+  "style": "anh",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Mua căn 3{ba} tỷ, có phải cầm sẵn 3{ba} tỷ không? Không. Em lấy căn ví dụ 3{ba} tỷ chưa VAT{vê a tê}: bước đầu chỉ 150{một trăm năm mươi} triệu.",
+      "cues": { "value": "150" },
+      "nhan": ["Không."],
+      "props": {
+        "badge": "Căn ví dụ 3 tỷ, chưa VAT",
+        "titleLines": ["Mua căn 3 tỷ", "cần bao nhiêu?"],
+        "cardLabel": "Bước đầu, lúc ký thỏa thuận giữ căn (5%)",
+        "value": 150,
+        "decimals": 0,
+        "unit": "triệu",
+        "sourceId": "pttt-09",
+        "image": { "file": "assets/images/phoi-canh-goc-thap.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-goc-thap" }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "data-cards",
+      "markup": "Tới lúc ký hợp đồng, mình đóng thêm 180{một trăm tám mươi} triệu. 7{Bảy} ngày sau, nếu mình vay, ngân hàng giải ngân một nửa giá căn.",
+      "cues": { "c1": "Tới", "c2": "180", "c3": "ngân" },
+      "props": {
+        "kicker": "Căn ví dụ 3 tỷ",
+        "title": "Ba mốc đầu tiên",
+        "cards": [
+          { "tag": "Ký thỏa thuận", "big": "150 triệu", "sub": "giữ căn, 5% chưa VAT", "cueKey": "c1", "offset": -5, "sourceId": "pttt-09" },
+          { "tag": "Ký hợp đồng", "big": "thêm 180 triệu", "sub": "5% cộng VAT hai đợt đầu", "cueKey": "c2", "offset": -5, "sourceId": "tinh-toan-von" },
+          { "tag": "7 ngày sau", "big": "1,65 tỷ", "sub": "ngân hàng giải ngân 50% nếu vay", "cueKey": "c3", "offset": -5, "sourceId": "pttt-09" }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "data-cards",
+      "markup": "2{Hai} tháng, 4{bốn} tháng sau, mỗi lần 165{một trăm sáu mươi lăm} triệu. Cộng lại, vốn tự có khoảng 660{sáu trăm sáu mươi} triệu. Nhận nhà dự kiến quý II{hai} năm 2028,{hai ngàn không trăm hai mươi tám,} đóng thêm khoảng 900{chín trăm} triệu. Tức là tiền nằm đó gần 2{hai} năm.",
+      "cues": { "c1": "660", "c2": "900" },
+      "props": {
+        "kicker": "Căn ví dụ 3 tỷ",
+        "title": "Tiền đi thế nào",
+        "cards": [
+          { "tag": "Tự có trước khi nhận nhà", "big": "660 triệu", "sub": "4 đợt: 150 + 180 + 165 + 165", "cueKey": "c1", "offset": -5, "sourceId": "tinh-toan-von" },
+          { "tag": "Nhận nhà, dự kiến Quý II/2028", "big": "~900 triệu", "sub": "25% giá căn, đã gồm phí bảo trì 2%", "cueKey": "c2", "offset": -5, "sourceId": "tinh-toan-von" }
+        ]
+      }
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Quét mã, em tính từng đợt cho đúng căn anh chị chọn.",
+      "cues": {},
+      "props": {
+        "message": "Quét mã xem lộ trình tiền đúng căn bạn chọn · Mặt tiền Quốc lộ 13, phường Lái Thiêu",
+        "image": { "file": "assets/images/phoi-canh-tong-the.jpg", "label": "Phối cảnh minh họa", "sourceId": "phoi-canh-tong-the" }
+      }
+    }
+  ]
+}
