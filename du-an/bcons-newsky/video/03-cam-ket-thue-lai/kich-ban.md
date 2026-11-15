@@ -10,16 +10,16 @@ Góc (anh chốt 15/11/2026): gợi tò mò để khách nhắn hỏi, không n�
 ## Dàn ý 3 cảnh (khoảng 28–32 giây)
 | Cảnh | Mẫu | Hình hiển thị | Lời bình (nháp) |
 |---|---|---|---|
-| 1 | `stat-hero` | "24 tháng" lớn; chữ nhỏ cố định: "áp dụng với căn thuộc danh sách của chủ đầu tư"; phối cảnh (minh họa) | Căn hộ này, chủ đầu tư thuê lại của anh chị hai mươi bốn tháng. |
+| 1 | `stat-hero` | "24 tháng" lớn; phối cảnh (minh họa). Không có chữ nhỏ cố định (anh quyết 15/11/2026) | Căn hộ này, chủ đầu tư thuê lại của anh chị hai mươi bốn tháng. |
 | 2 | `data-cards` | 2 thẻ: "2 phòng ngủ · 11 triệu/tháng", "2 phòng ngủ · 13 triệu/tháng" | Cùng là hai phòng ngủ, có căn được thuê mười một triệu một tháng, có căn mười ba triệu. Chênh nhau ở đúng một con số trên bản vẽ. |
 | 3 | `project-close` | Thẻ dự án Bcons Newsky; tên + QR; câu hỏi | Con số đó là gì? Bình luận đoán, hoặc nhắn để biết căn nào thuộc diện. Bcons Newsky, mặt tiền Quốc lộ 13, phường Lái Thiêu. |
 
 Ghi chú nội dung (quy tắc cứng, không phá dù video gợi tò mò):
 - Không nói "bù lãi vay", không tính lợi suất/ra bao nhiêu phần trăm, không nói "sinh lời", "dòng tiền ổn định".
-- Câu "Căn hộ này" đi kèm chữ nhỏ cố định (chỉ căn trong danh sách 594 căn của thông báo mới được áp dụng): để khỏi hiểu mọi căn đều được thuê lại. Anh duyệt chữ nhỏ này.
+- Anh quyết 15/11/2026: không thêm chữ nhỏ ở cảnh 1. Lưu ý: chỉ căn trong danh sách 594 căn mới được áp dụng; khi khách nhắn hỏi, nói rõ điều này trước khi báo mức; caption nên có ý "một số căn" để không hiểu mọi căn đều được thuê lại.
 - Chỉ nêu 2 mức 11 và 13 triệu. Mức 14 và 15 triệu, danh sách căn, điều kiện (thanh toán đúng hạn, tuân thủ HĐMB), việc chọn cam kết thuê thì không nhận quà tặng: để dành khi khách nhắn.
 - Không nhắc quà tặng/vàng/voucher/Camry trong video này.
-- Thời điểm: 24 tháng tính từ ngày chủ đầu tư phát hành thông báo bàn giao căn hộ (không phải từ ngày mua). Chữ nhỏ ghi "kể từ thông báo bàn giao".
+- Thời điểm: 24 tháng tính từ ngày chủ đầu tư phát hành thông báo bàn giao căn hộ (không phải từ ngày mua); nói rõ khi trả lời khách.
 - Không SĐT chữ (đã có QR). Không thêm dòng "tham khảo" khi chưa hỏi anh.
 
 ## Bảng nguồn
@@ -32,6 +32,6 @@ Ghi chú nội dung (quy tắc cứng, không phá dù video gợi tò mò):
 | newsky-vi-tri | Mặt tiền Quốc lộ 13, phường Lái Thiêu | 09/10/2024 | GPXD 3288 | `du-an/bcons-newsky/thong-tin.md` | |
 
 ## Việc cần anh quyết ở cổng 1
-1. Duyệt góc, hai hook, và chữ nhỏ cố định ở cảnh 1 ("áp dụng với căn thuộc danh sách của chủ đầu tư, kể từ thông báo bàn giao").
+1. Góc và hai hook: anh đã chọn (15/11/2026). Chữ nhỏ ở cảnh 1: anh quyết không cần.
 2. Lời trả lời cho câu hỏi cuối ("diện tích thông thủy 65 m²") để ở bình luận/Zalo, đồng ý không?
 3. Trước khi đăng: kiểm danh sách 594 căn so với giỏ hàng (căn đã cọc/CĐT LOCK không đưa lên hình).
