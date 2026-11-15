@@ -1,11 +1,18 @@
 # NOTES.md — Nhật ký và việc cần làm
 
-Cập nhật lần cuối: 13/11/2026 (Master_Data đã chạy thật G1–G6; còn chờ anh thử đường Xóa và chốt 3 việc)
+Cập nhật lần cuối: 15/11/2026 (bot nhiều dự án, dự án đang bán = Newsky, video Newsky 1 đã đăng, sắp xếp Drive, giao AGY ảnh bìa video)
 
 ## Đã làm
 Việc đã xong chuyển sang `docs/nhat-ky.md` (lịch sử). Chỉ ghi ở đây việc xong trong phiên gần nhất; lệnh "Off" dời xuống nhật ký khi quá 15 dòng.
 
 ## Đang làm
+- [x] 12–15/11/2026 (phiên Main): bot Telegram nhiều dự án (`/duan` nhớ lựa chọn, menu 6 mục, thẻ tiến trình video, lệnh `/phieu_<mã ngắn>_...` đúng dự án); `config.json` = `bcons-newsky`; landing build không kèm `--du-an` xuất mọi dự án (sửa lỗi trang Central Park kẹt bản cũ); mã theo dõi UTM (`utm_source`, `utm_campaign` vào cột Nguồn); tin Zalo soạn sẵn có icon; báo cáo hiệu suất tuần 06–12/11; quy tắc giờ đăng tự lấy từ Metricool (`docs/huong-dan-dang-bai.md`).
+- [x] 12–14/11/2026 video Newsky 1 "Mặt tiền Quốc lộ 13": duyệt, giọng tạo lại cảnh 3–4, đăng 14/11 10:00 (FB + TikTok). Video 8 đăng 13/11 10:00. Sheet "Lịch nội dung" đã ghi "Đã đăng" + link cho video 6, 8, Newsky 1 (video 3, 4, 5, 7: trạng thái "Đã lên lịch", chưa có link bài).
+- [x] 14/11/2026 sắp xếp lại Drive "Bcons": `video/<mã dự án>/` (code render đã sửa), `data/bcons-newsky/video-cong-ty/` (1-da-dung-san, 2-video-tho, 3-flycam), `data/master-data/`, `tham-khao/`, bản render cũ vào `_luu-tru/video-cu/`, sơ đồ `DOC-TRUOC.md` viết lại; bỏ chữ "(thử)" trên 3 Sheet kho khách.
+- [ ] Ảnh bìa video (15/11/2026): lưới TikTok có 2/13 ô trắng, nhiều ô chữ cắt/không đọc được. Đã giao AGY `agy/giao-viec/2026-11-15-anh-bia-video.md` (2 phương án + hợp đồng `bia.json`); sau khi anh chọn: em làm `npm run bia`, ghép khung bìa vào đầu video, dùng bìa cho Reel.
+- [ ] Phân tích video tham khảo (`Bcons/tham-khao/video`) để nâng cấp quy trình/skill video: phiên song song đang làm (15/11/2026).
+- [ ] Video Newsky 2 "Vốn tự có mua được căn nào" (cổng 1 nháp: `du-an/bcons-newsky/video/02-von-mua-can-nao/kich-ban.md`, chờ anh duyệt góc và số).
+- [ ] Anh làm: `/capnhat` bot; đổi tên trang Facebook sang "Tuấn Trương | BĐS Bcons"; gắn link theo dõi bio TikTok/nút fanpage; up video công ty + chữ MKT vào `video-cong-ty`; đăng tay bài Zalo Newsky 1; chọn cách xử lý lệch giọng miền Bắc (A: gửi kèm câu trước/sau khi tạo giọng; B: tạo bản thử cho anh nghe).
 - [x] 12/11/2026 Phiếu hướng A: tin Telegram có link `phieu.html?...` (dựng phiếu trong trình duyệt, nút lưu ảnh PNG), chạy cả khi máy anh tắt; lõi dùng chung `engine/landing/phieu/phieu-core.mjs`. Cần anh dán lại `Code.gs` (như mục trên). Template/giao diện phiếu và nút lưu ảnh là bản tạm, giao AGY (quy tắc phân vai mới 12/11: UI/UX và ảnh là việc của AGY).
 - [x] 11/11/2026 Phiếu tính gửi khách: `/phieu <mã căn> <PTTT> [pdf]` trên bot (PNG 1080 px + PDF), lệnh bấm được `/phieu_...` trong tin báo khách từ landing (Apps Script có dòng "Dựng phiếu tính"), `npm run phieu`, `npm run phieu:mau` (6 phiếu kiểm UX). Lõi tính đọc lịch đợt từ `nguon/pttt-cdt.json` (Central Park và Newsky). Template hiện là bản tạm của em; chờ bản của AGY rồi anh duyệt (spec `docs/superpowers/specs/2026-11-11-phieu-tinh-design.md`).
 - [x] 11/11/2026 Landing Bcons Newsky (thiết kế AGY) đã tích hợp vào `du-an/bcons-newsky/landing/`: máy tính dùng lõi `calc.js` có test, form gửi thật về Apps Script, bỏ bản đồ Google nhúng và câu tiện ích chưa có nguồn. Dựng: `npm run landing -- --du-an bcons-newsky` (`--nhap` để xem thử khi chưa có `formUrl`).
