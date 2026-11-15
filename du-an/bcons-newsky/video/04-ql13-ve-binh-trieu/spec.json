@@ -1,0 +1,80 @@
+{
+  "name": "04-ql13-ve-binh-trieu",
+  "so": 4,
+  "tieuDe": "Quốc lộ 13 về Bình Triệu",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Quốc lộ 13 phía Bình Triệu sắp rộng 60{sáu mươi} mét. Đoạn dài khoảng 5,9{năm phẩy chín} km{ki-lô-mét}, khởi công ngày 29/8.{hai mươi chín tháng tám.}",
+      "cues": {
+        "value": "60"
+      },
+      "props": {
+        "badge": "Nguồn: Tuổi Trẻ 05/10/2026",
+        "titleLines": [
+          "Quốc lộ 13",
+          "về Bình Triệu"
+        ],
+        "cardLabel": "Mặt cắt ngang dự kiến",
+        "value": 60,
+        "decimals": 0,
+        "unit": "m",
+        "sourceId": "ql13-bt-vb",
+        "image": {
+          "file": "assets/images/phoi-canh-quoc-lo-13.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-ql13"
+        }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "data-cards",
+      "markup": "Từ 10{mười} đến 14{mười bốn} làn xe, dự kiến hoàn thành trong năm 2028.{hai ngàn không trăm hai mươi tám.}",
+      "cues": {
+        "c1": "làn",
+        "c2": "hoàn"
+      },
+      "props": {
+        "kicker": "Cầu Bình Triệu – cầu Vĩnh Bình",
+        "title": "Quốc lộ 13 nâng cấp",
+        "cards": [
+          {
+            "tag": "Số làn xe",
+            "big": "10–14 làn",
+            "sub": "nâng cấp tuyến hiện hữu",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "ql13-bt-vb"
+          },
+          {
+            "tag": "Dự kiến hoàn thành",
+            "big": "năm 2028",
+            "sub": "đoạn khoảng 5,9 km",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "ql13-bt-vb"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Bcons{Bee Cons} Newsky{New Sky} nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Anh chị đoán thử, từ đây về Bình Triệu mất bao lâu?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}

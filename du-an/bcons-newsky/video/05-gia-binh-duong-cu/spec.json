@@ -1,0 +1,80 @@
+{
+  "name": "05-gia-binh-duong-cu",
+  "so": 5,
+  "tieuDe": "Mặt bằng giá Bình Dương cũ",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "data-cards",
+      "markup": "Căn hộ mới ở Bình Dương cũ từng quanh 35–40{từ ba mươi lăm đến bốn mươi} triệu đồng mỗi m²{mét vuông}. Quý II{hai} năm nay, mặt bằng đã khoảng 60{sáu mươi} triệu. Vậy 2{hai} phòng ngủ ở Lái Thiêu đang ở mức nào?",
+      "cues": {
+        "c1": "từng",
+        "c2": "Quý"
+      },
+      "props": {
+        "kicker": "Căn hộ mới, Bình Dương cũ",
+        "title": "Giá mỗi mét vuông",
+        "cards": [
+          {
+            "tag": "Trước đây",
+            "big": "35–40 triệu/m²",
+            "sub": "vùng giá từng phổ biến",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "gia-bd-35-40"
+          },
+          {
+            "tag": "Quý II/2026",
+            "big": "khoảng 60 triệu/m²",
+            "sub": "mặt bằng chung, trung bình",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "gia-bd-60"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "stat-hero",
+      "markup": "2{Hai} phòng ngủ Bcons{Bee Cons} Newsky{New Sky}, giá từ 2,56{hai phẩy năm sáu} tỷ đồng, chưa VAT{vê át} và chưa phí bảo trì 2%.{hai phần trăm.}",
+      "cues": {
+        "value": "2,56"
+      },
+      "props": {
+        "badge": "Nguồn: Chủ đầu tư, 06/10/2026",
+        "titleLines": [
+          "Hai phòng ngủ",
+          "Bcons Newsky"
+        ],
+        "cardLabel": "Giá từ, chưa VAT, chưa phí bảo trì 2%",
+        "value": 2.56,
+        "decimals": 2,
+        "unit": "tỷ đồng",
+        "sourceId": "newsky-2pn",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Mặt tiền Quốc lộ 13, phường Lái Thiêu. Theo anh chị, 3{ba} phòng ngủ giá từ bao nhiêu?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}

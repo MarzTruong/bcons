@@ -1,0 +1,80 @@
+{
+  "name": "03-cam-ket-thue-lai",
+  "so": 3,
+  "tieuDe": "Căn hộ chủ đầu tư thuê lại",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Căn hộ này, chủ đầu tư thuê lại của anh chị 24{hai mươi bốn} tháng.",
+      "cues": {
+        "value": "24"
+      },
+      "props": {
+        "badge": "Nguồn: Thông báo chủ đầu tư 12/11/2026",
+        "titleLines": [
+          "Chủ đầu tư",
+          "thuê lại"
+        ],
+        "cardLabel": "Cam kết thuê lại",
+        "value": 24,
+        "decimals": 0,
+        "unit": "tháng",
+        "sourceId": "thue-24t",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "data-cards",
+      "markup": "Cùng là 2{hai} phòng ngủ, có căn được thuê 11{mười một} triệu mỗi tháng, có căn 13{mười ba} triệu. Chênh nhau ở đúng 1{một} con số trên bản vẽ.",
+      "cues": {
+        "c1": "11",
+        "c2": "13"
+      },
+      "props": {
+        "kicker": "Căn 2 phòng ngủ",
+        "title": "Mức thuê mỗi tháng",
+        "cards": [
+          {
+            "tag": "Căn thứ nhất",
+            "big": "11 triệu/tháng",
+            "sub": "2 phòng ngủ",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "thue-2pn"
+          },
+          {
+            "tag": "Căn thứ hai",
+            "big": "13 triệu/tháng",
+            "sub": "2 phòng ngủ",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "thue-2pn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Con số đó là gì? Anh chị đoán thử trong phần bình luận. Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13, phường Lái Thiêu.",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}
