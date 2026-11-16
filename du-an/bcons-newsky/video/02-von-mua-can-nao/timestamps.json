@@ -10,8 +10,8 @@
   "scenes": [
     {
       "id": "scene1",
-      "durationSec": 9.168979591836734,
-      "speech": "Mua căn ba tỷ, có phải cầm sẵn ba tỷ không? Không. Em lấy căn ví dụ ba tỷ chưa vê a tê : bước đầu chỉ một trăm năm mươi triệu.",
+      "durationSec": 6.112653061224489,
+      "speech": "Mua căn ba tỷ, có phải cầm sẵn ba tỷ không? Không. Bước đầu chỉ một trăm năm mươi triệu.",
       "words": [
         {
           "text": "Mua",
@@ -21,52 +21,52 @@
         {
           "text": "căn",
           "start": 0.24,
-          "end": 0.4
+          "end": 0.48
         },
         {
           "text": "3",
-          "start": 0.48,
-          "end": 0.56
+          "start": 0.56,
+          "end": 0.64
         },
         {
           "text": "tỷ,",
-          "start": 0.72,
-          "end": 1.28
-        },
-        {
-          "text": "có",
-          "start": 1.32,
+          "start": 0.8,
           "end": 1.36
         },
         {
-          "text": "phải",
+          "text": "có",
           "start": 1.44,
-          "end": 1.56
+          "end": 1.52
+        },
+        {
+          "text": "phải",
+          "start": 1.56,
+          "end": 1.68
         },
         {
           "text": "cầm",
-          "start": 1.6,
-          "end": 1.76
+          "start": 1.72,
+          "end": 1.84
         },
         {
           "text": "sẵn",
-          "start": 1.84,
-          "end": 2
+          "start": 1.92,
+          "end": 2.08
         },
         {
           "text": "3",
-          "start": 2.08,
-          "end": 2.16
+          "start": 2.16,
+          "end": 2.24
         },
         {
           "text": "tỷ",
-          "start": 2.24,
+          "start": 2.32,
           "end": 2.48
         },
         {
           "text": "không?",
           "start": 2.56,
-          "end": 2.8
+          "end": 3
         },
         {
           "text": "Không.",
@@ -74,412 +74,332 @@
           "end": 3.68
         },
         {
-          "text": "Em",
-          "start": 4,
-          "end": 4.16
-        },
-        {
-          "text": "lấy",
-          "start": 4.187,
+          "text": "Bước",
+          "start": 4.08,
           "end": 4.24
         },
         {
-          "text": "căn",
-          "start": 4.32,
-          "end": 4.48
-        },
-        {
-          "text": "ví",
-          "start": 4.56,
-          "end": 4.64
-        },
-        {
-          "text": "dụ",
-          "start": 4.72,
-          "end": 4.96
-        },
-        {
-          "text": "3",
-          "start": 5.2,
-          "end": 5.28
-        },
-        {
-          "text": "tỷ",
-          "start": 5.44,
-          "end": 5.68
-        },
-        {
-          "text": "chưa",
-          "start": 5.76,
-          "end": 6
-        },
-        {
-          "text": "VAT",
-          "start": 6.08,
-          "end": 6.64
-        },
-        {
-          "text": ":",
-          "start": 6.64,
-          "end": 6.8
-        },
-        {
-          "text": "bước",
-          "start": 7.12,
-          "end": 7.28
-        },
-        {
           "text": "đầu",
-          "start": 7.32,
-          "end": 7.6
+          "start": 4.28,
+          "end": 4.56
         },
         {
           "text": "chỉ",
-          "start": 7.68,
-          "end": 7.84
+          "start": 4.64,
+          "end": 4.8
         },
         {
           "text": "150",
-          "start": 7.88,
-          "end": 8.56
+          "start": 4.84,
+          "end": 5.52
         },
         {
           "text": "triệu.",
-          "start": 8.64,
-          "end": 9.2
+          "start": 5.6,
+          "end": 6.16
         }
       ],
       "seed": 20260
     },
     {
       "id": "scene2",
-      "durationSec": 7.2359183673469385,
-      "speech": "Tới lúc ký hợp đồng, mình đóng thêm một trăm tám mươi triệu. Bảy ngày sau, nếu mình vay, ngân hàng giải ngân một nửa giá căn.",
+      "durationSec": 8.202448979591837,
+      "speech": "Cả căn chia ra ba phần. Ngân hàng lo khoảng một nửa. Phần mình là vốn tự có trước khi nhận nhà, và một đợt cuối lúc nhận nhà.",
       "words": [
         {
-          "text": "Tới",
+          "text": "Cả",
           "start": 0,
-          "end": 0.12
+          "end": 0.16
         },
         {
-          "text": "lúc",
-          "start": 0.16,
-          "end": 0.32
+          "text": "căn",
+          "start": 0.24,
+          "end": 0.48
         },
         {
-          "text": "ký",
-          "start": 0.36,
-          "end": 0.44
+          "text": "chia",
+          "start": 0.56,
+          "end": 0.72
         },
         {
-          "text": "hợp",
-          "start": 0.48,
-          "end": 0.64
+          "text": "ra",
+          "start": 0.8,
+          "end": 0.88
         },
         {
-          "text": "đồng,",
-          "start": 0.68,
-          "end": 1.12
+          "text": "ba",
+          "start": 0.96,
+          "end": 1.04
         },
         {
-          "text": "mình",
-          "start": 1.16,
-          "end": 1.28
-        },
-        {
-          "text": "đóng",
-          "start": 1.32,
+          "text": "phần.",
+          "start": 1.2,
           "end": 1.52
         },
         {
-          "text": "thêm",
-          "start": 1.56,
-          "end": 1.68
-        },
-        {
-          "text": "180",
+          "text": "Ngân",
           "start": 1.76,
-          "end": 2.56
-        },
-        {
-          "text": "triệu.",
-          "start": 2.64,
-          "end": 3.28
-        },
-        {
-          "text": "7",
-          "start": 3.32,
-          "end": 3.44
-        },
-        {
-          "text": "ngày",
-          "start": 3.52,
-          "end": 3.6
-        },
-        {
-          "text": "sau,",
-          "start": 3.76,
-          "end": 4.24
-        },
-        {
-          "text": "nếu",
-          "start": 4.28,
-          "end": 4.4
-        },
-        {
-          "text": "mình",
-          "start": 4.44,
-          "end": 4.56
-        },
-        {
-          "text": "vay,",
-          "start": 4.64,
-          "end": 5.12
-        },
-        {
-          "text": "ngân",
-          "start": 5.16,
-          "end": 5.28
+          "end": 1.92
         },
         {
           "text": "hàng",
-          "start": 5.36,
-          "end": 5.52
+          "start": 2,
+          "end": 2.24
         },
         {
-          "text": "giải",
-          "start": 5.6,
-          "end": 5.76
+          "text": "lo",
+          "start": 2.32,
+          "end": 2.48
         },
         {
-          "text": "ngân",
-          "start": 5.84,
-          "end": 6
+          "text": "khoảng",
+          "start": 2.56,
+          "end": 2.72
         },
         {
-          "text": "một",
-          "start": 6.08,
+          "text": "1",
+          "start": 2.8,
+          "end": 2.88
+        },
+        {
+          "text": "nửa.",
+          "start": 2.96,
+          "end": 3.36
+        },
+        {
+          "text": "Phần",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "mình",
+          "start": 3.84,
+          "end": 4.08
+        },
+        {
+          "text": "là",
+          "start": 4.16,
+          "end": 4.24
+        },
+        {
+          "text": "vốn",
+          "start": 4.32,
+          "end": 4.48
+        },
+        {
+          "text": "tự",
+          "start": 4.56,
+          "end": 4.72
+        },
+        {
+          "text": "có",
+          "start": 4.8,
+          "end": 5.04
+        },
+        {
+          "text": "trước",
+          "start": 5.12,
+          "end": 5.28
+        },
+        {
+          "text": "khi",
+          "start": 5.32,
+          "end": 5.44
+        },
+        {
+          "text": "nhận",
+          "start": 5.48,
+          "end": 5.68
+        },
+        {
+          "text": "nhà,",
+          "start": 5.72,
           "end": 6.24
         },
         {
-          "text": "nửa",
-          "start": 6.32,
-          "end": 6.48
+          "text": "và",
+          "start": 6.28,
+          "end": 6.4
         },
         {
-          "text": "giá",
-          "start": 6.56,
-          "end": 6.72
+          "text": "1",
+          "start": 6.48,
+          "end": 6.64
         },
         {
-          "text": "căn.",
-          "start": 6.8,
-          "end": 7.28
+          "text": "đợt",
+          "start": 6.72,
+          "end": 6.88
+        },
+        {
+          "text": "cuối",
+          "start": 6.96,
+          "end": 7.2
+        },
+        {
+          "text": "lúc",
+          "start": 7.36,
+          "end": 7.52
+        },
+        {
+          "text": "nhận",
+          "start": 7.56,
+          "end": 7.68
+        },
+        {
+          "text": "nhà.",
+          "start": 7.76,
+          "end": 8.24
         }
       ],
       "seed": 20260
     },
     {
       "id": "scene3",
-      "durationSec": 13.975510204081633,
-      "speech": "Hai tháng, bốn tháng sau, mỗi lần một trăm sáu mươi lăm triệu. Cộng lại, vốn tự có khoảng sáu trăm sáu mươi triệu. Nhận nhà dự kiến quý hai năm hai ngàn không trăm hai mươi tám, đóng thêm khoảng chín trăm triệu. Tức là tiền nằm đó gần hai năm.",
+      "durationSec": 7.471020408163265,
+      "speech": "Tiền đóng rải từng đợt, từ lúc ký tới lúc nhận nhà. Em nói luôn: tiền sẽ nằm đó gần hai năm, anh chị tính trước nha.",
       "words": [
         {
-          "text": "2",
+          "text": "Tiền",
           "start": 0,
-          "end": 0.16
+          "end": 0.32
         },
         {
-          "text": "tháng,",
-          "start": 0.24,
-          "end": 0.8
+          "text": "đóng",
+          "start": 0.48,
+          "end": 0.64
         },
         {
-          "text": "4",
-          "start": 0.84,
-          "end": 0.96
+          "text": "rải",
+          "start": 0.72,
+          "end": 0.88
         },
         {
-          "text": "tháng",
-          "start": 1.04,
-          "end": 1.2
+          "text": "từng",
+          "start": 0.96,
+          "end": 1.12
         },
         {
-          "text": "sau,",
-          "start": 1.28,
-          "end": 1.76
+          "text": "đợt,",
+          "start": 1.2,
+          "end": 1.6
         },
         {
-          "text": "mỗi",
-          "start": 1.8,
+          "text": "từ",
+          "start": 1.64,
+          "end": 1.72
+        },
+        {
+          "text": "lúc",
+          "start": 1.76,
           "end": 1.92
         },
         {
-          "text": "lần",
+          "text": "ký",
           "start": 2,
           "end": 2.24
         },
         {
-          "text": "165",
-          "start": 2.28,
+          "text": "tới",
+          "start": 2.4,
+          "end": 2.48
+        },
+        {
+          "text": "lúc",
+          "start": 2.52,
+          "end": 2.64
+        },
+        {
+          "text": "nhận",
+          "start": 2.68,
+          "end": 2.88
+        },
+        {
+          "text": "nhà.",
+          "start": 2.96,
           "end": 3.2
         },
         {
-          "text": "triệu.",
-          "start": 3.28,
-          "end": 3.76
+          "text": "Em",
+          "start": 3.44,
+          "end": 3.52
         },
         {
-          "text": "Cộng",
-          "start": 3.8,
-          "end": 3.92
+          "text": "nói",
+          "start": 3.6,
+          "end": 3.68
         },
         {
-          "text": "lại,",
-          "start": 4,
-          "end": 4.48
-        },
-        {
-          "text": "vốn",
-          "start": 4.52,
-          "end": 4.72
-        },
-        {
-          "text": "tự",
-          "start": 4.8,
-          "end": 4.88
-        },
-        {
-          "text": "có",
-          "start": 4.96,
-          "end": 5.2
-        },
-        {
-          "text": "khoảng",
-          "start": 5.28,
-          "end": 5.52
-        },
-        {
-          "text": "660",
-          "start": 5.68,
-          "end": 6.453
-        },
-        {
-          "text": "triệu.",
-          "start": 6.48,
-          "end": 6.96
-        },
-        {
-          "text": "Nhận",
-          "start": 7,
-          "end": 7.12
-        },
-        {
-          "text": "nhà",
-          "start": 7.2,
-          "end": 7.36
-        },
-        {
-          "text": "dự",
-          "start": 7.44,
-          "end": 7.6
-        },
-        {
-          "text": "kiến",
-          "start": 7.68,
-          "end": 7.84
-        },
-        {
-          "text": "quý",
-          "start": 7.92,
-          "end": 8.08
-        },
-        {
-          "text": "II",
-          "start": 8.16,
-          "end": 8.32
-        },
-        {
-          "text": "năm",
-          "start": 8.48,
-          "end": 8.56
-        },
-        {
-          "text": "2028,",
-          "start": 8.64,
-          "end": 9.947
-        },
-        {
-          "text": "đóng",
-          "start": 10.08,
-          "end": 10.24
-        },
-        {
-          "text": "thêm",
-          "start": 10.28,
-          "end": 10.48
-        },
-        {
-          "text": "khoảng",
-          "start": 10.56,
-          "end": 10.8
-        },
-        {
-          "text": "900",
-          "start": 10.88,
-          "end": 11.2
-        },
-        {
-          "text": "triệu.",
-          "start": 11.28,
-          "end": 11.68
-        },
-        {
-          "text": "Tức",
-          "start": 11.72,
-          "end": 11.84
-        },
-        {
-          "text": "là",
-          "start": 11.92,
-          "end": 12.08
+          "text": "luôn:",
+          "start": 3.76,
+          "end": 4.08
         },
         {
           "text": "tiền",
-          "start": 12.24,
-          "end": 12.4
+          "start": 4.32,
+          "end": 4.56
+        },
+        {
+          "text": "sẽ",
+          "start": 4.64,
+          "end": 4.72
         },
         {
           "text": "nằm",
-          "start": 12.48,
-          "end": 12.64
+          "start": 4.76,
+          "end": 4.96
         },
         {
           "text": "đó",
-          "start": 12.68,
-          "end": 12.88
+          "start": 5,
+          "end": 5.12
         },
         {
           "text": "gần",
-          "start": 12.96,
-          "end": 13.2
+          "start": 5.2,
+          "end": 5.44
         },
         {
           "text": "2",
-          "start": 13.28,
-          "end": 13.44
+          "start": 5.52,
+          "end": 5.68
         },
         {
-          "text": "năm.",
-          "start": 13.52,
-          "end": 14
+          "text": "năm,",
+          "start": 5.76,
+          "end": 6.24
+        },
+        {
+          "text": "anh",
+          "start": 6.32,
+          "end": 6.4
+        },
+        {
+          "text": "chị",
+          "start": 6.44,
+          "end": 6.56
+        },
+        {
+          "text": "tính",
+          "start": 6.6,
+          "end": 6.72
+        },
+        {
+          "text": "trước",
+          "start": 6.8,
+          "end": 6.96
+        },
+        {
+          "text": "nha.",
+          "start": 7.04,
+          "end": 7.52
         }
       ],
       "seed": 20260
     },
     {
       "id": "scene4",
-      "durationSec": 3.317551020408163,
+      "durationSec": 3.239183673469388,
       "speech": "Quét mã, em tính từng đợt cho đúng căn anh chị chọn.",
       "words": [
         {
@@ -535,12 +455,12 @@
         {
           "text": "chị",
           "start": 2.64,
-          "end": 2.76
+          "end": 2.72
         },
         {
           "text": "chọn.",
           "start": 2.8,
-          "end": 3.36
+          "end": 3.28
         }
       ],
       "seed": 20260
