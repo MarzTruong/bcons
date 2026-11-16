@@ -55,24 +55,24 @@
         "m3": "Cuối"
       },
       "props": {
-        "kicker": "Lịch của chủ đầu tư, 05/10/2026",
+        "kicker": "Chiết khấu tính theo giá PTTT 09",
         "title": "3 cách thanh toán",
         "muc": [
           {
-            "ten": "Vay ngân hàng 50%, lãi có trần",
-            "so": "PTTT 09 · lãi không vượt 6,9%/năm, tối đa 48 tháng",
+            "ten": "Vay 50%, lãi có trần",
+            "so": "PTTT 09 · lãi không vượt 6,9%/năm, tối đa 48 tháng",
             "cueKey": "m1",
             "sourceId": "pttt-09"
           },
           {
-            "ten": "Không vay, chia 12 đợt",
-            "so": "PTTT 08 · chiết khấu 5,65% so với giá PTTT 09",
+            "ten": "Không vay, 12 đợt",
+            "so": "PTTT 08 · chiết khấu 5,65%",
             "cueKey": "m2",
             "sourceId": "pttt-08"
           },
           {
-            "ten": "Vay 3 lần, chủ đầu tư hỗ trợ lãi",
-            "so": "PTTT 10 · ân hạn gốc tối đa 18 tháng · chiết khấu 2,15% so với giá PTTT 09",
+            "ten": "Vay 3 lần, hỗ trợ lãi",
+            "so": "PTTT 10 · chiết khấu 2,15%, ân hạn gốc tối đa 18 tháng",
             "cueKey": "m3",
             "sourceId": "pttt-10"
           }
@@ -100,6 +100,13 @@
           "sourceId": "phoi-canh-tong-the"
         }
       }
+    }
+  ],
+  "nguonCuoi": [
+    {
+      "ten": "Thông báo của chủ đầu tư",
+      "ngay": "05/10/2026",
+      "sourceId": "ba-pttt"
     }
   ]
 }
