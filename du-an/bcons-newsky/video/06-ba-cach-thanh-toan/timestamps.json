@@ -11,70 +11,70 @@
     {
       "id": "scene1",
       "durationSec": 4.048979591836734,
-      "speech": "Newsky có ba cách thanh toán. Mỗi cách chia tiền một kiểu.",
+      "speech": "New Sky có ba cách thanh toán. Mỗi cách chia tiền một kiểu.",
       "words": [
         {
           "text": "Newsky",
           "start": 0,
-          "end": 0.56
+          "end": 0.64
         },
         {
           "text": "có",
-          "start": 0.64,
-          "end": 0.8
+          "start": 0.72,
+          "end": 0.88
         },
         {
           "text": "3",
-          "start": 0.88,
-          "end": 1.04
+          "start": 0.96,
+          "end": 1.12
         },
         {
           "text": "cách",
-          "start": 1.12,
-          "end": 1.28
+          "start": 1.2,
+          "end": 1.36
         },
         {
           "text": "thanh",
-          "start": 1.32,
-          "end": 1.44
+          "start": 1.4,
+          "end": 1.52
         },
         {
           "text": "toán.",
-          "start": 1.52,
-          "end": 1.84
+          "start": 1.6,
+          "end": 1.92
         },
         {
           "text": "Mỗi",
-          "start": 2.16,
-          "end": 2.32
+          "start": 2.24,
+          "end": 2.4
         },
         {
           "text": "cách",
-          "start": 2.36,
-          "end": 2.56
+          "start": 2.48,
+          "end": 2.64
         },
         {
           "text": "chia",
-          "start": 2.8,
-          "end": 2.96
+          "start": 2.88,
+          "end": 3.04
         },
         {
           "text": "tiền",
-          "start": 3.04,
-          "end": 3.2
+          "start": 3.12,
+          "end": 3.28
         },
         {
           "text": "một",
-          "start": 3.24,
-          "end": 3.44
+          "start": 3.32,
+          "end": 3.52
         },
         {
           "text": "kiểu.",
-          "start": 3.52,
-          "end": 4.08
+          "start": 3.6,
+          "end": 4
         }
       ],
-      "seed": 20260
+      "seed": 57551
     },
     {
       "id": "scene2",
