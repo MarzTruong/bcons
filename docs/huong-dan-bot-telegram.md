@@ -40,6 +40,7 @@ Gõ `/` trong Telegram chỉ còn 6 mục, phần còn lại bấm nút. Bot là
 | `/may` | Cập nhật bot, chuyển máy, tạo hiệu ứng âm thanh, trò chuyện Claude mới. |
 | `/huy` | Dừng việc đang chạy. |
 
+- **Xem lời đọc trước khi tạo giọng (16/11/2026):** `/giong` hỏi Đồng ý KÈM đúng chữ máy sẽ đọc từng cảnh (số đã viết thành chữ) và cảnh báo chỗ dễ lặp. `/loidoc <số> [canh3]` chỉ xem, không tốn credit. Cảnh báo bắt: từ lặp liền nhau trong một câu ("hai hai"), câu quá dài (hơn 22 âm tiết), và những cụm **đã từng bị lỗi thật** (danh sách `CUM_DA_TUNG_LOI` trong `engine/remotion/scripts/loi-doc.mjs`). Máy vẫn có thể tự đọc lặp dù chữ đúng, nên nghe thử vẫn là chắc nhất; mỗi lần gặp lỗi giọng mới, em thêm cụm đó vào danh sách để lần sau báo trước.
 - Hai dự án có thể trùng số video (Newsky 1, Central Park 1): số luôn hiểu theo dự án đang chọn. Nút của dự án khác trong tin cũ sẽ báo "thuộc dự án khác", không chạy nhầm.
 - Lệnh `/phieu_<mã ngắn>_...` trong tin báo khách mang mã ngắn của dự án (`ns` = Newsky, `cp` = Central Park; `project.json` → `maNgan`): bot dựng phiếu đúng dự án của khách dù đang chọn dự án khác, và không đổi dự án đang làm. Tin báo cũ (không có mã ngắn) chạy theo dự án đang chọn. Dự án mới: thêm `maNgan` vào `project.json` và `DU_AN_NGAN` trong `Code.gs` (test chặn lệch).
 - Nhắn câu thường cho Claude: bot tự kèm tên dự án đang làm.

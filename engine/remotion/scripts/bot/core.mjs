@@ -19,7 +19,7 @@ export const HELP = [
   "Nhắn câu bình thường (không có dấu /) để giao việc cho Claude trên máy.",
   "",
   "Lệnh gõ nhanh (vẫn chạy như cũ, <số> là số video trong /video):",
-  "Video: /danhsach · /storyboard <số> · /giong <số> [canh1] · /render <số> [khongnhac] · /xem <số> [icon] · /duyet <số>",
+  "Video: /danhsach · /storyboard <số> · /loidoc <số> (xem lời đọc, không tốn credit) · /giong <số> [canh1] · /render <số> [khongnhac] · /xem <số> [icon] · /duyet <số>",
   "Khách: /phieu <mã căn> <PTTT> [pdf] · /kiemgia",
   "Nghiên cứu: /gemini <chủ đề> · /baocao",
   "Máy: /capnhat · /chuyenmay · /sfx · /moi",

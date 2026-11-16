@@ -9,6 +9,7 @@ import { buttons } from "./tg.mjs";
 import { chayPhieu as chayPhieuThat, parseLenhPhieu } from "../phieu.mjs";
 import { HELP, buocVideo, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
 import { pidOf } from "./du-an.mjs";
+import { xemTruocLoiDoc } from "../loi-doc.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
 
@@ -155,7 +156,16 @@ export function createBot(deps) {
   /** bot.mjs gắn vào: thoát mã 4 để Bcons-Bot.cmd cập nhật khi bot không chạy. */
   let exitForUpdate = null;
 
-  const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard"]);
+  const VIDEO_CMDS = new Set(["xem", "duyet", "render", "giong", "storyboard", "loidoc"]);
+
+  /** Lời đọc từng cảnh của một video (đọc spec ngay lúc hỏi, nên luôn đúng bản hiện tại). */
+  function loiDocText(name, ids) {
+    try {
+      return xemTruocLoiDoc(JSON.parse(fs.readFileSync(videoPaths(name, projDir).spec, "utf8")), ids);
+    } catch (e) {
+      return `(Không đọc được lời đọc: ${e.message})`;
+    }
+  }
 
   const commands = {
     start: () => sayP(HELP),
@@ -357,7 +367,7 @@ export function createBot(deps) {
       const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
       const ids = n ? n.split(",").map((x) => `scene${Number(x)}`) : null;
       const label = ids ? ` cảnh ${n}` : "";
-      return ask(`Tạo giọng ElevenLabs cho ${name}${label}? Việc này TỐN CREDIT.`, "giong", () =>
+      return ask(`Tạo giọng ElevenLabs cho ${name}${label}? Việc này TỐN CREDIT.\n\nLời máy sẽ đọc (xem kỹ rồi mới bấm Đồng ý):\n${loiDocText(name, ids)}`, "giong", () =>
         enqueue(`tạo giọng ${name}${label}`, async () => {
           await sayP(`Đang tạo giọng ${name}${label}...`);
           const args = ["run", "voice", "--", ...daFlag(), name, ...(ids ? [`--canh=${ids.join(",")}`] : [])];
@@ -367,6 +377,11 @@ export function createBot(deps) {
           await say(`Xong giọng ${name}${label}.\n${tail(out, 6)}\n${saved}\nCảnh nào còn lệch giọng: /giong ${name} canh<số>. Ổn rồi: /render ${name}`);
         }),
       );
+    },
+    loidoc([name, canh]) {
+      if (!checkName(name)) return;
+      const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
+      return sayP(`Lời đọc ${name}${n ? ` cảnh ${n}` : ""} (chưa tạo giọng, không tốn credit):\n${loiDocText(name, n ? n.split(",").map((x) => `scene${Number(x)}`) : null)}`);
     },
     capnhat() {
       // Windows không cho thay file code của bot khi bot đang chạy: bot tắt (mã 4), Bcons-Bot.cmd lấy bản mới rồi bật lại.

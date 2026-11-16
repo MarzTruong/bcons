@@ -41,6 +41,7 @@
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc && node scripts/check-spec.mjs --all",
     "render:drive": "node scripts/render-drive.mjs",
+    "loi-doc": "node scripts/loi-doc-cli.mjs",
     "voice": "node --env-file=.env scripts/generate-voice.mjs",
     "sfx": "node --env-file=.env scripts/tao-sfx.mjs",
     "gemini": "node --env-file-if-exists=.env scripts/gemini.mjs",
