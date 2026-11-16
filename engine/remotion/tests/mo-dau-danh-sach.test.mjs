@@ -75,3 +75,45 @@ test("danh sách: mục hiện trước khi cue sau đã tới, không đảo th
   const s = danhSachState(90, [15, 85, 85], 210, 3); // 2 mục cùng mốc
   assert.deepEqual(s.rows.map((r) => r.phase), ["done", "done", "active"]);
 });
+
+// --- Khung nguồn cuối video (AGY, anh duyệt kế hoạch 16/11/2026) ---
+import { NGUON_CUOI_FRAMES, nguonCuoiState } from "../src/moDau.ts";
+import { buildTiming, LEAD, TAIL } from "../src/timing.ts";
+
+test("khung nguồn: 2,5 giây (75 khung), rõ nét trong 0,25 s đầu, mờ nhẹ ở 2,2–2,5 s", () => {
+  assert.equal(NGUON_CUOI_FRAMES, 75);
+  const a = nguonCuoiState(0);
+  assert.equal(a.opacity, 0);
+  assert.equal(nguonCuoiState(0.25).opacity, 1);
+  assert.equal(nguonCuoiState(1.2).opacity, 1);
+  const end = nguonCuoiState(2.5);
+  assert.ok(Math.abs(end.opacity - 0.3) < 1e-9);
+  assert.equal(nguonCuoiState(1.25).track, 50);
+  assert.equal(nguonCuoiState(9).track, 100);
+});
+
+const ts = { scenes: [1, 2, 3].map((n) => ({ id: `s${n}`, durationSec: 2 * n, words: [] })) };
+
+test("buildTiming: không có khung nguồn thì y như cũ", () => {
+  const a = buildTiming(ts);
+  const b = buildTiming(ts, 0);
+  assert.deepEqual(a.SCENE_STARTS, b.SCENE_STARTS);
+  assert.equal(a.TOTAL_FRAMES, b.TOTAL_FRAMES);
+  assert.equal(a.NGUON_FROM, null);
+});
+
+test("buildTiming: khung nguồn chèn ngay trước cảnh cuối, đẩy cảnh cuối và tổng thời lượng thêm 75 khung", () => {
+  const a = buildTiming(ts);
+  const b = buildTiming(ts, NGUON_CUOI_FRAMES);
+  assert.deepEqual(b.SCENE_STARTS.slice(0, 2), a.SCENE_STARTS.slice(0, 2));
+  assert.equal(b.NGUON_FROM, a.SCENE_STARTS[2]);
+  assert.equal(b.SCENE_STARTS[2], a.SCENE_STARTS[2] + 75);
+  assert.equal(b.TOTAL_FRAMES, a.TOTAL_FRAMES + 75);
+  assert.equal(b.SCENE_DATA[2].frames, LEAD + 6 * 30 + TAIL, "cảnh cuối giữ nguyên thời lượng");
+});
+
+test("buildTiming: video chỉ 1 cảnh thì không chèn khung nguồn", () => {
+  const one = { scenes: [ts.scenes[0]] };
+  assert.equal(buildTiming(one, 75).NGUON_FROM, null);
+  assert.equal(buildTiming(one, 75).TOTAL_FRAMES, buildTiming(one).TOTAL_FRAMES);
+});

@@ -28,7 +28,8 @@ import { GeoMap } from "./templates/GeoMap";
 import { ProjectClose } from "./templates/ProjectClose";
 import { DanhSach } from "./templates/DanhSach";
 import { HookOpen } from "./HookOpen";
-import { HOOK_FRAMES } from "./moDau";
+import { HOOK_FRAMES, NGUON_CUOI_FRAMES } from "./moDau";
+import { NguonCuoi } from "./NguonCuoi";
 
 /** Hiệu ứng chuyển cảnh cho cả cảnh (duration tính bằng khung). "fade" = bản gốc. */
 const SceneTransition: React.FC<{
@@ -192,7 +193,7 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: s
 };
 
 export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThanh, khongGiong }) => {
-  const timing = buildTiming(timestamps);
+  const timing = buildTiming(timestamps, spec.nguonCuoi ? NGUON_CUOI_FRAMES : 0);
   const { SCENE_DATA, SCENE_STARTS } = timing;
   const sfx = amThanh?.sfx ?? [];
   const C = paletteFor(spec.style, spec.so);
@@ -247,6 +248,11 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
               </Sequence>
             );
           })}
+          {spec.nguonCuoi && timing.NGUON_FROM !== null ? (
+            <Sequence from={timing.NGUON_FROM} durationInFrames={timing.NGUON_FRAMES}>
+              <NguonCuoi nguon={spec.nguonCuoi} />
+            </Sequence>
+          ) : null}
           {amThanh?.nhac ? (
             <Audio src={staticFile(amThanh.nhac)} loop volume={(f: number) => musicVolume(f, timing)} />
           ) : null}

@@ -93,3 +93,14 @@ test("danh-sach: kicker, tổng kết và ảnh là tùy chọn", () => {
   const q = dsProps(2, { tongKet: { text: "Dự kiến về đích cuối 2026", cueKey: "a" } });
   assert.equal(parseSpec(base(q, "danh-sach")).scenes[0].props.tongKet.cueKey, "a");
 });
+
+// --- nguonCuoi: khung nguồn cuối video ---
+test("nguonCuoi: 1 đến 3 dòng, mỗi dòng có tên, ngày dd/mm/yyyy và sourceId; video không khai thì như cũ", () => {
+  const ok = { ten: "Tuổi Trẻ", ngay: "12/10/2026", sourceId: "s1" };
+  assert.deepEqual(parseSpec({ ...base(cards(2)), nguonCuoi: [ok] }).nguonCuoi, [ok]);
+  assert.equal(parseSpec(base(cards(2))).nguonCuoi, undefined);
+  assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [] }), /nguonCuoi/);
+  assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [ok, ok, ok, ok] }), /nguonCuoi/);
+  assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [{ ...ok, ngay: "12-10-2026" }] }), /nguonCuoi\.0\.ngay/);
+  assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [{ ten: "A", ngay: "12/10/2026" }] }), /nguonCuoi\.0\.sourceId/);
+});

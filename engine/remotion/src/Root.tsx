@@ -2,6 +2,7 @@ import { Composition } from "remotion";
 import { BconsVideo, type BconsVideoProps } from "./BconsVideo";
 import { parseSpec } from "./spec";
 import { FPS, buildTiming, type Timestamps } from "./timing";
+import { NGUON_CUOI_FRAMES } from "./moDau";
 import defaultSpec from "../../../du-an/bcons-central-park/video/01-dong-nai-ha-tang/spec.json";
 import defaultTimestamps from "../../../du-an/bcons-central-park/video/01-dong-nai-ha-tang/timestamps.json";
 
@@ -24,7 +25,7 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
         calculateMetadata={({ props }) => ({
-          durationInFrames: buildTiming(props.timestamps).TOTAL_FRAMES,
+          durationInFrames: buildTiming(props.timestamps, props.spec.nguonCuoi ? NGUON_CUOI_FRAMES : 0).TOTAL_FRAMES,
         })}
       />
     </>

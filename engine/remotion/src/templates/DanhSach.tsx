@@ -16,7 +16,7 @@ const rowStyle = (phase: RowPhase): React.CSSProperties => {
     case "done":
       return { background: "rgba(14,38,60,0.92)", borderLeft: `10px solid ${TEAL}`, opacity: 0.84 };
     case "summary":
-      return { background: "#13314c", borderLeft: `10px solid ${TEAL}`, padding: "20px 24px" };
+      return { background: "#13314c", borderLeft: `10px solid ${TEAL}`, padding: "26px 28px" };
     default:
       return { background: "rgba(13,33,54,0.88)", borderLeft: "10px solid #26425c" };
   }
@@ -41,7 +41,7 @@ const enterTransform = (i: number, enter: number): string => {
 /**
  * Mẫu `danh-sach` (AGY kiểu 1, anh chọn 15/11/2026): mục hiện lần lượt khi từ cues[cueKey] được đọc, đếm "Đã xem n/N",
  * cuối cảnh gom cả danh sách kèm băng tổng kết. Không đánh số 01/02/03 (các mục không theo trình tự; F-04).
- * Màu và bố cục giữ nguyên bản AGY, không đổi theo phong cách (style) của video.
+ * Màu và bố cục giữ nguyên bản AGY (bản sửa 16/11/2026: khối tiêu đề + danh sách cân giữa khung 3:4, chữ mục 40/30 px), không đổi theo phong cách (style) của video.
  */
 export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, frames }) => {
   const frame = useCurrentFrame();
@@ -64,8 +64,8 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
           background: "linear-gradient(180deg, rgba(6,18,31,0.92) 0%, rgba(6,18,31,0.86) 50%, rgba(6,18,31,0.96) 100%)",
         }}
       />
-      <AbsoluteFill style={{ padding: "268px 136px 420px 72px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+      <AbsoluteFill style={{ padding: "268px 136px 320px 72px", display: "flex", flexDirection: "column" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 27, fontWeight: 700, color: "#b7c8da" }}>
             <span style={{ width: 12, height: 12, background: GOLD }} />
             <span>{duAn.ten}</span>
@@ -89,17 +89,18 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
             </div>
           </div>
         </div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         {props.kicker ? <div style={{ fontSize: 26, fontWeight: 700, color: TEAL, marginBottom: 8 }}>{props.kicker}</div> : null}
-        <div style={{ fontSize: 66, fontWeight: 800, lineHeight: 1.08, color: "#fff", letterSpacing: "-0.02em", marginBottom: 34 }}>
+        <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.08, color: "#fff", letterSpacing: "-0.02em", marginBottom: 42 }}>
           <span style={{ color: GOLD }}>{first}</span> {rest.join(" ")}
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: st.summary ? 14 : 22,
+            gap: st.summary ? 18 : 28,
             ...(st.summary
-              ? { background: "rgba(16,40,66,0.72)", border: `2px solid ${TEAL}`, borderRadius: 8, padding: 18 }
+              ? { background: "rgba(16,40,66,0.72)", border: `2px solid ${TEAL}`, borderRadius: 8, padding: 24 }
               : {}),
           }}
         >
@@ -112,7 +113,7 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
               <div
                 key={m.ten}
                 style={{
-                  padding: "28px 30px",
+                  padding: "36px 34px",
                   borderRadius: "0 6px 6px 0",
                   display: "flex",
                   alignItems: "flex-start",
@@ -123,8 +124,8 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
                 }}
               >
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 38, fontWeight: 800, lineHeight: 1.18, color: "#fff", marginBottom: 8 }}>{m.ten}</div>
-                  <div style={{ fontSize: 28, fontWeight: 600, lineHeight: 1.3, color: "#c5d7e8" }}>{m.so}</div>
+                  <div style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.18, color: "#fff", marginBottom: 8 }}>{m.ten}</div>
+                  <div style={{ fontSize: 30, fontWeight: 600, lineHeight: 1.3, color: "#c5d7e8" }}>{m.so}</div>
                 </div>
                 <div style={{ fontSize: 22, fontWeight: 800, padding: "6px 12px", borderRadius: 4, whiteSpace: "nowrap", marginTop: 4, ...chipStyle(r.phase) }}>
                   {chip}
@@ -136,10 +137,10 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
         {props.tongKet ? (
           <div
             style={{
-              marginTop: 28,
+              marginTop: 34,
               background: TEAL,
               color: INK,
-              padding: "22px 28px",
+              padding: "26px 30px",
               borderRadius: 6,
               display: "flex",
               alignItems: "center",
@@ -154,6 +155,7 @@ export const DanhSach: React.FC<TemplateProps<"danh-sach">> = ({ props, cue, fra
             </div>
           </div>
         ) : null}
+        </div>
       </AbsoluteFill>
       {props.image ? (
         <div style={{ position: "absolute", bottom: 264, left: 72, fontSize: 22, fontWeight: 600, color: "rgba(255,255,255,0.72)" }}>

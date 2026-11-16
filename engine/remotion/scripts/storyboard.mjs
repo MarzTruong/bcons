@@ -5,20 +5,24 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { FPS, LEAD, TAIL, buildTiming } from "../src/timing.ts";
+import { NGUON_CUOI_FRAMES } from "../src/moDau.ts";
 import { parseSpec } from "../src/spec.ts";
 import { applyWatermark, checkCues, checkGeoFiles, checkTimestamps, estimateTimestamps, parseMarkup } from "./spec-tools.mjs";
 import { readProjectConfig, takeProjectFlag, videoPaths } from "./project.mjs";
 import { loadMapboxEnv } from "./env.mjs";
 
 /** 3 khung mỗi cảnh: vừa vào (sau hiệu ứng mở), giữa lời đọc, gần cuối lời. */
-export function storyboardFrames(ts) {
-  const { SCENE_DATA, SCENE_STARTS } = buildTiming(ts);
-  return SCENE_DATA.map((s, i) => {
+export function storyboardFrames(ts, nguonCuoiFrames = 0) {
+  const { SCENE_DATA, SCENE_STARTS, NGUON_FROM } = buildTiming(ts, nguonCuoiFrames);
+  const plan = SCENE_DATA.map((s, i) => {
     const a = SCENE_STARTS[i] + LEAD + 15;
     const end = SCENE_STARTS[i] + LEAD + s.audioFrames + Math.floor(TAIL / 2);
     const mid = Math.round((a + end) / 2);
     return { id: s.id, frames: [Math.min(a, mid - 1), mid, Math.max(end, mid + 1)] };
   });
+  // Khung nguồn cuối video: 1 khung giữa (rõ nét), đặt ngay trước cảnh cuối.
+  if (NGUON_FROM !== null) plan.splice(plan.length - 1, 0, { id: "nguon-cuoi", frames: [NGUON_FROM + 40] });
+  return plan;
 }
 
 async function main() {
@@ -58,9 +62,19 @@ async function main() {
   // Token Mapbox phải truyền vào trang dựng hình (biến môi trường của Node không tự sang trình duyệt).
   const envVariables = process.env.REMOTION_MAPBOX_TOKEN ? { REMOTION_MAPBOX_TOKEN: process.env.REMOTION_MAPBOX_TOKEN } : {};
   const composition = await selectComposition({ serveUrl, id: "BconsCentralPark", inputProps, browserExecutable, envVariables });
-  const plan = storyboardFrames(ts);
+  const nguonFrames = spec.nguonCuoi && spec.scenes.length >= 2 ? NGUON_CUOI_FRAMES : 0;
+  const plan = storyboardFrames(ts, nguonFrames);
   const manifest = [];
-  for (const [i, sc] of plan.entries()) {
+  let canh = -1;
+  for (const sc of plan) {
+    if (sc.id === "nguon-cuoi") {
+      const out = path.join(outDir, "nguon-cuoi.png");
+      await renderStill({ composition, serveUrl, output: out, frame: sc.frames[0], inputProps, browserExecutable, envVariables, scale: 0.5 });
+      manifest.push({ canh: "nguon", id: sc.id, template: "nguon-cuoi", giay: "2.5", loi: "(khung nguồn, không lời)", anh: [out] });
+      continue;
+    }
+    canh += 1;
+    const i = canh;
     const scene = spec.scenes[i];
     const loi = parseMarkup(scene.markup).map((t) => t.show).join(" ");
     const giay = ts.scenes[i].durationSec.toFixed(1);

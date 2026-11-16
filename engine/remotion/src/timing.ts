@@ -17,7 +17,8 @@ export type SceneTiming = {
   frames: number;
 };
 
-export const buildTiming = (ts: Timestamps) => {
+/** `nguonCuoiFrames` > 0: chèn khung nguồn (không lời) ngay trước cảnh cuối (cần ít nhất 2 cảnh); cảnh cuối và tổng thời lượng dời theo. */
+export const buildTiming = (ts: Timestamps, nguonCuoiFrames = 0) => {
   const SCENE_DATA: SceneTiming[] = ts.scenes.map((s) => ({
     id: s.id,
     words: s.words,
@@ -29,8 +30,15 @@ export const buildTiming = (ts: Timestamps) => {
     acc.push(i === 0 ? 0 : acc[i - 1] + SCENE_DATA[i - 1].frames);
     return acc;
   }, []);
-  const TOTAL_FRAMES = SCENE_DATA.reduce((a, s) => a + s.frames, 0);
-  return { SCENE_DATA, SCENE_STARTS, TOTAL_FRAMES, LEAD, FPS };
+  let TOTAL_FRAMES = SCENE_DATA.reduce((a, s) => a + s.frames, 0);
+  let NGUON_FROM: number | null = null;
+  if (nguonCuoiFrames > 0 && SCENE_DATA.length >= 2) {
+    const last = SCENE_STARTS.length - 1;
+    NGUON_FROM = SCENE_STARTS[last];
+    SCENE_STARTS[last] += nguonCuoiFrames;
+    TOTAL_FRAMES += nguonCuoiFrames;
+  }
+  return { SCENE_DATA, SCENE_STARTS, TOTAL_FRAMES, LEAD, FPS, NGUON_FROM, NGUON_FRAMES: NGUON_FROM === null ? 0 : nguonCuoiFrames };
 };
 
 /** Frame (tương đối trong cảnh) khi từ có chữ hiển thị `text` bắt đầu được đọc. */

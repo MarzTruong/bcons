@@ -73,3 +73,16 @@ export function danhSachState(f: number, reveals: number[], summaryAt: number, n
   });
   return { rows, seen: summary ? n : active + 1, summary, bannerP: clamp01((f - summaryAt) / (0.16 * FPS_MO_DAU)) };
 }
+
+export const NGUON_CUOI_SEC = 2.5;
+export const NGUON_CUOI_FRAMES = NGUON_CUOI_SEC * FPS_MO_DAU;
+
+export type NguonCuoiState = { opacity: number; shift: number; track: number };
+
+/** Khung nguồn cuối video (AGY): rõ nét trong 0,25 s đầu, mờ nhẹ ở 2,2–2,5 s; `track` = thanh thời gian 0–100 (%). */
+export function nguonCuoiState(t: number): NguonCuoiState {
+  const c = Math.max(0, Math.min(NGUON_CUOI_SEC, t));
+  const inP = easeOutCubic(clamp01(c / 0.25));
+  const outP = easeOutCubic(clamp01((c - 2.2) / 0.3));
+  return { opacity: inP * (1 - outP * 0.7), shift: (1 - inP) * 14 - outP * 14, track: (c / NGUON_CUOI_SEC) * 100 };
+}

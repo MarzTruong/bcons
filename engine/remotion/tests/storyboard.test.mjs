@@ -38,3 +38,15 @@ test("storyboardFrames: mỗi cảnh 3 khung (vào cảnh, giữa, cuối lời)
     assert.ok(sc.frames[0] < sc.frames[1] && sc.frames[1] < sc.frames[2]);
   });
 });
+
+test("storyboardFrames: có khung nguồn cuối thì cảnh cuối dời 75 khung và có thêm 1 khung chụp khung nguồn", () => {
+  const ts = estimateTimestamps(spec);
+  const a = storyboardFrames(ts);
+  const b = storyboardFrames(ts, 75);
+  assert.equal(b[0].frames.join(), a[0].frames.join());
+  assert.equal(b.find((x) => x.id === "s2").frames[0], a[1].frames[0] + 75);
+  const nguon = b.find((x) => x.id === "nguon-cuoi");
+  assert.ok(nguon, "có mục nguon-cuoi");
+  assert.equal(nguon.frames.length, 1);
+  assert.equal(nguon.frames[0], a[1].frames[0] - 15 - 12 + 40, "giữa khung nguồn (khung 40 trong 75)");
+});

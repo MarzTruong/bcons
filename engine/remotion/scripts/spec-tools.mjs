@@ -12,7 +12,7 @@ export function resolveSpecPath(name, projDir = activeProjDir()) {
   return videoPaths(name, projDir).spec;
 }
 
-/** Đọc các hàng của bảng dưới tiêu đề "## Bảng nguồn": { id, link }. Dừng ở tiêu đề kế tiếp (mọi cấp). */
+/** Đọc các hàng của bảng dưới tiêu đề "## Bảng nguồn": { id, link, ngay, nguon }. Dừng ở tiêu đề kế tiếp (mọi cấp). */
 export function readSourceRows(markdown) {
   const lines = markdown.split(/\r?\n/);
   const start = lines.findIndex((l) => /^##\s+Bảng nguồn\s*$/i.test(l.trim()));
@@ -24,7 +24,7 @@ export function readSourceRows(markdown) {
     const cells = line.split("|").slice(1, -1).map((c) => c.trim());
     const id = cells[0] ?? "";
     if (!id || /^-+$/.test(id) || id.toLowerCase() === "id") continue;
-    rows.push({ id, link: cells[4] ?? "" });
+    rows.push({ id, link: cells[4] ?? "", ngay: cells[2] ?? "", nguon: cells[3] ?? "" });
   }
   return rows;
 }
@@ -414,6 +414,25 @@ export function checkHook(spec, projDir) {
     const f = path.join(projDir, h.image.file);
     if (!fs.existsSync(f)) errors.push(`hook: ảnh ${h.image.file}: không thấy file`);
     else if (/placeholder/i.test(path.basename(h.image.file))) errors.push(`hook: ảnh ${h.image.file} là ảnh giữ chỗ`);
+  }
+  return errors;
+}
+
+const boDau = (t) => String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/Đ/g, "D").toLowerCase();
+
+/** Khung nguồn cuối video: mỗi dòng phải có hàng trong bảng nguồn, tên nằm trong cột Nguồn, ngày nằm trong cột Ngày công bố. */
+export function checkNguonCuoi(spec, markdown) {
+  if (!spec.nguonCuoi) return [];
+  const rows = new Map(readSourceRows(markdown).map((r) => [r.id, r]));
+  const errors = [];
+  for (const n of spec.nguonCuoi) {
+    const r = rows.get(n.sourceId);
+    if (!r) {
+      errors.push(`nguonCuoi: sourceId "${n.sourceId}" không có trong bảng nguồn`);
+      continue;
+    }
+    if (!boDau(r.nguon).includes(boDau(n.ten))) errors.push(`nguonCuoi: tên "${n.ten}" không có trong cột Nguồn của "${n.sourceId}" ("${r.nguon}")`);
+    if (!r.ngay.includes(n.ngay)) errors.push(`nguonCuoi: ngày "${n.ngay}" không khớp cột Ngày công bố của "${n.sourceId}" ("${r.ngay}")`);
   }
   return errors;
 }

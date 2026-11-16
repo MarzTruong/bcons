@@ -10,7 +10,7 @@ const INK = "#06121f";
 
 /**
  * Khung mở đầu 0–3 giây phủ lên đầu cảnh 1 (bản AGY kiểu 1, khớp ảnh bìa; anh chọn 15/11/2026).
- * Khung 0 đã đủ chữ: số nhấn + hook. Mờ dần ở 2,45–3,0 s để lộ cảnh 1. Bố cục, màu, cỡ chữ giữ nguyên bản AGY;
+ * Khung 0 đã đủ chữ: số nhấn + hook. Mờ dần ở 2,45–3,0 s để lộ cảnh 1. Bố cục, màu, cỡ chữ giữ nguyên bản AGY (bản sửa 16/11/2026: nhãn ảnh nằm dưới tên dự án);
  * bỏ chữ giờ "0.0s / 3.0s" của bản demo (F-03 biên bản kiểm 15/11/2026).
  */
 export const HookOpen: React.FC<{ hook: NonNullable<VideoSpec["hook"]> }> = ({ hook }) => {
@@ -48,12 +48,13 @@ export const HookOpen: React.FC<{ hook: NonNullable<VideoSpec["hook"]> }> = ({ h
       <div
         style={{
           position: "absolute",
-          top: 278,
+          top: 272,
           left: 72,
           right: 72,
           display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: 14,
         }}
       >
         <div style={{ display: "inline-flex", alignItems: "center", gap: 14, fontSize: 32, fontWeight: 700, color: "#fff", textShadow: "0 3px 12px rgba(0,0,0,0.65)" }}>
@@ -61,7 +62,19 @@ export const HookOpen: React.FC<{ hook: NonNullable<VideoSpec["hook"]> }> = ({ h
           <span>{duAn.ten}</span>
         </div>
         {hook.image ? (
-          <div style={{ fontSize: 25, fontWeight: 600, color: "rgba(255,255,255,0.92)", textShadow: "0 2px 10px rgba(0,0,0,0.85)" }}>
+          <div
+            style={{
+              fontSize: 35,
+              fontWeight: 700,
+              lineHeight: 1.2,
+              color: "#fff",
+              background: "rgba(6,18,31,0.84)",
+              borderLeft: `5px solid ${TEAL}`,
+              padding: "8px 18px",
+              borderRadius: "0 4px 4px 0",
+              whiteSpace: "nowrap",
+            }}
+          >
             {hook.image.label}
           </div>
         ) : null}

@@ -301,6 +301,12 @@ export const VideoSpecSchema = z.object({
     .optional(),
   /** Tên + địa chỉ dự án cho cảnh cuối; render tự gắn từ project.json (applyWatermark). */
   duAn: z.object({ ten: z.string(), diaChi: z.string() }).optional(),
+  /** Khung nguồn cuối video (2,5 s, chèn trước cảnh cuối): tối đa 3 dòng, chỉ hiện tên nguồn và ngày; sourceId để `check:spec` đối chiếu bảng nguồn. */
+  nguonCuoi: z
+    .array(z.object({ ten: z.string().min(1), ngay: z.string().regex(/^\d{2}\/\d{2}\/\d{4}$/), sourceId }))
+    .min(1)
+    .max(3)
+    .optional(),
   /** Khung mở đầu 0–3 giây (tùy chọn; video cũ không có). */
   hook: HookSchema.optional(),
   scenes: z.array(SceneSchema).min(1),

@@ -237,3 +237,48 @@ test("checkCues: danh-sach đòi cue của từng mục và của tổng kết",
   assert.match(checkCues(sc({ m1: "Vành" })).join(" "), /m2/);
   assert.deepEqual(checkCues(sc({ m1: "Vành", m2: "Tân", tk: "Hiệp." })), []);
 });
+
+// --- checkNguonCuoi: tên và ngày trên hình phải khớp bảng nguồn ---
+import { checkNguonCuoi } from "../scripts/spec-tools.mjs";
+
+const bang = `## Bảng nguồn
+| id | Số liệu | Ngày công bố | Nguồn | Link | Ghi chú |
+|---|---|---|---|---|---|
+| vanh-dai-3 | x | 04/11/2026 | CafeF (dẫn VTC News) | https://a | |
+| tan-hiep | y | 01/11/2026 | Pháp Luật Plus | https://b | |
+| san-bay | z | 30/10/2026 | CafeF (dẫn VTV) | https://c | |
+`;
+const nc = (list) => ({ nguonCuoi: list });
+
+test("checkNguonCuoi: không khai thì không lỗi", () => {
+  assert.deepEqual(checkNguonCuoi({}, bang), []);
+});
+
+test("checkNguonCuoi: video 8 thật (Pháp Luật Plus 01/11, CafeF 30/10 và 04/11) khớp bảng nguồn", () => {
+  const e = checkNguonCuoi(
+    nc([
+      { ten: "Pháp Luật Plus", ngay: "01/11/2026", sourceId: "tan-hiep" },
+      { ten: "CafeF", ngay: "30/10/2026", sourceId: "san-bay" },
+      { ten: "CafeF", ngay: "04/11/2026", sourceId: "vanh-dai-3" },
+    ]),
+    bang,
+  );
+  assert.deepEqual(e, []);
+});
+
+test("checkNguonCuoi: sai ngày, sai tên hoặc sourceId không có bị báo", () => {
+  assert.match(checkNguonCuoi(nc([{ ten: "CafeF", ngay: "05/11/2026", sourceId: "vanh-dai-3" }]), bang).join(" "), /ngày/);
+  assert.match(checkNguonCuoi(nc([{ ten: "Tuổi Trẻ", ngay: "04/11/2026", sourceId: "vanh-dai-3" }]), bang).join(" "), /tên/);
+  assert.match(checkNguonCuoi(nc([{ ten: "CafeF", ngay: "04/11/2026", sourceId: "khong-co" }]), bang).join(" "), /khong-co/);
+});
+
+test("checkNguonCuoi: bỏ dấu và hoa/thường khi so tên", () => {
+  assert.deepEqual(checkNguonCuoi(nc([{ ten: "PHAP LUAT PLUS", ngay: "01/11/2026", sourceId: "tan-hiep" }]), bang), []);
+});
+
+test("readSourceRows trả thêm ngày và nguồn của từng hàng", () => {
+  const r = readSourceRows(bang).find((x) => x.id === "tan-hiep");
+  assert.equal(r.ngay, "01/11/2026");
+  assert.equal(r.nguon, "Pháp Luật Plus");
+  assert.equal(r.link, "https://b");
+});
