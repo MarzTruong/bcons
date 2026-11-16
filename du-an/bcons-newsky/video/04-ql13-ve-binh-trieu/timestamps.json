@@ -1,0 +1,439 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 7.314285714285714,
+      "speech": "Quốc lộ 13 phía Bình Triệu sắp rộng sáu mươi mét. Đoạn dài khoảng năm phẩy chín ki-lô-mét , khởi công ngày hai mươi chín tháng tám.",
+      "words": [
+        {
+          "text": "Quốc",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "lộ",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "13",
+          "start": 0.36,
+          "end": 0.48
+        },
+        {
+          "text": "phía",
+          "start": 0.56,
+          "end": 0.96
+        },
+        {
+          "text": "Bình",
+          "start": 1,
+          "end": 1.12
+        },
+        {
+          "text": "Triệu",
+          "start": 1.2,
+          "end": 1.52
+        },
+        {
+          "text": "sắp",
+          "start": 1.6,
+          "end": 1.76
+        },
+        {
+          "text": "rộng",
+          "start": 1.84,
+          "end": 2.08
+        },
+        {
+          "text": "60",
+          "start": 2.16,
+          "end": 2.453
+        },
+        {
+          "text": "mét.",
+          "start": 2.48,
+          "end": 3.12
+        },
+        {
+          "text": "Đoạn",
+          "start": 3.16,
+          "end": 3.28
+        },
+        {
+          "text": "dài",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "khoảng",
+          "start": 3.6,
+          "end": 3.84
+        },
+        {
+          "text": "5,9",
+          "start": 4,
+          "end": 4.56
+        },
+        {
+          "text": "km",
+          "start": 4.64,
+          "end": 5.2
+        },
+        {
+          "text": ",",
+          "start": 5.2,
+          "end": 5.44
+        },
+        {
+          "text": "khởi",
+          "start": 5.48,
+          "end": 5.6
+        },
+        {
+          "text": "công",
+          "start": 5.68,
+          "end": 5.84
+        },
+        {
+          "text": "ngày",
+          "start": 5.92,
+          "end": 6.16
+        },
+        {
+          "text": "29/8.",
+          "start": 6.24,
+          "end": 7.36
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 7.471020408163265,
+      "speech": "Đoạn từ cầu Vĩnh Bình về cầu Bình Triệu: từ mười đến mười bốn làn xe, dự kiến hoàn thành trong năm hai ngàn không trăm hai mươi tám.",
+      "words": [
+        {
+          "text": "Đoạn",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "từ",
+          "start": 0.32,
+          "end": 0.44
+        },
+        {
+          "text": "cầu",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "Vĩnh",
+          "start": 0.72,
+          "end": 0.88
+        },
+        {
+          "text": "Bình",
+          "start": 0.96,
+          "end": 1.2
+        },
+        {
+          "text": "về",
+          "start": 1.28,
+          "end": 1.4
+        },
+        {
+          "text": "cầu",
+          "start": 1.44,
+          "end": 1.6
+        },
+        {
+          "text": "Bình",
+          "start": 1.64,
+          "end": 1.76
+        },
+        {
+          "text": "Triệu:",
+          "start": 1.84,
+          "end": 2.4
+        },
+        {
+          "text": "từ",
+          "start": 2.44,
+          "end": 2.56
+        },
+        {
+          "text": "10",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "đến",
+          "start": 3.04,
+          "end": 3.28
+        },
+        {
+          "text": "14",
+          "start": 3.32,
+          "end": 3.68
+        },
+        {
+          "text": "làn",
+          "start": 3.76,
+          "end": 3.92
+        },
+        {
+          "text": "xe,",
+          "start": 4,
+          "end": 4.56
+        },
+        {
+          "text": "dự",
+          "start": 4.6,
+          "end": 4.72
+        },
+        {
+          "text": "kiến",
+          "start": 4.8,
+          "end": 4.96
+        },
+        {
+          "text": "hoàn",
+          "start": 5.04,
+          "end": 5.2
+        },
+        {
+          "text": "thành",
+          "start": 5.24,
+          "end": 5.44
+        },
+        {
+          "text": "trong",
+          "start": 5.48,
+          "end": 5.6
+        },
+        {
+          "text": "năm",
+          "start": 5.68,
+          "end": 5.76
+        },
+        {
+          "text": "2028.",
+          "start": 5.84,
+          "end": 7.52
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 4.284081632653061,
+      "speech": "Tuổi Trẻ ghi nhận ngày mùng năm tháng mười : quốc lộ 13 đang được thi công.",
+      "words": [
+        {
+          "text": "Tuổi",
+          "start": 0,
+          "end": 0.12
+        },
+        {
+          "text": "Trẻ",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "text": "ghi",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "nhận",
+          "start": 0.68,
+          "end": 0.88
+        },
+        {
+          "text": "ngày",
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "text": "5/10",
+          "start": 1.16,
+          "end": 1.92
+        },
+        {
+          "text": ":",
+          "start": 1.92,
+          "end": 2.4
+        },
+        {
+          "text": "quốc",
+          "start": 2.44,
+          "end": 2.56
+        },
+        {
+          "text": "lộ",
+          "start": 2.6,
+          "end": 2.72
+        },
+        {
+          "text": "13",
+          "start": 2.76,
+          "end": 3.04
+        },
+        {
+          "text": "đang",
+          "start": 3.28,
+          "end": 3.44
+        },
+        {
+          "text": "được",
+          "start": 3.52,
+          "end": 3.6
+        },
+        {
+          "text": "thi",
+          "start": 3.68,
+          "end": 3.8
+        },
+        {
+          "text": "công.",
+          "start": 3.84,
+          "end": 4.32
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene4",
+      "durationSec": 7.157551020408163,
+      "speech": "Bee Cons New Sky nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Anh chị đoán thử, từ đây về Bình Triệu mất bao lâu?",
+      "words": [
+        {
+          "text": "Bcons",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "Newsky",
+          "start": 0.64,
+          "end": 1.28
+        },
+        {
+          "text": "nằm",
+          "start": 1.52,
+          "end": 1.6
+        },
+        {
+          "text": "mặt",
+          "start": 1.64,
+          "end": 1.84
+        },
+        {
+          "text": "tiền",
+          "start": 1.88,
+          "end": 2
+        },
+        {
+          "text": "Quốc",
+          "start": 2.08,
+          "end": 2.2
+        },
+        {
+          "text": "lộ",
+          "start": 2.24,
+          "end": 2.36
+        },
+        {
+          "text": "13,",
+          "start": 2.4,
+          "end": 2.88
+        },
+        {
+          "text": "phường",
+          "start": 3.04,
+          "end": 3.2
+        },
+        {
+          "text": "Lái",
+          "start": 3.28,
+          "end": 3.36
+        },
+        {
+          "text": "Thiêu.",
+          "start": 3.44,
+          "end": 3.92
+        },
+        {
+          "text": "Anh",
+          "start": 4.08,
+          "end": 4.2
+        },
+        {
+          "text": "chị",
+          "start": 4.24,
+          "end": 4.36
+        },
+        {
+          "text": "đoán",
+          "start": 4.4,
+          "end": 4.56
+        },
+        {
+          "text": "thử,",
+          "start": 4.64,
+          "end": 5.04
+        },
+        {
+          "text": "từ",
+          "start": 5.2,
+          "end": 5.28
+        },
+        {
+          "text": "đây",
+          "start": 5.36,
+          "end": 5.6
+        },
+        {
+          "text": "về",
+          "start": 5.68,
+          "end": 5.8
+        },
+        {
+          "text": "Bình",
+          "start": 5.84,
+          "end": 5.92
+        },
+        {
+          "text": "Triệu",
+          "start": 6.08,
+          "end": 6.32
+        },
+        {
+          "text": "mất",
+          "start": 6.4,
+          "end": 6.48
+        },
+        {
+          "text": "bao",
+          "start": 6.56,
+          "end": 6.64
+        },
+        {
+          "text": "lâu?",
+          "start": 6.72,
+          "end": 7.2
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
