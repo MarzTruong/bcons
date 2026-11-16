@@ -12,7 +12,7 @@ Bản gốc AGY: Drive `agy/den-claude/2026-11-15-canh-minh-chung/` (`ket-qua.md
 1. **Video 5, tiêu đề cảnh "Căn hộ dọc Quốc lộ 13" sai phạm vi.** Số 35–40 và 60 triệu/m² là căn hộ mới ở **Bình Dương cũ** (Dĩ An, Thuận An…), không phải "dọc Quốc lộ 13". Sửa thành "Căn hộ mới, Bình Dương cũ" (khớp kịch bản và thẻ ở bản tạm). Biểu đồ cũng thiếu phạm vi: thêm "Bình Dương cũ" vào tiêu đề "Mặt bằng giá sơ cấp căn hộ".
 2. **Nguồn biểu đồ gộp sai.** "One Mount Group, VnExpress 23/09/2026" gắn cho cả hai cột, nhưng 60 triệu là số One Mount quý II/2026 còn 35–40 là VnExpress ghi nhận vùng giá phổ biến của năm trước. Sửa: "Nguồn: VnExpress 23/09/2026 (khoảng 60 triệu: One Mount Group)".
 3. **Chip "Đã đối chiếu <tên báo>" (phương án 1, nhịp 3)**: câu tự bảo vệ, ngụ ý có đơn vị thứ ba xác minh. Bỏ, giữ "Nguồn: …" như thanh nguồn cố định.
-4. **Video 3, tiêu đề "Mức thuê 11 và 13 triệu/tháng"** thiếu điều kiện (2 phòng ngủ, theo diện tích thông thủy). Đổi thành "Căn 2 phòng ngủ: 11 và 13 triệu/tháng" hoặc chỉ "Cam kết thuê lại".
+4. ~~Video 3, tiêu đề "Mức thuê 11 và 13 triệu/tháng"~~: anh quyết giữ nguyên (16/11/2026). Không sửa.
 5. **Video 5, nền ảnh cổng chào** với chú thích "trục Quốc lộ 13" không liên quan đến số giá; ở nhịp 3 chú thích này bị biểu đồ thay nên không hiện, nhưng ảnh nền vẫn gợi nhầm nội dung. Em đề xuất dùng ảnh khu vực/dự án thay (anh cung cấp) hoặc phối cảnh có nhãn "minh họa".
 6. **Hai bản dữ liệu nhúng và `canh-mau.json` tách rời** trong mỗi `index.html`: sửa một nơi quên nơi kia thì chạy `file://` ra bản cũ. Chấp nhận được cho mẫu; khi lắp vào Remotion em chỉ dùng một nguồn.
 7. Mã nhỏ: `miniChip.innerHTML` ghép chuỗi từ dữ liệu (chỉ dữ liệu của mình, không rủi ro thực tế) nên đổi `textContent` khi lắp.
@@ -22,3 +22,6 @@ Không hứa lợi nhuận/tăng giá, không "sắp hết", không metro, khôn
 
 ## Việc cần anh quyết
 Chọn phương án (em chỉ nhận xét nội dung, không thiết kế). Về nội dung: cả hai đều đủ nguồn và nhãn; phương án 2 (nền sáng) hợp video 5 vì biểu đồ và ảnh không che nhau, còn phương án 1 (nền tối) hợp video 3 và 4. Hai video có thể dùng hai phương án khác nhau nếu anh muốn. Chọn xong và nói OK thì em lắp vào Remotion (mẫu cảnh `bang-chung`), sửa spec 03, 04, 05 và chụp lại storyboard.
+
+## Anh chốt 16/11/2026
+Gửi AGY sửa mục 1, 2, 3, 5; mục 4 giữ nguyên. Lời giao: `agy/giao-viec/2026-11-16-canh-minh-chung-sua.md`.
