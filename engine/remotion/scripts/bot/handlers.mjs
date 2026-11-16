@@ -30,7 +30,9 @@ const gemvidPrompt = (file) =>
   `/bcons-video Làm video từ báo cáo Gemini (file ${file}). Làm CỔNG 1 theo skill bcons-video: mở từng link gốc đối chiếu từng con số, loại số sai/bịa, ghi file -KIEM.md cạnh báo cáo; đề xuất 2-3 góc làm video và tên <số>-<tên>. Sau đó DỪNG, chờ anh chọn góc; chưa viết kịch bản, chưa tạo giọng.`;
 const SESSION_TTL_MS = 3 * 3600e3;
 const TG_MAX_BYTES = 50 * 1024 * 1024;
-const tail = (s, n = 15) => String(s).trim().split(/\r?\n/).slice(-n).join("\n");
+// Cảnh báo Node về package.json thiếu "type" làm rối thông báo lỗi, bỏ đi (không phải lỗi thật).
+const NHIEU_NODE = /Reparsing as ES module|MODULE_TYPELESS_PACKAGE_JSON|--trace-warnings|To eliminate this warning/;
+export const tail = (s, n = 15) => String(s).trim().split(/\r?\n/).filter((l) => !NHIEU_NODE.test(l)).slice(-n).join("\n");
 
 /** Đọc `git status --porcelain=v1 -z -uall` → danh sách đường dẫn (tương đối gốc repo). */
 export function parsePorcelainZ(out) {
@@ -165,6 +167,19 @@ export function createBot(deps) {
       return xemTruocLoiDoc(JSON.parse(fs.readFileSync(videoPaths(name, projDir).spec, "utf8")), ids);
     } catch (e) {
       return `(Không đọc được lời đọc: ${e.message})`;
+    }
+  }
+
+  /** Cảnh anh gõ (vd. canh5) có trong spec không; không thì trả câu báo ngay, không hỏi tốn credit. */
+  function canhSai(name, ids) {
+    if (!ids) return null;
+    try {
+      const spec = JSON.parse(fs.readFileSync(videoPaths(name, projDir).spec, "utf8"));
+      const co = (spec.scenes ?? []).map((x) => x.id);
+      if (!co.length || ids.every((id) => co.includes(id))) return null;
+      return `Video ${spec.so ?? name} chỉ có ${co.length} cảnh (1–${co.length}). Gõ lại số cảnh, vd. /giong ${spec.so ?? name} canh${co.length}.`;
+    } catch {
+      return null;
     }
   }
 
@@ -379,6 +394,8 @@ export function createBot(deps) {
       const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
       const ids = n ? n.split(",").map((x) => `scene${Number(x)}`) : null;
       const label = ids ? ` cảnh ${n}` : "";
+      const sai = canhSai(name, ids);
+      if (sai) return sayP(sai);
       // Anh không ngồi đọc lời đọc (16/11/2026): bot tự chặn khi có từ lặp / cụm đã từng lỗi, nhờ Claude sửa câu trước khi tốn credit.
       if (opt !== "chapnhan") {
         const chan = (() => {
@@ -406,6 +423,8 @@ export function createBot(deps) {
     loidoc([name, canh]) {
       if (!checkName(name)) return;
       const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
+      const sai = canhSai(name, n ? n.split(",").map((x) => `scene${Number(x)}`) : null);
+      if (sai) return sayP(sai);
       return sayP(`Lời đọc ${name}${n ? ` cảnh ${n}` : ""} (chưa tạo giọng, không tốn credit):\n${loiDocText(name, n ? n.split(",").map((x) => `scene${Number(x)}`) : null)}`);
     },
     capnhat() {

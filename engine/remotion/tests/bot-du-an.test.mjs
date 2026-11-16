@@ -334,3 +334,25 @@ test("thẻ video: video không có bia.json thì không hiện mục Bìa", asy
   await s.bot.handleUpdate(press(`v:${pidOf("bcons-newsky")}:1`));
   assert.ok(!/Bìa/.test(s.last().text));
 });
+
+test("/giong 5 canh5 trên video chỉ có 4 cảnh (spec thật 05): báo ngay, không hỏi tốn credit, không chạy lệnh; /loidoc cũng vậy", async () => {
+  const { tail } = await import("../scripts/bot/handlers.mjs");
+  const root = taoRepo();
+  const spec05 = fs.readFileSync(new URL("../../../du-an/bcons-newsky/video/05-gia-binh-duong-cu/spec.json", import.meta.url), "utf8");
+  const vd = path.join(root, "du-an", "bcons-newsky", "video", "05-gia-binh-duong-cu");
+  fs.mkdirSync(vd, { recursive: true });
+  fs.writeFileSync(path.join(vd, "spec.json"), spec05);
+  const s = setup(root);
+  await s.bot.handleUpdate(msg("/giong 5 canh5"));
+  assert.match(s.last().text, /Video 5 chỉ có 4 cảnh \(1–4\)/);
+  assert.doesNotMatch(s.last().text, /TỐN CREDIT/);
+  await s.bot.handleUpdate(msg("/loidoc 5 canh5"));
+  assert.match(s.last().text, /Video 5 chỉ có 4 cảnh/);
+  assert.ok(!s.execs.some((e) => e.includes("voice")));
+  // cảnh hợp lệ vẫn hỏi như cũ
+  await s.bot.handleUpdate(msg("/giong 5 canh4"));
+  assert.match(s.last().text, /TỐN CREDIT/);
+  // lỗi thật của Node (npm run voice trong repo thiếu "type": "module") không lẫn vào thông báo
+  const that = "(node:1234) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///x/scripts/a.mjs is not specified and it doesn't parse as CommonJS.\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\nTo eliminate this warning, add \"type\": \"module\" to package.json.\n(Use `node --trace-warnings ...` to show where the warning was created)\nError: Không có cảnh scene5 trong spec";
+  assert.equal(tail(that, 6), "Error: Không có cảnh scene5 trong spec");
+});
