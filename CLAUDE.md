@@ -80,6 +80,7 @@ Sản phẩm phải trông và nghe như người làm có chủ ý, không như
 
 ## Video
 - Làm video bằng skill/lệnh `/bcons-video [chủ đề]`: 4 cổng chờ anh duyệt (số liệu → chữ + số + storyboard có hình → tốn credit giọng → render). Không "one-click" từ cào tin đến render. Chi tiết: `docs/quy-trinh-video.md`.
+- **Video là mồi kéo khách** (anh chốt 16/11/2026): gợi tò mò, nêu một phần thông tin, một ý chính, một lời kêu gọi; chi tiết và điều kiện tư vấn lại khi khách liên hệ, không cần rõ ràng từng câu chữ. Quy tắc cứng ở trên vẫn giữ (không sai số liệu, không hứa lợi nhuận, không "sắp hết"). Chi tiết: mục 3c `docs/quy-trinh-video.md`, skill `marketing:content-creation` cho hook/CTA.
 - Có Superpowers thì dùng brainstorming/plan/verification cho việc phức tạp; việc nhỏ làm thẳng.
 
 ## Quy ước làm việc

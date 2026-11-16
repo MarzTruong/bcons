@@ -20,6 +20,8 @@ Em chạy quy trình video cho dự án `<mã>`: lấy từ `--du-an <mã>` tron
 - Cảnh cuối: thông tin dự án + khối tên và QR (tự thêm khi render từ `project.json` → `watermark`). Không đọc SĐT, không ghi SĐT dạng chữ trên video (caption thì được ghi số của anh).
 - Cảnh có thông tin địa lý dùng mẫu `geo-map` (xem `du-an/bcons-central-park/assets/geo/NGUON.md`, ví dụ `du-an/bcons-central-park/video/02-dong-nai-ha-tang-map/spec.json`). Điểm phải có tọa độ có nguồn (anh cung cấp từ Google Maps hoặc nguồn chính thức), ghi vào bảng nguồn. **Không vẽ tuyến hay ranh giới giả cho giống thật**: lớp chưa có dữ liệu chính thức phải đặt `kind: "illustrative"` (nét đứt, nhãn minh họa) và `note` nói rõ là sơ đồ minh họa. Bản đồ cần token Mapbox: `MAPBOX_TOKEN_KEY` trong `engine/remotion/.env`; kiểm bằng `npm run check:mapbox`; xem thử một khung bằng `npm run still -- BconsCentralPark out/tam/x.png --frame=N --props=<file> --gl=angle`. Chú thích "© Mapbox © OpenStreetMap" luôn hiện (đã có sẵn trong mẫu).
 
+- **Video là mồi kéo khách (anh chốt 16/11/2026, mục 3c `docs/quy-trinh-video.md`):** gợi tò mò, nêu một phần thông tin, một ý chính, một lời kêu gọi; không cần rõ ràng từng câu chữ, chi tiết và điều kiện tư vấn lại khi khách liên hệ. Dùng công thức hook/CTA của skill `marketing:content-creation` khi viết hook, kịch bản, caption. Không phá quy tắc cứng ở trên (không sai số liệu, không hứa lợi nhuận, không "sắp hết", nêu một phần thì phần đó phải đúng và không gây hiểu sai).
+
 ## Xác định đang ở giai đoạn nào
 Dựa vào file trên đĩa, không hỏi lại những gì đã có. Slug `<name>` (a-z, 0-9, gạch ngang) do em đề xuất ở cổng 1 và anh duyệt.
 - Chưa có `du-an/<mã>/video/<name>/kich-ban.md` → bắt đầu từ **Cổng 1**.

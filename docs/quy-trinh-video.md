@@ -43,9 +43,24 @@ Căn cứ: báo cáo tuần 06–12/11 (thời gian xem TB TikTok 1–4 s trên 
 - [ ] **Độ dài mục tiêu 25–35 giây** (70–95 chữ lời); mỗi cảnh không quá 8 giây. Dài hơn phải có lý do.
 - [ ] **Nhịp: cứ 2–3 giây có một thứ mới** trên hình (số hiện, thẻ vào, vùng sáng); storyboard ghi "điểm đổi" từng cảnh. Không để một cảnh đứng yên 10 giây.
 - [ ] **Cảnh cuối có một câu hỏi dễ trả lời** (chọn 1 trong 2, hoặc trả lời bằng một con số/một chữ), thay lời mời "comment …"; QR đã tự thêm.
-- [ ] **Video hạ tầng/quy hoạch:** nói rõ tình trạng thật (ý tưởng / chủ trương / đã duyệt / đang thi công) và còn mấy bước; không để người xem hiểu ý tưởng là đã chắc chắn.
+- [ ] **Video hạ tầng/quy hoạch:** một dòng nói đúng tình trạng thật (ý tưởng / chủ trương / đã duyệt / đang thi công); không để người xem hiểu ý tưởng là đã chắc chắn, không cần kể hết các bước (mục 3c).
+- [ ] **Gợi tò mò, một lời kêu gọi (mục 3c):** video nêu một phần, chừa chi tiết cho khi khách nhắn; không liệt kê điều kiện từng câu.
 - [ ] `npm run check:spec` in cảnh báo nhịp/hook (cảnh 1 > 14 chữ trước con số đầu, tổng > 100 chữ, cảnh > 8 s): không chặn, nhưng vượt thì ghi lý do trong kịch bản.
 - [ ] Hình/chữ dựng: không bắt chước kiểu nền tối kẻ lưới, thẻ viền sáng, nhãn chữ hoa của video tham khảo (trái "No AI Slop"). Chỉ học nhịp và cấu trúc.
+
+## 3c. Nguyên tắc truyền thông bán hàng: gợi tò mò, để chi tiết cho lúc có khách (anh chốt 16/11/2026)
+Video và caption là **mồi kéo khách nhắn**, không phải bản thông tin đầy đủ. Chi tiết, điều kiện, mức theo từng căn, danh sách căn: **tư vấn lại khi khách liên hệ**. Căn cứ: các công thức hook và CTA của skill `marketing:content-creation` (hook ngắn, một ý chính, một lời kêu gọi), đã chỉnh cho bất động sản.
+**Làm:**
+- Mỗi video **một ý chính, một điều khiến người xem muốn hỏi thêm** (con số bất ngờ, một câu hỏi, một kết quả chưa nói hết). Nêu một phần thông tin, chừa phần còn lại.
+- **Một lời kêu gọi, đúng một việc**: nhắn/hỏi để nhận chi tiết (QR và tên đã tự có); thêm câu hỏi dễ trả lời để kéo bình luận. Không nhồi nhiều lời mời.
+- Không cần liệt kê điều kiện, ngoại lệ, mọi bước của từng câu. Nói "một số căn", "từ", "khoảng" khi đúng với nguồn là đủ. Chữ nhỏ trên hình chỉ giữ thứ cần để không sai (ví dụ "căn ví dụ").
+- Viết như người kể chuyện, không như bản tin hay văn bản pháp lý. Câu ngắn, có hình ảnh, có điểm đau của khách (vốn bao nhiêu, vay thế nào, bao giờ nhận nhà).
+**Vẫn không được phá (quy tắc cứng `CLAUDE.md`, không vì "tò mò" mà nới):**
+- Không bịa, không sai số liệu: nêu một phần thì phần đó phải **đúng nguồn** và không để người xem hiểu sai thành điều ngược lại (ví dụ cam kết thuê lại chỉ áp dụng cho một số căn thì ghi "một số căn", không ngầm hiểu mọi căn).
+- Không hứa lợi nhuận/tăng giá, không "sắp hết" khi chưa kiểm, không quảng cáo căn đã cọc/CĐT LOCK, không SĐT chữ trên hình.
+- Có nhắc giá căn thì một nhãn ngắn chưa VAT/có VAT (và phí bảo trì 2% khi nói tổng chi phí); căn ví dụ ghi rõ "ví dụ"; phối cảnh ghi "minh họa".
+- Hạ tầng/quy hoạch: một dòng nói đúng tình trạng thật (chủ trương / đã duyệt / đang thi công / dự kiến), không cần kể hết các bước.
+- Thu thông tin khách phải có ô đồng ý nhận tin.
 
 ## 4. Công cụ hỗ trợ
 - **Superpowers** (cài theo mục 5): dùng `brainstorming` khi lên ý tưởng/kịch bản mới, `writing-plans` + `verification-before-completion` khi sửa code Remotion/script, `systematic-debugging` khi render hoặc giọng đọc lỗi.
