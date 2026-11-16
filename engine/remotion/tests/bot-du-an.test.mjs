@@ -296,3 +296,41 @@ test("project.json thật: mỗi dự án có maNgan riêng (2–4 chữ thườ
   const map = JSON.parse(m[1].replace(/'/g, '"'));
   for (const d of ds) assert.equal(map[d.ma], d.maNgan, d.ma);
 });
+
+test("thẻ video + /render: hiện trạng thái bìa trên Drive (video/<mã>/bia), báo đường dẫn khi render xong", async () => {
+  const root = taoRepo();
+  const drive = fs.mkdtempSync(path.join(os.tmpdir(), "bia-drv-"));
+  const cu = process.env.DRIVE_DIR;
+  process.env.DRIVE_DIR = drive;
+  try {
+    const name = "01-mat-tien-quoc-lo-13";
+    const vd = path.join(root, "du-an", "bcons-newsky", "video", name);
+    fs.writeFileSync(path.join(vd, "bia.json"), "{}");
+    fs.mkdirSync(path.join(drive, "video", "bcons-newsky"), { recursive: true }); // cấu trúc Drive thật
+    const s = setup(root);
+    const pid = pidOf("bcons-newsky");
+    await s.bot.handleUpdate(press(`v:${pid}:1`));
+    assert.match(s.last().text, /Bìa ⬜ chưa chép/);
+    // giả lập render:drive chép bìa lên Drive (việc thật do scripts/render-drive.mjs)
+    const dest = path.join(drive, "video", "bcons-newsky", "bia", `${name}.png`);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.writeFileSync(dest, "PNG");
+    const mới = new Date(Date.now() + 60_000);
+    fs.utimesSync(dest, mới, mới);
+    await s.bot.handleUpdate(press(`v:${pid}:1`));
+    assert.match(s.last().text, /Bìa ✅ đã chép/);
+    fs.writeFileSync(path.join(root, "out", `${name}.mp4`), "video"); // render:drive giả lập đã ra mp4
+    await s.bot.handleUpdate(msg("/render 1"));
+    await new Promise((r) => setTimeout(r, 30));
+    assert.ok(s.said.some((m) => m.text.includes("Bìa đã chép lên Drive") && m.text.includes(path.join("bia", `${name}.png`))), s.said.map((m) => m.text).join("|"));
+  } finally {
+    if (cu === undefined) delete process.env.DRIVE_DIR;
+    else process.env.DRIVE_DIR = cu;
+  }
+});
+
+test("thẻ video: video không có bia.json thì không hiện mục Bìa", async () => {
+  const s = setup();
+  await s.bot.handleUpdate(press(`v:${pidOf("bcons-newsky")}:1`));
+  assert.ok(!/Bìa/.test(s.last().text));
+});

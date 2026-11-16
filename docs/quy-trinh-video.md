@@ -17,7 +17,7 @@ Thay thế cách dùng "Bản 3 one-click" trong `huong_dan_su_dung_prompt_remot
 | 3b | Kiểm lời đọc | **Claude tự chạy** `npm run loi-doc -- <tên>` ở cổng 2 và sửa mọi cảnh báo trước khi đưa anh duyệt (anh không phải đọc lời đọc); bot `/giong` cũng tự chặn khi có từ lặp hoặc cụm đã từng lỗi, báo nhờ Claude sửa câu; `/loidoc <số>` để xem khi cần | chữ lời đọc đã kiểm | Không cần anh (chỉ anh duyệt kịch bản) |
 | 4 | Giọng đọc | `node --env-file=.env scripts/generate-voice.mjs <tên>` (ElevenLabs, tốn credit; từ chối nếu spec chưa `approved`) | mp3 + timestamp | Anh nghe thử |
 | 2b | Caption | `du-an/<mã>/video/<tên>/caption.md` (FB + TikTok), `npm run check:caption -- <tên>`; duyệt cùng lúc với bước 2 (`npm run duyet:caption`) | caption `approved` | Anh duyệt chữ + caption |
-| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` (bot `/render <tên>`): nhạc nền, hiệu ứng, QR góc + tên và QR cảnh cuối tự thêm | mp4 lên Drive | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
+| 5 | Render | `npm run lint` rồi `npm run render:drive -- <tên>` (bot `/render <tên>`): nhạc nền, hiệu ứng, QR góc + tên và QR cảnh cuối tự thêm | mp4 lên Drive, kèm ảnh bìa `video/<mã>/bia/<tên>.png` | **Anh xem, duyệt trước khi đăng** (`npm run duyet:video`, rồi `npm run send:telegram`; đăng theo `docs/huong-dan-dang-bai.md`) |
 
 Không dùng `edge-tts` + `props.json` + composition `RealEstateShortVideo` của bản prompt cũ: repo hiện dùng composition `BconsCentralPark` nhận spec qua `--props`, giọng ElevenLabs, phụ đề từng từ.
 

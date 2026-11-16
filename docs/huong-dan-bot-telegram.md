@@ -55,7 +55,7 @@ Gõ `/` trong Telegram chỉ còn 6 mục, phần còn lại bấm nút. Bot là
 | `/danhsach` | Trạng thái từng video: caption nháp/đã duyệt, có video chưa, video đã duyệt chưa |
 | `/xem <tên>` | Gửi caption Facebook + TikTok (và bài Zalo nếu có `zalo.md`) và bản xem thử video. Có `caption-icon.md` thì bot nhắc, gõ `/xem <tên> icon` để xem bản có icon |
 | `/duyet <tên>` | Duyệt caption + đúng file video vừa render, gửi **chữ caption** FB/TikTok về Telegram để sao chép (không gửi lại video, đã xem ở bước render), tự lưu lên GitHub |
-| `/render <tên>` | Render video (vài phút), xong gửi bản xem thử |
+| `/render <tên>` | Render video (vài phút), xong gửi bản xem thử và **tự chép ảnh bìa** lên Drive `video/<mã dự án>/bia/<tên>.png` (cạnh file mp4; tự chụp bìa nếu chưa có hoặc `bia.json`/spec mới hơn; video chưa có `bia.json` thì bỏ qua). Bot báo đường dẫn bìa; thẻ `/video` hiện "Bìa ✅ đã chép" hoặc "⬜ chưa chép / cũ, cần chép lại" |
 | `/giong <tên>` | Tạo giọng ElevenLabs. **Tốn credit** nên bot hỏi lại, anh bấm **Đồng ý** mới chạy. Cảnh nào bị trôi giọng (vd. giọng Bắc): `/giong <tên> canh1` chỉ tạo lại cảnh đó, lượt đọc mới |
 | `/storyboard <tên>` | Chụp 3 khung mỗi cảnh, gửi album từng cảnh để duyệt hình **trước** khi tạo giọng. Không tốn credit |
 | `/kiemgia` | Kiểm giá từng căn trong Master File (Drive `data/<mã>/gia/`) theo 5 thông báo PTTT của CĐT. Chỉ đọc, không gửi đi đâu |

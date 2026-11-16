@@ -4,6 +4,7 @@ import path from "node:path";
 import { bodyHash, parseCaption } from "../caption.mjs";
 import { sha256File } from "../caption-cli.mjs";
 import { listVideos, videoPaths } from "../project.mjs";
+import { trangThaiBia } from "../bia-drive.mjs";
 
 export const HELP = [
   "Bot Bcons – gõ một trong 6 mục, phần còn lại bấm nút:",
@@ -99,7 +100,7 @@ export function buocVideo(name, projDir, outDir) {
   const giong = fs.existsSync(videoPaths(name, projDir).timestamps);
   const duyet = st.caption === "đã duyệt" && st.video === "đã duyệt";
   const tiep = !kichBan ? "kichban" : !giong ? "giong" : !st.mp4 ? "render" : !duyet ? "duyet" : "xong";
-  return { kichBan, giong, mp4: st.mp4, duyet, tiep, caption: st.caption, video: st.video };
+  return { kichBan, giong, mp4: st.mp4, duyet, tiep, caption: st.caption, video: st.video, bia: trangThaiBia(name, projDir) };
 }
 
 /** Danh sách gửi về Telegram. */

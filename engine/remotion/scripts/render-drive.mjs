@@ -10,6 +10,7 @@ import { applyWatermark, checkTimestamps, prepareRun } from "./spec-tools.mjs";
 import { loadMapboxEnv } from "./env.mjs";
 import { driveVideoDir, readProjectConfig, takeProjectFlag } from "./project.mjs";
 import { prepareAudio } from "./am-thanh.mjs";
+import { chepBiaLenDrive } from "./bia-drive.mjs";
 
 try {
   process.loadEnvFile(".env");
@@ -77,3 +78,12 @@ if (render.status !== 0) process.exit(render.status ?? 1);
 const dest = path.join(target, file);
 fs.copyFileSync(out, dest);
 console.log(`Đã chép lên Drive: ${dest}`);
+
+// Bìa cạnh video: Drive/video/<mã>/bia/<tên>.png (tự chụp nếu chưa có hoặc spec/bia.json mới hơn). Lỗi bìa không làm hỏng video đã render.
+try {
+  const b = chepBiaLenDrive({ name, projDir });
+  if (b.trangThai === "da-chep") console.log(`Đã chép bìa lên Drive: ${b.dest}`);
+  else if (b.trangThai === "khong-co-bia") console.log("Video chưa có bia.json, bỏ qua ảnh bìa.");
+} catch (e) {
+  console.error(`⚠️ Chưa chép được bìa: ${e.message} (video đã chép xong; chạy lại: npm run bia -- ${name})`);
+}

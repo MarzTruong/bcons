@@ -5,6 +5,7 @@ import path from "node:path";
 import { approvalState, duyetCaption, duyetVideo } from "../caption-cli.mjs";
 import { parseCaption } from "../caption.mjs";
 import { videoPaths } from "../project.mjs";
+import { biaDrivePath, trangThaiBia } from "../bia-drive.mjs";
 import { buttons } from "./tg.mjs";
 import { chayPhieu as chayPhieuThat, parseLenhPhieu } from "../phieu.mjs";
 import { HELP, buocVideo, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
@@ -273,6 +274,9 @@ export function createBot(deps) {
         await sayP(`Đang render ${name}${khongNhac ? " (không nhạc)" : ""}, mất vài phút... (dừng: /huy)`);
         await run("npm", ["run", "render:drive", "--", ...daFlag(), name, ...(khongNhac ? ["--khong-nhac"] : [])], remotionDir, `Render ${name}`, 60 * 60e3);
         await sendPreview(path.join(outDir, file), khongNhac ? `Bản không nhạc ${name} (để chọn nhạc trên TikTok).` : `Bản xem thử ${name}. Ưng thì nhắn /duyet ${name}`);
+        const bia = trangThaiBia(name, projDir);
+        if (bia === "đã chép") await say(`🖼 Bìa đã chép lên Drive: ${biaDrivePath(name, projDir)}`);
+        else if (bia !== "không có") await say(`⚠️ Bìa ${name}: ${bia}. Nhắn Claude hoặc chạy lại /render ${name} để chép bìa.`);
       });
     },
     storyboard([name]) {
@@ -504,7 +508,7 @@ export function createBot(deps) {
       duyet: `Bước kế: xem rồi duyệt (caption: ${b.caption}, video: ${b.video}).`,
       xong: "Đã duyệt xong. Nhắn Claude ngày giờ đăng để lên lịch.",
     }[b.tiep];
-    return sayP(`🎬 ${v.so} · ${v.tieuDe}\nKịch bản ${b.kichBan ? "✅" : "📝 nháp"} · Giọng ${o(b.giong)} · Render ${o(b.mp4)} · Duyệt ${o(b.duyet)}\n${tiep}`, { reply_markup: { inline_keyboard: rows } });
+    return sayP(`🎬 ${v.so} · ${v.tieuDe}\nKịch bản ${b.kichBan ? "✅" : "📝 nháp"} · Giọng ${o(b.giong)} · Render ${o(b.mp4)}${b.bia === "không có" ? "" : ` · Bìa ${b.bia === "đã chép" ? "✅ đã chép" : `⬜ ${b.bia}`}`} · Duyệt ${o(b.duyet)}\n${tiep}`, { reply_markup: { inline_keyboard: rows } });
   }
 
   /** Menu tick chọn video (anh muốn 07/11/2026): ☐/☑ mỗi video, "Chọn tất cả", "▶ Làm (n video)". */
