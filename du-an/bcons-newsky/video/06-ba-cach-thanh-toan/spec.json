@@ -1,0 +1,105 @@
+{
+  "name": "06-ba-cach-thanh-toan",
+  "so": 6,
+  "tieuDe": "3 cách thanh toán Newsky",
+  "status": "draft",
+  "style": "anh",
+  "motion": "classic",
+  "hook": {
+    "lines": [
+      "Thanh toán",
+      "Newsky"
+    ],
+    "soNhan": "3",
+    "donVi": "cách",
+    "dongPhu": "Có cách chiết khấu đến 5,65%",
+    "image": {
+      "file": "assets/images/phoi-canh-goc-thap.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-goc-thap"
+    }
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "template": "stat-hero",
+      "markup": "Newsky có 3{ba} cách thanh toán. Mỗi cách chia tiền một kiểu.",
+      "cues": {
+        "value": "3"
+      },
+      "props": {
+        "badge": "Thông báo chủ đầu tư 05/10/2026",
+        "titleLines": [
+          "Thanh toán",
+          "Newsky"
+        ],
+        "cardLabel": "Cách thanh toán của chủ đầu tư",
+        "value": 3,
+        "decimals": 0,
+        "unit": "cách",
+        "sourceId": "ba-pttt",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    },
+    {
+      "id": "scene2",
+      "template": "danh-sach",
+      "markup": "Đầu tiên, vay ngân hàng, lãi có trần. Kế đến, không vay, chia nhỏ nhiều đợt. Cuối cùng, vay nhiều lần, chủ đầu tư hỗ trợ lãi.",
+      "cues": {
+        "m1": "Đầu",
+        "m2": "Kế",
+        "m3": "Cuối"
+      },
+      "props": {
+        "kicker": "Lịch của chủ đầu tư, 05/10/2026",
+        "title": "3 cách thanh toán",
+        "muc": [
+          {
+            "ten": "Vay ngân hàng 50%, lãi có trần",
+            "so": "PTTT 09 · lãi không vượt 6,9%/năm, tối đa 48 tháng",
+            "cueKey": "m1",
+            "sourceId": "pttt-09"
+          },
+          {
+            "ten": "Không vay, chia 12 đợt",
+            "so": "PTTT 08 · chiết khấu 5,65% so với giá PTTT 09",
+            "cueKey": "m2",
+            "sourceId": "pttt-08"
+          },
+          {
+            "ten": "Vay 3 lần, chủ đầu tư hỗ trợ lãi",
+            "so": "PTTT 10 · ân hạn gốc tối đa 18 tháng · chiết khấu 2,15% so với giá PTTT 09",
+            "cueKey": "m3",
+            "sourceId": "pttt-10"
+          }
+        ],
+        "tongKet": {
+          "text": "Mỗi cách một lịch đóng riêng"
+        },
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Anh chị hợp cách nào? Quét mã, em tính lịch đóng đúng căn anh chị chọn.",
+      "cues": {},
+      "props": {
+        "message": "Vay, không vay hay vay 3 lần? Quét mã để em tính đúng căn anh chị chọn · Mặt tiền Quốc lộ 13, phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}
