@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parseSpec } from "../src/spec.ts";
 import { listVideos, takeProjectFlag, videoPaths } from "./project.mjs";
+import { readBia, checkBia } from "./bia-tools.mjs";
 import { captionOptsFor, checkCaption, parseCaption } from "./caption.mjs";
 import {
   checkCues,
@@ -51,7 +52,9 @@ for (const name of names) {
         }
       });
     }
-    const geoErrors = [...checkGeoFiles(spec, projDir), ...checkHook(spec, projDir), ...checkNguonCuoi(spec, md), ...checkLoTrinh(spec)];
+    const biaFile = path.join(path.dirname(videoPaths(name, projDir).spec), "bia.json");
+    const biaErrors = fs.existsSync(biaFile) ? checkBia(readBia(biaFile), spec, projDir) : [];
+    const geoErrors = [...biaErrors, ...checkGeoFiles(spec, projDir), ...checkHook(spec, projDir), ...checkNguonCuoi(spec, md), ...checkLoTrinh(spec)];
     if (geoErrors.length) throw new Error(geoErrors.join("; "));
     const links = checkSourceLinks(spec, md);
     if (!links.ok) {

@@ -7,7 +7,7 @@ import type { TemplateProps } from "./common";
 
 const INK = "#06121f";
 const MAU: Record<Nhom, string> = { tuCo: "#7ee0c3", nganHang: "#ffe14d", nhanNha: "#ff9e44", soHong: "#7cc4ff" };
-const NHAN: Record<Nhom, string> = { tuCo: "Tự có trước nhận nhà", nganHang: "Ngân hàng giải ngân", nhanNha: "Nhận nhà", soHong: "Sổ hồng" };
+const NHAN: Record<Nhom, string> = { tuCo: "Tự có trước nhận nhà", nganHang: "Ngân hàng giải ngân", nhanNha: "Nhận nhà (VAT còn lại, phí bảo trì 2%)", soHong: "Sổ hồng" };
 
 const ease = (t: number) => 1 - Math.pow(1 - Math.max(0, Math.min(1, t)), 3);
 
@@ -65,11 +65,11 @@ export const LoTrinh: React.FC<TemplateProps<"lo-trinh">> = ({ props, cue }) => 
             key={d.nhom}
             style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, fontSize: 22, fontWeight: 600, color: "#d6e4f2", opacity: nhomP(d.nhom) > 0 ? 1 : 0.42 }}
           >
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0 }}>
               <span style={{ width: 14, height: 14, borderRadius: 2, flexShrink: 0, background: MAU[d.nhom] }} />
               <span>{NHAN[d.nhom]}</span>
             </span>
-            <span style={{ fontWeight: 800, color: "#fff", fontVariantNumeric: "tabular-nums" }}>{dinhDangTr(d.so)} tr</span>
+            <span style={{ fontWeight: 800, color: "#fff", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap", flexShrink: 0 }}>{dinhDangTr(d.so)} tr</span>
           </div>
         ))}
       </div>

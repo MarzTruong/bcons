@@ -243,6 +243,10 @@ export const DanhSachProps = z.object({
 /** Khung mở đầu 0–3 giây phủ lên đầu cảnh 1, khớp ảnh bìa (AGY kiểu 1). Khung 0 đã đủ chữ; hook tối đa 6 chữ. */
 export const HookSchema = z.object({
   lines: z.array(z.string().min(1)).min(1).max(3),
+  /** Chủ đề quyết định màu nhấn (cùng bảng màu với ảnh bìa, `src/bia.ts`). Không khai thì màu xanh ngọc như bản đầu. */
+  chuDe: z.enum(["ha-tang", "tien-do", "tai-chinh", "du-an"]).optional(),
+  /** CSS object-position của ảnh nền (khớp bìa), vd. "center 60%". */
+  viTriAnh: z.string().optional(),
   /** Con số nhấn lớn (phải có trong lời bình hoặc props), vd. "8". */
   soNhan: z.string().optional(),
   /** Đơn vị cạnh số nhấn, vd. "làn xe". Không có thì không hiện. */

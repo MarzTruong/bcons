@@ -244,7 +244,6 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                   ) : (
                     <Captions words={d.words} nhan={scene.nhan} trenBanDo={scene.template === "geo-map"} />
                   )}
-                  {i === 0 && spec.hook ? <HookOpen hook={spec.hook} /> : null}
                 </SceneTransition>
                 {khongGiong ? null : (
                   <Sequence from={LEAD} durationInFrames={d.audioFrames}>
@@ -254,6 +253,8 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
               </Sequence>
             );
           })}
+          {/* Khung mở đầu nằm ngoài lớp chuyển cảnh để khung 0 đã đủ hình (không mờ dần từ trống): khung 0 chính là bìa. */}
+          {spec.hook ? <HookOpen hook={spec.hook} /> : null}
           {spec.nguonCuoi && timing.NGUON_FROM !== null ? (
             <Sequence from={timing.NGUON_FROM} durationInFrames={timing.NGUON_FRAMES}>
               <NguonCuoi nguon={spec.nguonCuoi} />

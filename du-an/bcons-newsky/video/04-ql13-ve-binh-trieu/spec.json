@@ -2,7 +2,7 @@
   "name": "04-ql13-ve-binh-trieu",
   "so": 4,
   "tieuDe": "Quốc lộ 13 về Bình Triệu",
-  "status": "approved",
+  "status": "draft",
   "style": "moi",
   "motion": "classic",
   "scenes": [
@@ -177,6 +177,27 @@
           "sourceId": "phoi-canh-tong-the"
         }
       }
+    }
+  ],
+  "hook": {
+    "lines": [
+      "Quốc lộ 13",
+      "về Bình Triệu"
+    ],
+    "soNhan": "60",
+    "donVi": "mét mặt cắt ngang",
+    "chuDe": "ha-tang",
+    "image": {
+      "file": "assets/images/hien-trang-ql13-tuoitre-1.jpg",
+      "label": "Ảnh: Tuổi Trẻ, 10/2026",
+      "sourceId": "ql13-bt-vb"
+    }
+  },
+  "nguonCuoi": [
+    {
+      "ten": "Tuổi Trẻ",
+      "ngay": "05/10/2026",
+      "sourceId": "ql13-bt-vb"
     }
   ]
 }

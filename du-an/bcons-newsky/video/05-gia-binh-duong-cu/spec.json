@@ -2,7 +2,7 @@
   "name": "05-gia-binh-duong-cu",
   "so": 5,
   "tieuDe": "Mặt bằng giá Bình Dương cũ",
-  "status": "approved",
+  "status": "draft",
   "style": "moi",
   "motion": "classic",
   "scenes": [
@@ -145,6 +145,28 @@
           "sourceId": "phoi-canh-tong-the"
         }
       }
+    }
+  ],
+  "hook": {
+    "lines": [
+      "Mặt bằng chung",
+      "căn hộ mới"
+    ],
+    "soNhan": "60",
+    "donVi": "triệu/m² (Bình Dương cũ)",
+    "chuDe": "tai-chinh",
+    "viTriAnh": "left 45%",
+    "image": {
+      "file": "assets/images/phoi-canh-tong-the.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-tong-the"
+    }
+  },
+  "nguonCuoi": [
+    {
+      "ten": "VnExpress",
+      "ngay": "23/09/2026",
+      "sourceId": "gia-bd-60"
     }
   ]
 }

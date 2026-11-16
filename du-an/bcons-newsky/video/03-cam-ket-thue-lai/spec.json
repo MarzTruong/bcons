@@ -2,7 +2,7 @@
   "name": "03-cam-ket-thue-lai",
   "so": 3,
   "tieuDe": "Căn hộ chủ đầu tư thuê lại",
-  "status": "approved",
+  "status": "draft",
   "style": "moi",
   "motion": "classic",
   "scenes": [
@@ -150,6 +150,28 @@
           "sourceId": "phoi-canh-tong-the"
         }
       }
+    }
+  ],
+  "hook": {
+    "lines": [
+      "Một số căn",
+      "được thuê lại"
+    ],
+    "soNhan": "24",
+    "donVi": "tháng",
+    "chuDe": "du-an",
+    "viTriAnh": "center 60%",
+    "image": {
+      "file": "assets/images/phoi-canh-tong-the.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-tong-the"
+    }
+  },
+  "nguonCuoi": [
+    {
+      "ten": "Thông báo 34/TB-SHQT",
+      "ngay": "12/11/2026",
+      "sourceId": "thue-24t"
     }
   ]
 }

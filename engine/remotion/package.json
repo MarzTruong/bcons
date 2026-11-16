@@ -61,7 +61,8 @@
     "send:telegram": "node scripts/send-telegram.mjs",
     "telegram:chat-id": "node scripts/telegram-chat-id.mjs",
     "bot": "node scripts/bot/bot.mjs",
-    "landing": "node ../landing/build.mjs"
+    "landing": "node ../landing/build.mjs",
+    "bia": "node scripts/bia.mjs"
   },
   "allowScripts": {
     "esbuild": false

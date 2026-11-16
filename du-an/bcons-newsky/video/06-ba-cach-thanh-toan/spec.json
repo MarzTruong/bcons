@@ -2,21 +2,22 @@
   "name": "06-ba-cach-thanh-toan",
   "so": 6,
   "tieuDe": "3 cách thanh toán Newsky",
-  "status": "approved",
+  "status": "draft",
   "style": "anh",
   "motion": "classic",
   "hook": {
     "lines": [
-      "Thanh toán",
-      "Newsky"
+      "Ba cách",
+      "thanh toán"
     ],
     "soNhan": "3",
-    "donVi": "cách",
+    "donVi": "lịch đóng",
     "dongPhu": "Cách không vay: chiết khấu 5,65%",
+    "chuDe": "tai-chinh",
     "image": {
-      "file": "assets/images/phoi-canh-goc-thap.jpg",
+      "file": "assets/images/phoi-canh-tong-the.jpg",
       "label": "Phối cảnh minh họa",
-      "sourceId": "phoi-canh-goc-thap"
+      "sourceId": "phoi-canh-tong-the"
     }
   },
   "scenes": [

@@ -2,7 +2,7 @@
   "name": "02-von-mua-can-nao",
   "so": 2,
   "tieuDe": "Mua căn 3 tỷ cần bao nhiêu tiền",
-  "status": "approved",
+  "status": "draft",
   "style": "anh",
   "motion": "classic",
   "scenes": [
@@ -36,7 +36,7 @@
     },
     {
       "id": "scene2",
-      "template": "compare-bars",
+      "template": "lo-trinh",
       "markup": "Cả căn chia ra ba phần. Ngân hàng lo khoảng 1{một} nửa. Phần mình là vốn tự có trước khi nhận nhà, và 1{một} đợt cuối lúc nhận nhà.",
       "cues": {
         "b1": "Ngân",
@@ -44,34 +44,89 @@
         "b3": "đợt"
       },
       "props": {
-        "kicker": "Căn ví dụ 3 tỷ, chưa VAT",
-        "title": "Tiền đến từ đâu",
-        "unit": "triệu đồng",
-        "bars": [
+        "pttt": "PTTT 09",
+        "canViDu": "3 tỷ, chưa VAT",
+        "donVi": "triệu đồng",
+        "title": "Lộ trình tiền theo thời gian",
+        "giaChuaVat": 3000,
+        "vat": 0.1,
+        "baoTri": 0.02,
+        "ghiChuCuoi": "Đơn vị: triệu đồng. Giá căn ví dụ chưa VAT; VAT thu đủ tới lúc nhận nhà. Đợt nhận nhà gồm 25%, VAT còn lại và phí bảo trì 2%.",
+        "phan": "tong-quan",
+        "moc": [
           {
-            "label": "Ngân hàng giải ngân (nếu vay)",
-            "value": 1650,
+            "nhan": "Ký thỏa thuận",
+            "khi": "Khi ký",
+            "ghiChu": "5% chưa VAT",
+            "soTien": 150,
+            "nhom": "tuCo",
+            "cueKey": "b2",
+            "sourceId": "pttt-09"
+          },
+          {
+            "nhan": "Ký hợp đồng",
+            "khi": "Ký HĐMB",
+            "ghiChu": "5% + VAT hai đợt đầu",
+            "soTien": 180,
+            "nhom": "tuCo",
+            "cueKey": "b2",
+            "sourceId": "tinh-toan-von",
+            "offset": 10
+          },
+          {
+            "nhan": "Ngân hàng giải ngân",
+            "khi": "+7 ngày",
+            "ghiChu": "50% giá căn (nếu vay)",
+            "soTien": 1650,
+            "nhom": "nganHang",
             "cueKey": "b1",
             "sourceId": "pttt-09"
           },
           {
-            "label": "Vốn tự có trước khi nhận nhà",
-            "value": 660,
+            "nhan": "Đợt 4",
+            "khi": "+2 tháng",
+            "ghiChu": "5% đã gồm VAT",
+            "soTien": 165,
+            "nhom": "tuCo",
             "cueKey": "b2",
+            "sourceId": "tinh-toan-von",
+            "offset": 20
+          },
+          {
+            "nhan": "Đợt 5",
+            "khi": "+4 tháng",
+            "ghiChu": "5% đã gồm VAT",
+            "soTien": 165,
+            "nhom": "tuCo",
+            "cueKey": "b2",
+            "sourceId": "tinh-toan-von",
+            "offset": 30
+          },
+          {
+            "nhan": "Nhận nhà",
+            "khi": "Dự kiến Quý II/2028",
+            "ghiChu": "25% + VAT còn lại + phí bảo trì 2%",
+            "soTien": 900,
+            "nhom": "nhanNha",
+            "cueKey": "b3",
             "sourceId": "tinh-toan-von"
           },
           {
-            "label": "Nhận nhà (gồm phí bảo trì 2%)",
-            "value": 900,
+            "nhan": "Sổ hồng",
+            "khi": "Khi có sổ",
+            "ghiChu": "5% còn lại",
+            "soTien": 150,
+            "nhom": "soHong",
             "cueKey": "b3",
-            "sourceId": "tinh-toan-von"
+            "sourceId": "pttt-09",
+            "offset": 25
           }
         ]
       }
     },
     {
       "id": "scene3",
-      "template": "data-cards",
+      "template": "lo-trinh",
       "markup": "Từ lúc ký tới lúc nhận nhà, tiền đóng rải thành nhiều đợt. Em nói luôn: tiền sẽ nằm đó gần 2{hai} năm, anh chị tính trước nha.",
       "cues": {
         "c1": "ký",
@@ -79,32 +134,82 @@
         "c3": "nằm"
       },
       "props": {
-        "kicker": "Căn ví dụ 3 tỷ",
-        "title": "Lộ trình các đợt",
-        "cards": [
+        "pttt": "PTTT 09",
+        "canViDu": "3 tỷ, chưa VAT",
+        "donVi": "triệu đồng",
+        "title": "Lộ trình tiền theo thời gian",
+        "giaChuaVat": 3000,
+        "vat": 0.1,
+        "baoTri": 0.02,
+        "ghiChuCuoi": "Đơn vị: triệu đồng. Giá căn ví dụ chưa VAT; VAT thu đủ tới lúc nhận nhà. Đợt nhận nhà gồm 25%, VAT còn lại và phí bảo trì 2%.",
+        "phan": "trinh-tu",
+        "moc": [
           {
-            "tag": "Ký thỏa thuận",
-            "big": "150 triệu",
-            "sub": "giữ căn, 5% chưa VAT",
+            "nhan": "Ký thỏa thuận",
+            "khi": "Khi ký",
+            "ghiChu": "5% chưa VAT",
+            "soTien": 150,
+            "nhom": "tuCo",
             "cueKey": "c1",
-            "offset": -5,
             "sourceId": "pttt-09"
           },
           {
-            "tag": "Ký hợp đồng, rồi 2 và 4 tháng sau",
-            "big": "180 + 165 + 165 triệu",
-            "sub": "ký hợp đồng gồm VAT hai đợt đầu",
+            "nhan": "Ký hợp đồng",
+            "khi": "Ký HĐMB",
+            "ghiChu": "5% + VAT hai đợt đầu",
+            "soTien": 180,
+            "nhom": "tuCo",
+            "cueKey": "c1",
+            "sourceId": "tinh-toan-von",
+            "offset": 18
+          },
+          {
+            "nhan": "Ngân hàng giải ngân",
+            "khi": "+7 ngày",
+            "ghiChu": "50% giá căn (nếu vay)",
+            "soTien": 1650,
+            "nhom": "nganHang",
+            "cueKey": "c1",
+            "sourceId": "pttt-09",
+            "offset": 36
+          },
+          {
+            "nhan": "Đợt 4",
+            "khi": "+2 tháng",
+            "ghiChu": "5% đã gồm VAT",
+            "soTien": 165,
+            "nhom": "tuCo",
             "cueKey": "c2",
-            "offset": -5,
             "sourceId": "tinh-toan-von"
           },
           {
-            "tag": "Nhận nhà, dự kiến Quý II/2028",
-            "big": "~900 triệu",
-            "sub": "25% giá căn, đã gồm phí bảo trì 2%",
+            "nhan": "Đợt 5",
+            "khi": "+4 tháng",
+            "ghiChu": "5% đã gồm VAT",
+            "soTien": 165,
+            "nhom": "tuCo",
+            "cueKey": "c2",
+            "sourceId": "tinh-toan-von",
+            "offset": 20
+          },
+          {
+            "nhan": "Nhận nhà",
+            "khi": "Dự kiến Quý II/2028",
+            "ghiChu": "25% + VAT còn lại + phí bảo trì 2%",
+            "soTien": 900,
+            "nhom": "nhanNha",
             "cueKey": "c3",
-            "offset": -5,
             "sourceId": "tinh-toan-von"
+          },
+          {
+            "nhan": "Sổ hồng",
+            "khi": "Khi có sổ",
+            "ghiChu": "5% còn lại",
+            "soTien": 150,
+            "nhom": "soHong",
+            "cueKey": "c3",
+            "sourceId": "pttt-09",
+            "offset": 25
           }
         ]
       }
@@ -122,6 +227,27 @@
           "sourceId": "phoi-canh-tong-the"
         }
       }
+    }
+  ],
+  "hook": {
+    "lines": [
+      "Căn 3 tỷ",
+      "cần bao nhiêu?"
+    ],
+    "soNhan": "150",
+    "donVi": "triệu bước đầu",
+    "chuDe": "tai-chinh",
+    "image": {
+      "file": "assets/images/phoi-canh-goc-thap.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-goc-thap"
+    }
+  },
+  "nguonCuoi": [
+    {
+      "ten": "Thông báo PTTT 09",
+      "ngay": "05/10/2026",
+      "sourceId": "pttt-09"
     }
   ]
 }
