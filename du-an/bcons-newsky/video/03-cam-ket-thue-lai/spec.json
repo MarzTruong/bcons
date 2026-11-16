@@ -67,7 +67,8 @@
       "template": "geo-map",
       "markup": "Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13, phường Lái Thiêu.",
       "cues": {
-        "d": "Bcons"
+        "d": "Bcons",
+        "ql": "Quốc"
       },
       "props": {
         "kicker": "Phường Lái Thiêu",
@@ -75,10 +76,10 @@
         "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
         "camera": {
           "center": [
-            106.70369904755647,
-            10.890026400573376
+            106.7042,
+            10.88975
           ],
-          "zoom": 14.2,
+          "zoom": 15.2,
           "shiftY": -200
         },
         "points": [
@@ -92,10 +93,46 @@
             "cueKey": "d",
             "offset": 20,
             "sourceId": "geo-newsky"
+          },
+          {
+            "key": "cau-binh-trieu",
+            "label": "Cầu Bình Triệu",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "cau-binh-trieu",
+            "color": "white",
+            "cueKey": "ql",
+            "offset": 30,
+            "sourceId": "geo-ql13-osm"
           }
         ],
-        "lines": [],
-        "areas": [],
+        "lines": [
+          {
+            "key": "ql13-newsky-binh-trieu",
+            "file": "assets/geo/ql13-newsky-binh-trieu.geojson",
+            "kind": "official",
+            "color": "white",
+            "width": 6,
+            "cueKey": "ql",
+            "offset": 10,
+            "drawFrames": 70,
+            "vetChay": true,
+            "sourceId": "geo-ql13-osm"
+          }
+        ],
+        "areas": [
+          {
+            "key": "ranh-newsky",
+            "file": "assets/geo/ranh-newsky.geojson",
+            "kind": "official",
+            "label": "",
+            "cueKey": "d",
+            "offset": 6,
+            "color": "red",
+            "drawFrames": 42,
+            "vienChay": true,
+            "sourceId": "geo-ranh-newsky"
+          }
+        ],
         "cards": [
           {
             "tag": "Vị trí",
@@ -106,7 +143,39 @@
             "sourceId": "geo-newsky"
           }
         ],
-        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
+        "note": "Ranh dự án theo tọa độ anh cung cấp (Google Maps); trục Quốc lộ 13 theo dữ liệu OpenStreetMap",
+        "moves": [
+          {
+            "cueKey": "d",
+            "offset": 0,
+            "frames": 36,
+            "to": {
+              "center": [
+                106.7042,
+                10.88975
+              ],
+              "zoom": 17.3,
+              "shiftY": -200
+            }
+          },
+          {
+            "cueKey": "ql",
+            "offset": -6,
+            "frames": 60,
+            "to": {
+              "fit": [
+                "newsky",
+                "cau-binh-trieu"
+              ],
+              "padding": {
+                "top": 740,
+                "bottom": 560,
+                "left": 110,
+                "right": 110
+              }
+            }
+          }
+        ]
       }
     },
     {

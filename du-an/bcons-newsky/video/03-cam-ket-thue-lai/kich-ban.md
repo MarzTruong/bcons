@@ -32,6 +32,7 @@ Ghi chú nội dung (quy tắc cứng, không phá dù video gợi tò mò):
 | newsky-vi-tri | Mặt tiền Quốc lộ 13, phường Lái Thiêu | 09/10/2024 | GPXD 3288 | `du-an/bcons-newsky/thong-tin.md` | |
 | geo-newsky | Vị trí dự án 10.890026, 106.703699 | 11/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.890026400573376,106.70369904755647 | `du-an/bcons-newsky/assets/geo/NGUON.md` |
 | geo-ql13-osm | Đường lái xe Newsky – cầu Vĩnh Bình – cầu Bình Triệu, điểm hai cầu | 15/11/2026 | OpenStreetMap (OSRM) | https://router.project-osrm.org | Hình đường là dữ liệu OSM, không phải ranh dự án mở rộng QL13; chi tiết `assets/geo/NGUON.md` |
+| geo-ranh-newsky | Ranh khu đất Bcons Newsky (5 góc tọa độ) | 16/11/2026 | Anh cung cấp (Google Maps) | https://www.google.com/maps?q=10.890026400573376,106.70369904755647 | Đa giác khoảng 13.400 m², lệch so với 19.779,5 m² trong thong-tin.md; không ghi diện tích lên video; `assets/geo/NGUON.md` |
 | phoi-canh-tong-the | Phối cảnh tổng thể dự án (file overview-aerial, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 
 ## Việc cần anh quyết ở cổng 1
