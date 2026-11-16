@@ -76,8 +76,8 @@
         "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
         "camera": {
           "center": [
-            106.7042,
-            10.88975
+            106.704207,
+            10.889698
           ],
           "zoom": 15.2,
           "shiftY": -200
@@ -151,8 +151,8 @@
             "frames": 36,
             "to": {
               "center": [
-                106.7042,
-                10.88975
+                106.704207,
+                10.889698
               ],
               "zoom": 17.3,
               "shiftY": -200
