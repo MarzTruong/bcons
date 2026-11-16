@@ -256,68 +256,68 @@
     },
     {
       "id": "scene3",
-      "durationSec": 7.471020408163265,
+      "durationSec": 7.314285714285714,
       "speech": "Tiền đóng rải từng đợt, từ lúc ký tới lúc nhận nhà. Em nói luôn: tiền sẽ nằm đó gần hai năm, anh chị tính trước nha.",
       "words": [
         {
           "text": "Tiền",
           "start": 0,
-          "end": 0.32
+          "end": 0.16
         },
         {
           "text": "đóng",
-          "start": 0.48,
-          "end": 0.64
+          "start": 0.2,
+          "end": 0.4
         },
         {
           "text": "rải",
-          "start": 0.72,
-          "end": 0.88
+          "start": 0.48,
+          "end": 0.72
         },
         {
           "text": "từng",
-          "start": 0.96,
-          "end": 1.12
+          "start": 0.76,
+          "end": 0.88
         },
         {
           "text": "đợt,",
-          "start": 1.2,
-          "end": 1.6
+          "start": 0.96,
+          "end": 1.44
         },
         {
           "text": "từ",
-          "start": 1.64,
-          "end": 1.72
+          "start": 1.48,
+          "end": 1.56
         },
         {
           "text": "lúc",
-          "start": 1.76,
-          "end": 1.92
+          "start": 1.6,
+          "end": 1.84
         },
         {
           "text": "ký",
-          "start": 2,
-          "end": 2.24
+          "start": 1.92,
+          "end": 2.08
         },
         {
           "text": "tới",
+          "start": 2.24,
+          "end": 2.36
+        },
+        {
+          "text": "lúc",
           "start": 2.4,
           "end": 2.48
         },
         {
-          "text": "lúc",
-          "start": 2.52,
-          "end": 2.64
-        },
-        {
           "text": "nhận",
-          "start": 2.68,
-          "end": 2.88
+          "start": 2.56,
+          "end": 2.72
         },
         {
           "text": "nhà.",
-          "start": 2.96,
-          "end": 3.2
+          "start": 2.8,
+          "end": 3.12
         },
         {
           "text": "Em",
@@ -326,76 +326,76 @@
         },
         {
           "text": "nói",
-          "start": 3.6,
+          "start": 3.56,
           "end": 3.68
         },
         {
           "text": "luôn:",
           "start": 3.76,
-          "end": 4.08
+          "end": 4.16
         },
         {
           "text": "tiền",
-          "start": 4.32,
-          "end": 4.56
+          "start": 4.24,
+          "end": 4.4
         },
         {
           "text": "sẽ",
-          "start": 4.64,
-          "end": 4.72
+          "start": 4.48,
+          "end": 4.56
         },
         {
           "text": "nằm",
-          "start": 4.76,
-          "end": 4.96
+          "start": 4.6,
+          "end": 4.8
         },
         {
           "text": "đó",
-          "start": 5,
-          "end": 5.12
+          "start": 4.84,
+          "end": 5.04
         },
         {
           "text": "gần",
-          "start": 5.2,
-          "end": 5.44
+          "start": 5.12,
+          "end": 5.36
         },
         {
           "text": "2",
-          "start": 5.52,
-          "end": 5.68
+          "start": 5.44,
+          "end": 5.6
         },
         {
           "text": "năm,",
-          "start": 5.76,
-          "end": 6.24
+          "start": 5.68,
+          "end": 6.08
         },
         {
           "text": "anh",
-          "start": 6.32,
-          "end": 6.4
+          "start": 6.16,
+          "end": 6.24
         },
         {
           "text": "chị",
+          "start": 6.28,
+          "end": 6.4
+        },
+        {
+          "text": "tính",
           "start": 6.44,
           "end": 6.56
         },
         {
-          "text": "tính",
-          "start": 6.6,
-          "end": 6.72
-        },
-        {
           "text": "trước",
-          "start": 6.8,
-          "end": 6.96
+          "start": 6.64,
+          "end": 6.8
         },
         {
           "text": "nha.",
-          "start": 7.04,
-          "end": 7.52
+          "start": 6.88,
+          "end": 7.28
         }
       ],
-      "seed": 20260
+      "seed": 79163
     },
     {
       "id": "scene4",
