@@ -56,7 +56,7 @@ Video và caption là **mồi kéo khách nhắn**, không phải bản thông t
 - Không cần liệt kê điều kiện, ngoại lệ, mọi bước của từng câu. Nói "một số căn", "từ", "khoảng" khi đúng với nguồn là đủ. Chữ nhỏ trên hình chỉ giữ thứ cần để không sai (ví dụ "căn ví dụ").
 - Viết như người kể chuyện, không như bản tin hay văn bản pháp lý. Câu ngắn, có hình ảnh, có điểm đau của khách (vốn bao nhiêu, vay thế nào, bao giờ nhận nhà).
 **Vẫn không được phá (quy tắc cứng `CLAUDE.md`, không vì "tò mò" mà nới):**
-- Không bịa, không sai số liệu: nêu một phần thì phần đó phải **đúng nguồn** và không để người xem hiểu sai thành điều ngược lại (ví dụ cam kết thuê lại chỉ áp dụng cho một số căn thì ghi "một số căn", không ngầm hiểu mọi căn).
+- Không bịa, không sai số liệu: nêu một phần thì phần đó phải **đúng nguồn** và không để người xem hiểu sai thành điều ngược lại (ví dụ cam kết thuê lại chỉ áp dụng cho một số căn: bìa/tiêu đề được viết ngắn như "Chủ đầu tư thuê lại 2 năm" để gợi tò mò, nhưng lời đọc hoặc caption phải có "một số căn"; anh chốt giữ bìa N03 ngắn 16/11/2026).
 - Không hứa lợi nhuận/tăng giá, không "sắp hết" khi chưa kiểm, không quảng cáo căn đã cọc/CĐT LOCK, không SĐT chữ trên hình.
 - Có nhắc giá căn thì một nhãn ngắn chưa VAT/có VAT (và phí bảo trì 2% khi nói tổng chi phí); căn ví dụ ghi rõ "ví dụ"; phối cảnh ghi "minh họa".
 - Hạ tầng/quy hoạch: một dòng nói đúng tình trạng thật (chủ trương / đã duyệt / đang thi công / dự kiến), không cần kể hết các bước.
