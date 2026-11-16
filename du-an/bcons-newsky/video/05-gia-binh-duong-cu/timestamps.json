@@ -1,0 +1,434 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 7.888979591836734,
+      "speech": "Căn hộ mới ở Bình Dương cũ từng quanh từ ba mươi lăm đến bốn mươi triệu đồng mỗi mét vuông . Quý hai năm nay, mặt bằng đã khoảng sáu mươi triệu.",
+      "words": [
+        {
+          "text": "Căn",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "hộ",
+          "start": 0.2,
+          "end": 0.32
+        },
+        {
+          "text": "mới",
+          "start": 0.4,
+          "end": 0.64
+        },
+        {
+          "text": "ở",
+          "start": 0.68,
+          "end": 0.72
+        },
+        {
+          "text": "Bình",
+          "start": 0.8,
+          "end": 0.88
+        },
+        {
+          "text": "Dương",
+          "start": 0.96,
+          "end": 1.28
+        },
+        {
+          "text": "cũ",
+          "start": 1.44,
+          "end": 1.56
+        },
+        {
+          "text": "từng",
+          "start": 1.6,
+          "end": 1.76
+        },
+        {
+          "text": "quanh",
+          "start": 1.84,
+          "end": 2.08
+        },
+        {
+          "text": "35–40",
+          "start": 2.12,
+          "end": 3.573
+        },
+        {
+          "text": "triệu",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "đồng",
+          "start": 3.8,
+          "end": 3.92
+        },
+        {
+          "text": "mỗi",
+          "start": 4,
+          "end": 4.12
+        },
+        {
+          "text": "m²",
+          "start": 4.16,
+          "end": 4.56
+        },
+        {
+          "text": ".",
+          "start": 4.56,
+          "end": 4.96
+        },
+        {
+          "text": "Quý",
+          "start": 5,
+          "end": 5.12
+        },
+        {
+          "text": "II",
+          "start": 5.2,
+          "end": 5.28
+        },
+        {
+          "text": "năm",
+          "start": 5.36,
+          "end": 5.48
+        },
+        {
+          "text": "nay,",
+          "start": 5.52,
+          "end": 6
+        },
+        {
+          "text": "mặt",
+          "start": 6.04,
+          "end": 6.24
+        },
+        {
+          "text": "bằng",
+          "start": 6.28,
+          "end": 6.4
+        },
+        {
+          "text": "đã",
+          "start": 6.48,
+          "end": 6.56
+        },
+        {
+          "text": "khoảng",
+          "start": 6.64,
+          "end": 6.88
+        },
+        {
+          "text": "60",
+          "start": 7.04,
+          "end": 7.333
+        },
+        {
+          "text": "triệu.",
+          "start": 7.36,
+          "end": 7.84
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 5.7208163265306125,
+      "speech": "Theo VnExpress ngày hai mươi ba tháng chín . Vậy hai phòng ngủ ở Lái Thiêu đang ở mức nào?",
+      "words": [
+        {
+          "text": "Theo",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "VnExpress",
+          "start": 0.32,
+          "end": 1.12
+        },
+        {
+          "text": "ngày",
+          "start": 1.2,
+          "end": 1.36
+        },
+        {
+          "text": "23/9",
+          "start": 1.44,
+          "end": 2.48
+        },
+        {
+          "text": ".",
+          "start": 2.48,
+          "end": 2.8
+        },
+        {
+          "text": "Vậy",
+          "start": 2.84,
+          "end": 3.12
+        },
+        {
+          "text": "2",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "phòng",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "ngủ",
+          "start": 3.8,
+          "end": 4
+        },
+        {
+          "text": "ở",
+          "start": 4.08,
+          "end": 4.12
+        },
+        {
+          "text": "Lái",
+          "start": 4.16,
+          "end": 4.32
+        },
+        {
+          "text": "Thiêu",
+          "start": 4.4,
+          "end": 4.72
+        },
+        {
+          "text": "đang",
+          "start": 4.8,
+          "end": 4.96
+        },
+        {
+          "text": "ở",
+          "start": 5,
+          "end": 5.04
+        },
+        {
+          "text": "mức",
+          "start": 5.08,
+          "end": 5.2
+        },
+        {
+          "text": "nào?",
+          "start": 5.28,
+          "end": 5.76
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 6.844081632653062,
+      "speech": "Hai phòng ngủ Bee Cons New Sky , giá từ hai phẩy năm sáu tỷ đồng, chưa vê át và chưa phí bảo trì hai phần trăm.",
+      "words": [
+        {
+          "text": "2",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "phòng",
+          "start": 0.24,
+          "end": 0.36
+        },
+        {
+          "text": "ngủ",
+          "start": 0.4,
+          "end": 0.64
+        },
+        {
+          "text": "Bcons",
+          "start": 0.72,
+          "end": 1.28
+        },
+        {
+          "text": "Newsky",
+          "start": 1.36,
+          "end": 2
+        },
+        {
+          "text": ",",
+          "start": 2,
+          "end": 2.24
+        },
+        {
+          "text": "giá",
+          "start": 2.28,
+          "end": 2.4
+        },
+        {
+          "text": "từ",
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "text": "2,56",
+          "start": 2.8,
+          "end": 3.627
+        },
+        {
+          "text": "tỷ",
+          "start": 3.68,
+          "end": 3.76
+        },
+        {
+          "text": "đồng,",
+          "start": 3.8,
+          "end": 4.24
+        },
+        {
+          "text": "chưa",
+          "start": 4.28,
+          "end": 4.4
+        },
+        {
+          "text": "VAT",
+          "start": 4.48,
+          "end": 4.88
+        },
+        {
+          "text": "và",
+          "start": 4.96,
+          "end": 5.04
+        },
+        {
+          "text": "chưa",
+          "start": 5.2,
+          "end": 5.36
+        },
+        {
+          "text": "phí",
+          "start": 5.44,
+          "end": 5.56
+        },
+        {
+          "text": "bảo",
+          "start": 5.6,
+          "end": 5.76
+        },
+        {
+          "text": "trì",
+          "start": 5.84,
+          "end": 6
+        },
+        {
+          "text": "2%.",
+          "start": 6.08,
+          "end": 6.88
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene4",
+      "durationSec": 5.250612244897959,
+      "speech": "Mặt tiền Quốc lộ 13, phường Lái Thiêu. Theo anh chị, ba phòng ngủ giá từ bao nhiêu?",
+      "words": [
+        {
+          "text": "Mặt",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "tiền",
+          "start": 0.28,
+          "end": 0.4
+        },
+        {
+          "text": "Quốc",
+          "start": 0.48,
+          "end": 0.64
+        },
+        {
+          "text": "lộ",
+          "start": 0.68,
+          "end": 0.8
+        },
+        {
+          "text": "13,",
+          "start": 0.84,
+          "end": 1.28
+        },
+        {
+          "text": "phường",
+          "start": 1.44,
+          "end": 1.68
+        },
+        {
+          "text": "Lái",
+          "start": 1.76,
+          "end": 1.84
+        },
+        {
+          "text": "Thiêu.",
+          "start": 1.92,
+          "end": 2.4
+        },
+        {
+          "text": "Theo",
+          "start": 2.56,
+          "end": 2.68
+        },
+        {
+          "text": "anh",
+          "start": 2.72,
+          "end": 2.8
+        },
+        {
+          "text": "chị,",
+          "start": 2.88,
+          "end": 3.36
+        },
+        {
+          "text": "3",
+          "start": 3.44,
+          "end": 3.52
+        },
+        {
+          "text": "phòng",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "ngủ",
+          "start": 3.84,
+          "end": 4.08
+        },
+        {
+          "text": "giá",
+          "start": 4.32,
+          "end": 4.48
+        },
+        {
+          "text": "từ",
+          "start": 4.56,
+          "end": 4.64
+        },
+        {
+          "text": "bao",
+          "start": 4.72,
+          "end": 4.8
+        },
+        {
+          "text": "nhiêu?",
+          "start": 4.84,
+          "end": 5.28
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
