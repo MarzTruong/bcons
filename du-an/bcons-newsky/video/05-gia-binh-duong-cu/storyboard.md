@@ -9,3 +9,6 @@ Thời lượng ước tính khi chưa có giọng: khoảng 30 giây. Ảnh ch�
 | 3 (~7 s) | Mặt tiền Quốc lộ 13, phường Lái Thiêu. Theo anh chị, 3 phòng ngủ giá từ bao nhiêu? | Phối cảnh tổng thể (minh họa), tên dự án; tên + QR | | phoi-canh-tong-the |
 
 Không so %, không nói đơn giá m² của Newsky, không nhắc dự án khác: ảnh bài VnExpress chỉ cắt phần tiêu đề và đoạn dẫn (không có đoạn nhắc Bcons Aria). Trước khi đăng: kiểm giỏ hàng (2PN-1WC rẻ nhất còn trống có đúng 2,56 tỷ không).
+
+## Cập nhật 16/11/2026: cảnh minh chứng của AGY (phương án 2, nền sáng)
+Thứ tự cảnh mới (spec `draft`, ~33 giây): 1 bản đồ khu vực + hai thẻ 35–40 và 60 triệu/m² (không còn câu hỏi ở cuối cảnh) → 2 **bang-chung**: thẻ VnExpress 23/09/2026 trượt từ phải vào, thu ra, ảnh phối cảnh (minh họa) và biểu đồ giá "Giá sơ cấp căn hộ Bình Dương cũ" (dải 35–40, cột 60; nguồn VnExpress, 60 triệu là số One Mount Group); lời "Theo VnExpress ngày 23/9. Vậy 2 phòng ngủ ở Lái Thiêu đang ở mức nào?" → 3 số 2,56 tỷ (chưa VAT, chưa phí bảo trì 2%) → 4 thẻ dự án và câu hỏi.

@@ -133,18 +133,39 @@
             "sourceId": "ql13-bt-vb"
           }
         ],
-        "image": {
-          "file": "assets/images/bang-chung-bao-tuoitre-ql13.png",
-          "label": "Tuổi Trẻ, 05/10/2026",
-          "cueKey": "hoan",
-          "offset": 45,
-          "sourceId": "ql13-bt-vb"
-        },
         "note": "Điểm theo dữ liệu bản đồ; hình đường lấy từ OpenStreetMap, không phải ranh dự án"
       }
     },
     {
       "id": "scene3",
+      "template": "bang-chung",
+      "markup": "Tuổi Trẻ ghi nhận ngày 5/10{mùng năm tháng mười}: quốc lộ 13 đang được thi công.",
+      "cues": {
+        "p": "Tuổi",
+        "r": "đang"
+      },
+      "props": {
+        "kieu": "toi",
+        "kicker": "Quốc lộ 13",
+        "title": "Từ Lái Thiêu về Bình Triệu",
+        "anhNen": {
+          "file": "assets/images/hien-trang-ql13-tuoitre-1.jpg",
+          "nhan": "Ảnh: Tuổi Trẻ, 10/2026",
+          "chuThichRo": "Quốc lộ 13 đoạn qua Bình Dương cũ, tháng 10/2026",
+          "sourceId": "ql13-bt-vb"
+        },
+        "popup": {
+          "file": "assets/images/bang-chung-bao-tuoitre-ql13-goc.png",
+          "nguon": "Tuổi Trẻ",
+          "ngay": "05/10/2026",
+          "sourceId": "ql13-bt-vb"
+        },
+        "popupCue": "p",
+        "rangCue": "r"
+      }
+    },
+    {
+      "id": "scene4",
       "template": "project-close",
       "markup": "Bcons{Bee Cons} Newsky{New Sky} nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Anh chị đoán thử, từ đây về Bình Triệu mất bao lâu?",
       "cues": {},

@@ -65,9 +65,9 @@
     {
       "id": "scene3",
       "template": "geo-map",
-      "markup": "Đây là thông báo của chủ đầu tư, ngày 12/11{mười hai tháng mười một}, cho một số căn ở Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13.",
+      "markup": "Bcons{Bee Cons} Newsky{New Sky}, mặt tiền Quốc lộ 13, phường Lái Thiêu.",
       "cues": {
-        "d": "Đây"
+        "d": "Bcons"
       },
       "props": {
         "kicker": "Phường Lái Thiêu",
@@ -106,18 +106,39 @@
             "sourceId": "geo-newsky"
           }
         ],
-        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)",
-        "image": {
-          "file": "assets/images/bang-chung-thong-bao-34.png",
-          "label": "Thông báo 34/TB-SHQT, 12/11/2026",
-          "cueKey": "d",
-          "offset": 150,
-          "sourceId": "thue-24t"
-        }
+        "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
       }
     },
     {
       "id": "scene4",
+      "template": "bang-chung",
+      "markup": "Đây là thông báo của chủ đầu tư, ngày 12/11{mười hai tháng mười một}, cho một số căn ở dự án.",
+      "cues": {
+        "p": "Đây",
+        "r": "cho"
+      },
+      "props": {
+        "kieu": "toi",
+        "kicker": "Cam kết thuê lại",
+        "title": "Mức thuê 11 và 13 triệu/tháng",
+        "anhNen": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "nhan": "Phối cảnh minh họa",
+          "chuThichRo": "Bcons Newsky · Quốc lộ 13, Lái Thiêu (Phối cảnh minh họa)",
+          "sourceId": "phoi-canh-tong-the"
+        },
+        "popup": {
+          "file": "assets/images/bang-chung-thong-bao-34-goc.png",
+          "nguon": "Thông báo 34/TB-SHQT · Chủ đầu tư",
+          "ngay": "12/11/2026",
+          "sourceId": "thue-24t"
+        },
+        "popupCue": "p",
+        "rangCue": "r"
+      }
+    },
+    {
+      "id": "scene5",
       "template": "project-close",
       "markup": "Con số đó là gì? Anh chị đoán thử trong phần bình luận.",
       "cues": {},

@@ -26,6 +26,7 @@ import { DataCards } from "./templates/DataCards";
 import { CompareBars } from "./templates/CompareBars";
 import { GeoMap } from "./templates/GeoMap";
 import { ProjectClose } from "./templates/ProjectClose";
+import { BangChung } from "./templates/BangChung";
 import { DanhSach } from "./templates/DanhSach";
 import { HookOpen } from "./HookOpen";
 import { HOOK_FRAMES, NGUON_CUOI_FRAMES } from "./moDau";
@@ -189,6 +190,8 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: s
       );
     case "danh-sach":
       return <DanhSach {...(t as TemplateProps<"danh-sach">)} props={scene.props} />;
+    case "bang-chung":
+      return <BangChung {...(t as TemplateProps<"bang-chung">)} props={scene.props} />;
   }
 };
 

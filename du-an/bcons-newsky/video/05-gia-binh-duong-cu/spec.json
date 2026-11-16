@@ -9,11 +9,10 @@
     {
       "id": "scene1",
       "template": "geo-map",
-      "markup": "Căn hộ mới ở Bình Dương cũ từng quanh 35–40{từ ba mươi lăm đến bốn mươi} triệu đồng mỗi m²{mét vuông}. Quý II{hai} năm nay, mặt bằng đã khoảng 60{sáu mươi} triệu. Vậy 2{hai} phòng ngủ ở Lái Thiêu đang ở mức nào?",
+      "markup": "Căn hộ mới ở Bình Dương cũ từng quanh 35–40{từ ba mươi lăm đến bốn mươi} triệu đồng mỗi m²{mét vuông}. Quý II{hai} năm nay, mặt bằng đã khoảng 60{sáu mươi} triệu.",
       "cues": {
         "c1": "từng",
-        "c2": "Quý",
-        "q": "Vậy"
+        "c2": "Quý"
       },
       "props": {
         "kicker": "Căn hộ mới, Bình Dương cũ",
@@ -60,18 +59,56 @@
             "sourceId": "gia-bd-60"
           }
         ],
-        "image": {
-          "file": "assets/images/bang-chung-bao-vnexpress-gia.png",
-          "label": "VnExpress, 23/09/2026",
-          "cueKey": "q",
-          "offset": 0,
-          "sourceId": "gia-bd-60"
-        },
         "note": "Vị trí theo tọa độ dự án (anh cung cấp từ Google Maps)"
       }
     },
     {
       "id": "scene2",
+      "template": "bang-chung",
+      "markup": "Theo VnExpress ngày 23/9{hai mươi ba tháng chín}. Vậy 2{hai} phòng ngủ ở Lái Thiêu đang ở mức nào?",
+      "cues": {
+        "p": "VnExpress",
+        "r": "Vậy"
+      },
+      "props": {
+        "kieu": "sang",
+        "kicker": "Mặt bằng giá khu vực",
+        "title": "Căn hộ mới, Bình Dương cũ",
+        "anhNen": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "nhan": "Phối cảnh minh họa",
+          "chuThichRo": "Bcons Newsky · Quốc lộ 13, Lái Thiêu (Phối cảnh minh họa)",
+          "sourceId": "phoi-canh-tong-the"
+        },
+        "popup": {
+          "file": "assets/images/bang-chung-bao-vnexpress-gia-goc.png",
+          "nguon": "VnExpress",
+          "ngay": "23/09/2026",
+          "sourceId": "gia-bd-60"
+        },
+        "popupCue": "p",
+        "rangCue": "r",
+        "bieuDo": {
+          "tieuDe": "Giá sơ cấp căn hộ Bình Dương cũ",
+          "donVi": "triệu/m²",
+          "cot": [
+            {
+              "nhan": "Trước đây",
+              "tu": 35,
+              "den": 40
+            },
+            {
+              "nhan": "Quý II/2026",
+              "giaTri": 60
+            }
+          ],
+          "nguon": "VnExpress 23/09/2026 (khoảng 60 triệu: One Mount Group)",
+          "sourceId": "gia-bd-60"
+        }
+      }
+    },
+    {
+      "id": "scene3",
       "template": "stat-hero",
       "markup": "2{Hai} phòng ngủ Bcons{Bee Cons} Newsky{New Sky}, giá từ 2,56{hai phẩy năm sáu} tỷ đồng, chưa VAT{vê át} và chưa phí bảo trì 2%.{hai phần trăm.}",
       "cues": {
@@ -96,7 +133,7 @@
       }
     },
     {
-      "id": "scene3",
+      "id": "scene4",
       "template": "project-close",
       "markup": "Mặt tiền Quốc lộ 13, phường Lái Thiêu. Theo anh chị, 3{ba} phòng ngủ giá từ bao nhiêu?",
       "cues": {},

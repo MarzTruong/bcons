@@ -282,3 +282,47 @@ test("readSourceRows trả thêm ngày và nguồn của từng hàng", () => {
   assert.equal(r.nguon, "Pháp Luật Plus");
   assert.equal(r.link, "https://b");
 });
+
+// --- bang-chung (16/11/2026) ---
+import { checkGeoFiles } from "../scripts/spec-tools.mjs";
+import os from "node:os";
+
+const bcSpec = (cues, props = {}) => ({
+  name: "d",
+  status: "draft",
+  scenes: [
+    {
+      id: "scene1",
+      template: "bang-chung",
+      markup: "Theo Tuổi Trẻ ngày 5/10, đường đang thi công.",
+      cues,
+      props: {
+        kieu: "toi",
+        kicker: "K",
+        title: "T",
+        anhNen: { file: "assets/images/a.jpg", nhan: "n", sourceId: "s" },
+        popup: { file: "assets/images/b.png", nguon: "Tuổi Trẻ", ngay: "05/10/2026", sourceId: "s" },
+        popupCue: "p",
+        rangCue: "r",
+        ...props,
+      },
+    },
+  ],
+});
+
+test("checkCues: bang-chung đòi cue popup và cue thu ra", () => {
+  assert.match(checkCues(bcSpec({ p: "Theo" })).join(" "), /"r"/);
+  assert.deepEqual(checkCues(bcSpec({ p: "Theo", r: "đường" })), []);
+});
+
+test("checkGeoFiles: bang-chung báo thiếu ảnh nền và ảnh popup, báo ảnh giữ chỗ", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "bc-"));
+  fs.mkdirSync(path.join(dir, "assets/images"), { recursive: true });
+  const e = checkGeoFiles(bcSpec({ p: "Theo", r: "đường" }), dir).join(" ");
+  assert.match(e, /a\.jpg: không thấy file/);
+  assert.match(e, /b\.png: không thấy file/);
+  fs.writeFileSync(path.join(dir, "assets/images/a.jpg"), "x");
+  fs.writeFileSync(path.join(dir, "assets/images/placeholder-b.png"), "x");
+  const s = bcSpec({ p: "Theo", r: "đường" }, { popup: { file: "assets/images/placeholder-b.png", nguon: "n", ngay: "d", sourceId: "s" } });
+  assert.match(checkGeoFiles(s, dir).join(" "), /giữ chỗ/);
+});

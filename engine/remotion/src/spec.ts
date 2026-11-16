@@ -251,6 +251,48 @@ export const HookSchema = z.object({
   image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
 });
 
+/** Cảnh "minh chứng" (AGY 16/11/2026): nền ảnh hiện trạng mờ, popup ảnh chụp bài báo/thông báo bật lên, thu ra rồi ảnh rõ nét; có thể kèm biểu đồ giá. */
+export const BangChungProps = z.object({
+  /** toi = phương án 1 (nền tối, popup nổi giữa); sang = phương án 2 (nền sáng, thẻ trượt từ cạnh, khung 2 tầng). */
+  kieu: z.enum(["toi", "sang"]),
+  kicker: z.string(),
+  title: z.string(),
+  anhNen: z.object({
+    file: z.string(),
+    /** Nhãn cố định trên ảnh: "Ảnh: Tuổi Trẻ, 10/2026" hoặc "Phối cảnh minh họa". */
+    nhan: z.string(),
+    /** Chú thích hiện khi ảnh rõ nét (không dùng khi có biểu đồ). */
+    chuThichRo: z.string().optional(),
+    sourceId,
+  }),
+  popup: z.object({ file: z.string(), nguon: z.string(), ngay: z.string(), sourceId }),
+  /** Popup bật lên khi từ cues[popupCue] được đọc (cộng popupOffset frame); thu ra và ảnh rõ khi cues[rangCue] được đọc. */
+  popupCue: cueKey,
+  popupOffset: z.number().optional(),
+  rangCue: cueKey,
+  rangOffset: z.number().optional(),
+  bieuDo: z
+    .object({
+      tieuDe: z.string(),
+      donVi: z.string(),
+      /** Mỗi cột là một dải (tu, den) hoặc một giá trị (giaTri). Trục bắt đầu từ 0. */
+      cot: z
+        .array(
+          z.object({
+            nhan: z.string(),
+            tu: z.number().optional(),
+            den: z.number().optional(),
+            giaTri: z.number().optional(),
+          }),
+        )
+        .min(2)
+        .max(3),
+      nguon: z.string(),
+      sourceId,
+    })
+    .optional(),
+});
+
 const sceneBase = {
   id: z.string().min(1),
   markup: z.string().min(1),
@@ -267,6 +309,7 @@ export const SceneSchema = z.discriminatedUnion("template", [
   z.object({ ...sceneBase, template: z.literal("geo-map"), props: GeoMapProps }),
   z.object({ ...sceneBase, template: z.literal("project-close"), props: ProjectCloseProps }),
   z.object({ ...sceneBase, template: z.literal("danh-sach"), props: DanhSachProps }),
+  z.object({ ...sceneBase, template: z.literal("bang-chung"), props: BangChungProps }),
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */

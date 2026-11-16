@@ -74,6 +74,8 @@ function cueKeysOf(scene) {
       return p.bars.map((b) => b.cueKey);
     case "danh-sach":
       return [...p.muc.map((m) => m.cueKey), p.tongKet?.cueKey].filter(Boolean);
+    case "bang-chung":
+      return [p.popupCue, p.rangCue];
     case "geo-map":
       return [
         ...[...p.points, ...p.lines, ...p.areas, ...(p.info ? [p.info] : [])].map((x) => x.cueKey),
@@ -319,6 +321,14 @@ export function checkGeoFiles(spec, publicDir /* = thư mục dự án */) {
       const where = `Cảnh ${scene.id}, ảnh ${img.file}`;
       if (!fs.existsSync(path.join(publicDir, img.file))) errors.push(`${where}: không thấy file`);
       else if (/placeholder/i.test(path.basename(img.file))) errors.push(`${where}: là ảnh giữ chỗ. Thay bằng ảnh phối cảnh thật của chủ đầu tư.`);
+    }
+    // Cảnh bang-chung: ảnh nền và ảnh popup phải có file thật, không phải ảnh giữ chỗ.
+    if (scene.template === "bang-chung") {
+      for (const img of [scene.props.anhNen, scene.props.popup]) {
+        const where = `Cảnh ${scene.id}, ảnh ${img.file}`;
+        if (!fs.existsSync(path.join(publicDir, img.file))) errors.push(`${where}: không thấy file`);
+        else if (/placeholder/i.test(path.basename(img.file))) errors.push(`${where}: là ảnh giữ chỗ`);
+      }
     }
     if (scene.template !== "geo-map") continue;
     const p = scene.props;

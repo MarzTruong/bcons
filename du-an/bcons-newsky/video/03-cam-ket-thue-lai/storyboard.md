@@ -10,3 +10,6 @@ Thời lượng ước tính khi chưa có giọng: khoảng 29 giây. Ảnh ch�
 | 4 (~5 s) | Con số đó là gì? Anh chị đoán thử trong phần bình luận. | Phối cảnh tổng thể (minh họa), tên dự án, "Mặt tiền Quốc lộ 13 · phường Lái Thiêu"; tên + QR | | phoi-canh-tong-the |
 
 Không chữ nhỏ về danh sách căn (anh quyết 15/11/2026): caption nói "một số căn". Không SĐT chữ, không quà tặng, không "bù lãi vay".
+
+## Cập nhật 16/11/2026: cảnh minh chứng của AGY (phương án 1, nền tối)
+Thứ tự cảnh mới (spec `draft`, ~35 giây): 1 "24 tháng" → 2 hai thẻ 11 và 13 triệu → 3 bản đồ vệ tinh (Bcons Newsky, mặt tiền Quốc lộ 13, phường Lái Thiêu) → 4 **bang-chung**: nền phối cảnh mờ, popup thông báo 34/TB-SHQT bật lên (đã cắt đến mức 2 phòng ngủ), thu ra, phối cảnh rõ nét; lời "Đây là thông báo của chủ đầu tư, ngày 12/11, cho một số căn ở dự án." → 5 thẻ dự án và câu hỏi. Tiêu đề cảnh 4 giữ "Mức thuê 11 và 13 triệu/tháng" (anh quyết 16/11).

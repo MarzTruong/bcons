@@ -104,3 +104,41 @@ test("nguonCuoi: 1 đến 3 dòng, mỗi dòng có tên, ngày dd/mm/yyyy và so
   assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [{ ...ok, ngay: "12-10-2026" }] }), /nguonCuoi\.0\.ngay/);
   assert.throws(() => parseSpec({ ...base(cards(2)), nguonCuoi: [{ ten: "A", ngay: "12/10/2026" }] }), /nguonCuoi\.0\.sourceId/);
 });
+
+// --- bang-chung: popup bài báo/thông báo (AGY 16/11/2026) ---
+const bcProps = (extra = {}) => ({
+  kieu: "toi",
+  kicker: "Quốc lộ 13",
+  title: "Từ Lái Thiêu về Bình Triệu",
+  anhNen: { file: "assets/images/a.jpg", nhan: "Ảnh: Tuổi Trẻ, 10/2026", chuThichRo: "Quốc lộ 13, tháng 10/2026", sourceId: "s1" },
+  popup: { file: "assets/images/b.png", nguon: "Tuổi Trẻ", ngay: "05/10/2026", sourceId: "s1" },
+  popupCue: "a",
+  rangCue: "b",
+  ...extra,
+});
+
+test("bang-chung: hợp lệ không biểu đồ, kiểu toi hoặc sang", () => {
+  assert.equal(parseSpec(base(bcProps(), "bang-chung")).scenes[0].template, "bang-chung");
+  assert.ok(parseSpec(base(bcProps({ kieu: "sang" }), "bang-chung")));
+  assert.throws(() => parseSpec(base(bcProps({ kieu: "khac" }), "bang-chung")), /kieu/);
+});
+
+test("bang-chung: ảnh nền và popup bắt buộc có sourceId, popup có nguồn và ngày", () => {
+  const p = bcProps();
+  delete p.popup.sourceId;
+  assert.throws(() => parseSpec(base(p, "bang-chung")), /popup\.sourceId/);
+  const q = bcProps();
+  delete q.anhNen.sourceId;
+  assert.throws(() => parseSpec(base(q, "bang-chung")), /anhNen\.sourceId/);
+  const r = bcProps();
+  delete r.popup.ngay;
+  assert.throws(() => parseSpec(base(r, "bang-chung")), /popup\.ngay/);
+});
+
+test("bang-chung: biểu đồ 2 đến 3 cột, cột là dải (tu, den) hoặc một giá trị", () => {
+  const bd = (cot) => ({ tieuDe: "Giá", donVi: "triệu/m²", nguon: "VnExpress", sourceId: "s1", cot });
+  const ok = bcProps({ bieuDo: bd([{ nhan: "Trước", tu: 35, den: 40 }, { nhan: "Nay", giaTri: 60 }]) });
+  assert.equal(parseSpec(base(ok, "bang-chung")).scenes[0].props.bieuDo.cot.length, 2);
+  assert.throws(() => parseSpec(base(bcProps({ bieuDo: bd([{ nhan: "Nay", giaTri: 60 }]) }), "bang-chung")), /cot/);
+  assert.throws(() => parseSpec(base(bcProps({ bieuDo: { ...bd([{ nhan: "a", giaTri: 1 }, { nhan: "b", giaTri: 2 }]), sourceId: undefined } }), "bang-chung")), /bieuDo\.sourceId/);
+});

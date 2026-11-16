@@ -9,3 +9,6 @@ Thời lượng ước tính khi chưa có giọng: khoảng 26 giây. Ảnh ch�
 | 3 (~8 s) | Bcons Newsky nằm mặt tiền Quốc lộ 13, phường Lái Thiêu. Anh chị đoán thử, từ đây về Bình Triệu mất bao lâu? | Phối cảnh tổng thể (minh họa), tên dự án; tên + QR | | phoi-canh-tong-the |
 
 Không metro, không số làn "6 lên 8" (video 1 đã nói), không ghép mốc 2028 với ngày bàn giao Newsky, không SĐT chữ. Hình đường trên bản đồ là dữ liệu OSM (đường lái xe), không phải ranh dự án mở rộng.
+
+## Cập nhật 16/11/2026: cảnh minh chứng của AGY (phương án 1, nền tối)
+Thứ tự cảnh mới (spec `draft`, ~35 giây): 1 "60 m" → 2 bản đồ (Quốc lộ 13, thẻ 10–14 làn và năm 2028; không còn ảnh bài báo chèn trên bản đồ) → 3 **bang-chung**: nền ảnh hiện trạng Tuổi Trẻ mờ, popup bài Tuổi Trẻ 05/10/2026 bật lên, thu ra, ảnh hiện trạng rõ nét có chú thích; lời "Tuổi Trẻ ghi nhận ngày 5/10: quốc lộ 13 đang được thi công." → 4 thẻ dự án và câu hỏi.
