@@ -256,146 +256,151 @@
     },
     {
       "id": "scene3",
-      "durationSec": 7.314285714285714,
-      "speech": "Tiền đóng rải từng đợt, từ lúc ký tới lúc nhận nhà. Em nói luôn: tiền sẽ nằm đó gần hai năm, anh chị tính trước nha.",
+      "durationSec": 7.81061224489796,
+      "speech": "Từ lúc ký tới lúc nhận nhà, tiền đóng rải thành nhiều đợt. Em nói luôn: tiền sẽ nằm đó gần hai năm, anh chị tính trước nha.",
       "words": [
         {
-          "text": "Tiền",
+          "text": "Từ",
           "start": 0,
-          "end": 0.16
+          "end": 0.12
         },
         {
-          "text": "đóng",
-          "start": 0.2,
+          "text": "lúc",
+          "start": 0.16,
           "end": 0.4
         },
         {
-          "text": "rải",
-          "start": 0.48,
-          "end": 0.72
-        },
-        {
-          "text": "từng",
-          "start": 0.76,
-          "end": 0.88
-        },
-        {
-          "text": "đợt,",
-          "start": 0.96,
-          "end": 1.44
-        },
-        {
-          "text": "từ",
-          "start": 1.48,
-          "end": 1.56
-        },
-        {
-          "text": "lúc",
-          "start": 1.6,
-          "end": 1.84
-        },
-        {
           "text": "ký",
-          "start": 1.92,
-          "end": 2.08
+          "start": 0.48,
+          "end": 0.64
         },
         {
           "text": "tới",
-          "start": 2.24,
-          "end": 2.36
+          "start": 0.8,
+          "end": 0.88
         },
         {
           "text": "lúc",
-          "start": 2.4,
-          "end": 2.48
+          "start": 0.92,
+          "end": 1.04
         },
         {
           "text": "nhận",
-          "start": 2.56,
-          "end": 2.72
+          "start": 1.12,
+          "end": 1.28
         },
         {
-          "text": "nhà.",
-          "start": 2.8,
-          "end": 3.12
-        },
-        {
-          "text": "Em",
-          "start": 3.44,
-          "end": 3.52
-        },
-        {
-          "text": "nói",
-          "start": 3.56,
-          "end": 3.68
-        },
-        {
-          "text": "luôn:",
-          "start": 3.76,
-          "end": 4.16
+          "text": "nhà,",
+          "start": 1.36,
+          "end": 1.92
         },
         {
           "text": "tiền",
-          "start": 4.24,
-          "end": 4.4
+          "start": 1.96,
+          "end": 2.08
         },
         {
-          "text": "sẽ",
-          "start": 4.48,
+          "text": "đóng",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "rải",
+          "start": 2.48,
+          "end": 2.64
+        },
+        {
+          "text": "thành",
+          "start": 2.72,
+          "end": 2.88
+        },
+        {
+          "text": "nhiều",
+          "start": 2.92,
+          "end": 3.12
+        },
+        {
+          "text": "đợt.",
+          "start": 3.16,
+          "end": 3.68
+        },
+        {
+          "text": "Em",
+          "start": 3.76,
+          "end": 3.84
+        },
+        {
+          "text": "nói",
+          "start": 3.88,
+          "end": 4
+        },
+        {
+          "text": "luôn:",
+          "start": 4.08,
           "end": 4.56
         },
         {
-          "text": "nằm",
-          "start": 4.6,
+          "text": "tiền",
+          "start": 4.64,
           "end": 4.8
         },
         {
-          "text": "đó",
-          "start": 4.84,
-          "end": 5.04
+          "text": "sẽ",
+          "start": 4.88,
+          "end": 4.96
         },
         {
-          "text": "gần",
-          "start": 5.12,
+          "text": "nằm",
+          "start": 5,
+          "end": 5.2
+        },
+        {
+          "text": "đó",
+          "start": 5.24,
           "end": 5.36
         },
         {
-          "text": "2",
+          "text": "gần",
           "start": 5.44,
-          "end": 5.6
+          "end": 5.68
+        },
+        {
+          "text": "2",
+          "start": 5.76,
+          "end": 6
         },
         {
           "text": "năm,",
-          "start": 5.68,
-          "end": 6.08
-        },
-        {
-          "text": "anh",
-          "start": 6.16,
-          "end": 6.24
-        },
-        {
-          "text": "chị",
-          "start": 6.28,
+          "start": 6.053,
           "end": 6.4
         },
         {
-          "text": "tính",
-          "start": 6.44,
+          "text": "anh",
+          "start": 6.48,
           "end": 6.56
         },
         {
+          "text": "chị",
+          "start": 6.6,
+          "end": 6.72
+        },
+        {
+          "text": "tính",
+          "start": 6.76,
+          "end": 6.88
+        },
+        {
           "text": "trước",
-          "start": 6.64,
-          "end": 6.8
+          "start": 6.96,
+          "end": 7.12
         },
         {
           "text": "nha.",
-          "start": 6.88,
-          "end": 7.28
+          "start": 7.2,
+          "end": 7.76
         }
       ],
-      "seed": 79163
+      "seed": 102207
     },
     {
       "id": "scene4",
