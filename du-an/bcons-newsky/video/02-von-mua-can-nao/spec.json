@@ -72,10 +72,10 @@
     {
       "id": "scene3",
       "template": "data-cards",
-      "markup": "Tiền đóng rải từng đợt, từ lúc ký tới lúc nhận nhà. Em nói luôn: tiền sẽ nằm đó gần 2{hai} năm, anh chị tính trước nha.",
+      "markup": "Từ lúc ký tới lúc nhận nhà, tiền đóng rải thành nhiều đợt. Em nói luôn: tiền sẽ nằm đó gần 2{hai} năm, anh chị tính trước nha.",
       "cues": {
-        "c1": "Tiền",
-        "c2": "lúc",
+        "c1": "ký",
+        "c2": "nhiều",
         "c3": "nằm"
       },
       "props": {

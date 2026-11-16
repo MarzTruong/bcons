@@ -60,3 +60,16 @@ export function xemTruocLoiDoc(spec, ids = null) {
   if (!coCanhBao) dong.push("Không thấy chỗ dễ lặp trong chữ. (Máy vẫn có thể tự đọc lặp; nghe thử là chắc nhất.)");
   return dong.join("\n").slice(0, 3500);
 }
+
+/** Cảnh báo đủ nặng để chặn việc tạo giọng (từ lặp, cụm đã từng lỗi). Câu dài chỉ là nhắc, không chặn. */
+export const laCanhBaoChan = (w) => /^Từ lặp/.test(w) || /^Cụm /.test(w);
+
+/** Các cảnh báo chặn của những cảnh sắp tạo giọng ("Cảnh n: ..."); rỗng = cho tạo. */
+export function canhBaoChanCuaVideo(spec, ids = null) {
+  const out = [];
+  for (const c of loiDocCacCanh(spec)) {
+    if (ids && !ids.includes(c.id)) continue;
+    for (const w of canhBaoLoiDoc(c.speech)) if (laCanhBaoChan(w)) out.push(`Cảnh ${c.id.replace(/\D/g, "") || c.id}: ${w}`);
+  }
+  return out;
+}

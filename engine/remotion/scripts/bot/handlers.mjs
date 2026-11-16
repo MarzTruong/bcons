@@ -9,7 +9,7 @@ import { buttons } from "./tg.mjs";
 import { chayPhieu as chayPhieuThat, parseLenhPhieu } from "../phieu.mjs";
 import { HELP, buocVideo, formatList, isAuthorized, parseCommand, resolveVideo, videoIndex } from "./core.mjs";
 import { pidOf } from "./du-an.mjs";
-import { xemTruocLoiDoc } from "../loi-doc.mjs";
+import { canhBaoChanCuaVideo, xemTruocLoiDoc } from "../loi-doc.mjs";
 
 const NAME_RE = /^[a-z0-9-]+$/;
 
@@ -361,12 +361,26 @@ export function createBot(deps) {
         }),
       );
     },
-    giong([name, canh]) {
+    giong([name, canh, opt]) {
       if (!checkName(name)) return;
+      if (canh === "chapnhan") [canh, opt] = [undefined, "chapnhan"];
       // "/giong 7 canh1": chỉ tạo lại cảnh 1 (vd. giọng bị trôi), đỡ tốn credit.
       const n = canh?.match(/^(?:canh|c|scene)?(\d+(?:,\d+)*)$/i)?.[1];
       const ids = n ? n.split(",").map((x) => `scene${Number(x)}`) : null;
       const label = ids ? ` cảnh ${n}` : "";
+      // Anh không ngồi đọc lời đọc (16/11/2026): bot tự chặn khi có từ lặp / cụm đã từng lỗi, nhờ Claude sửa câu trước khi tốn credit.
+      if (opt !== "chapnhan") {
+        const chan = (() => {
+          try {
+            return canhBaoChanCuaVideo(JSON.parse(fs.readFileSync(videoPaths(name, projDir).spec, "utf8")), ids);
+          } catch {
+            return [];
+          }
+        })();
+        if (chan.length) {
+          return sayP(`Chưa tạo giọng ${name}${label}: lời đọc có chỗ dễ đọc lỗi, nhờ Claude sửa câu trước (chưa tốn credit):\n${chan.join("\n")}\n\nNhắn Claude: "sửa lời đọc ${name}". Muốn cố tình tạo vẫn được: /giong ${name}${n ? ` canh${n}` : ""} chapnhan`);
+        }
+      }
       return ask(`Tạo giọng ElevenLabs cho ${name}${label}? Việc này TỐN CREDIT.\n\nLời máy sẽ đọc (xem kỹ rồi mới bấm Đồng ý):\n${loiDocText(name, ids)}`, "giong", () =>
         enqueue(`tạo giọng ${name}${label}`, async () => {
           await sayP(`Đang tạo giọng ${name}${label}...`);

@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { loiDocCacCanh, canhBaoLoiDoc, xemTruocLoiDoc } from "../scripts/loi-doc.mjs";
+import { loiDocCacCanh, canhBaoLoiDoc, xemTruocLoiDoc, canhBaoChanCuaVideo } from "../scripts/loi-doc.mjs";
 import { createBot } from "../scripts/bot/handlers.mjs";
 import { taoDuAn } from "../scripts/bot/du-an.mjs";
 
@@ -53,12 +53,20 @@ test("xemTruocLoiDoc: gọn cho Telegram, mỗi cảnh một dòng kèm cảnh b
   assert.match(mot, /Cảnh 3/);
 });
 
-test("bot: /giong hỏi Đồng ý KÈM lời đọc từng cảnh; /loidoc chỉ xem, không tạo giọng, không tốn credit", async () => {
+test("canhBaoChanCuaVideo: chỉ chặn từ lặp và cụm đã từng lỗi; câu dài không chặn", () => {
+  assert.ok(canhBaoChanCuaVideo(spec2).some((w) => /Cảnh 3/.test(w) && /Cụm/.test(w)));
+  assert.deepEqual(canhBaoChanCuaVideo({ scenes: [spec2.scenes[0]] }), []);
+  const dai = { scenes: [{ id: "scene1", markup: "Cả căn chia ra ba phần và ngân hàng lo khoảng một nửa còn phần mình là vốn tự có trước khi nhận nhà cùng một đợt cuối lúc nhận nhà luôn." }] };
+  assert.deepEqual(canhBaoChanCuaVideo(dai), []);
+  assert.deepEqual(canhBaoChanCuaVideo(spec2, ["scene1"]), [], "chỉ xét cảnh được chọn");
+});
+
+function dungBot(sceneList) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "ld-"));
   const d = path.join(root, "du-an", "bcons-newsky");
   fs.mkdirSync(path.join(d, "video", "02-von-mua-can-nao"), { recursive: true });
   fs.writeFileSync(path.join(d, "project.json"), JSON.stringify({ ma: "bcons-newsky", ten: "Bcons Newsky" }));
-  fs.writeFileSync(path.join(d, "video", "02-von-mua-can-nao", "spec.json"), JSON.stringify({ so: 2, tieuDe: "Mua căn 3 tỷ", status: "approved", scenes: spec2.scenes }));
+  fs.writeFileSync(path.join(d, "video", "02-von-mua-can-nao", "spec.json"), JSON.stringify({ so: 2, tieuDe: "Mua căn 3 tỷ", status: "approved", scenes: sceneList }));
   fs.writeFileSync(path.join(root, "config.json"), JSON.stringify({ duAnDangBan: "bcons-newsky" }));
   fs.mkdirSync(path.join(root, "out"));
   const said = [], execs = [];
@@ -66,20 +74,36 @@ test("bot: /giong hỏi Đồng ý KÈM lời đọc từng cảnh; /loidoc ch�
   const T0 = 1e12;
   const bot = createBot({ tg, chatId: "42", duAn: taoDuAn({ root, file: path.join(root, "out", "c.json") }), outDir: path.join(root, "out"), repoRoot: root, remotionDir: root, exec: async (c, a) => (execs.push([c, ...a].join(" ")), { code: 0, out: "" }), now: () => T0, startedAt: T0 });
   const msg = (text) => ({ message: { chat: { id: 42, type: "private" }, from: { id: 42 }, date: T0 / 1000, text } });
-  await bot.handleUpdate(msg("/giong 2"));
-  const hoi = said.at(-1).text;
-  assert.match(hoi, /TỐN CREDIT/);
-  assert.match(hoi, /Cảnh 1/);
-  assert.match(hoi, /Bước đầu chỉ một trăm năm mươi triệu/);
-  assert.match(hoi, /⚠️/);
-  assert.ok(!execs.some((e) => e.includes("voice")));
-  said.length = 0;
-  await bot.handleUpdate(msg("/loidoc 2"));
-  assert.match(said.at(-1).text, /Cảnh 3/);
-  assert.ok(!execs.some((e) => e.includes("voice")));
-  // tạo lại một cảnh: chỉ hiện cảnh đó
-  said.length = 0;
-  await bot.handleUpdate(msg("/giong 2 canh3"));
-  assert.match(said.at(-1).text, /Cảnh 3/);
-  assert.doesNotMatch(said.at(-1).text, /Cảnh 1/);
+  const press = (data) => ({ callback_query: { id: "q", data, from: { id: 42 }, message: { chat: { id: 42, type: "private" }, date: T0 / 1000 } } });
+  return { bot, said, execs, msg, press };
+}
+
+test("bot: /giong hỏi Đồng ý kèm lời đọc; không có cảnh báo chặn thì cho tạo; /loidoc chỉ xem, không tốn credit", async () => {
+  const b = dungBot([spec2.scenes[0]]);
+  await b.bot.handleUpdate(b.msg("/giong 2"));
+  const hoi = b.said.at(-1);
+  assert.match(hoi.text, /TỐN CREDIT/);
+  assert.match(hoi.text, /Bước đầu chỉ một trăm năm mươi triệu/);
+  assert.ok((hoi.extra?.reply_markup?.inline_keyboard ?? []).flat().some((x) => /Đồng ý/.test(x.text)), "có nút Đồng ý");
+  assert.ok(!b.execs.some((e) => e.includes("voice")));
+  b.said.length = 0;
+  await b.bot.handleUpdate(b.msg("/loidoc 2"));
+  assert.match(b.said.at(-1).text, /Cảnh 1/);
+  assert.ok(!b.execs.some((e) => e.includes("voice")));
+});
+
+test("bot: lời đọc có từ lặp hoặc cụm đã từng lỗi → /giong KHÔNG hỏi Đồng ý, báo nhờ Claude sửa câu (anh không phải tự đọc); 'chapnhan' để cố tình tạo", async () => {
+  const b = dungBot(spec2.scenes);
+  await b.bot.handleUpdate(b.msg("/giong 2"));
+  const m = b.said.at(-1);
+  assert.match(m.text, /Cảnh 3/);
+  assert.match(m.text, /nhờ Claude sửa|Claude sẽ sửa/i);
+  assert.ok(!(m.extra?.reply_markup?.inline_keyboard ?? []).flat().some((x) => /Đồng ý/.test(x.text)), "không có nút Đồng ý");
+  assert.ok(!b.execs.some((e) => e.includes("voice")));
+  // chỉ tạo lại cảnh 1 (không dính cảnh lỗi): vẫn hỏi bình thường
+  await b.bot.handleUpdate(b.msg("/giong 2 canh1"));
+  assert.ok((b.said.at(-1).extra?.reply_markup?.inline_keyboard ?? []).flat().some((x) => /Đồng ý/.test(x.text)));
+  // cố tình tạo cảnh 3 dù có cảnh báo
+  await b.bot.handleUpdate(b.msg("/giong 2 canh3 chapnhan"));
+  assert.ok((b.said.at(-1).extra?.reply_markup?.inline_keyboard ?? []).flat().some((x) => /Đồng ý/.test(x.text)));
 });
