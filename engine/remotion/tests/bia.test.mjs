@@ -75,7 +75,7 @@ test("checkBia: số trên bìa không có trong video bị báo", () => {
 });
 
 test("checkBia: tiêu đề quá 6 chữ, ảnh không có file bị báo", () => {
-  assert.match(checkBia(BiaSchema.parse(bia({ tieuDe: ["Quốc lộ 13 sắp mở rộng", "lên 8 làn xe nhé"] })), parseSpec(spec(hookOk)), projDir).join(" "), /6 chữ/);
+  assert.match(checkBia(BiaSchema.parse(bia({ tieuDe: ["Quốc lộ 13 sắp mở rộng", "lên 8 làn xe nhé"] })), parseSpec(spec(hookOk)), projDir).join(" "), /7 chữ/);
   assert.match(checkBia(BiaSchema.parse(bia({ anhNen: "assets/images/khong-co.jpg" })), parseSpec(spec(hookOk)), projDir).join(" "), /không thấy file/);
 });
 

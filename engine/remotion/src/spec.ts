@@ -240,7 +240,7 @@ export const DanhSachProps = z.object({
   image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
 });
 
-/** Khung mở đầu 0–3 giây phủ lên đầu cảnh 1, khớp ảnh bìa (AGY kiểu 1). Khung 0 đã đủ chữ; hook tối đa 6 chữ. */
+/** Khung mở đầu 0–3 giây phủ lên đầu cảnh 1, khớp ảnh bìa (AGY kiểu 1). Khung 0 đã đủ chữ; hook gọn, mục tiêu 6 chữ (tối đa 7). */
 export const HookSchema = z.object({
   lines: z.array(z.string().min(1)).min(1).max(3),
   /** Chủ đề quyết định màu nhấn (cùng bảng màu với ảnh bìa, `src/bia.ts`). Không khai thì màu xanh ngọc như bản đầu. */

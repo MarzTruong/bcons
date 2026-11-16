@@ -1,4 +1,4 @@
-// Kiểm ảnh bìa: bia.json phải khớp video (số có trong video, ảnh có thật, tiêu đề ≤ 6 chữ) và khớp khung mở đầu (hook) để khung 0 là bìa.
+// Kiểm ảnh bìa: bia.json phải khớp video (số có trong video, ảnh có thật, tiêu đề ≤ 7 chữ) và khớp khung mở đầu (hook) để khung 0 là bìa.
 import fs from "node:fs";
 import path from "node:path";
 import { BiaSchema } from "../src/bia.ts";
@@ -13,7 +13,7 @@ const chuDeCuaBia = (c) => c ?? "du-an";
 export function checkBia(bia, spec, projDir) {
   const errors = [];
   const words = bia.tieuDe.join(" ").split(/\s+/).filter(Boolean).length;
-  if (words > 6) errors.push(`bia: tiêu đề ${words} chữ, tối đa 6 chữ`);
+  if (words > 7) errors.push(`bia: tiêu đề ${words} chữ, tối đa 7 chữ`); // 6 chữ là mục tiêu; 7 cho phép vì anh chốt bìa Newsky 3 "Chủ đầu tư thuê lại 2 năm" (16/11/2026)
   const f = path.join(projDir, bia.anhNen);
   if (!fs.existsSync(f)) errors.push(`bia: ảnh ${bia.anhNen}: không thấy file`);
   else if (/placeholder/i.test(path.basename(bia.anhNen))) errors.push(`bia: ảnh ${bia.anhNen} là ảnh giữ chỗ`);

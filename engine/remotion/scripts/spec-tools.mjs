@@ -407,7 +407,7 @@ export function checkPacing(spec) {
 }
 
 /**
- * Kiểm khung mở đầu `hook` (nếu có): tiêu đề tối đa 6 chữ, số nhấn phải có trong video, ảnh có file thật.
+ * Kiểm khung mở đầu `hook` (nếu có): tiêu đề tối đa 7 chữ (mục tiêu 6), số nhấn phải có trong video, ảnh có file thật.
  * Trả danh sách lỗi (rỗng nếu không có hook).
  */
 export function checkHook(spec, projDir) {
@@ -415,7 +415,7 @@ export function checkHook(spec, projDir) {
   if (!h) return [];
   const errors = [];
   const words = h.lines.join(" ").split(/\s+/).filter(Boolean).length;
-  if (words > 6) errors.push(`hook: tiêu đề ${words} chữ, tối đa 6 chữ`);
+  if (words > 7) errors.push(`hook: tiêu đề ${words} chữ, tối đa 7 chữ`); // mục tiêu 6 chữ; 7 vì bìa Newsky 3 (anh chốt 16/11/2026)
   if (h.soNhan) {
     const norm = (x) => String(x).replace(/[^\p{L}\p{N},.]/gu, "").replace(/[,.]$/, "");
     const inMarkup = spec.scenes.some((s) => parseMarkup(s.markup).some((t) => norm(t.show) === norm(h.soNhan)));

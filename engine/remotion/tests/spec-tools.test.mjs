@@ -198,9 +198,9 @@ test("checkHook: hook hợp lệ, số khớp lời bình", () => {
   assert.deepEqual(checkHook(hookSpec(hk()), "/x"), []);
 });
 
-test("checkHook: tiêu đề quá 6 chữ bị báo", () => {
+test("checkHook: tiêu đề quá 7 chữ bị báo", () => {
   const e = checkHook(hookSpec(hk({ lines: ["Quốc lộ 13 sắp mở rộng", "lên 8 làn xe nhé"] })), "/x");
-  assert.match(e.join(" "), /6 chữ/);
+  assert.match(e.join(" "), /7 chữ/);
 });
 
 test("checkHook: số nhấn không có trong video bị báo", () => {
