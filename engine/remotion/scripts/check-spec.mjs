@@ -13,6 +13,7 @@ import {
   checkSourceLinks,
   checkSources,
   checkHook,
+  checkLoTrinh,
   checkNguonCuoi,
   checkPacing,
   parseMarkup,
@@ -50,7 +51,7 @@ for (const name of names) {
         }
       });
     }
-    const geoErrors = [...checkGeoFiles(spec, projDir), ...checkHook(spec, projDir), ...checkNguonCuoi(spec, md)];
+    const geoErrors = [...checkGeoFiles(spec, projDir), ...checkHook(spec, projDir), ...checkNguonCuoi(spec, md), ...checkLoTrinh(spec)];
     if (geoErrors.length) throw new Error(geoErrors.join("; "));
     const links = checkSourceLinks(spec, md);
     if (!links.ok) {

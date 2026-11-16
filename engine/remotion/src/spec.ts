@@ -293,6 +293,41 @@ export const BangChungProps = z.object({
     .optional(),
 });
 
+/**
+ * Cảnh `lo-trinh`: bảng lộ trình tiền theo thời gian (AGY phương án 1, anh chọn 16/11/2026).
+ * phan "tong-quan" = thanh xếp chồng "căn này được trả bằng gì" + hai số lớn; "trinh-tu" = trục thời gian dọc các mốc.
+ * Mọi tổng tính từ moc[] (không có số tổng viết sẵn). Mốc hiện khi từ cues[cueKey] được đọc, lệch `offset` frame.
+ */
+export const LoTrinhProps = z.object({
+  pttt: z.string().min(1),
+  /** vd. "3 tỷ, chưa VAT" (nhãn "Căn ví dụ" tự thêm). */
+  canViDu: z.string().min(1),
+  donVi: z.string().min(1),
+  title: z.string().min(1),
+  phan: z.enum(["tong-quan", "trinh-tu"]),
+  /** Có thì `check:spec` kiểm tổng các mốc = giá x (1 + vat + baoTri). Triệu đồng, vat/baoTri dạng 0,1 / 0,02. */
+  giaChuaVat: z.number().positive().optional(),
+  vat: z.number().min(0).optional(),
+  baoTri: z.number().min(0).optional(),
+  moc: z
+    .array(
+      z.object({
+        nhan: z.string().min(1),
+        khi: z.string().min(1),
+        ghiChu: z.string().optional(),
+        soTien: z.number().positive(),
+        nhom: z.enum(["tuCo", "nganHang", "nhanNha", "soHong"]),
+        cueKey,
+        offset: z.number().int().optional(),
+        sourceId,
+      }),
+    )
+    .min(3)
+    .max(8),
+  /** Chú thích cuối cảnh (một câu về VAT và phí bảo trì). */
+  ghiChuCuoi: z.string().optional(),
+});
+
 const sceneBase = {
   id: z.string().min(1),
   markup: z.string().min(1),
@@ -310,6 +345,7 @@ export const SceneSchema = z.discriminatedUnion("template", [
   z.object({ ...sceneBase, template: z.literal("project-close"), props: ProjectCloseProps }),
   z.object({ ...sceneBase, template: z.literal("danh-sach"), props: DanhSachProps }),
   z.object({ ...sceneBase, template: z.literal("bang-chung"), props: BangChungProps }),
+  z.object({ ...sceneBase, template: z.literal("lo-trinh"), props: LoTrinhProps }),
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */

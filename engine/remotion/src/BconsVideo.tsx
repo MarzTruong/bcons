@@ -28,6 +28,7 @@ import { GeoMap } from "./templates/GeoMap";
 import { ProjectClose } from "./templates/ProjectClose";
 import { BangChung } from "./templates/BangChung";
 import { DanhSach } from "./templates/DanhSach";
+import { LoTrinh } from "./templates/LoTrinh";
 import { HookOpen } from "./HookOpen";
 import { HOOK_FRAMES, NGUON_CUOI_FRAMES } from "./moDau";
 import { NguonCuoi } from "./NguonCuoi";
@@ -188,6 +189,8 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: s
           props={scene.props}
         />
       );
+    case "lo-trinh":
+      return <LoTrinh {...(t as TemplateProps<"lo-trinh">)} props={scene.props} />;
     case "danh-sach":
       return <DanhSach {...(t as TemplateProps<"danh-sach">)} props={scene.props} />;
     case "bang-chung":
@@ -234,7 +237,7 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     cue,
                     frames: d.frames,
                   }, C.look)}
-                  {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : scene.template === "danh-sach" ? null : i === 0 && spec.hook ? (
+                  {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : scene.template === "danh-sach" || scene.template === "lo-trinh" ? null : i === 0 && spec.hook ? (
                     <SauHook>
                       <Captions words={d.words} nhan={scene.nhan} trenBanDo={scene.template === "geo-map"} />
                     </SauHook>

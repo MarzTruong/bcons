@@ -72,6 +72,8 @@ function cueKeysOf(scene) {
       return p.cards.map((c) => c.cueKey);
     case "compare-bars":
       return p.bars.map((b) => b.cueKey);
+    case "lo-trinh":
+      return p.moc.map((m) => m.cueKey);
     case "danh-sach":
       return [...p.muc.map((m) => m.cueKey), p.tongKet?.cueKey].filter(Boolean);
     case "bang-chung":
@@ -443,6 +445,24 @@ export function checkNguonCuoi(spec, markdown) {
     }
     if (!boDau(r.nguon).includes(boDau(n.ten))) errors.push(`nguonCuoi: tên "${n.ten}" không có trong cột Nguồn của "${n.sourceId}" ("${r.nguon}")`);
     if (!r.ngay.includes(n.ngay)) errors.push(`nguonCuoi: ngày "${n.ngay}" không khớp cột Ngày công bố của "${n.sourceId}" ("${r.ngay}")`);
+  }
+  return errors;
+}
+
+const dinhDangTr = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+/** Cảnh lo-trinh có khai giá căn: tổng các mốc phải bằng giá x (1 + VAT + phí bảo trì). */
+export function checkLoTrinh(spec) {
+  const errors = [];
+  for (const scene of spec.scenes) {
+    if (scene.template !== "lo-trinh") continue;
+    const p = scene.props;
+    if (p.giaChuaVat === undefined) continue;
+    const tong = p.moc.reduce((a, m) => a + m.soTien, 0);
+    const mong = p.giaChuaVat * (1 + (p.vat ?? 0) + (p.baoTri ?? 0));
+    if (Math.abs(tong - mong) > 0.5) {
+      errors.push(`Cảnh ${scene.id}: tổng các mốc ${dinhDangTr(tong)} triệu lệch giá căn có VAT và phí bảo trì ${dinhDangTr(mong)} triệu`);
+    }
   }
   return errors;
 }
