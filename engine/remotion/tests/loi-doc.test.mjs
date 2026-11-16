@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { loiDocCacCanh, canhBaoLoiDoc, xemTruocLoiDoc, canhBaoChanCuaVideo } from "../scripts/loi-doc.mjs";
+import { loiDocCacCanh, canhBaoLoiDoc, xemTruocLoiDoc, canhBaoChanCuaVideo, laCanhBaoChan } from "../scripts/loi-doc.mjs";
 import { createBot } from "../scripts/bot/handlers.mjs";
 import { taoDuAn } from "../scripts/bot/du-an.mjs";
 
@@ -23,7 +23,7 @@ test("loiDocCacCanh: đúng chữ sẽ gửi cho giọng đọc (phần trong ng
 });
 
 test("canhBaoLoiDoc: từ lặp liền nhau ('hai hai'), câu quá dài, cụm đã từng bị lặp khi đọc", () => {
-  assert.deepEqual(canhBaoLoiDoc("Cho thuê trong hai năm. Ví dụ ba tỷ chưa VAT."), []);
+  assert.deepEqual(canhBaoLoiDoc("Cho thuê trong hai năm. Ví dụ ba tỷ chưa vê a tê."), []);
   const lap = canhBaoLoiDoc("Đóng hai hai tháng sau.");
   assert.ok(lap.some((w) => /lặp/i.test(w) && /hai hai/.test(w)), lap.join("|"));
   const dai = canhBaoLoiDoc("Cả căn chia ra ba phần và ngân hàng lo khoảng một nửa còn phần mình là vốn tự có trước khi nhận nhà cùng một đợt cuối lúc nhận nhà luôn.");
@@ -106,4 +106,17 @@ test("bot: lời đọc có từ lặp hoặc cụm đã từng lỗi → /giong
   // cố tình tạo cảnh 3 dù có cảnh báo
   await b.bot.handleUpdate(b.msg("/giong 2 canh3 chapnhan"));
   assert.ok((b.said.at(-1).extra?.reply_markup?.inline_keyboard ?? []).flat().some((x) => /Đồng ý/.test(x.text)));
+});
+
+test("tên riêng chưa có cách đọc (Newsky, Bcons, VAT viết trần trong markup) bị báo và CHẶN tạo giọng; đã có {cách đọc} thì qua (lỗi thật video Newsky 6 cảnh 1, 16/11/2026)", () => {
+  const tran = { scenes: [{ id: "scene1", markup: "Newsky có 3{ba} cách thanh toán. Mỗi cách chia tiền một kiểu." }] };
+  const ws = canhBaoLoiDoc(loiDocCacCanh(tran)[0].speech);
+  assert.ok(ws.some((w) => /Tên riêng "Newsky"/.test(w) && /Newsky\{New Sky\}/.test(w)), ws.join("|"));
+  assert.ok(ws.every((w) => !/^Tên riêng/.test(w) || laCanhBaoChan(w)), "cảnh báo tên riêng thuộc loại chặn");
+  assert.ok(canhBaoChanCuaVideo(tran).length >= 1);
+  const ok = { scenes: [{ id: "scene1", markup: "Newsky{New Sky} có 3{ba} cách thanh toán." }] };
+  assert.deepEqual(canhBaoChanCuaVideo(ok), []);
+  // Bcons và VAT
+  assert.ok(canhBaoLoiDoc("Căn của Bcons chưa VAT.").length >= 2);
+  assert.deepEqual(canhBaoLoiDoc("Căn của Bee Cons chưa vê a tê."), []);
 });

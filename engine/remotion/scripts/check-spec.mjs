@@ -18,6 +18,7 @@ import {
   resolveSpecPath,
 } from "./spec-tools.mjs";
 import { checkSpelledNumbers } from "./itn.mjs";
+import { canhBaoChanCuaVideo } from "./loi-doc.mjs";
 import { checkDoubledNumber } from "./spec-tools.mjs";
 
 const { projDir, rest } = takeProjectFlag(process.argv.slice(2));
@@ -56,6 +57,8 @@ for (const name of names) {
     }
     const pace = checkPacing(spec);
     if (pace.length) console.warn(`CẢNH BÁO ${name} nhịp/hook: ${pace.join("; ")}`);
+    const loiDoc = canhBaoChanCuaVideo(spec);
+    if (loiDoc.length) console.warn(`CẢNH BÁO ${name} lời đọc (bot sẽ chặn /giong, sửa trước khi đưa anh duyệt): ${loiDoc.join("; ")}`);
     // Caption (nếu có): bản nháp có lỗi chỉ cảnh báo; bản đã duyệt có lỗi là lỗi.
     const capPath = videoPaths(name, projDir).caption;
     if (fs.existsSync(capPath)) {

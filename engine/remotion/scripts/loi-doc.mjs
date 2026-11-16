@@ -10,6 +10,13 @@ export const CUM_DA_TUNG_LOI = [
 
 const MAX_AM_TIET_CAU = 22;
 
+/** Tên riêng/viết tắt máy đọc sai nếu để trần (anh báo 12/11 và 16/11/2026: "Newsky" bị đọc sai tên). Cách ghi đúng trong markup: Chữ{cách đọc}. */
+export const TEN_RIENG_CAN_CACH_DOC = [
+  { re: /\bnewsky\b/i, ten: "Newsky", viet: "Newsky{New Sky}" },
+  { re: /\bbcons\b/i, ten: "Bcons", viet: "Bcons{Bee Cons}" },
+  { re: /\bvat\b/i, ten: "VAT", viet: "VAT{vê a tê}" },
+];
+
 const chuan = (s) => s.toLowerCase().replace(/[.,;:!?…"'()“”]/g, " ").replace(/\s+/g, " ").trim();
 
 /** Chữ đọc của từng cảnh, đúng phần trong ngoặc {} (số đã viết thành chữ) như generate-voice.mjs gửi đi. */
@@ -37,6 +44,9 @@ export function canhBaoLoiDoc(speech) {
     const n = c.trim().split(/\s+/).filter(Boolean).length;
     if (n > MAX_AM_TIET_CAU) out.push(`Câu dài ${n} âm tiết (quá ${MAX_AM_TIET_CAU}), máy dễ hụt hơi: "${c.trim().slice(0, 40)}…"`);
   }
+  for (const { re, ten, viet } of TEN_RIENG_CAN_CACH_DOC) {
+    if (re.test(speech)) out.push(`Tên riêng "${ten}" chưa có cách đọc, máy đọc sai: viết ${viet} trong lời bình`);
+  }
   const bang = chuan(speech);
   for (const { cum, ghiChu } of CUM_DA_TUNG_LOI) {
     if (bang.includes(cum)) out.push(`Cụm "${cum}" đã từng gặp lỗi khi đọc (${ghiChu})`);
@@ -62,7 +72,7 @@ export function xemTruocLoiDoc(spec, ids = null) {
 }
 
 /** Cảnh báo đủ nặng để chặn việc tạo giọng (từ lặp, cụm đã từng lỗi). Câu dài chỉ là nhắc, không chặn. */
-export const laCanhBaoChan = (w) => /^Từ lặp/.test(w) || /^Cụm /.test(w);
+export const laCanhBaoChan = (w) => /^Từ lặp/.test(w) || /^Cụm /.test(w) || /^Tên riêng/.test(w);
 
 /** Các cảnh báo chặn của những cảnh sắp tạo giọng ("Cảnh n: ..."); rỗng = cho tạo. */
 export function canhBaoChanCuaVideo(spec, ids = null) {

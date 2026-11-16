@@ -23,7 +23,7 @@
     {
       "id": "scene1",
       "template": "stat-hero",
-      "markup": "Newsky có 3{ba} cách thanh toán. Mỗi cách chia tiền một kiểu.",
+      "markup": "Newsky{New Sky} có 3{ba} cách thanh toán. Mỗi cách chia tiền một kiểu.",
       "cues": {
         "value": "3"
       },
