@@ -39,4 +39,4 @@ Quy tắc icon (code kiểm trong `checkIcons`, `npm run check:caption -- <tên>
 - Không dùng icon làm gạch đầu dòng (không quá 1 dòng bắt đầu bằng icon); một icon không lặp quá 2 lần.
 - Cấm bộ rập khuôn: ✅ ✔ ❌ 🔥 💥 🚀 💯 ‼. Không icon trong dòng nguồn, số liệu.
 - Chọn icon hợp nghĩa (🏗️ công trình, ✈️ sân bay, 🏦 ngân hàng, 🏭 khu công nghiệp, 💬 nhắn tin), đổi theo từng bài, không một bộ icon cho mọi bài.
-Anh chọn bản nào cho từng video thì nhắn Claude, em cập nhật bài đăng/Sheet theo bản đó (bài đã lên lịch Metricool sửa riêng).
+**Mặc định đăng bản có icon (anh chốt 16/11/2026):** bot `/xem` và `/duyet` gửi bản icon khi có `caption-icon.md`; mọi video mới phải có cả hai bản. Anh chọn bản nào cho từng video thì nhắn Claude, em cập nhật bài đăng/Sheet theo bản đó (bài đã lên lịch Metricool sửa riêng).

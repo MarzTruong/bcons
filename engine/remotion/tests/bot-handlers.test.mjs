@@ -414,25 +414,58 @@ test("/xem gửi thêm bài Zalo từ video/<tên>/zalo.md nếu có", async () 
   assert.ok(s.said.some((m) => /ZALO/.test(m.text) && /đợt 2 giới thiệu ngày 29\/11/.test(m.text)), s.said.map((m) => m.text.slice(0, 30)).join("|"));
 });
 
-test("/xem <tên> icon gửi bản caption có icon (caption-icon.md); /xem thường nhắc có bản icon", async () => {
+const ICON_MD = "---\nstatus: draft\nkenh: [facebook, tiktok, zalo]\n---\n## Facebook\nBài FB có icon 🏠\n\n## TikTok\nTikTok có icon 🏠 #bienhoa\n\n## Zalo\nZalo có icon 💬\n";
+
+test("/xem: có caption-icon.md thì MẶC ĐỊNH hiện bản có icon (anh 16/11/2026), nhắc /xem <tên> chu để xem bản chữ thuần; không có bản icon thì hiện bản chữ như cũ", async () => {
   const s = setup();
-  fs.writeFileSync(path.join(s.projDir, "video", "a", "caption-icon.md"), "---\nstatus: draft\nkenh: [facebook, tiktok, zalo]\n---\n## Facebook\nBài FB có icon 🏠\n\n## TikTok\nTikTok có icon 🏠 #bienhoa\n\n## Zalo\nZalo có icon 💬\n");
-  await s.bot.handleUpdate(msg("/xem a icon"));
+  fs.writeFileSync(path.join(s.projDir, "video", "a", "caption-icon.md"), ICON_MD);
+  await s.bot.handleUpdate(msg("/xem a"));
   await new Promise((r) => setTimeout(r, 30));
   const all = s.said.map((m) => m.text).join("\n");
   assert.match(all, /FACEBOOK.*ICON[\s\S]*Bài FB có icon 🏠/);
   assert.match(all, /TIKTOK.*ICON[\s\S]*TikTok có icon/);
   assert.match(all, /ZALO.*ICON[\s\S]*Zalo có icon 💬/);
-  assert.doesNotMatch(all, /Bài FB\n/, "không gửi bản chữ thuần khi hỏi icon");
+  assert.match(all, /\/xem a chu/, "nhắc cách xem bản chữ thuần");
+  assert.doesNotMatch(all, /Bài FB\n/, "không gửi bản chữ thuần khi đã có bản icon");
+  // "icon" vẫn dùng được như cũ
+  const s1 = setup();
+  fs.writeFileSync(path.join(s1.projDir, "video", "a", "caption-icon.md"), ICON_MD);
+  await s1.bot.handleUpdate(msg("/xem a icon"));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.match(s1.said.map((m) => m.text).join("\n"), /Bài FB có icon 🏠/);
+  // "chu" xem bản chữ thuần
   const s2 = setup();
-  fs.writeFileSync(path.join(s2.projDir, "video", "a", "caption-icon.md"), "---\nstatus: draft\nkenh: [facebook, tiktok]\n---\n## Facebook\nx 🏠\n\n## TikTok\ny\n");
-  await s2.bot.handleUpdate(msg("/xem a"));
+  fs.writeFileSync(path.join(s2.projDir, "video", "a", "caption-icon.md"), ICON_MD);
+  await s2.bot.handleUpdate(msg("/xem a chu"));
   await new Promise((r) => setTimeout(r, 30));
-  assert.ok(s2.said.some((m) => /\/xem a icon/.test(m.text)), s2.said.map((m) => m.text.slice(0, 25)).join("|"));
+  const t2 = s2.said.map((m) => m.text).join("\n");
+  assert.match(t2, /Bài FB\n/);
+  assert.doesNotMatch(t2, /icon 🏠/);
+  // không có bản icon: bản chữ, và /xem <tên> icon báo chưa có
   const s3 = setup();
-  await s3.bot.handleUpdate(msg("/xem a icon"));
+  await s3.bot.handleUpdate(msg("/xem a"));
   await new Promise((r) => setTimeout(r, 30));
-  assert.ok(s3.said.some((m) => /chưa có bản icon/i.test(m.text)));
+  assert.match(s3.said.map((m) => m.text).join("\n"), /Bài FB\n/);
+  const s4 = setup();
+  await s4.bot.handleUpdate(msg("/xem a icon"));
+  await new Promise((r) => setTimeout(r, 30));
+  assert.ok(s4.said.some((m) => /chưa có bản icon/i.test(m.text)));
+});
+
+test("/duyet: gửi chữ bản có icon (noiDungPath = caption-icon.md) để dán đăng; không có bản icon thì gửi bản chữ", async () => {
+  const s = setup();
+  fs.writeFileSync(path.join(s.projDir, "video", "a", "caption-icon.md"), ICON_MD);
+  fs.writeFileSync(path.join(s.outDir, "a.mp4"), "video");
+  await s.bot.handleUpdate(msg("/duyet a"));
+  await new Promise((r) => setTimeout(r, 60));
+  assert.equal(s.sent.length, 1);
+  assert.equal(s.sent[0].noiDungPath, path.join(s.projDir, "video", "a", "caption-icon.md"));
+  assert.ok(s.said.some((m) => /bản có icon/.test(m.text)), s.said.map((m) => m.text.slice(0, 40)).join("|"));
+  const s2 = setup();
+  fs.writeFileSync(path.join(s2.outDir, "a.mp4"), "video");
+  await s2.bot.handleUpdate(msg("/duyet a"));
+  await new Promise((r) => setTimeout(r, 60));
+  assert.equal(s2.sent[0].noiDungPath, undefined);
 });
 
 test("/phieu <mã> <PTTT> pdf → dựng phiếu, gửi PNG + PDF dạng tệp để anh chuyển Zalo", async () => {

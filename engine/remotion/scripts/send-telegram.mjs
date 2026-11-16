@@ -61,7 +61,8 @@ function msg(api, chatId, text) {
 
 /** Kiểm đủ điều kiện TRƯỚC khi gọi mạng, rồi gửi. mp4Path = null cho bài không có video. */
 /** guiVideo=false (bước /duyet): vẫn kiểm duyệt theo đúng file video, nhưng chỉ gửi chữ caption (video đã xem ở bước render). */
-export async function sendApproved({ captionPath, mp4Path, env = process.env, fetchFn = fetch, label = "", guiVideo = true }) {
+/** noiDungPath (tuỳ chọn): file chữ thật sự đăng, vd. caption-icon.md (bản có icon, anh chọn làm mặc định 16/11/2026). Duyệt vẫn tính trên captionPath (caption.md, cùng nội dung chữ); quy tắc cứng kiểm lại trên chính bản được gửi. */
+export async function sendApproved({ captionPath, mp4Path, noiDungPath, env = process.env, fetchFn = fetch, label = "", guiVideo = true }) {
   const token = (env.TELEGRAM_BOT_TOKEN ?? "").trim();
   const chatId = (env.TELEGRAM_CHAT_ID ?? "").trim();
   if (!token || !chatId) throw new Error("Thiếu TELEGRAM_BOT_TOKEN hoặc TELEGRAM_CHAT_ID trong engine/remotion/.env (xem docs/huong-dan-dang-bai.md)");
@@ -69,10 +70,12 @@ export async function sendApproved({ captionPath, mp4Path, env = process.env, fe
   const text = fs.readFileSync(captionPath, "utf8");
   const st = approvalState(text, mp4Path);
   if (!st.ok) throw new Error(`Chưa gửi: ${st.reason}. Duyệt bằng npm run duyet:caption / duyet:video.`);
-  const errs = checkCaption(text, captionOptsFor(captionPath)); // kiểm lại theo quy tắc hiện hành, phòng caption duyệt trước khi quy tắc chặt hơn
+  const guiPath = noiDungPath && fs.existsSync(noiDungPath) ? noiDungPath : captionPath;
+  const guiText = guiPath === captionPath ? text : fs.readFileSync(guiPath, "utf8");
+  const errs = checkCaption(guiText, captionOptsFor(guiPath)); // kiểm lại theo quy tắc hiện hành, phòng caption duyệt trước khi quy tắc chặt hơn
   if (errs.length) throw new Error(`Chưa gửi, caption vi phạm quy tắc:\n- ${errs.join("\n- ")}`);
   if (guiVideo && mp4Path && fs.statSync(mp4Path).size > MAX_BYTES) throw new Error("Video lớn hơn 50 MB, Telegram không nhận. Render bản nhẹ hơn.");
-  const caption = parseCaption(text);
+  const caption = parseCaption(guiText);
   for (const r of buildTelegramRequests({ token, chatId, mp4Path: guiVideo ? mp4Path : null, caption, label })) {
     const res = await fetchFn(r.url, { method: "POST", body: r.body });
     const data = await res.json().catch(() => ({}));

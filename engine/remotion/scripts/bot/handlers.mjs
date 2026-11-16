@@ -216,15 +216,20 @@ export function createBot(deps) {
       return enqueue(`xem ${name}`, async () => {
         const vp = videoPaths(name, projDir);
         const cap = vp.caption;
-        if (/^icon$/i.test(kieu ?? "")) {
+        // Có caption-icon.md thì mặc định hiện bản có icon (anh 16/11/2026); "chu" xem bản chữ thuần; "icon" vẫn dùng được.
+        const xemIcon = /^icon$/i.test(kieu ?? "") || (fs.existsSync(vp.captionIcon) && !/^(chu|chữ)$/i.test(kieu ?? ""));
+        if (xemIcon) {
           if (!fs.existsSync(vp.captionIcon)) return say(`${name}: chưa có bản icon (caption-icon.md). Nhắn Claude "viết bản caption có icon cho ${name}".`);
           const c = parseCaption(fs.readFileSync(vp.captionIcon, "utf8"));
           await say(`📘 FACEBOOK (ICON) – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
           await say(`🎵 TIKTOK (ICON) – ${name}\n\n${c.tiktok ?? "(chưa có)"}`);
           if (c.zalo) await say(`💬 ZALO (ICON) – ${name}\n\n${c.zalo}`);
+          await say(`Xem bản chữ thuần: /xem ${name} chu`);
+          const mp4i = path.join(outDir, `${name}.mp4`);
+          if (fs.existsSync(mp4i)) await sendPreview(mp4i, `Bản xem thử ${name} (chưa phải bản đăng)`);
           return;
         }
-        if (fs.existsSync(vp.captionIcon)) await say(`Có thêm bản caption có icon: /xem ${name} icon`);
+        if (fs.existsSync(vp.captionIcon)) await say(`Bản chữ thuần (không icon) của ${name}:`);
         if (fs.existsSync(cap)) {
           const c = parseCaption(fs.readFileSync(cap, "utf8"));
           await say(`📘 FACEBOOK – ${name}\n\n${c.facebook ?? "(chưa có)"}`);
@@ -252,9 +257,11 @@ export function createBot(deps) {
         }
         if (!approvalState(fs.readFileSync(cap, "utf8"), mp4).ok) duyetVideo(cap, mp4);
         // Chỉ gửi chữ caption để sao chép (anh 08/11/2026): video đã xem ở bước render, gửi lại dễ vượt 50 MB.
-        await sendApproved({ captionPath: cap, mp4Path: mp4, label: name, guiVideo: false });
+        const iconPath = videoPaths(name, projDir).captionIcon;
+        const coIcon = fs.existsSync(iconPath);
+        await sendApproved({ captionPath: cap, mp4Path: mp4, label: name, guiVideo: false, ...(coIcon ? { noiDungPath: iconPath } : {}) });
         const saved = await gitSave([rel], `Duyet ${name}`);
-        await say(`✅ Đã duyệt ${name} (caption + video bản render hiện tại). Caption FB/TikTok ở các tin phía trên. ${saved}\nViệc còn lại: nhắn Claude ngày giờ đăng để lên lịch.`);
+        await say(`✅ Đã duyệt ${name} (caption + video bản render hiện tại). Caption FB/TikTok${coIcon ? " (bản có icon)" : ""} ở các tin phía trên. ${saved}\n${coIcon ? `Bản chữ thuần nếu cần: /xem ${name} chu\n` : ""}Việc còn lại: nhắn Claude ngày giờ đăng để lên lịch.`);
       });
     },
     render([name, opt]) {

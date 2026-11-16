@@ -120,3 +120,23 @@ test("buildTelegramRequests: caption có phần Zalo thì gửi thêm tin 'ZALO 
   const khong = buildTelegramRequests({ token: "t", chatId: "1", mp4Path: null, label: "x", caption: { facebook: "bài fb", tiktok: "tt", zalo: null } });
   assert.ok(!khong.some((r) => String(r.body.get("text")).startsWith("ZALO")));
 });
+
+test("sendApproved: noiDungPath (bản có icon) được gửi thay cho bản chữ, vẫn kiểm duyệt theo caption.md và kiểm quy tắc trên chính bản icon", async () => {
+  const { c, mp4 } = setup();
+  const icon = path.join(path.dirname(c), "caption-icon.md");
+  fs.writeFileSync(icon, "---\nstatus: draft\nkenh: [facebook, tiktok]\n---\n## Facebook\nBài FB có icon 🏠\n\n## TikTok\nTikTok có icon 🏠 #bienhoa\n");
+  const bodies = [];
+  const fn = async (_url, init) => {
+    bodies.push(init.body.get("text") ?? init.body.get("caption"));
+    return { ok: true, json: async () => ({ ok: true }) };
+  };
+  duyetCaption(c);
+  duyetVideo(c, mp4);
+  await sendApproved({ captionPath: c, mp4Path: mp4, noiDungPath: icon, env: ENV, fetchFn: fn, guiVideo: false });
+  const all = bodies.join("\n");
+  assert.match(all, /Bài FB có icon 🏠/);
+  assert.match(all, /TikTok có icon/);
+  // bản icon vi phạm quy tắc (hứa tăng giá) → không gửi
+  fs.writeFileSync(icon, "---\nstatus: draft\nkenh: [facebook, tiktok]\n---\n## Facebook\nChắc chắn tăng giá 🏠\n\n## TikTok\nx\n");
+  await assert.rejects(sendApproved({ captionPath: c, mp4Path: mp4, noiDungPath: icon, env: ENV, fetchFn: fn, guiVideo: false }), /vi phạm/);
+});
