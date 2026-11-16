@@ -13,6 +13,8 @@ export async function canCapNhat(run) {
 export function docLogCapNhat(log) {
   const tomTat = String(log).trim().split(/\r?\n/).filter((l) => !/KHONG CO BAN MOI/.test(l)).slice(-12).join("\n");
   const ban = (String(log).match(/Ban hien tai: (\w+)/) ?? [])[1];
-  const loi = tomTat.split("\n").filter((l) => !/^Ban hien tai:/.test(l)).join("\n"); // nội dung commit có chữ "lỗi" không phải lỗi
-  return { ok: !/\bLOI\b|error|fatal|lỗi/i.test(loi), tomTat, khongMoi: /KHONG CO BAN MOI/.test(log), ban };
+  // Bỏ dòng thống kê git (tên file có thể chứa chữ "loi", "error"...) và dòng "create mode"/"rename", rồi mới soi chữ lỗi.
+  const bangThongKe = /^\s*\S.*\|\s+\d+\s*[+-]*\s*$|^\s*(create|delete) mode |^\s*rename |^\s*\d+ files? changed/;
+  const loi = tomTat.split("\n").filter((l) => !/^Ban hien tai:/.test(l) && !bangThongKe.test(l)).join("\n"); // nội dung commit có chữ "lỗi" không phải lỗi
+  return { ok: !(/^LOI\b/m.test(loi) || /error|fatal|lỗi/i.test(loi)), tomTat, khongMoi: /KHONG CO BAN MOI/.test(log), ban };
 }

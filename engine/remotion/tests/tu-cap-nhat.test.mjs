@@ -31,3 +31,31 @@ test("docLogCapNhat: commit mới có chữ 'lỗi'/'error' trong dòng 'Ban hie
   assert.equal(docLogCapNhat("Cap nhat luc ...\nBan hien tai: 4bf520f bot: fix error buttons\n").ok, true);
   assert.equal(docLogCapNhat("Ban hien tai: 85778ce Sửa lỗi\nLOI: khong lay duoc ban moi\n").ok, false);
 });
+
+test("docLogCapNhat: tên file có chữ 'loi' (loi-doc.mjs) hoặc 'error' trong bảng thống kê git KHÔNG bị coi là lỗi (log thật 16/11/2026)", () => {
+  const log = [
+    "Cap nhat luc Mon 11/16/2026 13:47:02.10",
+    "From https://github.com/MarzTruong/bcons",
+    "Updating a3766ad..b04cc01",
+    "Fast-forward",
+    " engine/remotion/scripts/bot/core.mjs              |   2 +-",
+    " engine/remotion/scripts/bot/handlers.mjs          |  35 ++++++-",
+    " engine/remotion/scripts/bot/loi-doc-cli.mjs       |  16 +++",
+    " engine/remotion/scripts/loi-doc.mjs               |  75 ++++++++++++++",
+    " engine/remotion/tests/loi-doc.test.mjs            | 109 ++++++++++++++++",
+    " engine/remotion/tests/check-error-log.test.mjs    |   5 +",
+    " 11 files changed, 241 insertions(+), 8 deletions(-)",
+    " create mode 100644 engine/remotion/scripts/loi-doc-cli.mjs",
+    " create mode 100644 engine/remotion/scripts/loi-doc.mjs",
+    "Ban hien tai: a3766ad Video 2 scene 3: new opening line; bot blocks voice on repeated words/known-bad phrases",
+    "up to date in 534ms",
+  ].join("\n");
+  const r = docLogCapNhat(log);
+  assert.equal(r.ok, true);
+  assert.equal(r.ban, "a3766ad");
+  // lỗi thật vẫn bị bắt
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nLOI: khong lay duoc ban moi, bot chay tiep ban dang co.\n").ok, false);
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nfatal: unable to access 'https://github.com/'\n").ok, false);
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nnpm error code ERESOLVE\n").ok, false);
+  assert.equal(docLogCapNhat("Cap nhat luc ...\nerror: Your local changes would be overwritten\n").ok, false);
+});
