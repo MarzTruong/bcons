@@ -178,3 +178,62 @@ test("video thật: Newsky 01 (4 cảnh) chạy được và chỉ trả cảnh 
   assert.ok(Array.isArray(w) && w.every((x) => typeof x === "string"));
   assert.match(w.join(" "), /tổng/i); // video này 109 chữ lời, vượt ngưỡng 100
 });
+
+// --- Kiểm hook và danh-sach (15/11/2026) ---
+import { checkHook } from "../scripts/spec-tools.mjs";
+
+const hookSpec = (hook, markup = "Quốc lộ 13 đang mở rộng lên 8{tám} làn xe.") => ({
+  name: "demo",
+  status: "draft",
+  hook,
+  scenes: [{ id: "scene1", template: "stat-hero", markup, cues: {}, props: {} }],
+});
+const hk = (extra = {}) => ({ lines: ["Quốc lộ 13", "lên 8 làn"], soNhan: "8", donVi: "làn xe", ...extra });
+
+test("checkHook: không có hook thì không lỗi", () => {
+  assert.deepEqual(checkHook({ scenes: [] }, "/x"), []);
+});
+
+test("checkHook: hook hợp lệ, số khớp lời bình", () => {
+  assert.deepEqual(checkHook(hookSpec(hk()), "/x"), []);
+});
+
+test("checkHook: tiêu đề quá 6 chữ bị báo", () => {
+  const e = checkHook(hookSpec(hk({ lines: ["Quốc lộ 13 sắp mở rộng", "lên 8 làn xe nhé"] })), "/x");
+  assert.match(e.join(" "), /6 chữ/);
+});
+
+test("checkHook: số nhấn không có trong video bị báo", () => {
+  const e = checkHook(hookSpec(hk({ soNhan: "9" })), "/x");
+  assert.match(e.join(" "), /soNhan/);
+});
+
+test("checkHook: ảnh không tồn tại bị báo", () => {
+  const e = checkHook(hookSpec(hk({ image: { file: "assets/images/khong-co.jpg", label: "x", sourceId: "s" } })), "/x");
+  assert.match(e.join(" "), /không thấy file/);
+});
+
+test("checkCues: danh-sach đòi cue của từng mục và của tổng kết", () => {
+  const sc = (cues) => ({
+    name: "d",
+    status: "draft",
+    scenes: [
+      {
+        id: "scene1",
+        template: "danh-sach",
+        markup: "Vành đai 3 xong, rồi Tân Hiệp.",
+        cues,
+        props: {
+          title: "T",
+          muc: [
+            { ten: "a", so: "b", cueKey: "m1", sourceId: "s" },
+            { ten: "c", so: "d", cueKey: "m2", sourceId: "s" },
+          ],
+          tongKet: { text: "t", cueKey: "tk" },
+        },
+      },
+    ],
+  });
+  assert.match(checkCues(sc({ m1: "Vành" })).join(" "), /m2/);
+  assert.deepEqual(checkCues(sc({ m1: "Vành", m2: "Tân", tk: "Hiệp." })), []);
+});

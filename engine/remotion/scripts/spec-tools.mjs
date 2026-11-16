@@ -72,6 +72,8 @@ function cueKeysOf(scene) {
       return p.cards.map((c) => c.cueKey);
     case "compare-bars":
       return p.bars.map((b) => b.cueKey);
+    case "danh-sach":
+      return [...p.muc.map((m) => m.cueKey), p.tongKet?.cueKey].filter(Boolean);
     case "geo-map":
       return [
         ...[...p.points, ...p.lines, ...p.areas, ...(p.info ? [p.info] : [])].map((x) => x.cueKey),
@@ -390,4 +392,28 @@ export function checkPacing(spec) {
     }
   });
   return warn;
+}
+
+/**
+ * Kiểm khung mở đầu `hook` (nếu có): tiêu đề tối đa 6 chữ, số nhấn phải có trong video, ảnh có file thật.
+ * Trả danh sách lỗi (rỗng nếu không có hook).
+ */
+export function checkHook(spec, projDir) {
+  const h = spec.hook;
+  if (!h) return [];
+  const errors = [];
+  const words = h.lines.join(" ").split(/\s+/).filter(Boolean).length;
+  if (words > 6) errors.push(`hook: tiêu đề ${words} chữ, tối đa 6 chữ`);
+  if (h.soNhan) {
+    const norm = (x) => String(x).replace(/[^\p{L}\p{N},.]/gu, "").replace(/[,.]$/, "");
+    const inMarkup = spec.scenes.some((s) => parseMarkup(s.markup).some((t) => norm(t.show) === norm(h.soNhan)));
+    const inProps = JSON.stringify(spec.scenes.map((s) => s.props)).includes(`"${h.soNhan}"`);
+    if (!inMarkup && !inProps) errors.push(`hook: soNhan "${h.soNhan}" không có trong lời bình hoặc props của video`);
+  }
+  if (h.image?.file) {
+    const f = path.join(projDir, h.image.file);
+    if (!fs.existsSync(f)) errors.push(`hook: ảnh ${h.image.file}: không thấy file`);
+    else if (/placeholder/i.test(path.basename(h.image.file))) errors.push(`hook: ảnh ${h.image.file} là ảnh giữ chỗ`);
+  }
+  return errors;
 }

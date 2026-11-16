@@ -224,6 +224,33 @@ export const ProjectCloseProps = z.object({
   ghiChu: z.string().optional(),
 });
 
+/** Cảnh `danh-sach`: các mục hiện lần lượt khi từ cues[cueKey] được đọc, có đếm "Đã xem n/N" (AGY kiểu 1, anh chọn 15/11/2026). */
+export const DanhSachProps = z.object({
+  /** Dòng nhỏ phía trên tiêu đề (vd. "Cuối năm 2026"). */
+  kicker: z.string().optional(),
+  /** Từ đầu tiên của tiêu đề được tô vàng (thường là con số: "3 công trình về đích"). */
+  title: z.string().min(1),
+  muc: z
+    .array(z.object({ ten: z.string().min(1), so: z.string().min(1), cueKey, sourceId }))
+    .min(2)
+    .max(5),
+  /** Băng tổng kết gom cả danh sách, hiện khi từ cues[cueKey] được đọc (không có cueKey thì hiện ở 1,5 s cuối cảnh). */
+  tongKet: z.object({ text: z.string().min(1), cueKey: cueKey.optional() }).optional(),
+  /** Ảnh mờ làm nền (phối cảnh); nhãn "Hình ảnh minh họa" gắn trên ảnh. */
+  image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
+});
+
+/** Khung mở đầu 0–3 giây phủ lên đầu cảnh 1, khớp ảnh bìa (AGY kiểu 1). Khung 0 đã đủ chữ; hook tối đa 6 chữ. */
+export const HookSchema = z.object({
+  lines: z.array(z.string().min(1)).min(1).max(3),
+  /** Con số nhấn lớn (phải có trong lời bình hoặc props), vd. "8". */
+  soNhan: z.string().optional(),
+  /** Đơn vị cạnh số nhấn, vd. "làn xe". Không có thì không hiện. */
+  donVi: z.string().optional(),
+  dongPhu: z.string().optional(),
+  image: z.object({ file: z.string(), label: z.string(), sourceId }).optional(),
+});
+
 const sceneBase = {
   id: z.string().min(1),
   markup: z.string().min(1),
@@ -239,6 +266,7 @@ export const SceneSchema = z.discriminatedUnion("template", [
   z.object({ ...sceneBase, template: z.literal("compare-bars"), props: CompareBarsProps }),
   z.object({ ...sceneBase, template: z.literal("geo-map"), props: GeoMapProps }),
   z.object({ ...sceneBase, template: z.literal("project-close"), props: ProjectCloseProps }),
+  z.object({ ...sceneBase, template: z.literal("danh-sach"), props: DanhSachProps }),
 ]);
 
 /** Phong cách hình ảnh: classic = bản gốc (nền tối, xanh ngọc + vàng). */
@@ -273,6 +301,8 @@ export const VideoSpecSchema = z.object({
     .optional(),
   /** Tên + địa chỉ dự án cho cảnh cuối; render tự gắn từ project.json (applyWatermark). */
   duAn: z.object({ ten: z.string(), diaChi: z.string() }).optional(),
+  /** Khung mở đầu 0–3 giây (tùy chọn; video cũ không có). */
+  hook: HookSchema.optional(),
   scenes: z.array(SceneSchema).min(1),
 });
 

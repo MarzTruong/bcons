@@ -12,6 +12,7 @@ import {
   checkTimestamps,
   checkSourceLinks,
   checkSources,
+  checkHook,
   checkPacing,
   parseMarkup,
   resolveSpecPath,
@@ -47,7 +48,7 @@ for (const name of names) {
         }
       });
     }
-    const geoErrors = checkGeoFiles(spec, projDir);
+    const geoErrors = [...checkGeoFiles(spec, projDir), ...checkHook(spec, projDir)];
     if (geoErrors.length) throw new Error(geoErrors.join("; "));
     const links = checkSourceLinks(spec, md);
     if (!links.ok) {

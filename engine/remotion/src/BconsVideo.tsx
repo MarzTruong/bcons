@@ -26,6 +26,9 @@ import { DataCards } from "./templates/DataCards";
 import { CompareBars } from "./templates/CompareBars";
 import { GeoMap } from "./templates/GeoMap";
 import { ProjectClose } from "./templates/ProjectClose";
+import { DanhSach } from "./templates/DanhSach";
+import { HookOpen } from "./HookOpen";
+import { HOOK_FRAMES } from "./moDau";
 
 /** Hiệu ứng chuyển cảnh cho cả cảnh (duration tính bằng khung). "fade" = bản gốc. */
 const SceneTransition: React.FC<{
@@ -39,6 +42,12 @@ const SceneTransition: React.FC<{
       {children}
     </AbsoluteFill>
   );
+};
+
+/** Phụ đề tắt trong 3 giây hook (chữ hook đã thay phụ đề) để không đè lên khung mở đầu. */
+const SauHook: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const frame = useCurrentFrame();
+  return frame < HOOK_FRAMES ? null : <>{children}</>;
 };
 
 const Background: React.FC = () => {
@@ -177,6 +186,8 @@ const renderScene = (scene: Scene, t: TemplateProps<Scene["template"]>, look?: s
           props={scene.props}
         />
       );
+    case "danh-sach":
+      return <DanhSach {...(t as TemplateProps<"danh-sach">)} props={scene.props} />;
   }
 };
 
@@ -219,9 +230,14 @@ export const BconsVideo: React.FC<BconsVideoProps> = ({ spec, timestamps, amThan
                     cue,
                     frames: d.frames,
                   }, C.look)}
-                  {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : (
+                  {scene.template === "project-close" && spec.watermark?.kieu === "qr" ? null : scene.template === "danh-sach" ? null : i === 0 && spec.hook ? (
+                    <SauHook>
+                      <Captions words={d.words} nhan={scene.nhan} trenBanDo={scene.template === "geo-map"} />
+                    </SauHook>
+                  ) : (
                     <Captions words={d.words} nhan={scene.nhan} trenBanDo={scene.template === "geo-map"} />
                   )}
+                  {i === 0 && spec.hook ? <HookOpen hook={spec.hook} /> : null}
                 </SceneTransition>
                 {khongGiong ? null : (
                   <Sequence from={LEAD} durationInFrames={d.audioFrames}>
