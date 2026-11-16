@@ -1,6 +1,6 @@
 # Video Newsky 5 "Mặt bằng giá Bình Dương cũ" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 2 (spec `draft`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 15/11/2026 (cảnh 3 nói "từ 2,56 tỷ").** Trụ cột B (thị trường) dẫn sang A. Slug đề xuất `05-gia-binh-duong-cu`.
+**Trạng thái: cổng 2 duyệt 16/11/2026 (spec `approved`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 15/11/2026 (cảnh 3 nói "từ 2,56 tỷ").** Trụ cột B (thị trường) dẫn sang A. Slug đề xuất `05-gia-binh-duong-cu`.
 
 Góc: gợi tò mò, không nói hết. Hook (anh chọn): "Căn hộ Bình Dương cũ từng 35–40 triệu một mét vuông. Giờ trung bình khoảng 60 triệu. Vậy 2 phòng ngủ ở Lái Thiêu đang ở mức nào?" Đáp án (tổng giá căn) hé một nửa ở cảnh 3, phần còn lại khách nhắn mới biết.
 

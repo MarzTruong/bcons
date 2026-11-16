@@ -1,6 +1,6 @@
 # Video Newsky 4 "Quốc lộ 13 về phía Bình Triệu" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 2 (spec `draft`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 15/11/2026 (anh giao em chọn hook: hook A "Quốc lộ 13 phía Bình Triệu sắp rộng 60 mét", vì có con số và khác video 1).** Trụ cột A. Slug đề xuất `04-ql13-ve-binh-trieu`.
+**Trạng thái: cổng 2 duyệt 16/11/2026 (spec `approved`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 15/11/2026 (anh giao em chọn hook: hook A "Quốc lộ 13 phía Bình Triệu sắp rộng 60 mét", vì có con số và khác video 1).** Trụ cột A. Slug đề xuất `04-ql13-ve-binh-trieu`.
 
 **Cảnh báo trùng:** Video Newsky 1 (đã đăng 14/11) đã nói "Quốc lộ 13 từ 6 lên 8 làn" và 84,37% mặt bằng đoạn Bình Triệu – Vĩnh Bình. Hook "từ 6 lên 8 làn" sẽ lặp video 1. Em đổi trọng tâm sang phần chưa nói: đoạn phía TP.HCM **khởi công 29/08/2026**, dài ~5,9 km, mặt cắt 60 m, **10–14 làn**, dự kiến xong 2028.
 

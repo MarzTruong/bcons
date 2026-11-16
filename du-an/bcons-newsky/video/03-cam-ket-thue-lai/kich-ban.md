@@ -1,6 +1,6 @@
 # Video Newsky 3 "Cam kết thuê lại" (bản nháp cổng 1, 15/11/2026)
 
-**Trạng thái: cổng 2 (spec `draft`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 (số liệu và góc), chờ anh duyệt.** Chưa có `spec.json`, giọng, hình. Trụ cột A (dự án). Slug đề xuất `03-cam-ket-thue-lai` (anh đổi được).
+**Trạng thái: cổng 2 duyệt 16/11/2026 (spec `approved`, caption, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 (số liệu và góc), chờ anh duyệt.** Chưa có `spec.json`, giọng, hình. Trụ cột A (dự án). Slug đề xuất `03-cam-ket-thue-lai` (anh đổi được).
 
 Góc (anh chốt 15/11/2026): gợi tò mò để khách nhắn hỏi, không nói hết. Chỉ nêu một phần thông tin, chi tiết (mức theo từng diện tích, danh sách căn, điều kiện) để khi khách liên hệ.
 - **Hook 1 (anh chọn):** "Căn hộ này chủ đầu tư thuê lại của anh chị 24 tháng."
