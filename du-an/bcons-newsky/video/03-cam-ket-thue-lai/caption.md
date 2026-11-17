@@ -1,8 +1,8 @@
 ---
 status: approved
-duyetLuc: "2026-11-16T21:07:22+07:00"
-noiDungSha256: "530eb026be96e0395556cc4bd09f5023a97552f5d7c894e0a2cfde1e1d52eaf7"
-videoSha256: "1c9fa0ee9b761bfa03a7bed65f32ba6a0530fc90e17364d90df960faf84296aa"
+duyetLuc: "2026-11-17T10:23:20+07:00"
+noiDungSha256: "1e0b33e4fccf21b0969067430cb85561f21f37016656a2d5549f09fb55cf71db"
+videoSha256: ""
 kenh: [facebook, tiktok]
 ---
 ## Facebook
@@ -18,4 +18,4 @@ Theo thông báo của chủ đầu tư ngày 12/11/2026; 24 tháng tính từ n
 ## TikTok
 Chủ đầu tư thuê lại căn hộ của mình 24 tháng 🏠.
 Cùng 2 phòng ngủ mà mức thuê có nơi 11 triệu, có nơi 13 triệu một tháng. Chênh ở con số nào trên bản vẽ? Đoán đi 👇
-(áp dụng cho một số căn Bcons Newsky, theo thông báo chủ đầu tư 12/11/2026) #BconsNewsky #LáiThiêu #CămHộ
+(áp dụng cho một số căn Bcons Newsky, theo thông báo chủ đầu tư 12/11/2026) #BconsNewsky #LáiThiêu #CănHộ

@@ -15,7 +15,7 @@ Theo thông báo của chủ đầu tư ngày 12/11/2026; 24 tháng tính từ n
 ## TikTok
 Chủ đầu tư thuê lại căn hộ của mình 24 tháng 🏠.
 Cùng 2 phòng ngủ mà mức thuê có nơi 11 triệu, có nơi 13 triệu một tháng. Chênh ở con số nào trên bản vẽ? Đoán đi 👇
-(áp dụng cho một số căn Bcons Newsky, theo thông báo chủ đầu tư 12/11/2026) #BconsNewsky #LáiThiêu #CămHộ
+(áp dụng cho một số căn Bcons Newsky, theo thông báo chủ đầu tư 12/11/2026) #BconsNewsky #LáiThiêu #CănHộ
 
 ## Zalo
 Anh chị ơi, em có chuyện này khá hay 🏠: ở Bcons Newsky có một số căn mà chủ đầu tư thuê lại 24 tháng kể từ khi có thông báo bàn giao.
