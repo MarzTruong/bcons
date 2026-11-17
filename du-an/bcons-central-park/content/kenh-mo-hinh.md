@@ -16,14 +16,17 @@ Kênh chung hai dự án (Bcons Central Park, Bcons Newsky) của tư vấn viê
 | 10/11 | Cho thuê 4,4% vs Quận 2 (video 5) | Central Park | B |
 | 11/11 | Lãi ưu đãi 8,5–11% (video 7) | chung | B |
 | 12/11 | Tái thiết KCN Biên Hòa 1 (video 6) | Central Park | B |
-| 13/11 (hẹn) | Cuối năm, 3 công trình về đích (video 8) | Central Park | B |
+| 13/11 | Cuối năm, 3 công trình về đích (video 8) | Central Park | B |
+| 14/11 | Newsky 1: Quốc lộ 13 lên 8 làn | Newsky | B (tạm, anh chốt) |
 
-Tỷ lệ thực tế đến 13/11: **A 1/7 (14%), B 6/7 (86%)**, ngược với mục tiêu.
+Tỷ lệ thực tế đến 14/11: **A 1/8 (13%), B 7/8 (87%)**, ngược với mục tiêu. Lịch 17–21/11 (5 video Newsky đã hẹn): A 3, B 2.
 
 ## Kế hoạch tuần (cập nhật mỗi tuần bởi báo cáo hiệu suất)
 | Tuần | A (dự án) | B (thị trường) | Ghi chú |
 |---|---|---|---|
-| 16–22/11 | 4 video Newsky (dự án đang bán từ 12/11): video 1 Quốc lộ 13 (đã duyệt, chờ giọng + render), tiện ích/thiết kế (cắt từ video công ty), "vốn X mua căn nào" (phiếu tính Newsky), chính sách và lịch bán | 1 video | Central Park tạm dừng làm mới |
+| 17–23/11 | Đã xếp: Newsky 2, 3, 6 (A); Newsky 4, 5 (B) | — | 5 video đăng mỗi ngày 10:00 (FB 12:00 ngày 18/11) |
+| 24–30/11 | 4 video A Newsky (tiện ích, thiết kế căn, chính sách bán, vốn tự có theo căn) | 1 video (lãi vay) | Anh chọn góc ở cổng 1; báo cáo 24/11 |
+| 16–22/11 (cũ) | 4 video Newsky (dự án đang bán từ 12/11): video 1 Quốc lộ 13 (đã duyệt, chờ giọng + render), tiện ích/thiết kế (cắt từ video công ty), "vốn X mua căn nào" (phiếu tính Newsky), chính sách và lịch bán | 1 video | Central Park tạm dừng làm mới |
 
 ## Chỉ số theo dõi
 Thời gian xem TB và tỷ lệ xem hết (giữ chân), bình luận, tin nhắn/form/quét QR từ kênh (cột Nguồn Sheet Landing), người theo dõi mới. Lượt xem chỉ là chỉ số phụ.
