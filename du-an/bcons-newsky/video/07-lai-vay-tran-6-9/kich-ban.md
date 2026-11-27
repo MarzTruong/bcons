@@ -1,0 +1,41 @@
+# Video Newsky 7 "Lãi vay mua nhà 11/2026 và trần 6,9% (PTTT 09)" (bản nháp cổng 1, 27/11/2026)
+
+**Trạng thái: cổng 1 (số liệu và góc), chờ anh chọn hook.** Chưa có spec, giọng, hình. Trụ cột A (dự án) mở bằng số thị trường. Slug đề xuất `07-lai-vay-tran-6-9` (số kế tiếp của Newsky, anh đổi được). Nền: biên bản kiểm `kiem-toan/2026-11-27-tu-lieu-video-quy-hoach-100-nam-newsky/KIEM.md`; em mở lại link VnExpress 27/11/2026 và dò từng số.
+
+Làm theo mục 3c `docs/quy-trinh-video.md`: **mồi kéo khách**, một ý chính, một lời kêu gọi, chi tiết tư vấn khi khách nhắn.
+Ý chính: lãi vay mua nhà vẫn cao (khoảng 9,5–12%/năm) trong khi PTTT 09 của chủ đầu tư có **trần lãi 6,9%/năm**. Người xem tự hỏi "trần đó áp dụng thế nào, căn nào?" rồi nhắn.
+
+## 3 phương án hook (anh chọn một)
+1. **Con số:** "Lãi vay nhà vẫn 9,5–12%"
+2. **Câu hỏi:** "Trần lãi 6,9% là của ai?"
+3. **Kết quả:** "Lãi vay 12%, gói này trần 6,9%"
+
+## Dàn ý 3 cảnh (khoảng 28–32 giây, nháp)
+| Cảnh | Mẫu | Hình hiển thị | Lời bình (nháp) |
+|---|---|---|---|
+| 1 | `stat-hero` | "9,5–12%" lớn, nhãn "Lãi vay mua nhà cố định 12 tháng, 11 ngân hàng, tính đến cuối tháng 10" | Lãi vay mua nhà cố định 12 tháng ở 11 ngân hàng vẫn khoảng 9,5 đến 12% một năm. |
+| 2 | `data-cards` | 2 thẻ: "Hết ưu đãi: thả nổi tới 13–16%/năm"; "PTTT 09 Bcons Newsky: trần lãi 6,9%/năm" | Hết ưu đãi, lãi thả nổi có chương trình lên tới 13 đến 16%. Còn phương thức thanh toán 09 của Bcons Newsky có trần lãi 6,9% một năm. |
+| 3 | `project-close` | Thẻ dự án, tên + QR; câu hỏi | Trần này áp dụng thế nào, anh chị nhắn để biết. Theo anh chị, lãi vay bao nhiêu thì còn vay nổi? |
+
+Ghi chú nội dung (quy tắc cứng, đã đối chiếu `pttt-cdt.json` và KIEM.md):
+- **PTTT 09 nói đúng nguyên văn nguồn, chừa chi tiết cho khi khách nhắn:** trần 6,9%/năm, tối đa 48 tháng, **không quá 24 tháng kể từ thông báo bàn giao**, chủ đầu tư bù chênh lệch, chỉ khách cá nhân, gói cố định tối đa 30 tháng tại MB. Video chỉ cần "trần 6,9%/năm" kèm nhãn nhỏ cố định "theo PTTT 09, điều kiện theo thông báo chủ đầu tư"; ba điều kiện còn lại để caption/tư vấn. Không nói "24 tháng sau nhận nhà".
+- **Không** nói PTTT 08, 10 (PTTT 10 không có trần 6,9%). Không nói số chiết khấu trong video này.
+- **Không** metro, **không** "tránh cú sốc trả nợ", "tiền thuê bù lãi", không hứa kết quả, không nói trả góp mỗi tháng bao nhiêu.
+- Không so cam kết "rẻ hơn ngân hàng": video đặt hai số cạnh nhau (thị trường và gói của chủ đầu tư), mỗi số đúng nguồn của nó. Trần 6,9% là do chủ đầu tư bù chênh lệch trong một thời hạn, không phải lãi suất ngân hàng.
+- Số lãi là **tính đến cuối tháng 10/2026**, bài đăng 25/11/2026: nói "cuối tháng 10", không nói "hôm nay".
+- Không SĐT chữ (đã có QR). Không dòng "tham khảo" khi chưa hỏi anh.
+
+## Bảng nguồn
+| id | Số liệu | Ngày công bố | Nguồn | Link | Ghi chú kiểm |
+|---|---|---|---|---|---|
+| lai-vay-11nh | Lãi vay mua nhà cố định 12 tháng tại 11 ngân hàng thương mại phổ biến khoảng 9,5–12%/năm tùy kỳ hạn và gói vay, không giảm so với quý III (DKRA Consulting, tính đến cuối tháng 10) | 25/11/2026 | VnExpress (dẫn DKRA Consulting) | https://vnexpress.net/lai-suat-huy-dong-giam-lai-vay-bat-dong-san-van-neo-cao-5147943.html | Em mở link, khớp nguyên văn 27/11/2026 |
+| lai-tha-noi | Chương trình ưu đãi năm đầu (dưới 10%) thường theo mức thả nổi cao, lên đến 13–16%; phí trả nợ trước hạn 4–5% | 25/11/2026 | VnExpress (cùng bài) | https://vnexpress.net/lai-suat-huy-dong-giam-lai-vay-bat-dong-san-van-neo-cao-5147943.html | Khớp. Nói "có chương trình lên tới", không nói "trung bình thị trường" |
+| pttt-09-tran | PTTT 09: lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; chủ đầu tư bù chênh lệch; chỉ khách cá nhân; gói cố định tối đa 30 tháng tại MB | 05/10/2026 | Thông báo 30/TB-SHQT, Công ty TNHH Song Hỷ Quốc Tế | https://drive.google.com/file/d/14AmBhxMamf8ZNAgNT0hlh0USWOMRELxu/view | Khớp `nguon/pttt-cdt.json` |
+| newsky-vi-tri | Mặt tiền Quốc lộ 13, phường Lái Thiêu | 09/10/2024 | GPXD 3288, `thong-tin.md` | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Anh xác nhận 11/11/2026 |
+
+**Không dùng (đã loại ở KIEM.md):** "24 tháng sau nhận nhà" (sai chữ nguồn), "giúp tránh cú sốc trả nợ", "tiền thuê bù phần lớn lãi vay", mức 264–360 triệu, số liệu bank-by-bank (VCB, BIDV, VietinBank…) là của DXS-FERI chứ không phải DKRA: nếu cần thì ghi đúng nguồn, nhưng "một ý chính" nên chỉ dùng khoảng 9,5–12%.
+
+## Việc cần anh quyết
+1. Chọn hook (1, 2 hoặc 3).
+2. Chữ nhỏ cố định ở cảnh 2 ("theo PTTT 09, điều kiện theo thông báo chủ đầu tư") giữ hay bỏ? Em đề xuất giữ vì trần chỉ áp dụng cho PTTT 09.
+3. Slug `07-lai-vay-tran-6-9` đồng ý không.
