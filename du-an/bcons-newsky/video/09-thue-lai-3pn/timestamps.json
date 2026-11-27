@@ -1,0 +1,384 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 6.191020408163265,
+      "speech": "Một số căn ba phòng ngủ ở Bee Cons New Sky , chủ đầu tư thuê lại mười bốn hay mười lăm triệu mỗi tháng?",
+      "words": [
+        {
+          "text": "Một",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "số",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "căn",
+          "start": 0.4,
+          "end": 0.64
+        },
+        {
+          "text": "3",
+          "start": 0.72,
+          "end": 0.8
+        },
+        {
+          "text": "phòng",
+          "start": 0.88,
+          "end": 1.04
+        },
+        {
+          "text": "ngủ",
+          "start": 1.12,
+          "end": 1.28
+        },
+        {
+          "text": "ở",
+          "start": 1.36,
+          "end": 1.44
+        },
+        {
+          "text": "Bcons",
+          "start": 1.52,
+          "end": 2
+        },
+        {
+          "text": "Newsky",
+          "start": 2.08,
+          "end": 2.72
+        },
+        {
+          "text": ",",
+          "start": 2.72,
+          "end": 3.04
+        },
+        {
+          "text": "chủ",
+          "start": 3.08,
+          "end": 3.2
+        },
+        {
+          "text": "đầu",
+          "start": 3.24,
+          "end": 3.32
+        },
+        {
+          "text": "tư",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "thuê",
+          "start": 3.6,
+          "end": 3.76
+        },
+        {
+          "text": "lại",
+          "start": 3.84,
+          "end": 4
+        },
+        {
+          "text": "14",
+          "start": 4.08,
+          "end": 4.48
+        },
+        {
+          "text": "hay",
+          "start": 4.72,
+          "end": 4.96
+        },
+        {
+          "text": "15",
+          "start": 5.04,
+          "end": 5.28
+        },
+        {
+          "text": "triệu",
+          "start": 5.4,
+          "end": 5.6
+        },
+        {
+          "text": "mỗi",
+          "start": 5.64,
+          "end": 5.76
+        },
+        {
+          "text": "tháng?",
+          "start": 5.8,
+          "end": 6.24
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 8.202448979591837,
+      "speech": "Dưới tám mươi mét vuông thông thủy là mười bốn triệu. Từ tám mươi mét vuông là mười lăm triệu, trong hai mươi bốn tháng kể từ thông báo bàn giao.",
+      "words": [
+        {
+          "text": "Dưới",
+          "start": 0,
+          "end": 0.24
+        },
+        {
+          "text": "80",
+          "start": 0.4,
+          "end": 0.693
+        },
+        {
+          "text": "m²",
+          "start": 0.747,
+          "end": 1.12
+        },
+        {
+          "text": "thông",
+          "start": 1.36,
+          "end": 1.52
+        },
+        {
+          "text": "thủy",
+          "start": 1.6,
+          "end": 1.84
+        },
+        {
+          "text": "là",
+          "start": 1.92,
+          "end": 2.08
+        },
+        {
+          "text": "14",
+          "start": 2.16,
+          "end": 2.56
+        },
+        {
+          "text": "triệu.",
+          "start": 2.64,
+          "end": 3.12
+        },
+        {
+          "text": "Từ",
+          "start": 3.28,
+          "end": 3.36
+        },
+        {
+          "text": "80",
+          "start": 3.52,
+          "end": 3.813
+        },
+        {
+          "text": "m²",
+          "start": 3.84,
+          "end": 4.32
+        },
+        {
+          "text": "là",
+          "start": 4.48,
+          "end": 4.56
+        },
+        {
+          "text": "15",
+          "start": 4.72,
+          "end": 5.04
+        },
+        {
+          "text": "triệu,",
+          "start": 5.16,
+          "end": 5.6
+        },
+        {
+          "text": "trong",
+          "start": 5.64,
+          "end": 5.84
+        },
+        {
+          "text": "24",
+          "start": 5.92,
+          "end": 6.32
+        },
+        {
+          "text": "tháng",
+          "start": 6.4,
+          "end": 6.72
+        },
+        {
+          "text": "kể",
+          "start": 6.88,
+          "end": 7
+        },
+        {
+          "text": "từ",
+          "start": 7.04,
+          "end": 7.16
+        },
+        {
+          "text": "thông",
+          "start": 7.2,
+          "end": 7.36
+        },
+        {
+          "text": "báo",
+          "start": 7.4,
+          "end": 7.52
+        },
+        {
+          "text": "bàn",
+          "start": 7.56,
+          "end": 7.68
+        },
+        {
+          "text": "giao.",
+          "start": 7.76,
+          "end": 8.24
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 4.048979591836734,
+      "speech": "mười lăm triệu nhân hai mươi bốn tháng là ba trăm sáu mươi triệu.",
+      "words": [
+        {
+          "text": "15",
+          "start": 0,
+          "end": 0.32
+        },
+        {
+          "text": "triệu",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "text": "nhân",
+          "start": 0.96,
+          "end": 1.28
+        },
+        {
+          "text": "24",
+          "start": 1.36,
+          "end": 1.76
+        },
+        {
+          "text": "tháng",
+          "start": 1.84,
+          "end": 2.24
+        },
+        {
+          "text": "là",
+          "start": 2.32,
+          "end": 2.56
+        },
+        {
+          "text": "360",
+          "start": 2.64,
+          "end": 3.547
+        },
+        {
+          "text": "triệu.",
+          "start": 3.6,
+          "end": 4.08
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene4",
+      "durationSec": 4.7542857142857144,
+      "speech": "Theo anh chị, căn ba phòng ngủ thông thủy bao nhiêu mét vuông thì được mười lăm triệu?",
+      "words": [
+        {
+          "text": "Theo",
+          "start": 0,
+          "end": 0.2
+        },
+        {
+          "text": "anh",
+          "start": 0.24,
+          "end": 0.32
+        },
+        {
+          "text": "chị,",
+          "start": 0.4,
+          "end": 0.88
+        },
+        {
+          "text": "căn",
+          "start": 0.96,
+          "end": 1.2
+        },
+        {
+          "text": "3",
+          "start": 1.28,
+          "end": 1.44
+        },
+        {
+          "text": "phòng",
+          "start": 1.52,
+          "end": 1.68
+        },
+        {
+          "text": "ngủ",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "thông",
+          "start": 2,
+          "end": 2.16
+        },
+        {
+          "text": "thủy",
+          "start": 2.24,
+          "end": 2.48
+        },
+        {
+          "text": "bao",
+          "start": 2.64,
+          "end": 2.8
+        },
+        {
+          "text": "nhiêu",
+          "start": 2.88,
+          "end": 2.96
+        },
+        {
+          "text": "m²",
+          "start": 3,
+          "end": 3.44
+        },
+        {
+          "text": "thì",
+          "start": 3.52,
+          "end": 3.68
+        },
+        {
+          "text": "được",
+          "start": 3.72,
+          "end": 3.84
+        },
+        {
+          "text": "15",
+          "start": 3.88,
+          "end": 4.16
+        },
+        {
+          "text": "triệu?",
+          "start": 4.24,
+          "end": 4.8
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
