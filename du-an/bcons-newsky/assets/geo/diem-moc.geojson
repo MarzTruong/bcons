@@ -48,6 +48,22 @@
           10.819732
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "key": "nut-giao-vd3",
+        "name": "Nút giao QL13 – Vành đai 3",
+        "sourceId": "geo-nut-giao-vd3",
+        "fetchedAt": "2026-11-27"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.69005127224993,
+          10.96326415917704
+        ]
+      }
     }
   ]
 }

@@ -1,0 +1,147 @@
+{
+  "name": "08-quy-hoach-100-nam",
+  "so": 8,
+  "tieuDe": "Quy hoạch TP.HCM 100 năm",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "hook": {
+    "lines": [
+      "Quy hoạch",
+      "vừa công bố"
+    ],
+    "chuDe": "ha-tang",
+    "soNhan": "100",
+    "donVi": "năm",
+    "dongPhu": "TP.HCM, công bố ngày 16/11",
+    "image": {
+      "file": "assets/images/phoi-canh-quoc-lo-13.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-ql13"
+    }
+  },
+  "scenes": [
+    {
+      "template": "stat-hero",
+      "markup": "TP.HCM vừa công bố quy hoạch tổng thể tầm nhìn 100{một trăm} năm, ngày 16/11{mười sáu tháng mười một}.",
+      "cues": {
+        "value": "100"
+      },
+      "props": {
+        "badge": "Nguồn: Tuổi Trẻ 16/11/2026",
+        "titleLines": [
+          "Quy hoạch",
+          "TP.HCM"
+        ],
+        "cardLabel": "Quyết định 7308, công bố 16/11/2026",
+        "value": 100,
+        "decimals": 0,
+        "unit": "năm",
+        "sourceId": "qh-7308",
+        "image": {
+          "file": "assets/images/phoi-canh-quoc-lo-13.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-ql13"
+        }
+      },
+      "id": "scene1"
+    },
+    {
+      "template": "geo-map",
+      "markup": "Trục Bắc–Nam{Bắc Nam} 1{một} được quy hoạch bắt đầu từ quốc lộ 13{mười ba}, giao vành đai 3{ba}. Thuận An thuộc cực đổi mới sáng tạo phía Đông.",
+      "cues": {
+        "t": "Trục",
+        "c": "Thuận"
+      },
+      "props": {
+        "kicker": "Quy hoạch TP.HCM 100 năm",
+        "title": "Quốc lộ 13 trong quy hoạch",
+        "mapStyle": "mapbox://styles/mapbox/satellite-streets-v12",
+        "camera": {
+          "fit": [
+            "nut-giao-vd3",
+            "newsky"
+          ],
+          "padding": {
+            "top": 760,
+            "bottom": 560,
+            "left": 170,
+            "right": 170
+          }
+        },
+        "points": [
+          {
+            "key": "nut-giao-vd3",
+            "label": "Nút giao QL13 – Vành đai 3",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "nut-giao-vd3",
+            "color": "gold",
+            "cueKey": "t",
+            "offset": 60,
+            "sourceId": "geo-nut-giao-vd3"
+          },
+          {
+            "key": "newsky",
+            "label": "BCONS NEWSKY",
+            "file": "assets/geo/diem-moc.geojson",
+            "featureKey": "newsky",
+            "color": "red",
+            "big": true,
+            "cueKey": "t",
+            "offset": 0,
+            "sourceId": "geo-newsky"
+          }
+        ],
+        "lines": [
+          {
+            "key": "ql13-nut-giao-newsky",
+            "file": "assets/geo/ql13-nut-giao-newsky.geojson",
+            "kind": "official",
+            "color": "white",
+            "width": 6,
+            "cueKey": "t",
+            "offset": 20,
+            "drawFrames": 80,
+            "vetChay": true,
+            "sourceId": "geo-ql13-osm-bac"
+          }
+        ],
+        "areas": [],
+        "cards": [
+          {
+            "tag": "Trục Bắc–Nam 1, hướng quy hoạch",
+            "big": "từ QL13 giao Vành đai 3",
+            "sub": "đi theo Quốc lộ 13",
+            "cueKey": "t",
+            "offset": 40,
+            "sourceId": "qh-truc-bn1"
+          },
+          {
+            "tag": "Cực đổi mới sáng tạo phía Đông",
+            "big": "có Thuận An",
+            "sub": "cùng Thủ Đức, Dĩ An, Tân Uyên",
+            "cueKey": "c",
+            "offset": -5,
+            "sourceId": "qh-cuc-dong"
+          }
+        ],
+        "note": "Điểm theo tọa độ do anh cung cấp; hình đường lấy từ OpenStreetMap, không phải hình Trục Bắc–Nam 1"
+      },
+      "id": "scene2"
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Bcons{Bee Cons} Newsky{New Sky} mặt tiền quốc lộ 13. Theo anh chị, trục này bắt đầu từ nút giao nào?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-quoc-lo-13.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-ql13"
+        }
+      }
+    }
+  ]
+}

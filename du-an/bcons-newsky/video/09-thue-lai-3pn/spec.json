@@ -1,0 +1,121 @@
+{
+  "name": "09-thue-lai-3pn",
+  "so": 9,
+  "tieuDe": "Thuê lại 3 phòng ngủ: 14 hay 15 triệu",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "hook": {
+    "lines": [
+      "3 phòng ngủ",
+      "14 hay"
+    ],
+    "chuDe": "du-an",
+    "soNhan": "15",
+    "donVi": "triệu/tháng",
+    "dongPhu": "Thuê lại 24 tháng, một số căn",
+    "image": {
+      "file": "assets/images/phoi-canh-tong-the.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-tong-the"
+    }
+  },
+  "scenes": [
+    {
+      "template": "stat-hero",
+      "markup": "Một số căn 3{ba} phòng ngủ ở Bcons{Bee Cons} Newsky{New Sky}, chủ đầu tư thuê lại 14{mười bốn} hay 15{mười lăm} triệu mỗi tháng?",
+      "cues": {
+        "value": "15"
+      },
+      "props": {
+        "badge": "Nguồn: Thông báo của chủ đầu tư 12/11/2026",
+        "titleLines": [
+          "Thuê lại",
+          "3 phòng ngủ"
+        ],
+        "cardLabel": "Mỗi tháng, trong 24 tháng",
+        "prefix": "14 hay ",
+        "value": 15,
+        "decimals": 0,
+        "unit": "triệu",
+        "sourceId": "thue-3pn",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      },
+      "id": "scene1"
+    },
+    {
+      "template": "data-cards",
+      "markup": "Dưới 80{tám mươi} m²{mét vuông} thông thủy là 14{mười bốn} triệu. Từ 80{tám mươi} m²{mét vuông} là 15{mười lăm} triệu, trong 24{hai mươi bốn} tháng kể từ thông báo bàn giao.",
+      "cues": {
+        "c1": "Dưới",
+        "c2": "Từ"
+      },
+      "props": {
+        "kicker": "Căn 3 phòng ngủ",
+        "title": "Mức thuê lại mỗi tháng",
+        "cards": [
+          {
+            "tag": "Dưới 80 m² thông thủy",
+            "big": "14 triệu/tháng",
+            "sub": "trong 24 tháng",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "thue-3pn"
+          },
+          {
+            "tag": "Từ 80 m² thông thủy",
+            "big": "15 triệu/tháng",
+            "sub": "trong 24 tháng",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "thue-3pn"
+          }
+        ]
+      },
+      "id": "scene2"
+    },
+    {
+      "template": "stat-hero",
+      "markup": "15{mười lăm} triệu nhân 24{hai mươi bốn} tháng là 360{ba trăm sáu mươi} triệu.",
+      "cues": {
+        "value": "360"
+      },
+      "props": {
+        "badge": "Tính nhân 24 tháng từ mức thông báo",
+        "titleLines": [
+          "Tổng 24 tháng",
+          "mức 15 triệu"
+        ],
+        "cardLabel": "15 triệu × 24 tháng",
+        "value": 360,
+        "decimals": 0,
+        "unit": "triệu",
+        "sourceId": "thue-tong",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      },
+      "id": "scene3"
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Theo anh chị, căn 3{ba} phòng ngủ thông thủy bao nhiêu m²{mét vuông} thì được 15{mười lăm} triệu?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}

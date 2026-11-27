@@ -1,6 +1,6 @@
 # Video Newsky 7 "Lãi vay mua nhà 11/2026 và trần 6,9% (PTTT 09)" (bản nháp cổng 1, 27/11/2026)
 
-**Trạng thái: cổng 1 (số liệu và góc), chờ anh chọn hook. Cập nhật 27/11/2026 theo chỉnh của anh (qua phiên Main): nới để kéo khách, được nêu tên ngân hàng và số lãi từng nơi, không cần chữ nhỏ điều kiện dài.** Chưa có spec, giọng, hình. Trụ cột A (dự án) mở bằng số thị trường. Slug đề xuất `07-lai-vay-tran-6-9` (số kế tiếp của Newsky, anh đổi được). Nền: biên bản kiểm `kiem-toan/2026-11-27-tu-lieu-video-quy-hoach-100-nam-newsky/KIEM.md`; em mở lại link VnExpress 27/11/2026 và dò từng số.
+**Trạng thái: cổng 2 (spec `draft`, caption, zalo, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 27/11/2026. Cập nhật 27/11/2026 theo chỉnh của anh (qua phiên Main): nới để kéo khách, được nêu tên ngân hàng và số lãi từng nơi, không cần chữ nhỏ điều kiện dài.** Chưa có spec, giọng, hình. Trụ cột A (dự án) mở bằng số thị trường. Slug đề xuất `07-lai-vay-tran-6-9` (số kế tiếp của Newsky, anh đổi được). Nền: biên bản kiểm `kiem-toan/2026-11-27-tu-lieu-video-quy-hoach-100-nam-newsky/KIEM.md`; em mở lại link VnExpress 27/11/2026 và dò từng số.
 
 Làm theo mục 3c `docs/quy-trinh-video.md`: **mồi kéo khách**, một ý chính, một lời kêu gọi, chi tiết tư vấn khi khách nhắn.
 Ý chính: lãi vay mua nhà vẫn cao (khoảng 9,5–12%/năm) trong khi PTTT 09 của chủ đầu tư có **trần lãi 6,9%/năm**. Người xem tự hỏi "trần đó áp dụng thế nào, căn nào?" rồi nhắn.
@@ -34,6 +34,7 @@ Ghi chú nội dung (quy tắc cứng, đã đối chiếu `pttt-cdt.json` và K
 | lai-ngan-hang | Lãi vay ưu đãi bất động sản kỳ hạn 6–12 tháng (DXS-FERI, đến cuối tháng 10): Standard Chartered và Hong Leong Bank 9,8%; Vietcombank và BIDV khoảng 10%; VietinBank 10,2%; Techcombank 10,8%; VPBank 11,5% | 25/11/2026 | VnExpress (dẫn DXS-FERI) | https://vnexpress.net/lai-suat-huy-dong-giam-lai-vay-bat-dong-san-van-neo-cao-5147943.html | Khớp. Chú ý: danh sách này là của DXS-FERI, khoảng 9,5–12% là của DKRA |
 | pttt-09-tran | PTTT 09: lãi không vượt 6,9%/năm, tối đa 48 tháng, không quá 24 tháng kể từ thông báo bàn giao; chủ đầu tư bù chênh lệch; chỉ khách cá nhân; gói cố định tối đa 30 tháng tại MB | 05/10/2026 | Thông báo 30/TB-SHQT, Công ty TNHH Song Hỷ Quốc Tế | https://drive.google.com/file/d/14AmBhxMamf8ZNAgNT0hlh0USWOMRELxu/view | Khớp `nguon/pttt-cdt.json` |
 | newsky-vi-tri | Mặt tiền Quốc lộ 13, phường Lái Thiêu | 09/10/2024 | GPXD 3288, `thong-tin.md` | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Anh xác nhận 11/11/2026 |
+| phoi-canh-tong-the | Phối cảnh tổng thể dự án (file overview-aerial, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 
 **Không dùng (đã loại ở KIEM.md):** "24 tháng sau nhận nhà" (sai chữ nguồn), "giúp tránh cú sốc trả nợ", "tiền thuê bù phần lớn lãi vay", mức 264–360 triệu, số liệu bank-by-bank (VCB, BIDV, VietinBank…) là của DXS-FERI chứ không phải DKRA: nếu cần thì ghi đúng nguồn, nhưng "một ý chính" nên chỉ dùng khoảng 9,5–12%.
 
@@ -41,3 +42,7 @@ Ghi chú nội dung (quy tắc cứng, đã đối chiếu `pttt-cdt.json` và K
 1. Chọn hook (1, 2, 3 hoặc 4).
 2. Cảnh 2 có nêu tên ngân hàng (Vietcombank, BIDV ~10%, VietinBank 10,2%, Techcombank 10,8%, VPBank 11,5%, số của DXS-FERI) hay chỉ khoảng 9,5–12% của DKRA. Em đề xuất chỉ nêu 2 ngân hàng lớn kèm khoảng 9,5–12% cho gọn.
 3. Slug `07-lai-vay-tran-6-9` đồng ý không.
+
+## Cổng 2: hook và kiểm tra (27/11/2026)
+Hook đã chọn (anh 27/11/2026): **hook 1** "Lãi vay nhà vẫn 9,5–12%" (khung 0: "Lãi vay nhà / vẫn cao" + số 9,5–12% mỗi năm + dòng "Gói PTTT 09 có trần lãi 6,9%"). Anh chọn nêu tên ngân hàng vì số đã kiểm (nguồn DXS-FERI).
+Kiểm tra mục 3b `docs/quy-trinh-video.md`: khung 0 có chữ và hình (`hook` và `bia.json` cùng chữ); số đầu trong lời cảnh 1 ở những chữ đầu; câu hỏi dễ trả lời ở cảnh cuối; không nền lưới/viền sáng/nhãn chữ hoa; mục 3c: một ý chính, một lời kêu gọi, chi tiết để tư vấn khi khách nhắn.

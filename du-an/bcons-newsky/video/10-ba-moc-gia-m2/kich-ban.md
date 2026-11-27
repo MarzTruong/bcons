@@ -1,6 +1,6 @@
 # Video Newsky 10 "Ba mốc giá mỗi mét vuông: TP.HCM, Bình Dương cũ, Newsky" (bản nháp cổng 1, 27/11/2026)
 
-**Trạng thái: cổng 1 (số liệu và góc), chờ anh chọn hook.** Chưa có spec, giọng, hình. Slug đề xuất `10-ba-moc-gia-m2`.
+**Trạng thái: cổng 2 (spec `draft`, caption, zalo, storyboard; chờ anh duyệt chữ, số, caption, hình). Cổng 1 anh đã duyệt 27/11/2026.** Chưa có spec, giọng, hình. Slug đề xuất `10-ba-moc-gia-m2`.
 
 **TRÙNG CHỦ ĐỀ, ĐÃ ĐỔI GÓC:** ý "so sánh giá thị trường" của AGY trùng **Newsky 5** (`05-gia-binh-duong-cu`, đã đăng 20/11/2026: Bình Dương cũ ~60 triệu/m², căn 2 phòng ngủ Newsky từ 2,56 tỷ, chưa nói đơn giá m²). Video này lấy **góc mới**: đặt **ba mốc đơn giá cạnh nhau** (TP.HCM 69,3 / Bình Dương cũ ~60 / Newsky từ 45,2 triệu/m² tim tường), mỗi số nói đúng phạm vi, kèm giá trị m² (video 5 nói tổng giá căn, không nói đơn giá).
 
@@ -35,8 +35,13 @@ Ghi chú nội dung (quy tắc cứng giữ nguyên, nói đúng phạm vi từn
 | gia-bd-60 | Giá căn hộ sơ cấp Bình Dương cũ quý II/2026 khoảng 60 triệu/m² (One Mount Group) | 23/09/2026 | VnExpress | https://vnexpress.net/kho-kiem-chung-cu-duoi-45-trieu-dong-moi-m2-tai-binh-duong-cu-5122953.html | Đã mở và khớp 15/11/2026 |
 | newsky-452 | Bcons Newsky tháp B: đơn giá thấp nhất PTTT 09 khoảng 45,2 triệu/m² tim tường, chưa VAT, chưa phí bảo trì 2% | 06/10/2026 | Chủ đầu tư: file check giá tháp B | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Chép trong `thong-tin.md`; kiểm giỏ hàng ngày đăng |
 | newsky-vi-tri | Mặt tiền Quốc lộ 13, phường Lái Thiêu | 09/10/2024 | GPXD 3288, `thong-tin.md` | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Anh xác nhận 11/11/2026 |
+| phoi-canh-tong-the | Phối cảnh tổng thể dự án (file overview-aerial, ghi "minh họa") | 11/11/2026 | Tài liệu chủ đầu tư | https://drive.google.com/drive/folders/1YUrtxPpYrDYCLGKKKXEFfmkreyROMniZ | Phối cảnh, ghi minh họa |
 
 ## Việc cần anh quyết
 1. Chọn hook (1, 2 hoặc 3).
 2. Cảnh 1 hiện ba mốc dạng cột (`compare-bars`) hay ba thẻ chữ. Em đề xuất ba thẻ chữ có nhãn phạm vi, vì cột sẽ làm người xem so thẳng ba số khác phạm vi.
 3. Slug `10-ba-moc-gia-m2` đồng ý không.
+
+## Cổng 2: hook và kiểm tra (27/11/2026)
+Hook đã chọn (anh 27/11/2026): **hook 1** "TP.HCM 69,3 triệu mỗi m²" (khung 0: "TP.HCM / mỗi m²" + số 69,3 triệu + "Giá sơ cấp trung bình, tháng 10"). Anh chọn ba mốc dạng thẻ chữ (không cột).
+Kiểm tra mục 3b `docs/quy-trinh-video.md`: khung 0 có chữ và hình (`hook` và `bia.json` cùng chữ); số đầu trong lời cảnh 1 ở những chữ đầu; câu hỏi dễ trả lời ở cảnh cuối; không nền lưới/viền sáng/nhãn chữ hoa; mục 3c: một ý chính, một lời kêu gọi, chi tiết để tư vấn khi khách nhắn.

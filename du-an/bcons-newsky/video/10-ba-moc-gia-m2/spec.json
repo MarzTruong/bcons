@@ -1,0 +1,104 @@
+{
+  "name": "10-ba-moc-gia-m2",
+  "so": 10,
+  "tieuDe": "Ba mốc giá mỗi m²",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "hook": {
+    "lines": [
+      "TP.HCM",
+      "mỗi m²"
+    ],
+    "chuDe": "tai-chinh",
+    "soNhan": "69,3",
+    "donVi": "triệu",
+    "dongPhu": "Giá sơ cấp trung bình, tháng 10",
+    "image": {
+      "file": "assets/images/phoi-canh-tong-the.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-tong-the"
+    }
+  },
+  "scenes": [
+    {
+      "template": "data-cards",
+      "markup": "Căn hộ mới TP.HCM trung bình 69,3{sáu mươi chín phẩy ba} triệu mỗi m²{mét vuông}. Bình Dương cũ khoảng 60{sáu mươi} triệu. Bcons{Bee Cons} Newsky{New Sky} từ 45,2{bốn mươi lăm phẩy hai} triệu.",
+      "cues": {
+        "c1": "69,3",
+        "c2": "60",
+        "c3": "45,2"
+      },
+      "props": {
+        "kicker": "Giá căn hộ mới mỗi mét vuông",
+        "title": "Ba mốc giá",
+        "cards": [
+          {
+            "tag": "TP.HCM, tháng 10",
+            "big": "69,3 triệu/m²",
+            "sub": "sơ cấp, trung bình (DKRA)",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "gia-hcm-693"
+          },
+          {
+            "tag": "Bình Dương cũ, quý II",
+            "big": "khoảng 60 triệu/m²",
+            "sub": "sơ cấp, trung bình (One Mount)",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "gia-bd-60"
+          },
+          {
+            "tag": "Bcons Newsky",
+            "big": "từ 45,2 triệu/m²",
+            "sub": "tim tường, PTTT 09, chưa VAT, chưa phí bảo trì 2%",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "newsky-452"
+          }
+        ]
+      },
+      "id": "scene1"
+    },
+    {
+      "template": "stat-hero",
+      "markup": "Bcons{Bee Cons} Newsky{New Sky} từ 45,2{bốn mươi lăm phẩy hai} triệu mỗi m²{mét vuông} tim tường, thanh toán 09{chín}, chưa VAT{vê át}, chưa phí bảo trì 2%{hai phần trăm}.",
+      "cues": {
+        "value": "45,2"
+      },
+      "props": {
+        "badge": "Nguồn: Chủ đầu tư 06/10/2026",
+        "titleLines": [
+          "Bcons Newsky",
+          "từ"
+        ],
+        "cardLabel": "Tim tường, PTTT 09, chưa VAT, chưa phí bảo trì 2%",
+        "value": 45.2,
+        "decimals": 1,
+        "unit": "triệu/m²",
+        "sourceId": "newsky-452",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      },
+      "id": "scene2"
+    },
+    {
+      "id": "scene3",
+      "template": "project-close",
+      "markup": "Căn 2{hai} phòng ngủ giá bao nhiêu, anh chị đoán thử?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}

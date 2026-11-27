@@ -1,0 +1,130 @@
+{
+  "name": "07-lai-vay-tran-6-9",
+  "so": 7,
+  "tieuDe": "Lãi vay 11/2026 và trần 6,9%",
+  "status": "draft",
+  "style": "moi",
+  "motion": "classic",
+  "hook": {
+    "lines": [
+      "Lãi vay nhà",
+      "vẫn cao"
+    ],
+    "chuDe": "tai-chinh",
+    "soNhan": "9,5–12%",
+    "donVi": "mỗi năm",
+    "dongPhu": "Gói PTTT 09 có trần lãi 6,9%",
+    "image": {
+      "file": "assets/images/phoi-canh-tong-the.jpg",
+      "label": "Phối cảnh minh họa",
+      "sourceId": "phoi-canh-tong-the"
+    }
+  },
+  "scenes": [
+    {
+      "template": "stat-hero",
+      "markup": "Lãi vay mua nhà cố định 12{mười hai} tháng ở 11{mười một} ngân hàng vẫn khoảng 9,5–12%{chín phẩy năm đến mười hai phần trăm} mỗi năm.",
+      "cues": {
+        "value": "9,5–12%"
+      },
+      "props": {
+        "badge": "Nguồn: DKRA, VnExpress 25/11/2026",
+        "titleLines": [
+          "Lãi vay",
+          "mua nhà"
+        ],
+        "cardLabel": "Cố định 12 tháng, 11 ngân hàng, đến cuối tháng 10",
+        "prefix": "9,5–",
+        "value": 12,
+        "decimals": 0,
+        "unit": "%/năm",
+        "sourceId": "lai-vay-11nh",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      },
+      "id": "scene1"
+    },
+    {
+      "template": "data-cards",
+      "markup": "Vietcombank và BIDV{bee eye dee vee} khoảng 10%{mười phần trăm}, Techcombank 10,8%{mười phẩy tám phần trăm}. Hết ưu đãi, có chương trình thả nổi tới 13–16%{từ mười ba đến mười sáu phần trăm}.",
+      "cues": {
+        "c1": "Vietcombank",
+        "c2": "Techcombank",
+        "c3": "Hết"
+      },
+      "props": {
+        "kicker": "Lãi vay mua nhà, đến cuối tháng 10",
+        "title": "Ngân hàng nào, mấy phần trăm",
+        "cards": [
+          {
+            "tag": "Vietcombank, BIDV",
+            "big": "khoảng 10%/năm",
+            "sub": "theo DXS-FERI",
+            "cueKey": "c1",
+            "offset": -5,
+            "sourceId": "lai-ngan-hang"
+          },
+          {
+            "tag": "Techcombank",
+            "big": "10,8%/năm",
+            "sub": "theo DXS-FERI",
+            "cueKey": "c2",
+            "offset": -5,
+            "sourceId": "lai-ngan-hang"
+          },
+          {
+            "tag": "Hết ưu đãi",
+            "big": "thả nổi tới 13–16%",
+            "sub": "một số chương trình",
+            "cueKey": "c3",
+            "offset": -5,
+            "sourceId": "lai-tha-noi"
+          }
+        ]
+      },
+      "id": "scene2"
+    },
+    {
+      "template": "stat-hero",
+      "markup": "Còn thanh toán 09{chín} của Bcons{Bee Cons} Newsky{New Sky}: trần lãi 6,9%{sáu phẩy chín phần trăm}, chủ đầu tư bù chênh lệch.",
+      "cues": {
+        "value": "6,9%"
+      },
+      "props": {
+        "badge": "Nguồn: Thông báo của chủ đầu tư 05/10/2026",
+        "titleLines": [
+          "Trần lãi",
+          "PTTT 09"
+        ],
+        "cardLabel": "Chủ đầu tư bù chênh lệch",
+        "value": 6.9,
+        "decimals": 1,
+        "unit": "%/năm",
+        "sourceId": "pttt-09-tran",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      },
+      "id": "scene3"
+    },
+    {
+      "id": "scene4",
+      "template": "project-close",
+      "markup": "Anh chị đang vay hoặc định vay mức lãi bao nhiêu?",
+      "cues": {},
+      "props": {
+        "message": "Mặt tiền Quốc lộ 13 · phường Lái Thiêu",
+        "image": {
+          "file": "assets/images/phoi-canh-tong-the.jpg",
+          "label": "Phối cảnh minh họa",
+          "sourceId": "phoi-canh-tong-the"
+        }
+      }
+    }
+  ]
+}
