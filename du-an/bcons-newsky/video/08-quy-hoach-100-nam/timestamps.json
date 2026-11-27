@@ -1,0 +1,341 @@
+{
+  "model": "eleven_v4",
+  "voiceId": "9CCqsrTCLkHgQlKSMchK",
+  "voiceSettings": {
+    "stability": 0.85,
+    "similarity_boost": 0.9,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "scenes": [
+    {
+      "id": "scene1",
+      "durationSec": 5.564081632653061,
+      "speech": "TP.HCM vừa công bố quy hoạch tổng thể tầm nhìn một trăm năm, ngày mười sáu tháng mười một .",
+      "words": [
+        {
+          "text": "TP.HCM",
+          "start": 0,
+          "end": 0.693
+        },
+        {
+          "text": "vừa",
+          "start": 0.96,
+          "end": 1.2
+        },
+        {
+          "text": "công",
+          "start": 1.24,
+          "end": 1.36
+        },
+        {
+          "text": "bố",
+          "start": 1.44,
+          "end": 1.6
+        },
+        {
+          "text": "quy",
+          "start": 1.68,
+          "end": 1.8
+        },
+        {
+          "text": "hoạch",
+          "start": 1.84,
+          "end": 2
+        },
+        {
+          "text": "tổng",
+          "start": 2.08,
+          "end": 2.24
+        },
+        {
+          "text": "thể",
+          "start": 2.32,
+          "end": 2.56
+        },
+        {
+          "text": "tầm",
+          "start": 2.72,
+          "end": 2.88
+        },
+        {
+          "text": "nhìn",
+          "start": 2.96,
+          "end": 3.12
+        },
+        {
+          "text": "100",
+          "start": 3.2,
+          "end": 3.6
+        },
+        {
+          "text": "năm,",
+          "start": 3.68,
+          "end": 4.08
+        },
+        {
+          "text": "ngày",
+          "start": 4.16,
+          "end": 4.24
+        },
+        {
+          "text": "16/11",
+          "start": 4.4,
+          "end": 5.28
+        },
+        {
+          "text": ".",
+          "start": 5.28,
+          "end": 5.6
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene2",
+      "durationSec": 7.157551020408163,
+      "speech": "Trục Bắc Nam một được quy hoạch bắt đầu từ quốc lộ mười ba , giao vành đai ba . Thuận An thuộc cực đổi mới sáng tạo phía Đông.",
+      "words": [
+        {
+          "text": "Trục",
+          "start": 0,
+          "end": 0.16
+        },
+        {
+          "text": "Bắc–Nam",
+          "start": 0.2,
+          "end": 0.56
+        },
+        {
+          "text": "1",
+          "start": 0.6,
+          "end": 0.88
+        },
+        {
+          "text": "được",
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "text": "quy",
+          "start": 1.16,
+          "end": 1.24
+        },
+        {
+          "text": "hoạch",
+          "start": 1.28,
+          "end": 1.52
+        },
+        {
+          "text": "bắt",
+          "start": 1.56,
+          "end": 1.68
+        },
+        {
+          "text": "đầu",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "từ",
+          "start": 2,
+          "end": 2.12
+        },
+        {
+          "text": "quốc",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "lộ",
+          "start": 2.36,
+          "end": 2.48
+        },
+        {
+          "text": "13",
+          "start": 2.52,
+          "end": 2.88
+        },
+        {
+          "text": ",",
+          "start": 2.88,
+          "end": 3.04
+        },
+        {
+          "text": "giao",
+          "start": 3.2,
+          "end": 3.44
+        },
+        {
+          "text": "vành",
+          "start": 3.52,
+          "end": 3.68
+        },
+        {
+          "text": "đai",
+          "start": 3.72,
+          "end": 3.84
+        },
+        {
+          "text": "3",
+          "start": 3.96,
+          "end": 4.08
+        },
+        {
+          "text": ".",
+          "start": 4.08,
+          "end": 4.16
+        },
+        {
+          "text": "Thuận",
+          "start": 4.48,
+          "end": 4.64
+        },
+        {
+          "text": "An",
+          "start": 4.72,
+          "end": 4.96
+        },
+        {
+          "text": "thuộc",
+          "start": 5.12,
+          "end": 5.28
+        },
+        {
+          "text": "cực",
+          "start": 5.36,
+          "end": 5.52
+        },
+        {
+          "text": "đổi",
+          "start": 5.6,
+          "end": 5.76
+        },
+        {
+          "text": "mới",
+          "start": 5.84,
+          "end": 6
+        },
+        {
+          "text": "sáng",
+          "start": 6.08,
+          "end": 6.24
+        },
+        {
+          "text": "tạo",
+          "start": 6.32,
+          "end": 6.48
+        },
+        {
+          "text": "phía",
+          "start": 6.56,
+          "end": 6.68
+        },
+        {
+          "text": "Đông.",
+          "start": 6.72,
+          "end": 7.2
+        }
+      ],
+      "seed": 20260
+    },
+    {
+      "id": "scene3",
+      "durationSec": 5.877551020408164,
+      "speech": "Bee Cons New Sky mặt tiền quốc lộ 13. Theo anh chị, trục này bắt đầu từ nút giao nào?",
+      "words": [
+        {
+          "text": "Bcons",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "Newsky",
+          "start": 0.64,
+          "end": 1.28
+        },
+        {
+          "text": "mặt",
+          "start": 1.52,
+          "end": 1.68
+        },
+        {
+          "text": "tiền",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "quốc",
+          "start": 1.96,
+          "end": 2.08
+        },
+        {
+          "text": "lộ",
+          "start": 2.12,
+          "end": 2.24
+        },
+        {
+          "text": "13.",
+          "start": 2.28,
+          "end": 2.84
+        },
+        {
+          "text": "Theo",
+          "start": 3.12,
+          "end": 3.24
+        },
+        {
+          "text": "anh",
+          "start": 3.28,
+          "end": 3.36
+        },
+        {
+          "text": "chị,",
+          "start": 3.44,
+          "end": 3.84
+        },
+        {
+          "text": "trục",
+          "start": 3.88,
+          "end": 4.08
+        },
+        {
+          "text": "này",
+          "start": 4.12,
+          "end": 4.32
+        },
+        {
+          "text": "bắt",
+          "start": 4.4,
+          "end": 4.56
+        },
+        {
+          "text": "đầu",
+          "start": 4.64,
+          "end": 4.8
+        },
+        {
+          "text": "từ",
+          "start": 4.88,
+          "end": 5
+        },
+        {
+          "text": "nút",
+          "start": 5.04,
+          "end": 5.2
+        },
+        {
+          "text": "giao",
+          "start": 5.253,
+          "end": 5.36
+        },
+        {
+          "text": "nào?",
+          "start": 5.44,
+          "end": 5.92
+        }
+      ],
+      "seed": 20260
+    }
+  ]
+}
