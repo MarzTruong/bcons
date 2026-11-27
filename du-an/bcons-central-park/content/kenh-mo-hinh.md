@@ -19,6 +19,12 @@ Kênh chung hai dự án (Bcons Central Park, Bcons Newsky) của tư vấn viê
 | 13/11 | Cuối năm, 3 công trình về đích (video 8) | Central Park | B |
 | 14/11 | Newsky 1: Quốc lộ 13 lên 8 làn | Newsky | B (tạm, anh chốt) |
 
+| 17/11 | Newsky 2: Mua căn 3 tỷ cần bao nhiêu | Newsky | A |
+| 18/11 | Newsky 3: thuê lại 24 tháng | Newsky | A |
+| 19/11 | Newsky 4: Quốc lộ 13 về Bình Triệu | Newsky | B |
+| 20–21/11 | Newsky 5 (giá Bình Dương cũ, B), Newsky 6 (ba cách thanh toán, A): KHÔNG ĐĂNG ĐƯỢC, lỗi hạn mức Metricool | Newsky | — |
+| 28/11–01/12 (hẹn) | Newsky 7 lãi vay 6,9% (B), 8 quy hoạch 100 năm (B), 9 thuê lại 3PN (A), 10 ba mốc giá m² (B) | Newsky | A 1, B 3 |
+
 Tỷ lệ thực tế đến 14/11: **A 1/8 (13%), B 7/8 (87%)**, ngược với mục tiêu. Lịch 17–21/11 (5 video Newsky đã hẹn): A 3, B 2.
 
 ## Kế hoạch tuần (cập nhật mỗi tuần bởi báo cáo hiệu suất)
