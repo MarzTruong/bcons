@@ -18,7 +18,6 @@ Kênh chung hai dự án (Bcons Central Park, Bcons Newsky) của tư vấn viê
 | 12/11 | Tái thiết KCN Biên Hòa 1 (video 6) | Central Park | B |
 | 13/11 | Cuối năm, 3 công trình về đích (video 8) | Central Park | B |
 | 14/11 | Newsky 1: Quốc lộ 13 lên 8 làn | Newsky | B (tạm, anh chốt) |
-
 | 17/11 | Newsky 2: Mua căn 3 tỷ cần bao nhiêu | Newsky | A |
 | 18/11 | Newsky 3: thuê lại 24 tháng | Newsky | A |
 | 19/11 | Newsky 4: Quốc lộ 13 về Bình Triệu | Newsky | B |
