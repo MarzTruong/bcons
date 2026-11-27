@@ -61,6 +61,7 @@ Video và caption là **mồi kéo khách nhắn**, không phải bản thông t
 - Có nhắc giá căn thì một nhãn ngắn chưa VAT/có VAT (và phí bảo trì 2% khi nói tổng chi phí); căn ví dụ ghi rõ "ví dụ"; phối cảnh ghi "minh họa".
 - Hạ tầng/quy hoạch: một dòng nói đúng tình trạng thật (chủ trương / đã duyệt / đang thi công / dự kiến), không cần kể hết các bước.
 - Thu thông tin khách phải có ô đồng ý nhận tin.
+**Nới thêm (anh chốt 27/11/2026, theo tư liệu AGY):** video Newsky được dùng metro số 2 (nói là "phía sau lưng dự án", anh xác nhận vị trí; nguồn Tuổi Trẻ 05/10: ga C10 trước BV Quốc tế Becamex và Lotte Mart Bình Dương, khởi công 12/2026, không hứa thời điểm vận hành); được nêu giá/m² Newsky so với thị trường khi số có nguồn và nói đúng phạm vi từng số; không cần chữ nhỏ điều kiện dài. Vẫn giữ: số đúng nguồn, không hứa lợi nhuận/tăng giá, không "tiền thuê bù lãi vay", không hứa kết quả, thuê lại ghi "một số căn", không nối Trục Bắc–Nam 1 tới Lái Thiêu.
 
 ## 4. Công cụ hỗ trợ
 - **Superpowers** (cài theo mục 5): dùng `brainstorming` khi lên ý tưởng/kịch bản mới, `writing-plans` + `verification-before-completion` khi sửa code Remotion/script, `systematic-debugging` khi render hoặc giọng đọc lỗi.
